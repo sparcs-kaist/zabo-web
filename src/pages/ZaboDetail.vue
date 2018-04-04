@@ -3,8 +3,8 @@
     Header Component
     <div class="main">
       <div class="left">
-        <p>Category</p>
-        <img src="http://via.placeholder.com/200x150" />
+        <p style="color: black;">Category</p>
+        <img class="image" src="http://via.placeholder.com/170x250" height="250" width="170"/>
       </div>
 
       <div class="right">
@@ -15,7 +15,7 @@
         </div>
 
         <div class="bodyStyle" v-show="toDisplay === 0">
-          <info></info>
+          <info-screen />
         </div>
         <div class="bodyStyle" v-show="toDisplay === 1">
           <div style="color: blue">HELLO</div>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Info from '../components/Info';
+import InfoScreen from '../components/InfoScreen';
 
 export default {
   data() {
@@ -39,7 +39,7 @@ export default {
     };
   },
   components: {
-    Info,
+    InfoScreen,
   },
   methods: {
     selectTab(selected) {
@@ -53,18 +53,22 @@ export default {
 .headerStyle {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 50px;
+  margin: 30vh 50px 50px 50px;
+}
+.image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 .left {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   width: 25%;
 }
 .main {
   display: flex;
-  height: 100vh;
+  height: 100%;
 }
 .right {
   background-color: rgb(35, 35, 35);
@@ -72,7 +76,7 @@ export default {
   width: 75%;
 }
 .root {
-  width: 100vw;
+  min-width: 100vw;
 }
 .selected {
   color: #FFF;
