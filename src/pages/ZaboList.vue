@@ -1,23 +1,27 @@
 <template>
   <div class="zaboList">
-    <p>list</p>
-    <div class="zaboThumbnailListContainer">
-      <div class="zaboThumbnailListPrevPage"
-           @click="pageChange(false)">
-      </div>
-      <div class="zaboThumbnailList">
-        <div class="zaboThumbnailRow" :key="n" v-for="n in 5">
-          <zaboThumbnail
-            :zaboDetail="zabo"
-            :number="index"
-            :row="n"
-            :key="zabo.id"
-            v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
-          </zaboThumbnail>
+    <div class="zaboCategory">
+      <p class="zaboCategoryName">
+        인기있는 행사
+      </p>
+      <div class="zaboThumbnailListContainer">
+        <div class="zaboThumbnailListPrevPage"
+             @click="pageChange(false)">
         </div>
-      </div>
-      <div class="zaboThumbnailListNextPage"
-           @click="pageChange(true)">
+        <div class="zaboThumbnailList">
+          <div class="zaboThumbnailRow" :key="n" v-for="n in 5">
+            <zaboThumbnail
+              :zaboDetail="zabo"
+              :number="index + (n - 1) * zaboRow"
+              :row="n"
+              :key="zabo.id"
+              v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
+            </zaboThumbnail>
+          </div>
+        </div>
+        <div class="zaboThumbnailListNextPage"
+             @click="pageChange(true)">
+        </div>
       </div>
     </div>
   </div>
@@ -33,20 +37,25 @@ export default {
   data() {
     return {
       zaboCursor: 0,
+      windowWidth: 0,
     };
+  },
+  beforeMount() {
+    window.addEventListener('resize', this.getWindowWidth);
+    this.getWindowWidth();
   },
   computed: {
     zaboes() {
       return this.$store.getters.zaboes;
     },
     zaboRow() {
-      if (window.innerWidth > 1400) {
+      if (this.windowWidth > 1200) {
         return 4;
       }
-      if (window.innerWidth > 1100) {
+      if (this.windowWidth > 900) {
         return 3;
       }
-      if (window.innerWidth > 800) {
+      if (this.windowWidth > 600) {
         return 2;
       }
       return 1;
@@ -62,18 +71,21 @@ export default {
     zaboRendered() {
       const zaboes = this.zaboList;
       if (this.zaboCursor - (this.zaboRow * 2) < 0) {
+        console.log(1);
         return zaboes.slice(zaboes.length + (this.zaboCursor - (this.zaboRow * 2)), zaboes.length)
           .concat(zaboes.slice(0, this.zaboCursor + (this.zaboRow * 3)));
       }
       if (this.zaboCursor + ((this.zaboRow * 3) - 1) >= zaboes.length) {
+        console.log(2);
         return zaboes.slice(this.zaboCursor - (this.zaboRow * 2), zaboes.length)
           .concat(zaboes.slice(0, (this.zaboCursor + (this.zaboRow * 3)) - zaboes.length));
       }
-      return zaboes.slice([this.zaboCursor - (this.zaboRow * 2),
-        this.zaboCursor + (this.zaboRow * 3)]);
+      console.log(3);
+      return zaboes.slice(this.zaboCursor - (this.zaboRow * 2),
+        this.zaboCursor + (this.zaboRow * 3));
     },
   },
-  method: {
+  methods: {
     pageChange(isNext) {
       if (isNext) {
         this.zaboCursor += this.zaboRow;
@@ -84,49 +96,66 @@ export default {
         this.zaboCursor %= this.zaboList.length;
       }
     },
+    getWindowWidth(event) {
+      this.windowWidth = document.body.clientWidth ||
+      document.documentElement.clientWidth || window.innerWidth;
+    },
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.getWindowWidth);
   },
 };
 </script>
 
 <style scoped>
+.zaboCategoryName {
+  font-size: 30px;
+  font-weight: 900;
+  margin: 0 auto;
+}
+
 .zaboThumbnailListContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  width: 80vw;
-  height: 750px;
-  background-color: black;
+  width: 100%;
+  height: 860px;
 }
 
 .zaboThumbnailList {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   width: 100%;
-  height: 650px;
+  height: 660px;
 }
 
 .zaboThumbnailRow {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 200px;
 }
 
 .zaboThumbnailListPrevPage {
+  margin-top: 28px;
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 10px solid white;
+  border-bottom: 10px solid gray;
 }
 
 .zaboThumbnailListNextPage {
+  margin-bottom: 28px;
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 10px solid white;
+  border-bottom: 10px solid gray;
 
   transform: rotate(180deg);
 }
