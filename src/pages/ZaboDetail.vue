@@ -2,27 +2,32 @@
   <div class="root">
     Header Component
     <div class="main">
-      <div class="left">
-        <p style="color: black;">Category</p>
-        <img class="image" src="http://via.placeholder.com/170x250" height="250" width="170"/>
-      </div>
 
-      <div class="right">
+      <div class="left">
         <div class="headerStyle">
-          <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">Info</p>
-          <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
-          <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">신청</p>
+          <p class="heading">Event name</p>
+          <p class="subheading">Date</p>
+          <p class="subheading">Organization</p>
+          <div class="navbar">
+            <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">Info</p>
+            <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
+            <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">신청</p>
+          </div>
         </div>
 
         <div class="bodyStyle" v-show="toDisplay === 0">
           <info-screen />
         </div>
         <div class="bodyStyle" v-show="toDisplay === 1">
-          <div style="color: blue">HELLO</div>
+          <review-screen />
         </div>
         <div class="bodyStyle" v-show="toDisplay === 2">
           <div style="color: green">HELLO</div>
         </div>
+      </div>
+
+      <div class="right">
+        <img src="http://via.placeholder.com/340x500" height="500" width="340"/>
       </div>
     </div>
   </div>
@@ -30,6 +35,7 @@
 
 <script>
 import InfoScreen from '../components/InfoScreen';
+import ReviewScreen from '../components/ReviewScreen';
 
 export default {
   data() {
@@ -40,6 +46,7 @@ export default {
   },
   components: {
     InfoScreen,
+    ReviewScreen,
   },
   methods: {
     selectTab(selected) {
@@ -50,41 +57,65 @@ export default {
 </script>
 
 <style scoped>
+.bodyStyle {
+  height: 75%;
+  overflow-y: scroll;
+  margin: 20px 50px 50px 50px;
+}
 .headerStyle {
+  color: rgb(220, 220, 220);
   display: flex;
   flex-direction: column;
-  margin: 30vh 50px 50px 50px;
+  height: 25%;
+  margin: 50px 50px 0 50px;
 }
-.image {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.heading {
+  font-size: 2em;
+  font-weight: bold;
+  letter-spacing: 0.01em;
+  margin: 0;
+  text-align: left;
 }
 .left {
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  width: 25%;
+  justify-content: flex-start;
+  width: 60%;
 }
 .main {
+  background-color: rgb(128, 128, 128);
   display: flex;
   height: 100%;
+  margin: 10px 50px 50px 50px;
+}
+.navbar {
+  display: flex;
+  justify-content: flex-start;
+  margin: 20px 0 0 0;
 }
 .right {
-  background-color: rgb(35, 35, 35);
+  align-items: center;
   display: flex;
-  width: 75%;
+  flex-direction: column;
+  justify-content: center;
+  width: 40%;
 }
 .root {
   min-width: 100vw;
+  height: 100vh;
 }
 .selected {
   color: #FFF;
   font-weight: bold;
 }
+.subheading {
+  font-weight: bold;
+  margin: 0;
+  text-align: left;
+}
 .tab {
   color: rgb(220, 220, 220);
   cursor: pointer;
-  margin: 8px 0 8px 0;
+  margin: 0 16px 0 0;
 }
 </style>
