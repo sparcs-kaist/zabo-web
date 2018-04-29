@@ -27,7 +27,7 @@
       </div>
 
       <div class="right">
-        <img src="http://via.placeholder.com/340x500" height="500" width="340"/>
+        <img src="http://via.placeholder.com/340x450" height="450" width="340"/>
       </div>
     </div>
   </div>
@@ -62,6 +62,8 @@ export default {
   overflow-y: scroll;
   margin: 20px 50px 50px 50px;
 }
+::-webkit-scrollbar-face{ background-color: rgb(128, 128, 128);}
+::-webkit-scrollbar-face:hover {background-color: rgb(128, 128, 128);}
 .headerStyle {
   color: rgb(220, 220, 220);
   display: flex;

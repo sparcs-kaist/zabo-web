@@ -1,55 +1,95 @@
 <template>
   <div class="review-screen">
-    <div class="description">
-      <p class="heading">Event name</p>
-      <p class="subheading">Date</p>
-      <p class="subheading">Organization</p>
+    <div class="form">
+      <textarea class="textbox" v-model="newComment" placeholder="리뷰를 입력하세요..."></textarea>
+      <!-- <editable-text
+        :content="newComment"
+        @update="updateComment"
+      >
+      </editable-text> -->
+      <span class="button" @click="onClick">작성</span>
     </div>
+    <!-- <ul>
+      <li v-for="(comment, index) in comments" :key="index">
+        {{ comment }}
+      </li>
+    </ul> -->
+    <comment-box
+      v-for="(c, index) in comments"
+      :user="c.user"
+      :content="c.content"
+      :key="index"
+    >
+    </comment-box>
   </div>
 </template>
 
 <script>
+import EditableText from './EditableText';
+import CommentBox from './CommentBox';
+
 export default {
+  components: {
+    CommentBox,
+    EditableText,
+  },
   data() {
     return {
       comments: [],
+      newComment: '',
     };
   },
   methods: {
-    fetchComments() {
-
+    onClick() {
+      this.comments.push({
+        content: this.newComment,
+        user: '홍길동',
+      });
+      this.newComment = '';
+    },
+    updateComment(content) {
+      this.newComment = content;
     },
   },
 };
 </script>
 
 <style scoped>
-.description {
-  color: #fff;
+.button {
+  align-items: center;
+  border: 3px solid white;
+  cursor: pointer;
   display: flex;
-  flex-direction: column;
-  font-size: 0.9em;
+  height: 2em;
   justify-content: center;
-  overflow: scroll;
-  padding: 30px;
+  margin-left: 10px;
+  width: 40px;
+}
+.form {
+  align-items: center;
+  display: flex;
+}
+.textbox {
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid white;
+  color: white;
+  font-size: 1em;
+  height: 1em;
+  outline: none;
+  padding: 5px;
+  resize: none;
   text-align: left;
-  width: 50%;
+  width: 100%;
 }
-.heading {
-  font-size: 2em;
-  font-weight: bold;
-  letter-spacing: 0.01em;
-  margin: 0;
+.textbox[placeholder]:empty:before {
+  content: attr(placeholder);
+  color: rgb(172, 172, 172);
 }
-.image {
-  display: block;
-  margin: 50px 50px 50px 0;
+.textbox[placeholder]:empty:focus:before {
+  content: "";
 }
 .review-screen {
-  display: flex;
-}
-.subheading {
-  font-weight: bold;
-  margin: 0;
+  color: white;
 }
 </style>
