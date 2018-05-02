@@ -9,15 +9,12 @@
       </editable-text> -->
       <span class="button" @click="onClick">작성</span>
     </div>
-    <!-- <ul>
-      <li v-for="(comment, index) in comments" :key="index">
-        {{ comment }}
-      </li>
-    </ul> -->
     <comment-box
       v-for="(c, index) in comments"
-      :user="c.user"
       :content="c.content"
+      :depth="0"
+      :replies="c.replies"
+      :user="c.user"
       :key="index"
     >
     </comment-box>
@@ -35,7 +32,40 @@ export default {
   },
   data() {
     return {
-      comments: [],
+      comments: [
+        {
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nunc vestibulum nisl id urna mattis dignissim.
+            Mauris molestie tellus aliquet ante cursus convallis.`,
+          replies: [
+            {
+              content: "I'm a reply!",
+              user: '홍길동2',
+            },
+            {
+              content: "I'm a reply too!",
+              user: '홍길동2',
+            },
+          ],
+          user: '홍길동',
+        },
+        {
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nunc vestibulum nisl id urna mattis dignissim.
+            Mauris molestie tellus aliquet ante cursus convallis.`,
+          replies: [
+            {
+              content: "I'm a reply!!",
+              user: '홍길동2',
+            },
+            {
+              content: "I'm a reply too!!",
+              user: '홍길동2',
+            },
+          ],
+          user: '홍길동',
+        },
+      ],
       newComment: '',
     };
   },
@@ -43,12 +73,10 @@ export default {
     onClick() {
       this.comments.push({
         content: this.newComment,
+        replies: [],
         user: '홍길동',
       });
       this.newComment = '';
-    },
-    updateComment(content) {
-      this.newComment = content;
     },
   },
 };
@@ -91,5 +119,7 @@ export default {
 }
 .review-screen {
   color: white;
+  display: flex;
+  flex-direction: column;
 }
 </style>
