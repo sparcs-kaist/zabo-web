@@ -1,5 +1,5 @@
 <template>
-  <div class="info-screen">
+  <div class="infoScreen">
     <div class="description">
       <p v-if="!seeMore">
         {{ shortenedInfo }} <span class="more" @click="seeMore = true">더 보기</span>
@@ -67,7 +67,7 @@ export default {
   font-size: 0.9em;
   text-align: left;
 }
-.info-screen {
+.infoScreen {
   height: 100%;
   width: 80%;
 }

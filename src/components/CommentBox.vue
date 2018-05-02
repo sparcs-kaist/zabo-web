@@ -18,6 +18,14 @@
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
       {{ content }}
     </div>
+    <div v-show="depth === 0">
+      <input-field
+        :content.sync="newReply"
+        :on-click="onSubmitReply"
+        placeholder-text="댓글을 작성하세요..."
+      >
+      </input-field>
+    </div>
     <comment-box
       class="reply-box"
       v-for="(r, index) in replies"
@@ -31,9 +39,28 @@
 </template>
 
 <script>
+import InputField from './InputField';
+
 export default {
+  components: {
+    InputField,
+  },
   props: ['content', 'depth', 'replies', 'user'],
   name: 'comment-box',
+  data() {
+    return {
+      newReply: '',
+    };
+  },
+  methods: {
+    onSubmitReply() {
+      this.replies.push({
+        content: this.newReply,
+        user: '홍길동2',
+      });
+      this.$emit('update:replies', this.replies);
+    },
+  },
 };
 </script>
 
@@ -44,11 +71,12 @@ export default {
   text-align: left;
 }
 .header {
+  align-items: center;
   display: flex;
   justify-content: flex-start;
 }
 .main {
-  margin: 20px 0;
+  margin: 20px 0 0 0;
 }
 .name {
   color: white;

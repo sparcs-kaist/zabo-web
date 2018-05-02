@@ -1,5 +1,5 @@
 <template>
-  <div class="review-screen">
+  <div class="reviewScreen">
     <div class="form">
       <textarea class="textbox" v-model="newComment" placeholder="리뷰를 입력하세요..."></textarea>
       <!-- <editable-text
@@ -13,7 +13,7 @@
       v-for="(c, index) in comments"
       :content="c.content"
       :depth="0"
-      :replies="c.replies"
+      :replies.sync="c.replies"
       :user="c.user"
       :key="index"
     >
@@ -117,7 +117,7 @@ export default {
 .textbox[placeholder]:empty:focus:before {
   content: "";
 }
-.review-screen {
+.reviewScreen {
   color: white;
   display: flex;
   flex-direction: column;

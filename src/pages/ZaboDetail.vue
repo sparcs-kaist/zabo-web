@@ -62,8 +62,10 @@ export default {
   overflow-y: scroll;
   margin: 20px 50px 50px 50px;
 }
-::-webkit-scrollbar-face{ background-color: rgb(128, 128, 128);}
-::-webkit-scrollbar-face:hover {background-color: rgb(128, 128, 128);}
+/* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
+.bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
+/* .root::-webkit-scrollbar{ display: none;}
+.root::-webkit-scrollbar:hover { display: none;} */
 .headerStyle {
   color: rgb(220, 220, 220);
   display: flex;
