@@ -1,20 +1,17 @@
 <template>
   <div class="reviewScreen">
-    <div class="form">
-      <textarea class="textbox" v-model="newComment" placeholder="리뷰를 입력하세요..."></textarea>
-      <!-- <editable-text
-        :content="newComment"
-        @update="updateComment"
-      >
-      </editable-text> -->
-      <span class="button" @click="onClick">작성</span>
-    </div>
+    <input-field
+      :content.sync="newComment"
+      :on-click="onSubmitComment"
+      placeholder-text="리뷰를 입력하세요..."
+    >
+    </input-field>
     <comment-box
       v-for="(c, index) in comments"
+      :author="c.author"
       :content="c.content"
       :depth="0"
       :replies.sync="c.replies"
-      :user="c.user"
       :key="index"
     >
     </comment-box>
@@ -24,57 +21,59 @@
 <script>
 import EditableText from './EditableText';
 import CommentBox from './CommentBox';
+import InputField from './InputField';
 
 export default {
   components: {
     CommentBox,
     EditableText,
+    InputField,
   },
   data() {
     return {
       comments: [
         {
+          author: '홍길동',
           content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Nunc vestibulum nisl id urna mattis dignissim.
             Mauris molestie tellus aliquet ante cursus convallis.`,
           replies: [
             {
+              author: '홍길동2',
               content: "I'm a reply!",
-              user: '홍길동2',
             },
             {
+              author: '홍길동2',
               content: "I'm a reply too!",
-              user: '홍길동2',
             },
           ],
-          user: '홍길동',
         },
         {
+          author: '홍길동',
           content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Nunc vestibulum nisl id urna mattis dignissim.
             Mauris molestie tellus aliquet ante cursus convallis.`,
           replies: [
             {
+              author: '홍길동2',
               content: "I'm a reply!!",
-              user: '홍길동2',
             },
             {
+              author: '홍길동2',
               content: "I'm a reply too!!",
-              user: '홍길동2',
             },
           ],
-          user: '홍길동',
         },
       ],
       newComment: '',
     };
   },
   methods: {
-    onClick() {
+    onSubmitComment() {
       this.comments.push({
+        author: '홍길동',
         content: this.newComment,
         replies: [],
-        user: '홍길동',
       });
       this.newComment = '';
     },

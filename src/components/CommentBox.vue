@@ -12,7 +12,7 @@
       <div v-show="depth === 1" class="tag">ㄴ</div>
       <div class="pic"></div>
       <div class="name">
-        {{ user }}
+        {{ author }}
       </div>
     </div>
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
@@ -29,9 +29,9 @@
     <comment-box
       class="reply-box"
       v-for="(r, index) in replies"
+      :author="r.author"
       :content="r.content"
       :depth="depth + 1"
-      :user="r.user"
       :key="index"
     >
     </comment-box>
@@ -45,7 +45,7 @@ export default {
   components: {
     InputField,
   },
-  props: ['content', 'depth', 'replies', 'user'],
+  props: ['author', 'content', 'depth', 'replies'],
   name: 'comment-box',
   data() {
     return {
@@ -55,8 +55,8 @@ export default {
   methods: {
     onSubmitReply() {
       this.replies.push({
+        author: '홍길동2',
         content: this.newReply,
-        user: '홍길동2',
       });
       this.$emit('update:replies', this.replies);
     },
