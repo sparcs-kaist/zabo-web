@@ -13,13 +13,20 @@
             <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
             <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">신청</p>
           </div>
+          <input-field
+            v-show="toDisplay === 1"
+            :content.sync="newComment"
+            :on-click="onSubmitComment"
+            placeholder-text="리뷰를 입력하세요..."
+          >
+          </input-field>
         </div>
 
         <div class="bodyStyle" v-show="toDisplay === 0">
           <info-screen />
         </div>
         <div class="bodyStyle" v-show="toDisplay === 1">
-          <review-screen />
+          <review-screen :comments="comments" />
         </div>
         <div class="bodyStyle" v-show="toDisplay === 2">
           <div style="color: green">HELLO</div>
@@ -35,20 +42,65 @@
 
 <script>
 import InfoScreen from '../components/InfoScreen';
+import InputField from '../components/InputField';
 import ReviewScreen from '../components/ReviewScreen';
 
 export default {
   data() {
     return {
+      comments: [
+        {
+          author: '홍길동',
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nunc vestibulum nisl id urna mattis dignissim.
+            Mauris molestie tellus aliquet ante cursus convallis.`,
+          replies: [
+            {
+              author: '홍길동2',
+              content: "I'm a reply!",
+            },
+            {
+              author: '홍길동2',
+              content: "I'm a reply too!",
+            },
+          ],
+        },
+        {
+          author: '홍길동',
+          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nunc vestibulum nisl id urna mattis dignissim.
+            Mauris molestie tellus aliquet ante cursus convallis.`,
+          replies: [
+            {
+              author: '홍길동2',
+              content: "I'm a reply!!",
+            },
+            {
+              author: '홍길동2',
+              content: "I'm a reply too!!",
+            },
+          ],
+        },
+      ],
+      newComment: '',
       // 0 displays Info, 1 displays Review, 2 displays 신청
       toDisplay: 0,
     };
   },
   components: {
     InfoScreen,
+    InputField,
     ReviewScreen,
   },
   methods: {
+    onSubmitComment() {
+      this.comments.push({
+        author: '홍길동',
+        content: this.newComment,
+        replies: [],
+      });
+      this.newComment = '';
+    },
     selectTab(selected) {
       this.toDisplay = selected;
     },
@@ -95,7 +147,7 @@ export default {
 .navbar {
   display: flex;
   justify-content: flex-start;
-  margin: 20px 0 0 0;
+  margin: 20px 0 25px 0;
 }
 .right {
   align-items: center;

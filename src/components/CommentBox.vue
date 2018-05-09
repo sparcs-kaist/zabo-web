@@ -20,6 +20,7 @@
     </div>
     <div v-show="depth === 0">
       <input-field
+        class="input"
         :content.sync="newReply"
         :on-click="onSubmitReply"
         placeholder-text="댓글을 작성하세요..."
@@ -74,6 +75,9 @@ export default {
   align-items: center;
   display: flex;
   justify-content: flex-start;
+}
+.input {
+  padding-left: 15px;
 }
 .main {
   margin: 20px 0 0 0;
