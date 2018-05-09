@@ -16,7 +16,10 @@
       </div>
     </div>
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
-      {{ content }}
+      <div v-if="isLong() && !seeMore">
+        {{ shortenedComment }} <span class="more" @click="seeMore = true">더 보기</span>
+      </div>
+      <div v-else>{{ content }}</div>
     </div>
     <div v-show="depth === 0">
       <input-field
@@ -51,15 +54,24 @@ export default {
   data() {
     return {
       newReply: '',
+      seeMore: false,
     };
   },
   methods: {
+    isLong() {
+      return this.content.length > 200;
+    },
     onSubmitReply() {
       this.replies.push({
         author: '홍길동2',
         content: this.newReply,
       });
       this.$emit('update:replies', this.replies);
+    },
+  },
+  computed: {
+    shortenedComment() {
+      return `${this.content.substring(0, 200)}...`;
     },
   },
 };
@@ -81,6 +93,10 @@ export default {
 }
 .main {
   margin: 20px 0 0 0;
+}
+.more {
+  color: rgb(140, 140, 140);
+  cursor: pointer;
 }
 .name {
   color: white;

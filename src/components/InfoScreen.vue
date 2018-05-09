@@ -1,7 +1,7 @@
 <template>
   <div class="infoScreen">
     <div class="description">
-      <p v-if="!seeMore">
+      <p v-if="isLong() && !seeMore">
         {{ shortenedInfo }} <span class="more" @click="seeMore = true">더 보기</span>
       </p>
       <p v-else>{{ info }}</p>
@@ -56,6 +56,11 @@ export default {
   computed: {
     shortenedInfo() {
       return `${this.info.substring(0, 1000)}...`;
+    },
+  },
+  methods: {
+    isLong() {
+      return this.info.length > 1000;
     },
   },
 };
