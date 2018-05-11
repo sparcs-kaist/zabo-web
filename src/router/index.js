@@ -23,7 +23,7 @@ export default new Router({
       component: Zabo,
     },
     {
-      path: '/zabo/detail',
+      path: '/zabo/detail/:zabo_id',
       name: 'ZaboDetail',
       component: ZaboDetail,
     },

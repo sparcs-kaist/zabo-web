@@ -32,24 +32,26 @@
     </div>
     <comment-box
       class="reply-box"
-      v-for="(r, index) in replies"
+      v-for="r in replies"
       :author="r.author"
+      :comment_id="r.id"
       :content="r.content"
       :depth="depth + 1"
-      :key="index"
+      :key="r.id"
     >
     </comment-box>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 import InputField from './InputField';
 
 export default {
   components: {
     InputField,
   },
-  props: ['author', 'content', 'depth', 'replies'],
+  props: ['author', 'comment_id', 'content', 'depth', 'replies'],
   name: 'comment-box',
   data() {
     return {
@@ -62,11 +64,32 @@ export default {
       return this.content.length > 200;
     },
     onSubmitReply() {
-      this.replies.push({
-        author: '홍길동2',
-        content: this.newReply,
-      });
-      this.$emit('update:replies', this.replies);
+      // this.replies.push({
+      //   author: '홍길동2',
+      //   content: this.newReply,
+      // });
+      // this.$emit('update:replies', this.replies);
+      axios({
+        method: 'post',
+        url: 'http://localhost:12345/api/recomments/',
+        auth: {
+          username: 'jidan@example.com',
+          password: 'q1234321',
+        },
+        data: {
+          content: this.newReply,
+          comment: this.comment_id,
+        },
+      })
+        .then((response) => {
+          // eslint-disable-next-line
+          console.log(response);
+          this.replies.push(response.data);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error);
+        });
     },
   },
   computed: {

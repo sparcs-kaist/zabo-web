@@ -5,7 +5,6 @@
           class="textbox"
           v-model="input"
           :placeholder="placeholderText"
-          @blur="onBlur"
         >
         </textarea>
         <!-- <editable-text
@@ -13,7 +12,7 @@
           @update="updateComment"
         >
         </editable-text> -->
-        <span class="button" @click="onClick">작성</span>
+        <span class="button" @click="onButtonClick">작성</span>
       </div>
   </div>
 </template>
@@ -32,9 +31,10 @@ export default {
     };
   },
   methods: {
-    onBlur() {
+    onButtonClick() {
       this.$emit('update:content', this.input);
       this.input = '';
+      this.onClick();
     },
   },
 };

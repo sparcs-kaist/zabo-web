@@ -23,10 +23,10 @@
         </div>
 
         <div class="bodyStyle" v-show="toDisplay === 0">
-          <info-screen />
+          <info-screen :info="this.info"/>
         </div>
         <div class="bodyStyle" v-show="toDisplay === 1">
-          <review-screen :comments="comments" />
+          <review-screen :comments.sync="comments" />
         </div>
         <div class="bodyStyle" v-show="toDisplay === 2">
           <div style="color: green">HELLO</div>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import InfoScreen from '../components/InfoScreen';
 import InputField from '../components/InputField';
 import ReviewScreen from '../components/ReviewScreen';
@@ -49,42 +50,53 @@ export default {
   data() {
     return {
       comments: [
-        {
-          author: '홍길동',
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Nunc vestibulum nisl id urna mattis dignissim.
-            Mauris molestie tellus aliquet ante cursus convallis.`,
-          replies: [
-            {
-              author: '홍길동2',
-              content: "I'm a reply!",
-            },
-            {
-              author: '홍길동2',
-              content: "I'm a reply too!",
-            },
-          ],
-        },
-        {
-          author: '홍길동',
-          content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Nunc vestibulum nisl id urna mattis dignissim.
-            Mauris molestie tellus aliquet ante cursus convallis.`,
-          replies: [
-            {
-              author: '홍길동2',
-              content: "I'm a reply!!",
-            },
-            {
-              author: '홍길동2',
-              content: "I'm a reply too!!",
-            },
-          ],
-        },
+        // {
+        //   author: '홍길동',
+        //   content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        //     Nunc vestibulum nisl id urna mattis dignissim.
+        //     Mauris molestie tellus aliquet ante cursus convallis.`,
+        //   replies: [
+        //     {
+        //       author: '홍길동2',
+        //       content: "I'm a reply!",
+        //     },
+        //     {
+        //       author: '홍길동2',
+        //       content: "I'm a reply too!",
+        //     },
+        //   ],
+        // },
+        // {
+        //   author: '홍길동',
+        //   content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        //     Nunc vestibulum nisl id urna mattis dignissim.
+        //     Mauris molestie tellus aliquet ante cursus convallis.
+        //     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        //     Nunc vestibulum nisl id urna mattis dignissim.
+        //     Mauris molestie tellus aliquet ante cursus convallis.
+        //     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        //     Nunc vestibulum nisl id urna mattis dignissim.
+        //     Mauris molestie tellus aliquet ante cursus convallis.
+        //     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        //     Nunc vestibulum nisl id urna mattis dignissim.
+        //     Mauris molestie tellus aliquet ante cursus convallis.`,
+        //   replies: [
+        //     {
+        //       author: '홍길동2',
+        //       content: "I'm a reply!!",
+        //     },
+        //     {
+        //       author: '홍길동2',
+        //       content: "I'm a reply too!!",
+        //     },
+        //   ],
+        // },
       ],
+      info: '',
       newComment: '',
       // 0 displays Info, 1 displays Review, 2 displays 신청
       toDisplay: 0,
+      zabo_id: 0,
     };
   },
   components: {
@@ -94,22 +106,64 @@ export default {
   },
   methods: {
     onSubmitComment() {
-      this.comments.push({
-        author: '홍길동',
-        content: this.newComment,
-        replies: [],
-      });
+      // this.comments.push({
+      //   author: '홍길동',
+      //   content: this.newComment,
+      //   replies: [],
+      // });
+      // const self = this;
+      axios({
+        method: 'post',
+        url: 'http://localhost:12345/api/comments/',
+        auth: {
+          username: 'jidan@example.com',
+          password: 'q1234321',
+        },
+        data: {
+          content: this.newComment,
+          zabo: this.zabo_id,
+        },
+      })
+        .then((response) => {
+          // eslint-disable-next-line
+          console.log(response);
+          this.comments.push(response.data);
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error);
+        });
       this.newComment = '';
     },
     selectTab(selected) {
       this.toDisplay = selected;
     },
   },
+  mounted() {
+    this.zabo_id = this.$route.params.zabo_id;
+    axios({
+      method: 'get',
+      url: `http://localhost:12345/api/zaboes/${this.zabo_id}/`,
+      auth: {
+        username: 'jidan@example.com',
+        password: 'q1234321',
+      },
+    })
+      .then((response) => {
+        this.comments = response.data.comments;
+        this.info = response.data.content;
+      })
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
+  },
 };
 </script>
 
 <style scoped>
 .bodyStyle {
+  color: white;
   height: 75%;
   overflow-y: scroll;
   margin: 20px 50px 50px 50px;

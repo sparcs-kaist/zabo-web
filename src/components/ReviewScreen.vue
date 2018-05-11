@@ -1,12 +1,13 @@
 <template>
   <div class="reviewScreen">
     <comment-box
-      v-for="(c, index) in comments"
+      v-for="c in comments"
       :author="c.author"
+      :comment_id="c.id"
       :content="c.content"
       :depth="0"
-      :replies.sync="c.replies"
-      :key="index"
+      :replies="c.recomments"
+      :key="c.id"
     >
     </comment-box>
   </div>
@@ -27,7 +28,6 @@ export default {
 
 <style scoped>
 .reviewScreen {
-  color: white;
   display: flex;
   flex-direction: column;
 }
