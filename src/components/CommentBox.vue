@@ -64,11 +64,6 @@ export default {
       return this.content.length > 200;
     },
     onSubmitReply() {
-      // this.replies.push({
-      //   author: '홍길동2',
-      //   content: this.newReply,
-      // });
-      // this.$emit('update:replies', this.replies);
       axios({
         method: 'post',
         url: 'http://localhost:12345/api/recomments/',

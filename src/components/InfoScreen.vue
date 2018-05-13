@@ -14,43 +14,6 @@ export default {
   props: ['info'],
   data() {
     return {
-      // info: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      //   Nunc vestibulum nisl id urna mattis dignissim.
-      //   Mauris molestie tellus aliquet ante cursus convallis.
-      //   Nam vestibulum leo nisl, consectetur auctor sapien iaculis non.
-      //   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-      //   posuere cubilia Curae; Nullam pellentesque neque id augue consectetur,
-      //   eu gravida velit sollicitudin.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      //   Nunc vestibulum nisl id urna mattis dignissim.
-      //   Mauris molestie tellus aliquet ante cursus convallis.
-      //   Nam vestibulum leo nisl, consectetur auctor sapien iaculis non.
-      //   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-      //   posuere cubilia Curae; Nullam pellentesque neque id augue consectetur,
-      //   eu gravida velit sollicitudin.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      //   Nunc vestibulum nisl id urna mattis dignissim.
-      //   Mauris molestie tellus aliquet ante cursus convallis.
-      //   Nam vestibulum leo nisl, consectetur auctor sapien iaculis non.
-      //   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-      //   posuere cubilia Curae; Nullam pellentesque neque id augue consectetur,
-      //   eu gravida velit sollicitudin.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      //   Nunc vestibulum nisl id urna mattis dignissim.
-      //   Mauris molestie tellus aliquet ante cursus convallis.
-      //   Nam vestibulum leo nisl, consectetur auctor sapien iaculis non.
-      //   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-      //   posuere cubilia Curae; Nullam pellentesque neque id augue consectetur,
-      //   eu gravida velit sollicitudin.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      //   Nunc vestibulum nisl id urna mattis dignissim.
-      //   Mauris molestie tellus aliquet ante cursus convallis.
-      //   Nam vestibulum leo nisl, consectetur auctor sapien iaculis non.
-      //   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-      //   posuere cubilia Curae; Nullam pellentesque neque id augue consectetur,
-      //   eu gravida velit sollicitudin.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      //   Nunc vestibulum nisl id urna mattis dignissim.
-      //   Mauris molestie tellus aliquet ante cursus convallis.
-      //   Nam vestibulum leo nisl, consectetur auctor sapien iaculis non.
-      //   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-      //   posuere cubilia Curae; Nullam pellentesque neque id augue consectetur,
-      //   eu gravida velit sollicitudin.`,
       seeMore: false,
     };
   },

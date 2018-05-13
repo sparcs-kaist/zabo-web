@@ -26,7 +26,7 @@
           <info-screen :info="this.info"/>
         </div>
         <div class="bodyStyle" v-show="toDisplay === 1">
-          <review-screen :comments.sync="comments" />
+          <review-screen :comments="comments" />
         </div>
         <div class="bodyStyle" v-show="toDisplay === 2">
           <div style="color: green">HELLO</div>
@@ -34,7 +34,7 @@
       </div>
 
       <div class="right">
-        <img src="http://via.placeholder.com/340x450" height="450" width="340"/>
+        <img :src="this.img" height="450" width="340"/>
       </div>
     </div>
   </div>
@@ -49,51 +49,11 @@ import ReviewScreen from '../components/ReviewScreen';
 export default {
   data() {
     return {
-      comments: [
-        // {
-        //   author: '홍길동',
-        //   content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        //     Nunc vestibulum nisl id urna mattis dignissim.
-        //     Mauris molestie tellus aliquet ante cursus convallis.`,
-        //   replies: [
-        //     {
-        //       author: '홍길동2',
-        //       content: "I'm a reply!",
-        //     },
-        //     {
-        //       author: '홍길동2',
-        //       content: "I'm a reply too!",
-        //     },
-        //   ],
-        // },
-        // {
-        //   author: '홍길동',
-        //   content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        //     Nunc vestibulum nisl id urna mattis dignissim.
-        //     Mauris molestie tellus aliquet ante cursus convallis.
-        //     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        //     Nunc vestibulum nisl id urna mattis dignissim.
-        //     Mauris molestie tellus aliquet ante cursus convallis.
-        //     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        //     Nunc vestibulum nisl id urna mattis dignissim.
-        //     Mauris molestie tellus aliquet ante cursus convallis.
-        //     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        //     Nunc vestibulum nisl id urna mattis dignissim.
-        //     Mauris molestie tellus aliquet ante cursus convallis.`,
-        //   replies: [
-        //     {
-        //       author: '홍길동2',
-        //       content: "I'm a reply!!",
-        //     },
-        //     {
-        //       author: '홍길동2',
-        //       content: "I'm a reply too!!",
-        //     },
-        //   ],
-        // },
-      ],
+      comments: [],
+      img: '',
       info: '',
       newComment: '',
+      posters: [],
       // 0 displays Info, 1 displays Review, 2 displays 신청
       toDisplay: 0,
       zabo_id: 0,
@@ -106,12 +66,6 @@ export default {
   },
   methods: {
     onSubmitComment() {
-      // this.comments.push({
-      //   author: '홍길동',
-      //   content: this.newComment,
-      //   replies: [],
-      // });
-      // const self = this;
       axios({
         method: 'post',
         url: 'http://localhost:12345/api/comments/',
@@ -151,12 +105,29 @@ export default {
     })
       .then((response) => {
         this.comments = response.data.comments;
+        this.posters = response.data.posters;
         this.info = response.data.content;
       })
       .catch((error) => {
         // eslint-disable-next-line
         console.log(error);
       });
+
+      axios({
+        method: 'get',
+        url: 'http://localhost:12345/api/posters/41/',
+        auth: {
+          username: 'jidan@example.com',
+          password: 'q1234321',
+        },
+      })
+        .then((response) => {
+          this.img = response.data.image;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line
+          console.log(error);
+        });
   },
 };
 </script>
