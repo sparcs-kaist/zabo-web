@@ -7,7 +7,6 @@
         <div class="headerStyle">
           <p class="heading">Event name</p>
           <p class="subheading">Date</p>
-          <p class="subheading">Organization</p>
           <div class="buttonRow">
             <div class="joinButton">참여하기</div>
             <div class="wishlistButton">찜하기</div>
@@ -135,8 +134,8 @@ export default {
 <style scoped>
 .bodyStyle {
   color: white;
-  height: 70%;
-  overflow-y: scroll;
+  height: 65%;
+  overflow-y: auto;
   margin: 20px 50px 50px 50px;
 }
 /* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
@@ -144,14 +143,15 @@ export default {
 /* .root::-webkit-scrollbar{ display: none;}
 .root::-webkit-scrollbar:hover { display: none;} */
 .buttonRow {
+  align-items: center;
   display: flex;
-  margin: 16px 0 32px 0;
+  margin: 24px 0;
 }
 .headerStyle {
   color: rgb(220, 220, 220);
   display: flex;
   flex-direction: column;
-  height: 30%;
+  height: 35%;
   margin: 50px 50px 0 50px;
 }
 .heading {
@@ -167,10 +167,11 @@ export default {
   cursor: pointer;
   font-size: 1em;
   font-weight: bold;
-  height: 1.3em;
+  height: 1.1em;
   margin-right: 16px;
-  padding: 7px 12px;
+  padding: 7px 24px;
   text-align: center;
+  vertical-align: center;
 }
 .left {
   display: flex;
@@ -187,7 +188,7 @@ export default {
 .navbar {
   display: flex;
   justify-content: flex-start;
-  margin: 20px 0 25px 0;
+  margin: 12px 0 25px 0;
 }
 .right {
   align-items: center;
@@ -220,7 +221,7 @@ export default {
   cursor: pointer;
   font-size: 1em;
   font-weight: bold;
-  height: 1.3em;
+  height: 1.1em;
   padding: 7px 12px;
   text-align: center;
 }
