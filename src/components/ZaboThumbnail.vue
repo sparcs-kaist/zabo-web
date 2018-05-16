@@ -3,9 +3,9 @@
        :class="`row${parseInt( row )}`">
     <div class="thumbnail"
          @hover="zaboThumbnailDetailShow()"
-         :style="{ backgroundImage: 'url(' + zaboDetail.image + ')' }">
+         :style="{ backgroundImage: 'url(' + zaboDetail.poster + ')' }">
       <p>
-        {{ zaboDetail.num }}
+        {{ zaboDetail.content }}
       </p>
     </div>
     <div class="thumbnailDetail">
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   props: {
     zaboDetail: {
@@ -31,12 +33,52 @@ export default {
   },
   data() {
     return {
-
     };
+  },
+  created() {
+    console.log(this.zaboDetail.posters[0]);
+    console.log(this.zaboDetail);
+    this.callPoster();
+  },
+  // updated() {
+  //   if (typeof this.zaboDetail.posters[0] !== 'undefined') {
+  //     axios.get(
+  //       this.zaboDetail.posters[0],
+  //       {
+  //         headers: {
+  //           'Authorization': 'Basic aHllb25nanVuQGthaXN0LmFjLmtyOmpvMTI2MTI2am8=',
+  //         },
+  //       },
+  //     )
+  //       .then((res) => {
+  //         this.poster = res.data.image;
+  //       });
+  //   }
+  // },
+  watch: {
+    zaboDetail() {
+      console.log(this.zaboDetail);
+      this.callPoster();
+    },
   },
   methods: {
     zaboThumbnailDetailShow() {
       document.getElementsByClassName('thumbnailDetail')[this.number].style.display = 'block';
+    },
+    callPoster() {
+      if (typeof this.zaboDetail.posters[0] !== 'undefined') {
+        axios.get(
+          this.zaboDetail.posters[0],
+          {
+            headers: {
+              'Authorization': 'Basic aHllb25nanVuQGthaXN0LmFjLmtyOmpvMTI2MTI2am8=',
+            },
+          },
+        )
+          .then((res) => {
+            this.zaboDetail.poster = res.data.image;
+          });
+      }
     },
   },
 };

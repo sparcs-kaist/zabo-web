@@ -38,11 +38,47 @@ export default {
     return {
       zaboCursor: 0,
       windowWidth: 0,
+      currentPage: 1,
+      getPages: [],
     };
+  },
+  created() {
+    this.getWindowWidth();
+    this.$store.dispatch('zaboesGetPageCount', { pageSize: 4 })
+      .then((res) => {
+        this.totalPage = res;
+        for (let i = 1; i <= this.totalPage; i += 1) {
+          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
+          this.getPages.push(i);
+          if (i > 10) {
+            break;
+          }
+        }
+        for (let i = this.totalPage; i > 10; i -= 1) {
+          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
+          this.getPages.push(i);
+          if (i < this.totalPage - 9) {
+            break;
+          }
+        }
+      });
   },
   beforeMount() {
     window.addEventListener('resize', this.getWindowWidth);
-    this.getWindowWidth();
+  },
+  watch: {
+    currentPageBy4() {
+      if (this.currentPageBy4 + 11 <= this.totalPage) {
+        if (!this.getPages.includes(this.currentPageBy4 + 11)) {
+          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 + 11, pageSize: 4 });
+        }
+      }
+      if (this.currentPageBy4 - 10 > 0) {
+        if (!this.getPages.includes(this.currentPageBy4 - 10)) {
+          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 - 10, pageSize: 4 });
+        }
+      }
+    },
   },
   computed: {
     zaboes() {
@@ -71,32 +107,39 @@ export default {
     zaboRendered() {
       const zaboes = this.zaboList;
       if (this.zaboCursor - (this.zaboRow * 2) < 0) {
-        console.log(1);
         return zaboes.slice(zaboes.length + (this.zaboCursor - (this.zaboRow * 2)), zaboes.length)
           .concat(zaboes.slice(0, this.zaboCursor + (this.zaboRow * 3)));
       }
       if (this.zaboCursor + ((this.zaboRow * 3) - 1) >= zaboes.length) {
-        console.log(2);
         return zaboes.slice(this.zaboCursor - (this.zaboRow * 2), zaboes.length)
           .concat(zaboes.slice(0, (this.zaboCursor + (this.zaboRow * 3)) - zaboes.length));
       }
-      console.log(3);
       return zaboes.slice(this.zaboCursor - (this.zaboRow * 2),
         this.zaboCursor + (this.zaboRow * 3));
+    },
+    currentPageBy4() {
+      return (this.currentPage % 4) === 0 ?
+        parseInt((this.currentPage / 4) + 1, 10) :
+        parseInt(this.currentPage / 4, 10);
     },
   },
   methods: {
     pageChange(isNext) {
       if (isNext) {
+        this.currentPage += 1;
         this.zaboCursor += this.zaboRow;
         this.zaboCursor %= this.zaboList.length;
       } else {
+        this.currentPage -= 1;
+        if (this.currentPage === 0) {
+          this.currentPage = this.totalPage;
+        }
         this.zaboCursor += this.zaboList.length;
         this.zaboCursor -= this.zaboRow;
         this.zaboCursor %= this.zaboList.length;
       }
     },
-    getWindowWidth(event) {
+    getWindowWidth() {
       this.windowWidth = document.body.clientWidth ||
       document.documentElement.clientWidth || window.innerWidth;
     },
