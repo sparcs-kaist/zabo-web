@@ -8,10 +8,13 @@
           <p class="heading">Event name</p>
           <p class="subheading">Date</p>
           <p class="subheading">Organization</p>
+          <div class="buttonRow">
+            <div class="joinButton">참여하기</div>
+            <div class="wishlistButton">찜하기</div>
+          </div>
           <div class="navbar">
             <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">Info</p>
             <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
-            <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">신청</p>
           </div>
           <input-field
             v-show="toDisplay === 1"
@@ -27,9 +30,6 @@
         </div>
         <div class="bodyStyle" v-show="toDisplay === 1">
           <review-screen :comments="comments" />
-        </div>
-        <div class="bodyStyle" v-show="toDisplay === 2">
-          <div style="color: green">HELLO</div>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export default {
       info: '',
       newComment: '',
       posters: [],
-      // 0 displays Info, 1 displays Review, 2 displays 신청
+      // 0 displays Info, 1 displays Review
       toDisplay: 0,
       zabo_id: 0,
     };
@@ -113,21 +113,21 @@ export default {
         console.log(error);
       });
 
-      axios({
-        method: 'get',
-        url: 'http://localhost:12345/api/posters/41/',
-        auth: {
-          username: 'jidan@example.com',
-          password: 'q1234321',
-        },
+    axios({
+      method: 'get',
+      url: 'http://localhost:12345/api/posters/41/',
+      auth: {
+        username: 'jidan@example.com',
+        password: 'q1234321',
+      },
+    })
+      .then((response) => {
+        this.img = response.data.image;
       })
-        .then((response) => {
-          this.img = response.data.image;
-        })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.log(error);
-        });
+      .catch((error) => {
+        // eslint-disable-next-line
+        console.log(error);
+      });
   },
 };
 </script>
@@ -135,7 +135,7 @@ export default {
 <style scoped>
 .bodyStyle {
   color: white;
-  height: 75%;
+  height: 70%;
   overflow-y: scroll;
   margin: 20px 50px 50px 50px;
 }
@@ -143,11 +143,15 @@ export default {
 .bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
 /* .root::-webkit-scrollbar{ display: none;}
 .root::-webkit-scrollbar:hover { display: none;} */
+.buttonRow {
+  display: flex;
+  margin: 16px 0 32px 0;
+}
 .headerStyle {
   color: rgb(220, 220, 220);
   display: flex;
   flex-direction: column;
-  height: 25%;
+  height: 30%;
   margin: 50px 50px 0 50px;
 }
 .heading {
@@ -156,6 +160,17 @@ export default {
   letter-spacing: 0.01em;
   margin: 0;
   text-align: left;
+}
+.joinButton {
+  background-color: rgb(15, 59, 120);
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  height: 1.3em;
+  margin-right: 16px;
+  padding: 7px 12px;
+  text-align: center;
 }
 .left {
   display: flex;
@@ -198,5 +213,15 @@ export default {
   color: rgb(220, 220, 220);
   cursor: pointer;
   margin: 0 16px 0 0;
+}
+.wishlistButton {
+  background-color: rgb(230, 230, 230);
+  color: rgb(80, 80, 80);
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  height: 1.3em;
+  padding: 7px 12px;
+  text-align: center;
 }
 </style>
