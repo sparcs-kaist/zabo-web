@@ -52,7 +52,6 @@ export default {
       img: '',
       info: '',
       newComment: '',
-      posters: [],
       // 0 displays Info, 1 displays Review
       toDisplay: 0,
       zabo_id: 0,
@@ -104,24 +103,8 @@ export default {
     })
       .then((response) => {
         this.comments = response.data.comments;
-        this.posters = response.data.posters;
+        this.img = response.data.posters[0].image;
         this.info = response.data.content;
-      })
-      .catch((error) => {
-        // eslint-disable-next-line
-        console.log(error);
-      });
-
-    axios({
-      method: 'get',
-      url: 'http://localhost:12345/api/posters/41/',
-      auth: {
-        username: 'jidan@example.com',
-        password: 'q1234321',
-      },
-    })
-      .then((response) => {
-        this.img = response.data.image;
       })
       .catch((error) => {
         // eslint-disable-next-line
