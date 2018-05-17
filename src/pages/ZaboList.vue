@@ -9,7 +9,7 @@
              @click="pageChange(false)">
         </div>
         <div class="zaboThumbnailList">
-          <div class="zaboThumbnailRow" :key="n" v-for="n in 5">
+          <div class="zaboThumbnailRow" :key="n" v-for="n in 7">
             <zaboThumbnail
               :zaboDetail="zabo"
               :number="index + (n - 1) * zaboRow"
@@ -99,23 +99,23 @@ export default {
     zaboList() {
       let zaboes = this.zaboes;
       if (zaboes.length === 0) return [];
-      while (zaboes.length < this.zaboRow * 5) {
+      while (zaboes.length < this.zaboRow * 7) {
         zaboes = zaboes.concat(this.zaboes);
       }
       return zaboes;
     },
     zaboRendered() {
       const zaboes = this.zaboList;
-      if (this.zaboCursor - (this.zaboRow * 2) < 0) {
-        return zaboes.slice(zaboes.length + (this.zaboCursor - (this.zaboRow * 2)), zaboes.length)
-          .concat(zaboes.slice(0, this.zaboCursor + (this.zaboRow * 3)));
+      if (this.zaboCursor - (this.zaboRow * 3) < 0) {
+        return zaboes.slice(zaboes.length + (this.zaboCursor - (this.zaboRow * 3)), zaboes.length)
+          .concat(zaboes.slice(0, this.zaboCursor + (this.zaboRow * 4)));
       }
-      if (this.zaboCursor + ((this.zaboRow * 3) - 1) >= zaboes.length) {
-        return zaboes.slice(this.zaboCursor - (this.zaboRow * 2), zaboes.length)
-          .concat(zaboes.slice(0, (this.zaboCursor + (this.zaboRow * 3)) - zaboes.length));
+      if (this.zaboCursor + ((this.zaboRow * 4) - 1) >= zaboes.length) {
+        return zaboes.slice(this.zaboCursor - (this.zaboRow * 3), zaboes.length)
+          .concat(zaboes.slice(0, (this.zaboCursor + (this.zaboRow * 4)) - zaboes.length));
       }
-      return zaboes.slice(this.zaboCursor - (this.zaboRow * 2),
-        this.zaboCursor + (this.zaboRow * 3));
+      return zaboes.slice(this.zaboCursor - (this.zaboRow * 3),
+        this.zaboCursor + (this.zaboRow * 4));
     },
     currentPageBy4() {
       return (this.currentPage % 4) === 0 ?
