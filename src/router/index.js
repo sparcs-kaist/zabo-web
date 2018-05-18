@@ -5,6 +5,7 @@ import Zabo from '@/pages/Zabo';
 import ZaboDetail from '@/pages/ZaboDetail';
 import ZaboUpdate from '@/pages/ZaboUpdate';
 import ZaboUpload from '@/pages/ZaboUpload';
+import ZaboList from '@/pages/ZaboList';
 // import store from '../store';
 
 Vue.use(Router);
@@ -26,6 +27,11 @@ export default new Router({
       path: '/zabo/detail',
       name: 'ZaboDetail',
       component: ZaboDetail,
+    },
+    {
+      path: '/zabo/list',
+      name: 'ZaboList',
+      component: ZaboList,
     },
     {
       path: '/zabo/update',
