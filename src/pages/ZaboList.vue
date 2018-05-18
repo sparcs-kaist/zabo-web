@@ -180,14 +180,18 @@ export default {
       });
       if (isNext) {
         this.currentCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        this.prevCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
-        this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
+        this.prevCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
+        this.nextCategoryIndex =
+          (this.currentCategoryIndex + 1) % this.categories.length;
         document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
         document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
         document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
       } else {
-        this.currentCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
-        this.prevCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
+        this.currentCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
+        this.prevCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
         this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
         document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
         document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
