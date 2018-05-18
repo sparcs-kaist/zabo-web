@@ -1,14 +1,25 @@
 <template>
   <div class="zaboThumbnail"
        :class="`row${parseInt( row )}`">
+    <router-link
+      v-if="row === 4"
+      class="zaboDetailRouter"
+      :to="{name: 'ZaboDetail', params: {id: zaboDetail.id}}">
+      <div class="thumbnail"
+           @hover="zaboThumbnailDetailShow()"
+           :style="style">
+        <p>
+          {{ zaboDetail.content }}
+        </p>
+      </div>
+    </router-link>
     <div class="thumbnail"
          @hover="zaboThumbnailDetailShow()"
-         :style="style">
+         :style="style"
+         v-else>
       <p>
         {{ zaboDetail.content }}
       </p>
-    </div>
-    <div class="thumbnailDetail">
     </div>
   </div>
 </template>
@@ -94,6 +105,11 @@ export default {
 
 .zaboThumbnail.row6 {
   margin-top: -40px;
+}
+
+.zaboDetailRouter {
+  width: 100%;
+  height: 100%;
 }
 
 .thumbnail {
