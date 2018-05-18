@@ -1,8 +1,12 @@
 <template>
   <div class="zaboList">
+    <div class="prevCategory"
+         @click="categoryChange(false)">
+      <p>&lt;</p>
+    </div>
     <div class="zaboCategory"
-      v-for="(category, index) in categories"
-      :class="classByCategory(category)">
+         v-for="(category, index) in categories"
+         :class="classByCategory(category)">
       <p class="zaboCategoryName">
         {{ categoryNames[index] }}
       </p>
@@ -25,6 +29,10 @@
              @click="pageChange(true)">
         </div>
       </div>
+    </div>
+    <div class="nextCategory"
+         @click="categoryChange(true)">
+      <p>&gt;</p>
     </div>
   </div>
 </template>
@@ -72,9 +80,8 @@ export default {
     window.addEventListener('resize', this.getWindowWidth);
   },
   updated() {
-    [].forEach.call(document.getElementsByClassName('ZaboCategory'), function(el) {
-      el.style.width = null;
-    });
+    document.getElementsByClassName('zaboList')[0].classList.remove('mounted');
+    document.getElementsByClassName('zaboList')[0].classList.add('mounted');
   },
   watch: {
     currentPageBy4() {
@@ -173,14 +180,14 @@ export default {
       });
       if (isNext) {
         this.currentCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        this.prevCategoryIndex = (this.currentCategoryIndex - 1) % this.categories.length;
+        this.prevCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
         this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
         document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
         document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
         document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
       } else {
-        this.currentCategoryIndex = (this.currentCategoryIndex - 1) % this.categories.length;
-        this.prevCategoryIndex = (this.currentCategoryIndex - 1) % this.categories.length;
+        this.currentCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
+        this.prevCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
         this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
         document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
         document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
@@ -220,6 +227,11 @@ export default {
 
 .zaboCategory {
   display: none;
+  width: 1920px;
+}
+
+.zaboList.mounted .zaboCategory {
+  width: unset;
 }
 
 .zaboCategory.prev {
@@ -289,5 +301,35 @@ export default {
   border-bottom: 10px solid gray;
 
   transform: rotate(180deg);
+}
+
+.prevCategory, .nextCategory {
+  border-radius: 50%;
+  width: 62px;
+  height: 62px;
+  background-color: rgba(18, 57, 125, 1);
+  position: fixed;
+  color: white;
+  z-index: 9999;
+}
+
+.prevCategory > p, .nextCategory > p {
+  position: relative;
+  float: left;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-size: 30px;
+}
+
+.prevCategory {
+  left: 300px;
+  top: 300px;
+}
+
+.nextCategory {
+  right: 300px;
+  top: 300px;
 }
 </style>
