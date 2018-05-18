@@ -40,9 +40,7 @@ export default {
   computed: {
     style() {
       let style;
-      if (typeof this.zaboDetail.posters[0] === 'undefined') {
-        style = 'background-color: rgba(217, 217, 217, 1);';
-      } else {
+      if (typeof this.zaboDetail.posters[0] !== 'undefined') {
         style = `background-image: url(${this.zaboDetail.posters[0].image});`;
       }
       return style;
@@ -62,40 +60,40 @@ export default {
 }
 
 .zaboThumbnail.row2 .thumbnail, .zaboThumbnail.row6 .thumbnail {
-  width: 162px;
-  height: 243px;
-  margin: 0 25px;
+  width: 178px;
+  height: 277px;
+  margin: 0 5px 0 6px;
   z-index: 1001;
 }
 
 .zaboThumbnail.row3 .thumbnail, .zaboThumbnail.row5 .thumbnail {
-  width: 206px;
-  height: 309px;
-  margin: 0 17px;
+  width: 226px;
+  height: 394px;
+  margin: 0 5px 0 6px;
   z-index: 1002;
 }
 
 .zaboThumbnail.row4 .thumbnail {
-  width: 256px;
-  height: 385px;
-  margin: 0 15px;
+  width: 298px;
+  height: 464px;
+  margin: 0 5px 0 6px;
   z-index: 1003;
 }
 
 .zaboThumbnail.row2 {
-  margin-bottom: -104px;
+  margin-bottom: -40px;
 }
 
 .zaboThumbnail.row3 {
-  margin-bottom: -42px;
+  margin-bottom: -20px;
 }
 
 .zaboThumbnail.row5 {
-  margin-top: -42px;
+  margin-top: -20px;
 }
 
 .zaboThumbnail.row6 {
-  margin-top: -104px;
+  margin-top: -40px;
 }
 
 .thumbnail {
@@ -104,6 +102,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
+  background-color: rgba(217, 217, 217, 1);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50%;

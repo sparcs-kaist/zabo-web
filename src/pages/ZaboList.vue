@@ -1,8 +1,10 @@
 <template>
   <div class="zaboList">
-    <div class="zaboCategory">
+    <div class="zaboCategory"
+      v-for="(category, index) in categories"
+      :class="classByCategory(category)">
       <p class="zaboCategoryName">
-        인기있는 행사
+        {{ categoryNames[index] }}
       </p>
       <div class="zaboThumbnailListContainer">
         <div class="zaboThumbnailListPrevPage"
@@ -40,6 +42,9 @@ export default {
       windowWidth: 0,
       currentPage: 1,
       getPages: [],
+      categories: ['All', 'R', 'P', 'C', 'F', 'L', 'E'],
+      categoryNames: ['전체', '리쿠르팅', '퍼포먼스', '경쟁', '설명회', '강의', '전람회'],
+      currentCategoryIndex: 0,
     };
   },
   created() {
@@ -66,6 +71,11 @@ export default {
   beforeMount() {
     window.addEventListener('resize', this.getWindowWidth);
   },
+  updated() {
+    [].forEach.call(document.getElementsByClassName('ZaboCategory'), function(el) {
+      el.style.width = null;
+    });
+  },
   watch: {
     currentPageBy4() {
       if (this.currentPageBy4 + 11 <= this.totalPage) {
@@ -85,13 +95,13 @@ export default {
       return this.$store.getters.zaboes;
     },
     zaboRow() {
-      if (this.windowWidth > 1200) {
+      if (this.windowWidth > 1700) {
         return 4;
       }
-      if (this.windowWidth > 900) {
+      if (this.windowWidth > 1400) {
         return 3;
       }
-      if (this.windowWidth > 600) {
+      if (this.windowWidth > 1100) {
         return 2;
       }
       return 1;
@@ -122,11 +132,27 @@ export default {
         parseInt((this.currentPage / 4) + 1, 10) :
         parseInt(this.currentPage / 4, 10);
     },
+    prevCategoryIndex() {
+      return ((this.currentCategoryIndex - 1) + this.categories.length) % this.categories.length;
+    },
+    nextCategoryIndex() {
+      return (this.currentCategoryIndex + 1) % this.categories.length;
+    },
+    currentCategory() {
+      return this.categories[this.currentCategoryIndex];
+    },
+    prevCategory() {
+      return this.categories[this.prevCategoryIndex];
+    },
+    nextCategory() {
+      return this.categories[this.nextCategoryIndex];
+    },
   },
   methods: {
     pageChange(isNext) {
       if (isNext) {
         this.currentPage += 1;
+        this.currentPage %= this.totalPage;
         this.zaboCursor += this.zaboRow;
         this.zaboCursor %= this.zaboList.length;
       } else {
@@ -139,9 +165,43 @@ export default {
         this.zaboCursor %= this.zaboList.length;
       }
     },
+    categoryChange(isNext) {
+      [].forEach.call(document.getElementsByClassName('ZaboCategory'), function(el) {
+        el.classList.remove('current');
+        el.classList.remove('prev');
+        el.classList.remove('next');
+      });
+      if (isNext) {
+        this.currentCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
+        this.prevCategoryIndex = (this.currentCategoryIndex - 1) % this.categories.length;
+        this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
+        document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
+        document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
+        document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
+      } else {
+        this.currentCategoryIndex = (this.currentCategoryIndex - 1) % this.categories.length;
+        this.prevCategoryIndex = (this.currentCategoryIndex - 1) % this.categories.length;
+        this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
+        document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
+        document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
+        document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
+      }
+    },
     getWindowWidth() {
       this.windowWidth = document.body.clientWidth ||
       document.documentElement.clientWidth || window.innerWidth;
+    },
+    classByCategory(category) {
+      if (category === this.prevCategory) {
+        return 'prev';
+      }
+      if (category === this.currentCategory) {
+        return 'current';
+      }
+      if (category === this.nextCategory) {
+        return 'next';
+      }
+      return '';
     },
   },
   beforeDestroy() {
@@ -151,6 +211,34 @@ export default {
 </script>
 
 <style scoped>
+.zaboList {
+  display: inline-flex;
+  flex-direction: row;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.zaboCategory {
+  display: none;
+}
+
+.zaboCategory.prev {
+  display: block;
+  order: 0;
+  margin-right: 209px;
+}
+
+.zaboCategory.current {
+  display: block;
+  order: 1;
+}
+
+.zaboCategory.next {
+  display: block;
+  order: 2;
+  margin-left: 209px;
+}
+
 .zaboCategoryName {
   font-size: 30px;
   font-weight: 900;
