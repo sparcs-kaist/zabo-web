@@ -4,9 +4,9 @@
     <router-link
       v-if="row === 4"
       class="zaboDetailRouter"
-      :to="{name: 'ZaboDetail', params: {id: zaboDetail.id}}">
+      :to="{name: 'ZaboDetail', params: {zabo_id: zaboDetail.id}}">
       <div class="thumbnail"
-           @hover="zaboThumbnailDetailShow()"
+           @click="showModal1"
            :style="style">
         <p>
           {{ zaboDetail.content }}
@@ -14,13 +14,23 @@
       </div>
     </router-link>
     <div class="thumbnail"
-         @hover="zaboThumbnailDetailShow()"
+         @click="showModal1"
          :style="style"
          v-else>
       <p>
         {{ zaboDetail.content }}
       </p>
     </div>
+    <transition name="modal">
+      <div class="modalContainer" v-show="visible1" @click.self="hideModal1">
+        <modal
+          class="thumbnailDetail"
+          :visible="visible1"
+          @hideModal="hideModal1">
+          <router-view></router-view>
+        </modal>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -42,11 +52,16 @@ export default {
   },
   data() {
     return {
+      visible1: false,
     };
   },
   created() {
+    this.checkDetailPage();
     console.log(this.zaboDetail.posters[0]);
     console.log(this.zaboDetail);
+  },
+  watch: {
+    '$route': 'checkDetailPage',
   },
   computed: {
     style() {
@@ -58,14 +73,33 @@ export default {
     },
   },
   methods: {
-    zaboThumbnailDetailShow() {
-      document.getElementsByClassName('thumbnailDetail')[this.number].style.display = 'block';
+    checkDetailPage() {
+      if (this.$route.path.includes('/zabo/detail/')) {
+        if (parseInt(this.$route.params.zabo_id) === this.zaboDetail.id) {
+          this.showModal1();
+        }
+      }
+    },
+    showModal1() {
+      this.visible1 = true;
+    },
+    hideModal1() {
+      this.visible1 = false;
     },
   },
 };
 </script>
 
 <style scoped>
+.modal-enter, .modal-leave-to {
+  opacity: 0
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity .5s;
+}
+
 .zaboThumbnail.row1 .thumbnail, .zaboThumbnail.row7 .thumbnail {
   display: none;
 }
@@ -124,7 +158,22 @@ export default {
   background-position: 50%;
 }
 
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
 .thumbnailDetail {
-  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>

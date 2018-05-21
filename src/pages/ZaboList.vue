@@ -63,14 +63,14 @@ export default {
         for (let i = 1; i <= this.totalPage; i += 1) {
           this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
           this.getPages.push(i);
-          if (i > 10) {
+          if (i > 5) {
             break;
           }
         }
-        for (let i = this.totalPage; i > 10; i -= 1) {
+        for (let i = this.totalPage; i > 5; i -= 1) {
           this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
           this.getPages.push(i);
-          if (i < this.totalPage - 9) {
+          if (i < this.totalPage - 4) {
             break;
           }
         }
@@ -85,14 +85,14 @@ export default {
   },
   watch: {
     currentPageBy4() {
-      if (this.currentPageBy4 + 11 <= this.totalPage) {
-        if (!this.getPages.includes(this.currentPageBy4 + 11)) {
-          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 + 11, pageSize: 4 });
+      if (this.currentPageBy4 + 6 <= this.totalPage) {
+        if (!this.getPages.includes(this.currentPageBy4 + 6)) {
+          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 + 6, pageSize: 4 });
         }
       }
-      if (this.currentPageBy4 - 10 > 0) {
-        if (!this.getPages.includes(this.currentPageBy4 - 10)) {
-          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 - 10, pageSize: 4 });
+      if (this.currentPageBy4 - 5 > 0) {
+        if (!this.getPages.includes(this.currentPageBy4 - 5)) {
+          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 - 5, pageSize: 4 });
         }
       }
     },
@@ -314,7 +314,7 @@ export default {
   background-color: rgba(18, 57, 125, 1);
   position: fixed;
   color: white;
-  z-index: 9999;
+  z-index: 2001;
 }
 
 .prevCategory > p, .nextCategory > p {
