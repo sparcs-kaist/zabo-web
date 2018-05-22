@@ -61,14 +61,16 @@ export default {
       .then((res) => {
         this.totalPage = res;
         for (let i = 1; i <= this.totalPage; i += 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
+          this.$store.dispatch('zaboesList',
+            { pageNum: i, pageSize: 4, category: this.categories[this.currentCategoryIndex] });
           this.getPages.push(i);
           if (i > 5) {
             break;
           }
         }
         for (let i = this.totalPage; i > 5; i -= 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
+          this.$store.dispatch('zaboesList',
+            { pageNum: i, pageSize: 4, category: this.categories[this.currentCategoryIndex] });
           this.getPages.push(i);
           if (i < this.totalPage - 4) {
             break;
@@ -328,8 +330,9 @@ export default {
 }
 
 .prevCategory {
-  left: 300px;
   top: 300px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nextCategory {
