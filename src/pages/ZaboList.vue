@@ -331,12 +331,13 @@ export default {
 
 .prevCategory {
   top: 300px;
-  left: 50%;
+  left: calc(50% - 50vw + 100px);
   transform: translateX(-50%);
 }
 
 .nextCategory {
-  right: 300px;
   top: 300px;
+  right: calc(50% - 50vw + 100px);
+  transform: translateX(50%);
 }
 </style>
