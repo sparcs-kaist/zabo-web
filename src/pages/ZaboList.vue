@@ -18,10 +18,11 @@
           <div class="zaboThumbnailRow" :key="n" v-for="n in 7">
             <zaboThumbnail
               :zaboDetail="zabo"
+              :category="categories[index]"
               :number="index + (n - 1) * zaboRow"
               :row="n"
               :key="zabo.id"
-              v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
+              v-for="zabo in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
             </zaboThumbnail>
           </div>
         </div>

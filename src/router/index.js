@@ -24,7 +24,7 @@ export default new Router({
       component: ZaboList,
       children: [
         {
-          path: 'detail/:zabo_id',
+          path: 'detail/:category/:zabo_id',
           name: 'ZaboDetail',
           component: ZaboDetail,
         },
