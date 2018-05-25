@@ -2,6 +2,7 @@ import axios from '@/axios-auth';
 import * as types from '@/store/mutation-types';
 
 const setURL = function(subURL) {
+  if (subURL === 'All') return '';
   return subURL === '' ? '' : typeof(subURL) === 'undefined' ? '' : `${subURL}/`;
 };
 
@@ -57,6 +58,12 @@ const actions = {
   //       commit(types.ZABO_DELETE);
   //     });
   // },
+  DetailPageEnter({ commit }, from) {
+    commit(types.DETAIL_PAGE_FROM, from);
+  },
+  DetailPageLeave({ commit }) {
+    commit(types.DETAIL_PAGE_FROM, '');
+  },
 };
 
 export default actions;

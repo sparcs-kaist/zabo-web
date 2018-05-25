@@ -10,6 +10,9 @@ const getters = {
   zaboesPageCount(state) {
     return state.zaboesPageCount;
   },
+  detailPageFrom(state) {
+    return state.from;
+  },
 };
 
 export default getters;

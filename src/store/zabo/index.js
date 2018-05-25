@@ -7,6 +7,7 @@ export default {
     zaboes: [],
     zaboesObject: {},
     zaboesPageCount: '',
+    from: '',
   },
   actions,
   mutations,

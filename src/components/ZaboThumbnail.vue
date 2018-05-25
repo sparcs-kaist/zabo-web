@@ -4,7 +4,7 @@
     <router-link
       v-if="row === 4"
       class="zaboDetailRouter"
-      :to="{name: 'ZaboDetail', params: {zabo_id: zaboDetail.id}}">
+      :to="{ name: 'ZaboDetail', params: { category: category, zabo_id: zaboDetail.id } }">
       <div class="thumbnail"
            @click="showModal1"
            :style="style">
@@ -25,8 +25,7 @@
       <div class="modalContainer" v-show="visible1" @click.self="hideModal1">
         <modal
           class="thumbnailDetail"
-          :visible="visible1"
-          @hideModal="hideModal1">
+          :visible="visible1">
           <router-view></router-view>
         </modal>
       </div>
@@ -40,6 +39,10 @@ export default {
     zaboDetail: {
       type: Object,
       default: () => {},
+    },
+    category: {
+      type: String,
+      default: '',
     },
     number: {
       type: Number,
@@ -75,7 +78,8 @@ export default {
   methods: {
     checkDetailPage() {
       if (this.$route.path.includes('/zabo/detail/')) {
-        if (parseInt(this.$route.params.zabo_id) === this.zaboDetail.id) {
+        if (parseInt(this.$route.params.zabo_id, 10) === this.zaboDetail.id &&
+        this.$route.params.category === this.category) {
           this.showModal1();
         }
       }
@@ -84,7 +88,9 @@ export default {
       this.visible1 = true;
     },
     hideModal1() {
+      console.log(this.$store.getters.detailPageFrom);
       this.visible1 = false;
+      this.$router.push({ name: 'Zabo' });
     },
   },
 };
@@ -95,9 +101,12 @@ export default {
   opacity: 0
 }
 
-.modal-enter-active,
-.modal-leave-active {
+.modal-enter-active {
   transition: opacity .5s;
+}
+
+.modal-leave-active {
+  transition: 0s;
 }
 
 .zaboThumbnail.row1 .thumbnail, .zaboThumbnail.row7 .thumbnail {

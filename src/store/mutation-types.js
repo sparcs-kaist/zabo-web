@@ -8,3 +8,4 @@ export const ZABOES_PAGECOUNT = 'ZABOES_PAGECOUNT';
 export const ZABO_CREATE = 'ZABO_CREATE';
 export const ZABO_DELETE = 'ZABO_DELETE';
 export const ZABO_UPDATE = 'ZABO_UPDATE';
+export const DETAIL_PAGE_FROM = 'DETAIL_PAGE_FROM';

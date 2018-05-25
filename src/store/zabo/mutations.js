@@ -31,6 +31,9 @@ const mutations = {
   [types.ZABOES_PAGECOUNT](state, pageCount) {
     state.zaboesPageCount = pageCount;
   },
+  [types.DETAIL_PAGE_FROM](state, from) {
+    state.from = from;
+  },
 };
 
 export default mutations;

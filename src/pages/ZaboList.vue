@@ -18,10 +18,11 @@
           <div class="zaboThumbnailRow" :key="n" v-for="n in 7">
             <zaboThumbnail
               :zaboDetail="zabo"
+              :category="categories[index]"
               :number="index + (n - 1) * zaboRow"
               :row="n"
               :key="zabo.id"
-              v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
+              v-for="zabo in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
             </zaboThumbnail>
           </div>
         </div>
@@ -57,7 +58,7 @@ export default {
   },
   created() {
     this.getWindowWidth();
-    this.$store.dispatch('zaboesGetPageCount', { pageSize: 4 })
+    this.$store.dispatch('zaboesGetPageCount', { subURL: this.categories[this.currentCategoryIndex], pageSize: 4 })
       .then((res) => {
         this.totalPage = res;
         for (let i = 1; i <= this.totalPage; i += 1) {
@@ -186,18 +187,12 @@ export default {
           (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
         this.nextCategoryIndex =
           (this.currentCategoryIndex + 1) % this.categories.length;
-        document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
-        document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
-        document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
       } else {
         this.currentCategoryIndex =
           (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
         this.prevCategoryIndex =
           (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
         this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
-        document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
-        document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
       }
     },
     getWindowWidth() {
