@@ -5,10 +5,21 @@ const setURL = function(subURL) {
   return subURL === '' ? '' : typeof(subURL) === 'undefined' ? '' : `${subURL}/`;
 };
 
+const category = function(payload) {
+  if (typeof payload.category === 'undefined') {
+    return '';
+  }
+  if (payload.category === 'All') {
+    return '';
+  }
+  return `&category=${payload.category}`;
+};
+
 const actions = {
   zaboesList({ commit, state }, passedPayload) {
     if (!Object.keys(state.zaboesObject).includes(passedPayload.pageNum)) {
-      axios.get(`/zaboes/?page=${passedPayload.pageNum}&page_size=${passedPayload.pageSize}`)
+      axios.get(`/zaboes/?page=${passedPayload.pageNum}
+      &page_size=${passedPayload.pageSize}${category(passedPayload)}`)
         .then((res) => {
           const result = res.data.data;
           const payload = { result: result, pagenum: passedPayload.pageNum };

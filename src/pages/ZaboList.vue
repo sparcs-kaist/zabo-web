@@ -18,10 +18,11 @@
           <div class="zaboThumbnailRow" :key="n" v-for="n in 7">
             <zaboThumbnail
               :zaboDetail="zabo"
+              :category="categories[index]"
               :number="index + (n - 1) * zaboRow"
               :row="n"
               :key="zabo.id"
-              v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
+              v-for="zabo in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
             </zaboThumbnail>
           </div>
         </div>
@@ -61,16 +62,18 @@ export default {
       .then((res) => {
         this.totalPage = res;
         for (let i = 1; i <= this.totalPage; i += 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
+          this.$store.dispatch('zaboesList',
+            { pageNum: i, pageSize: 4, category: this.categories[this.currentCategoryIndex] });
           this.getPages.push(i);
-          if (i > 10) {
+          if (i > 5) {
             break;
           }
         }
-        for (let i = this.totalPage; i > 10; i -= 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
+        for (let i = this.totalPage; i > 5; i -= 1) {
+          this.$store.dispatch('zaboesList',
+            { pageNum: i, pageSize: 4, category: this.categories[this.currentCategoryIndex] });
           this.getPages.push(i);
-          if (i < this.totalPage - 9) {
+          if (i < this.totalPage - 4) {
             break;
           }
         }
@@ -85,14 +88,14 @@ export default {
   },
   watch: {
     currentPageBy4() {
-      if (this.currentPageBy4 + 11 <= this.totalPage) {
-        if (!this.getPages.includes(this.currentPageBy4 + 11)) {
-          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 + 11, pageSize: 4 });
+      if (this.currentPageBy4 + 6 <= this.totalPage) {
+        if (!this.getPages.includes(this.currentPageBy4 + 6)) {
+          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 + 6, pageSize: 4 });
         }
       }
-      if (this.currentPageBy4 - 10 > 0) {
-        if (!this.getPages.includes(this.currentPageBy4 - 10)) {
-          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 - 10, pageSize: 4 });
+      if (this.currentPageBy4 - 5 > 0) {
+        if (!this.getPages.includes(this.currentPageBy4 - 5)) {
+          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 - 5, pageSize: 4 });
         }
       }
     },
@@ -314,7 +317,7 @@ export default {
   background-color: rgba(18, 57, 125, 1);
   position: fixed;
   color: white;
-  z-index: 9999;
+  z-index: 2001;
 }
 
 .prevCategory > p, .nextCategory > p {
@@ -328,12 +331,14 @@ export default {
 }
 
 .prevCategory {
-  left: 300px;
   top: 300px;
+  left: calc(50% - 50vw + 100px);
+  transform: translateX(-50%);
 }
 
 .nextCategory {
-  right: 300px;
   top: 300px;
+  right: calc(50% - 50vw + 100px);
+  transform: translateX(50%);
 }
 </style>
