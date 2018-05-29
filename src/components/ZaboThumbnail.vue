@@ -90,9 +90,7 @@ export default {
     },
     hideModal1() {
       this.visible1 = false;
-      // -1이 list 페이지인지 확인
-      // 아니라면 list page를 history에 push
-      this.$router.go(-1);
+      this.$router.push({ name: 'Zabo' });
     },
   },
 };
@@ -137,19 +135,19 @@ export default {
 }
 
 .zaboThumbnail.row2 {
-  margin-bottom: -40px;
+  margin-bottom: 338px;
 }
 
 .zaboThumbnail.row3 {
-  margin-bottom: -20px;
+  margin-bottom: 170px;
 }
 
 .zaboThumbnail.row5 {
-  margin-top: -20px;
+  margin-top: 170px;
 }
 
 .zaboThumbnail.row6 {
-  margin-top: -40px;
+  margin-top: 338px;
 }
 
 .zaboDetailRouter {
@@ -163,7 +161,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  background-color: rgba(217, 217, 217, 1);
+  background-color: rgba(220, 220, 220, 1);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50%;

@@ -228,6 +228,7 @@ export default {
 .zaboList {
   display: inline-flex;
   flex-direction: row;
+  margin-top: 100px;
   margin-left: 50%;
   transform: translateX(-50%);
 }
@@ -259,7 +260,7 @@ export default {
 }
 
 .zaboCategoryName {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 900;
   margin: 0 auto;
 }
@@ -269,8 +270,9 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  margin-top: 43px;
   width: 100%;
-  height: 860px;
+  height: 718px;
 }
 
 .zaboThumbnailList {
@@ -278,7 +280,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  height: 660px;
+  height: 614px;
 }
 
 .zaboThumbnailRow {
@@ -287,11 +289,10 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 200px;
+  height: 0px;
 }
 
 .zaboThumbnailListPrevPage {
-  margin-top: 28px;
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
@@ -300,7 +301,6 @@ export default {
 }
 
 .zaboThumbnailListNextPage {
-  margin-bottom: 28px;
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
