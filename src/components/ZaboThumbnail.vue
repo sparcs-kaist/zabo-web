@@ -4,7 +4,7 @@
     <router-link
       v-if="row === 4"
       class="zaboDetailRouter"
-      :to="{name: 'ZaboDetail', params: {zabo_id: zaboDetail.id}}">
+      :to="{ name: 'ZaboDetail', params: { category: category, zabo_id: zaboDetail.id } }">
       <div class="thumbnail"
            @click="showModal1"
            :style="style">
@@ -14,6 +14,7 @@
       </div>
     </router-link>
     <div class="thumbnail"
+         @hover="zaboThumbnailDetailShow()"
          @click="showModal1"
          :style="style"
          v-else>
@@ -25,8 +26,7 @@
       <div class="modalContainer" v-show="visible1" @click.self="hideModal1">
         <modal
           class="thumbnailDetail"
-          :visible="visible1"
-          @hideModal="hideModal1">
+          :visible="visible1">
           <router-view></router-view>
         </modal>
       </div>
@@ -40,6 +40,10 @@ export default {
     zaboDetail: {
       type: Object,
       default: () => {},
+    },
+    category: {
+      type: String,
+      default: '',
     },
     number: {
       type: Number,
@@ -75,7 +79,8 @@ export default {
   methods: {
     checkDetailPage() {
       if (this.$route.path.includes('/zabo/detail/')) {
-        if (parseInt(this.$route.params.zabo_id) === this.zaboDetail.id) {
+        if (parseInt(this.$route.params.zabo_id) === this.zaboDetail.id &&
+        this.$route.params.category === this.category) {
           this.showModal1();
         }
       }
@@ -85,6 +90,7 @@ export default {
     },
     hideModal1() {
       this.visible1 = false;
+      this.$router.push({ name: 'Zabo' });
     },
   },
 };
@@ -95,9 +101,12 @@ export default {
   opacity: 0
 }
 
-.modal-enter-active,
-.modal-leave-active {
+.modal-enter-active {
   transition: opacity .5s;
+}
+
+.modal-leave-active {
+  transition: 0s;
 }
 
 .zaboThumbnail.row1 .thumbnail, .zaboThumbnail.row7 .thumbnail {
@@ -126,19 +135,19 @@ export default {
 }
 
 .zaboThumbnail.row2 {
-  margin-bottom: -40px;
+  margin-bottom: 338px;
 }
 
 .zaboThumbnail.row3 {
-  margin-bottom: -20px;
+  margin-bottom: 170px;
 }
 
 .zaboThumbnail.row5 {
-  margin-top: -20px;
+  margin-top: 170px;
 }
 
 .zaboThumbnail.row6 {
-  margin-top: -40px;
+  margin-top: 338px;
 }
 
 .zaboDetailRouter {
@@ -152,7 +161,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  background-color: rgba(217, 217, 217, 1);
+  background-color: rgba(220, 220, 220, 1);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50%;

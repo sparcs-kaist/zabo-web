@@ -18,10 +18,11 @@
           <div class="zaboThumbnailRow" :key="n" v-for="n in 7">
             <zaboThumbnail
               :zaboDetail="zabo"
+              :category="categories[index]"
               :number="index + (n - 1) * zaboRow"
               :row="n"
               :key="zabo.id"
-              v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
+              v-for="zabo in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
             </zaboThumbnail>
           </div>
         </div>
@@ -61,14 +62,16 @@ export default {
       .then((res) => {
         this.totalPage = res;
         for (let i = 1; i <= this.totalPage; i += 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
+          this.$store.dispatch('zaboesList',
+            { pageNum: i, pageSize: 4, category: this.categories[this.currentCategoryIndex] });
           this.getPages.push(i);
           if (i > 5) {
             break;
           }
         }
         for (let i = this.totalPage; i > 5; i -= 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
+          this.$store.dispatch('zaboesList',
+            { pageNum: i, pageSize: 4, category: this.categories[this.currentCategoryIndex] });
           this.getPages.push(i);
           if (i < this.totalPage - 4) {
             break;
@@ -225,6 +228,7 @@ export default {
 .zaboList {
   display: inline-flex;
   flex-direction: row;
+  margin-top: 100px;
   margin-left: 50%;
   transform: translateX(-50%);
 }
@@ -256,7 +260,7 @@ export default {
 }
 
 .zaboCategoryName {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 900;
   margin: 0 auto;
 }
@@ -266,8 +270,9 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  margin-top: 43px;
   width: 100%;
-  height: 860px;
+  height: 718px;
 }
 
 .zaboThumbnailList {
@@ -275,7 +280,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  height: 660px;
+  height: 614px;
 }
 
 .zaboThumbnailRow {
@@ -284,11 +289,10 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 200px;
+  height: 0px;
 }
 
 .zaboThumbnailListPrevPage {
-  margin-top: 28px;
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
@@ -297,7 +301,6 @@ export default {
 }
 
 .zaboThumbnailListNextPage {
-  margin-bottom: 28px;
   width: 0;
   height: 0;
   border-left: 10px solid transparent;
@@ -328,12 +331,14 @@ export default {
 }
 
 .prevCategory {
-  left: 300px;
   top: 300px;
+  left: calc(50% - 50vw + 100px);
+  transform: translateX(-50%);
 }
 
 .nextCategory {
-  right: 300px;
   top: 300px;
+  right: calc(50% - 50vw + 100px);
+  transform: translateX(50%);
 }
 </style>
