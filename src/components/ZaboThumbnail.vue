@@ -1,6 +1,12 @@
 <template>
   <div class="zaboThumbnail"
-       :class="`row${parseInt( row )}`">
+       :class="`row${parseInt( row )}`"
+       v-if="!isRealZabo">
+    <div class="thumbnail"></div>
+  </div>
+  <div class="zaboThumbnail"
+       :class="`row${parseInt( row )}`"
+       v-else>
     <router-link
       v-if="row === 4"
       class="zaboDetailRouter"
@@ -8,19 +14,11 @@
       <div class="thumbnail"
            @click="showModal1"
            :style="style">
-        <p>
-          {{ zaboDetail.content }}
-        </p>
       </div>
     </router-link>
     <div class="thumbnail"
-         @hover="zaboThumbnailDetailShow()"
-         @click="showModal1"
          :style="style"
          v-else>
-      <p>
-        {{ zaboDetail.content }}
-      </p>
     </div>
     <transition name="modal">
       <div class="modalContainer" v-show="visible1" @click.self="hideModal1">
@@ -75,11 +73,14 @@ export default {
       }
       return style;
     },
+    isRealZabo() {
+      return typeof this.zaboDetail !== 'undefined';
+    },
   },
   methods: {
     checkDetailPage() {
       if (this.$route.path.includes('/zabo/detail/')) {
-        if (parseInt(this.$route.params.zabo_id) === this.zaboDetail.id &&
+        if (parseInt(this.$route.params.zabo_id, 10) === this.zaboDetail.id &&
         this.$route.params.category === this.category) {
           this.showModal1();
         }
@@ -169,14 +170,15 @@ export default {
 
 .modalContainer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: calc(50% - 20px);
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  transform: translateX(-50%) translateY(-50%);
 }
 
 .thumbnailDetail {

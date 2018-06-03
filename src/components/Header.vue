@@ -4,7 +4,7 @@
       <div class="headerTopLine"></div>
       <div class="logo">
         <router-link :to="{ name: 'Main' }">
-          <img src="../assets/logo.png" width="79" height="37"/>
+          <img src="../assets/Zabo_logo.svg" width="79" height="37"/>
         </router-link>
       </div>
       <div class="headerItems" v-if="isLoggedIn">
@@ -24,7 +24,7 @@
       <div class="search">
         <input class="searchZabo" v-model="keyword"/>
         <button class="searchButton" @click="searchZabo">
-          <img src="../assets/logo.png" width="17" height="17"/>
+          <img src="../assets/search_icon.svg" width="17" height="17"/>
         </button>
       </div>
     </div>
@@ -58,7 +58,7 @@ export default {
   width: 100vw;
   height: 60px;
   overflow: hidden;
-  z-index: 9999;
+  z-index: 9000;
   background-color: white;
 }
 
