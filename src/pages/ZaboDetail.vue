@@ -15,7 +15,7 @@
             <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
           </div>
           <input-field
-            v-show="toDisplay === 1"
+            :style="{ visibility: toDisplay === 1 ? 'visible' : 'hidden'}"
             :content.sync="newComment"
             :on-click="onSubmitComment"
             placeholder-text="리뷰를 입력하세요..."
@@ -32,7 +32,7 @@
       </div>
 
       <div class="right">
-        <img class="image" :src="this.img" height="450" width="250"/>
+        <img class="image" :src="this.img" height="400" width="300"/>
       </div>
     </div>
   </div>
@@ -118,7 +118,7 @@ export default {
   color: white;
   height: 65%;
   overflow-y: auto;
-  margin: 20px 50px 50px 50px;
+  margin: 0 50px 50px 50px;
 }
 /* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
 .bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
@@ -127,7 +127,7 @@ export default {
 .buttonRow {
   align-items: center;
   display: flex;
-  margin: 24px 0;
+  margin: 24px 0 12px 0;
 }
 .headerStyle {
   color: rgb(220, 220, 220);
@@ -147,7 +147,7 @@ export default {
   background-color: rgb(15, 59, 120);
   color: white;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   height: 1.1em;
   margin-right: 16px;
@@ -176,13 +176,12 @@ export default {
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 100%;
   justify-content: center;
   width: 40%;
 }
 .root {
-  width: calc(100vw-100px);
-  height: calc(100vh-100px);
+  width: calc(100vw - 100px);
+  height: calc(100vh - 100px);
 }
 .selected {
   color: #FFF;
@@ -202,7 +201,7 @@ export default {
   background-color: rgb(230, 230, 230);
   color: rgb(80, 80, 80);
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   height: 1.1em;
   padding: 7px 12px;
