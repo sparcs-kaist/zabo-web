@@ -1,6 +1,5 @@
 <template>
   <div class="root">
-    Header Component
     <div class="main">
 
       <div class="left">
@@ -33,7 +32,7 @@
       </div>
 
       <div class="right">
-        <img :src="this.img" height="450" width="340"/>
+        <img class="image" :src="this.img" height="450" width="250"/>
       </div>
     </div>
   </div>
@@ -66,7 +65,7 @@ export default {
     onSubmitComment() {
       axios({
         method: 'post',
-        url: 'http://localhost:12345/api/comments/',
+        url: 'http://localhost:8000/api/comments/',
         auth: {
           username: 'jidan@example.com',
           password: 'q1234321',
@@ -95,7 +94,7 @@ export default {
     this.zabo_id = this.$route.params.zabo_id;
     axios({
       method: 'get',
-      url: `http://localhost:12345/api/zaboes/${this.zabo_id}/`,
+      url: `http://localhost:8000/api/zaboes/${this.zabo_id}/`,
       auth: {
         username: 'jidan@example.com',
         password: 'q1234321',
@@ -177,12 +176,13 @@ export default {
   align-items: center;
   display: flex;
   flex-direction: column;
+  height: 100%;
   justify-content: center;
   width: 40%;
 }
 .root {
-  min-width: 100vw;
-  height: 100vh;
+  width: calc(100vw-100px);
+  height: calc(100vh-100px);
 }
 .selected {
   color: #FFF;
