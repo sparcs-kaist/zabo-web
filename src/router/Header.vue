@@ -5,9 +5,21 @@
       <router-link to="/">
         <img src="@/logo.svg" class= "logo">
       </router-link>
-      <router-link to="/zabo" class = "Button"> Zabo </router-link>
-      <router-link to="/zabo/list" class = "Button"> List </router-link>
-      <router-link to="/zabo/user_profile" class = "Button"> Profile </router-link>
+      <router-link to="/zabo">
+        <div class="button">
+          Zabo
+        </div>
+      </router-link>
+      <router-link to="/zabo/list">
+        <div class="button">
+          List
+        </div>
+      </router-link>
+      <router-link to="/zabo/user_profile">
+        <div class = "button">
+          Profile
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -26,19 +38,29 @@ export default {
   }
   .Buttons {
     text-align: left;
-    font-size: 30pt;
     width : 100%;
     height : 100px;
   }
 
-  .Button {
+  .button {
+    float : left;
+    font-size: 15pt;
+    font-family: Nanumsquare;
+    font-weight: 600;
+    margin-top: 28px;
+    margin-left: 27px;
+    color:black;
+  }
+
+  .button:active {
 
   }
 
   .logo {
+    float : left;
     height : 37px;
     margin-top : 18px;
-    margin-left : 18px;
+    margin-left : 27px;
   }
 </style>
 
