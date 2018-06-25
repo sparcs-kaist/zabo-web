@@ -38,6 +38,7 @@
 </template>
 
 <script>
+/*eslint-disable */
 import ZaboThumbnail from '@/components/ZaboThumbnail';
 
 export default {
