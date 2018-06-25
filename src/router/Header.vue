@@ -1,10 +1,13 @@
 <template>
   <div>
+    <div class="topline"></div>
     <div class="Buttons">
-      <router-link to="/"> Home </router-link>
-      <router-link to="/zabo"> Zabo </router-link>
-      <router-link to="/zabo/list"> List </router-link>
-      <router-link to="/zabo/user_profile"> Profile </router-link>
+      <router-link to="/">
+        <img src="@/logo.svg" class= "logo">
+      </router-link>
+      <router-link to="/zabo" class = "Button"> Zabo </router-link>
+      <router-link to="/zabo/list" class = "Button"> List </router-link>
+      <router-link to="/zabo/user_profile" class = "Button"> Profile </router-link>
     </div>
   </div>
 </template>
@@ -16,12 +19,26 @@ export default {
 </script>
 
 <style>
+  .topline {
+    width : 100%;
+    height : 5px;
+    background-color: #12397D; 
+  }
   .Buttons {
     text-align: left;
     font-size: 30pt;
-    background-color:rgb(168, 186, 233);
     width : 100%;
     height : 100px;
+  }
+
+  .Button {
+
+  }
+
+  .logo {
+    height : 37px;
+    margin-top : 18px;
+    margin-left : 18px;
   }
 </style>
 
