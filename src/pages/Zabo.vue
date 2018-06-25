@@ -11,6 +11,6 @@ export default {
 
 <style scoped>
   .zabo {
-    margin-top : 78px; 
+    margin-top : 90px; 
   }
 </style>
