@@ -223,6 +223,7 @@ export default {
   display: inline-flex;
   flex-direction: row;
   margin-left: 50%;
+  margin-top : 78px;
   transform: translateX(-50%);
 }
 
