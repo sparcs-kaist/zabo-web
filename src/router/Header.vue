@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sandbox">
     <div class="topline"></div>
     <div class="Buttons">
       <router-link to="/">
@@ -26,11 +26,19 @@
 
 <script>
 export default {
-  name : "Header"
+  name : "Header",
 }
 </script>
 
 <style>
+  .sandbox {
+    width : 100%;
+    height : 78px;
+    position:fixed;
+    z-index: 1;
+    background-color: white;
+  }
+
   .topline {
     width : 100%;
     height : 5px;
@@ -46,14 +54,14 @@ export default {
     float : left;
     font-size: 15pt;
     font-family: Nanumsquare;
-    font-weight: 600;
+    font-weight: 400;
     margin-top: 28px;
     margin-left: 27px;
     color:black;
+    opacity: 0.7;
   }
-
-  .button:active {
-
+  .button:hover {
+    opacity : 1;
   }
 
   .logo {
@@ -63,4 +71,3 @@ export default {
     margin-left : 27px;
   }
 </style>
-

@@ -2,6 +2,9 @@
   <div id="app">
     <Header></Header>
     <router-view/>
+    <div class = "footer">
+      <p style = "font-size : 15pt; font-weight: 800;">Footer</p>
+    </div>
   </div>
 </template>
 
@@ -30,4 +33,12 @@ body {
   color: #2c3e50;
   overflow: hidden;
 }
+
+  .footer {
+    width : 100%;
+    height : 65px;
+    background-color: white;
+    bottom:0px;
+    position: fixed;
+  }
 </style>

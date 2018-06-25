@@ -10,4 +10,7 @@ export default {
 </script>
 
 <style scoped>
+  .zabo {
+    margin-top : 78px; 
+  }
 </style>
