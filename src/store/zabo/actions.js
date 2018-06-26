@@ -45,17 +45,17 @@ const actions = {
     } = state;
     axios({
       method: "get",
-      url: `http://localhost:8000/api/users/${id}`,
+      url: `http://localhost:8000/users/${id}/`,
       auth: {
         username: "sbagi@sparcs.org",
         password: "kjh5270!@#@!"
         // 임시로 넣어놓은거!
       }
     })
-      .then(response => response.json())
-      .then(json => {
-        commit(types.GET_PARTICIPATED_ZABOES, json);
-        console.log(json);
+      .then(response => {
+        console.log(response.data);
+        commit(types.GET_PARTICIPATED_ZABOES, response.data);
+        return response.data;
       })
       .catch(err => console.log(err));
   }
