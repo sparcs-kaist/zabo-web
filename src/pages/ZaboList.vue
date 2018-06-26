@@ -3,7 +3,7 @@
     <div class="prevCategory" @click="categoryChange(false)">
       <p>&lt;</p>
     </div>
-    <div class="zaboCategory" v-for="(category, index) in categories" :class="classByCategory(category)">
+    <div class="zaboCategory" :key="index" v-for="(category, index) in categories" :class="classByCategory(category)">
       <p class="zaboCategoryName">
         {{ categoryNames[index] }}
       </p>
@@ -212,7 +212,7 @@ export default {
   display: inline-flex;
   flex-direction: row;
   margin-left: 50%;
-  margin-top : 90px;
+  margin-top: 90px;
   transform: translateX(-50%);
 }
 

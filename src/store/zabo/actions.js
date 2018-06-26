@@ -39,16 +39,23 @@ const actions = {
         });
     });
   },
-  getParticipatedZaboes({ commit, state }, payload) {
+  getParticipatedZaboes({ commit, state }) {
     const {
       currentUser: { id }
     } = state;
-    return this.$http
-      .get(`http://localhost:8000/users/${id}`)
+    axios({
+      method: "get",
+      url: `http://localhost:8000/api/users/${id}`,
+      auth: {
+        username: "sbagi@sparcs.org",
+        password: "kjh5270!@#@!"
+        // 임시로 넣어놓은거!
+      }
+    })
       .then(response => response.json())
       .then(json => {
         commit(types.GET_PARTICIPATED_ZABOES, json);
-        return console.log(json);
+        console.log(json);
       })
       .catch(err => console.log(err));
   }

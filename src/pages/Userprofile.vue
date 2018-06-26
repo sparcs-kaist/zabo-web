@@ -24,7 +24,7 @@
       내 정보
     </div>
     <div v-else-if="tab == 'tab2'">
-      <participated></participated>
+      <participated :participatedZaboes="participatedZaboes"></participated>
     </div>
     <div v-else-if="tab == 'tab3'">
       찜한 자보
@@ -34,16 +34,30 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import Participated from "./Userprofile/Participated.vue";
+=======
+import Participated from './Userprofile/Participated.vue';
+>>>>>>> 60ec70c03ab459800c48762cb274d341ae75b362
 
 export default {
   name: "userprofile",
   data() {
     return {
+<<<<<<< HEAD
       name: "",
       imagesrc: "",
       tab: "tab1"
     };
+=======
+      user: {
+        name: "",
+        imagesrc: "",
+      },
+      tab: "tab1",
+      participatedZaboes: {}
+    }
+>>>>>>> 60ec70c03ab459800c48762cb274d341ae75b362
   },
   methods: {
     tab1: function() {
@@ -56,6 +70,7 @@ export default {
       this.tab = "tab3";
     }
   },
+<<<<<<< HEAD
   component: {
     participated: Participated
   },
@@ -72,6 +87,23 @@ export default {
       this.imagesrc = result.data.profile_image;
       this.data = result.data;
     });
+=======
+  components: {
+    'participated': Participated
+  },
+  created () {
+    console.log('consoles')
+    const { first_name, last_name, email, profile_image, id } = this.currentUser;
+    this.name = first_name + " " + last_name;
+    this.imagesrc = profile_image;
+    this.$store.dispatch('getParticipatedZaboes')
+    this.participatedZaboes = this.$store.getters.participatedZaboes
+  },
+  computed: {
+    currentUser () {
+      return this.$store.getters.currentUser
+    }
+>>>>>>> 60ec70c03ab459800c48762cb274d341ae75b362
   }
 };
 </script>
