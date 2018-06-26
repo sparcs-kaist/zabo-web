@@ -26,48 +26,48 @@
 
 <script>
 export default {
-  name : "Header",
-}
+  name: "Header"
+};
 </script>
 
 <style>
-  .sandbox {
-    width : 100%;
-    height : 78px;
-    position:fixed;
-    z-index: 1;
-    background-color: white;
-  }
+.sandbox {
+  width: 100%;
+  height: 78px;
+  position: fixed;
+  z-index: 1;
+  background-color: white;
+}
 
-  .topline {
-    width : 100%;
-    height : 5px;
-    background-color: #12397D; 
-  }
-  .Buttons {
-    text-align: left;
-    width : 100%;
-    height : 100px;
-  }
+.topline {
+  width: 100%;
+  height: 5px;
+  background-color: #12397d;
+}
+.Buttons {
+  text-align: left;
+  width: 100%;
+  height: 100px;
+}
 
-  .button {
-    float : left;
-    font-size: 15pt;
-    font-family: Nanumsquare;
-    font-weight: 400;
-    margin-top: 28px;
-    margin-left: 27px;
-    color:black;
-    opacity: 0.7;
-  }
-  .button:hover {
-    opacity : 1;
-  }
+.button {
+  float: left;
+  font-size: 15pt;
+  font-family: Nanumsquare;
+  font-weight: 400;
+  margin-top: 28px;
+  margin-left: 27px;
+  color: black;
+  opacity: 0.7;
+}
+.button:hover {
+  opacity: 1;
+}
 
-  .logo {
-    float : left;
-    height : 37px;
-    margin-top : 18px;
-    margin-left : 27px;
-  }
+.logo {
+  float: left;
+  height: 37px;
+  margin-top: 18px;
+  margin-left: 27px;
+}
 </style>

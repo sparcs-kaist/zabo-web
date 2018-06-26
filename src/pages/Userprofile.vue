@@ -38,43 +38,39 @@ import Participated from './UserProfile/Participated.vue';
 
 export default {
   name: "userprofile",
-  data () {
+  data() {
     return {
       name: "",
       imagesrc: "",
       tab: "tab1"
-    }
+    };
   },
   methods: {
-    tab1: function () {
-      this.tab = 'tab1';
+    tab1: function() {
+      this.tab = "tab1";
     },
-    tab2: function () {
-      this.tab = 'tab2';
+    tab2: function() {
+      this.tab = "tab2";
     },
-    tab3: function () {
-      this.tab = 'tab3';
+    tab3: function() {
+      this.tab = "tab3";
     }
   },
-  component: {
-    'participated': Participated
-  },
-  created: function () {
+  created: function() {
     this.$http({
-      method: 'get',
-      url: 'http://localhost:8000/users/1',
+      method: "get",
+      url: "http://localhost:8000/users/1",
       auth: {
-        username: 'thinkratomos@gmail.com',
-        password: 'Michael5'
+        username: "thinkratomos@gmail.com",
+        password: "Michael5"
       }
-    })
-      .then((result) => {
-        this.name = result.data.first_name + " " + result.data.last_name;
-        this.imagesrc = result.data.profile_image;
-        this.data = result.data;
-      })
+    }).then(result => {
+      this.name = result.data.first_name + " " + result.data.last_name;
+      this.imagesrc = result.data.profile_image;
+      this.data = result.data;
+    });
   }
-}
+};
 </script>
 
 <style>
@@ -96,42 +92,43 @@ export default {
   font-family: Nanumsquare;
   font-weight: 800;
 }
-  #name {
-    font-family: Nanumsquare;
-    font-size:25pt;
-    font-weight: 800;
-  }
 
-  .profile-image {
-    height : 100px;
-    width : 100px;
-    border-radius: 100px;
-    margin-bottom : -20px;
-  }
+#name {
+  font-family: Nanumsquare;
+  font-size: 25pt;
+  font-weight: 800;
+}
 
-  .tab {
-    font-family: Nanumsquare;
-    font-size: 17pt;
-    font-weight: 700;
-    text-align: center;
-    width : 150px;
-    margin-left : 10px;
-    height : 50px;
-    border: 0px;
-    background-color: white;
-    cursor:pointer;
-  }
+.profile-image {
+  height: 100px;
+  width: 100px;
+  border-radius: 100px;
+  margin-bottom: -20px;
+}
 
-  .button-active{
-    width : 40px;
-    height : 3px;
-    background-color: #12397D;
-    margin-top : 11px;
-    display : inline-block;
-  }
+.tab {
+  font-family: Nanumsquare;
+  font-size: 17pt;
+  font-weight: 700;
+  text-align: center;
+  width: 150px;
+  margin-left: 10px;
+  height: 50px;
+  border: 0px;
+  background-color: white;
+  cursor: pointer;
+}
 
-  .tab:focus {
-    outline : none;
-    border : none;
-  }
+.button-active {
+  width: 40px;
+  height: 3px;
+  background-color: #12397d;
+  margin-top: 11px;
+  display: inline-block;
+}
+
+.tab:focus {
+  outline: none;
+  border: none;
+}
 </style>
