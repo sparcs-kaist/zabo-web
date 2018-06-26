@@ -3,36 +3,39 @@
     <div class="user-profile">
       프로필
     </div>
-    <img v-bind:src = "imagesrc" class = "profile-image" v-cloak>
+    <img v-bind:src="imagesrc" class="profile-image" v-cloak>
     <p id="name"> {{ name }} </p>
     <button v-on:click="tab1" class="tab">
       내 정보<br/>
-      <div class="button-active" v-if = "tab == 'tab1'">
+      <div class="button-active" v-if="tab == 'tab1'">
       </div>
     </button>
     <button v-on:click="tab2" class="tab">
       참여한 자보<br/>
-      <div class="button-active" v-if = "tab == 'tab2'">
+      <div class="button-active" v-if="tab == 'tab2'">
       </div>
     </button>
     <button v-on:click="tab3" class="tab">
       찜한 자보<br/>
-      <div class="button-active" v-if = "tab == 'tab3'">
+      <div class="button-active" v-if="tab == 'tab3'">
       </div>
     </button>
-    <div v-if = "tab == 'tab1'">
+    <div v-if="tab == 'tab1'">
       내 정보
     </div>
-    <div v-else-if = "tab == 'tab2'">
-      참여한 자보
+    <div v-else-if="tab == 'tab2'">
+      <participated></participated>
     </div>
-    <div v-else-if = "tab == 'tab3'">
+    <div v-else-if="tab == 'tab3'">
       찜한 자보
     </div>
- </div>
+
+  </div>
 </template>
 
 <script>
+import Participated from "./UserProfile/Participated.vue";
+
 export default {
   name: "userprofile",
   data() {
@@ -52,6 +55,9 @@ export default {
     tab3: function() {
       this.tab = "tab3";
     }
+  },
+  component: {
+    participated: Participated
   },
   created: function() {
     this.$http({
