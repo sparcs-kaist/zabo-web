@@ -1,4 +1,4 @@
-import * as types from '@/store/mutation-types';
+import * as types from "@/store/mutation-types";
 
 const mutations = {
   [types.ZABOES_LIST](state, payload) {
@@ -31,6 +31,9 @@ const mutations = {
   [types.ZABOES_PAGECOUNT](state, pageCount) {
     state.zaboesPageCount = pageCount;
   },
+  [types.GET_PARTICIPATED_ZABOES](state, participataedZaboes) {
+    state.participatedZaboess = participatedZaboes;
+  }
 };
 
 export default mutations;
