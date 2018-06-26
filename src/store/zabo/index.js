@@ -79,7 +79,7 @@ export default {
       joined_date: "2018-06-26",
       profile_image:
         "http://localhost:8000/media/users/profile/KakaoTalk_20180611_161916032.jpg",
-      phone: "",
+      phone: "010-0000-0000",
       groups: [],
       user_permissions: []
     }

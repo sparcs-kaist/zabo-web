@@ -15,6 +15,15 @@ const getters = {
   },
   currentUser(state) {
     return state.currentUser;
+  },
+  getEmail(state) {
+    return state.currentUser.email;
+  },
+  getJoinedDate(state) {
+    return state.currentUser.joined_date;
+  },
+  getPhonenumber(state) {
+    return state.currentUser.phone;
   }
 };
 
