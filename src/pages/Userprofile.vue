@@ -1,11 +1,22 @@
 <template>
-  <div class="column">
+  <div class="column" v-cloak>
     <div class="user-profile">
       프로필
     </div>
-    <img v-bind:src = "imagesrc" class = "profile-image">
+    <img v-bind:src = "imagesrc" class = "profile-image" v-cloak>
     <p> {{ name }} </p>
-    <p> {{ data }} </p>
+    <button v-on:click="tab1">내 정보</button>
+    <button v-on:click="tab2">참여한 자보</button>
+    <button v-on:click="tab3">찜한 자보</button>
+    <div v-if = "tab === 'tab1'">
+      내 정보
+    </div>
+    <div v-else-if = "tab === 'tab2'">
+      참여한 자보
+    </div>
+    <div v-else-if = "tab === 'tab3'">
+      찜한 자보
+    </div>
  </div>
 </template>
 
@@ -16,7 +27,18 @@ export default {
     return {
       name : "",
       imagesrc : "",
-      data : ""
+      tab : "tab1"
+    }
+  },
+  methods : {
+    tab1 : function() {
+      this.tab = 'tab1';
+    },
+    tab2 : function() {
+      this.tab = 'tab2';
+    },
+    tab3 : function() {
+      this.tab = 'tab3';
     }
   },
   created: function () {
@@ -38,6 +60,9 @@ export default {
 </script>
 
 <style>
+  [v-cloak] {
+    display:block;
+  }
   .column {
     width : 70%;
     height : 1000px;
