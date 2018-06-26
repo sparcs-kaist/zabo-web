@@ -9,14 +9,13 @@
 </template>
 
 <script>
-import Header from '@/router/Header';
+import Header from "@/router/Header";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Header
   }
-
 };
 </script>
 
@@ -26,7 +25,7 @@ body {
 }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -34,11 +33,11 @@ body {
   overflow: hidden;
 }
 
-  .footer {
-    width : 100%;
-    height : 65px;
-    background-color: white;
-    bottom:0px;
-    position: fixed;
-  }
+.footer {
+  width: 100%;
+  height: 65px;
+  background-color: white;
+  bottom: 0px;
+  position: fixed;
+}
 </style>
