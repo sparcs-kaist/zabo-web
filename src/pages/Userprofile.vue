@@ -34,51 +34,45 @@
 </template>
 
 <script>
-import Participated from "./Userprofile/Participated.vue";
+import Participated from './Userprofile/Participated.vue';
 
 export default {
   name: "userprofile",
-  data() {
+  data () {
     return {
       user: {
         name: "",
-        imagesrc: ""
+        imagesrc: "",
       },
       tab: "tab1",
       participatedZaboes: {}
-    };
+    }
   },
   methods: {
-    tab1: function() {
+    tab1: function () {
       this.tab = "tab1";
     },
-    tab2: function() {
+    tab2: function () {
       this.tab = "tab2";
     },
-    tab3: function() {
+    tab3: function () {
       this.tab = "tab3";
     }
   },
   components: {
-    participated: Participated
+    'participated': Participated
   },
-  created() {
-    console.log("consoles");
-    const {
-      first_name,
-      last_name,
-      email,
-      profile_image,
-      id
-    } = this.currentUser;
+  created () {
+    console.log('consoles')
+    const { first_name, last_name, email, profile_image, id } = this.currentUser;
     this.name = first_name + " " + last_name;
     this.imagesrc = profile_image;
-    this.$store.dispatch("getParticipatedZaboes");
-    this.participatedZaboes = this.$store.getters.participatedZaboes;
+    this.$store.dispatch('getParticipatedZaboes')
+    this.participatedZaboes = this.$store.getters.participatedZaboes
   },
   computed: {
-    currentUser() {
-      return this.$store.getters.currentUser;
+    currentUser () {
+      return this.$store.getters.currentUser
     }
   }
 };
