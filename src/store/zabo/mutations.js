@@ -31,8 +31,8 @@ const mutations = {
   [types.ZABOES_PAGECOUNT](state, pageCount) {
     state.zaboesPageCount = pageCount;
   },
-  [types.GET_PARTICIPATED_ZABOES](state, participataedZaboes) {
-    state.participatedZaboess = participatedZaboes;
+  [types.GET_PARTICIPATED_ZABOES](state, participatedZaboes) {
+    state.participatedZaboes = participatedZaboes;
   }
 };
 

@@ -24,7 +24,7 @@
       내 정보
     </div>
     <div v-else-if="tab == 'tab2'">
-      <participated></participated>
+      <participated :participatedZaboes="participatedZaboes"></participated>
     </div>
     <div v-else-if="tab == 'tab3'">
       찜한 자보
@@ -34,15 +34,18 @@
 </template>
 
 <script>
-import Participated from './UserProfile/Participated.vue';
+import Participated from './Userprofile/Participated.vue';
 
 export default {
   name: "userprofile",
   data () {
     return {
-      name: "",
-      imagesrc: "",
-      tab: "tab1"
+      user: {
+        name: "",
+        imagesrc: "",
+      },
+      tab: "tab1",
+      participatedZaboes: {}
     }
   },
   methods: {
@@ -56,23 +59,21 @@ export default {
       this.tab = 'tab3';
     }
   },
-  component: {
+  components: {
     'participated': Participated
   },
-  created: function () {
-    this.$http({
-      method: 'get',
-      url: 'http://localhost:8000/users/1',
-      auth: {
-        username: 'thinkratomos@gmail.com',
-        password: 'Michael5'
-      }
-    })
-      .then((result) => {
-        this.name = result.data.first_name + " " + result.data.last_name;
-        this.imagesrc = result.data.profile_image;
-        this.data = result.data;
-      })
+  created () {
+    console.log('consoles')
+    const { first_name, last_name, email, profile_image, id } = this.currentUser;
+    this.name = first_name + " " + last_name;
+    this.imagesrc = profile_image;
+    this.$store.dispatch('getParticipatedZaboes')
+    this.participatedZaboes = this.$store.getters.participatedZaboes
+  },
+  computed: {
+    currentUser () {
+      return this.$store.getters.currentUser
+    }
   }
 }
 </script>

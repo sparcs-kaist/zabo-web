@@ -10,6 +10,12 @@ const getters = {
   zaboesPageCount(state) {
     return state.zaboesPageCount;
   },
+  participatedZaboes(state) {
+    return state.getParticipatedZaboes;
+  },
+  currentUser(state) {
+    return state.currentUser;
+  }
 };
 
 export default getters;
