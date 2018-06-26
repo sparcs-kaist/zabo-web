@@ -4,17 +4,29 @@
       프로필
     </div>
     <img v-bind:src="imagesrc" class="profile-image" v-cloak>
-    <p> {{ name }} </p>
-    <button v-on:click="tab1">내 정보</button>
-    <button v-on:click="tab2">참여한 자보</button>
-    <button v-on:click="tab3">찜한 자보</button>
-    <div v-if="tab === 'tab1'">
+    <p id="name"> {{ name }} </p>
+    <button v-on:click="tab1" class="tab">
+      내 정보<br/>
+      <div class="button-active" v-if="tab == 'tab1'">
+      </div>
+    </button>
+    <button v-on:click="tab2" class="tab">
+      참여한 자보<br/>
+      <div class="button-active" v-if="tab == 'tab2'">
+      </div>
+    </button>
+    <button v-on:click="tab3" class="tab">
+      찜한 자보<br/>
+      <div class="button-active" v-if="tab == 'tab3'">
+      </div>
+    </button>
+    <div v-if="tab == 'tab1'">
       내 정보
     </div>
-    <div v-else-if="tab === 'tab2'">
+    <div v-else-if="tab == 'tab2'">
       <participated></participated>
     </div>
-    <div v-else-if="tab === 'tab3'">
+    <div v-else-if="tab == 'tab3'">
       찜한 자보
     </div>
 
@@ -85,9 +97,42 @@ export default {
   font-weight: 800;
 }
 
+#name {
+  font-family: Nanumsquare;
+  font-size: 25pt;
+  font-weight: 800;
+}
+
 .profile-image {
   height: 100px;
   width: 100px;
   border-radius: 100px;
+  margin-bottom: -20px;
+}
+
+.tab {
+  font-family: Nanumsquare;
+  font-size: 17pt;
+  font-weight: 700;
+  text-align: center;
+  width: 150px;
+  margin-left: 10px;
+  height: 50px;
+  border: 0px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.button-active {
+  width: 40px;
+  height: 3px;
+  background-color: #12397d;
+  margin-top: 11px;
+  display: inline-block;
+}
+
+.tab:focus {
+  outline: none;
+  border: none;
 }
 </style>
