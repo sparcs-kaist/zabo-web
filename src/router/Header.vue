@@ -35,7 +35,6 @@ export default {
   width: 100%;
   height: 78px;
   position: fixed;
-  z-index: 1;
   background-color: white;
 }
 

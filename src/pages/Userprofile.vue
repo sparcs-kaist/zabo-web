@@ -1,9 +1,9 @@
 <template>
-  <div class="column" v-cloak>
+  <div class="column">
     <div class="user-profile">
       프로필
     </div>
-    <img v-bind:src="imagesrc" class="profile-image" v-cloak>
+    <img :src="imagesrc" class="profile-image">
     <p id="name"> {{ name }} </p>
     <button v-on:click="tab1" class="tab">
       내 정보<br/>
@@ -21,7 +21,7 @@
       </div>
     </button>
     <div v-if="tab == 'tab1'">
-      내 정보
+      <profile></profile>
     </div>
     <div v-else-if="tab == 'tab2'">
       <participated :participatedZaboes="participatedZaboes"></participated>
@@ -29,62 +29,66 @@
     <div v-else-if="tab == 'tab3'">
       찜한 자보
     </div>
-
   </div>
 </template>
 
 <script>
-import Participated from './Userprofile/Participated.vue';
+import Participated from "./Userprofile/Participated.vue";
+import Profile from "./Userprofile/Profile.vue";
 
 export default {
   name: "userprofile",
-  data () {
+  data() {
     return {
       user: {
         name: "",
-        imagesrc: "",
+        imagesrc: ""
       },
       tab: "tab1",
       participatedZaboes: {}
-    }
+    };
+  },
+  components: {
+    participated: Participated,
+    profile: Profile
   },
   methods: {
-    tab1: function () {
+    tab1: function() {
       this.tab = "tab1";
     },
-    tab2: function () {
+    tab2: function() {
       this.tab = "tab2";
     },
-    tab3: function () {
+    tab3: function() {
       this.tab = "tab3";
     }
   },
-  components: {
-    'participated': Participated
-  },
-  created () {
-    console.log('consoles')
-    const { first_name, last_name, email, profile_image, id } = this.currentUser;
+  created() {
+    console.log("consoles");
+    const {
+      first_name,
+      last_name,
+      email,
+      profile_image,
+      id
+    } = this.currentUser;
     this.name = first_name + " " + last_name;
     this.imagesrc = profile_image;
-    this.$store.dispatch('getParticipatedZaboes')
-    this.participatedZaboes = this.$store.getters.participatedZaboes
+    this.$store.dispatch("getParticipatedZaboes");
+    this.participatedZaboes = this.$store.getters.participatedZaboes;
   },
   computed: {
-    currentUser () {
-      return this.$store.getters.currentUser
+    currentUser() {
+      return this.$store.getters.currentUser;
     }
   }
 };
 </script>
 
 <style>
-[v-cloak] {
-  display: block;
-}
 .column {
   width: 70%;
-  height: 1000px;
+  height: 2000px;
   margin-left: 15%;
   margin-top: 90px;
 }
@@ -109,6 +113,10 @@ export default {
   width: 100px;
   border-radius: 100px;
   margin-bottom: -20px;
+}
+
+.tabs {
+  position: -webkit-sticky;
 }
 
 .tab {
