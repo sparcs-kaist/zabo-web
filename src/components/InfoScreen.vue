@@ -2,7 +2,8 @@
   <div class="infoScreen">
     <div class="description">
       <p v-if="isLong() && !seeMore">
-        {{ shortenedInfo }} <span class="more" @click="seeMore = true">더 보기</span>
+        {{ shortenedInfo }}
+        <span class="more" @click="seeMore = true">더 보기</span>
       </p>
       <p v-else>{{ info }}</p>
     </div>

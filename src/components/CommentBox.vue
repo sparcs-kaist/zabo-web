@@ -17,28 +17,16 @@
     </div>
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
       <div v-if="isLong() && !seeMore">
-        {{ shortenedComment }} <span class="more" @click="seeMore = true">더 보기</span>
+        {{ shortenedComment }}
+        <span class="more" @click="seeMore = true">더 보기</span>
       </div>
       <div v-else>{{ content }}</div>
     </div>
     <div v-show="depth === 0">
-      <input-field
-        class="input"
-        :content.sync="newReply"
-        :on-click="onSubmitReply"
-        placeholder-text="댓글을 작성하세요..."
-      >
+      <input-field class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
       </input-field>
     </div>
-    <comment-box
-      class="reply-box"
-      v-for="r in replies"
-      :author="r.author"
-      :comment_id="r.id"
-      :content="r.content"
-      :depth="depth + 1"
-      :key="r.id"
-    >
+    <comment-box class="reply-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
     </comment-box>
   </div>
 </template>
