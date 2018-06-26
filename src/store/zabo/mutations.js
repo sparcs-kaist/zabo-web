@@ -7,7 +7,7 @@ const mutations = {
     const keys = Object.keys(state.zaboesObject);
     keys.sort((a, b) => a - b);
     for (let i = 0; i < keys.length; i += 1) {
-      for (let j in state.zaboesObject[keys[i]]) {
+      for (const j in state.zaboesObject[keys[i]]) {
         temp.push(state.zaboesObject[keys[i]][j]);
       }
     }
