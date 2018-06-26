@@ -10,8 +10,7 @@ export default {
       participatedZaboes: {},
     };
   },
-  created() {
-  },
+  created() {},
 };
 </script>
 <style lang=''>

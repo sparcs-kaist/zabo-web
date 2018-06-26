@@ -185,7 +185,7 @@ export default {
   height: 100vh;
 }
 .selected {
-  color: #FFF;
+  color: #fff;
   font-weight: bold;
 }
 .subheading {

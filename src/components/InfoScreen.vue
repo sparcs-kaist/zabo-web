@@ -32,7 +32,7 @@ export default {
 
 <style scoped>
 .description {
-  color: #FFF;
+  color: #fff;
   font-size: 0.9em;
   text-align: left;
 }

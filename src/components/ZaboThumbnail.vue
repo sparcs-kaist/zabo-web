@@ -15,7 +15,7 @@ export default {
   props: {
     zaboDetail: {
       type: Object,
-      default: () => { },
+      default: () => {},
     },
     number: {
       type: Number,
@@ -27,8 +27,7 @@ export default {
     },
   },
   data() {
-    return {
-    };
+    return {};
   },
   created() {
     // console.log(this.zaboDetail.posters[0]);
@@ -45,7 +44,10 @@ export default {
   },
   methods: {
     zaboThumbnailDetailShow() {
-      document.getElementsByClassName('thumbnailDetail')[this.number].style.display = 'block';
+      document.getElementsByClassName('thumbnailDetail')[
+        this.number
+      ].style.display =
+        'block';
     },
   },
 };
