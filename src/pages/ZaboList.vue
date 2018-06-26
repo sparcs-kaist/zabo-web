@@ -1,37 +1,26 @@
 <template>
   <div class="zaboList">
-    <div class="prevCategory"
-         @click="categoryChange(false)">
+    <div class="prevCategory" @click="categoryChange(false)">
       <p>&lt;</p>
     </div>
-    <div class="zaboCategory"
-         v-for="(category, index) in categories"
-         :class="classByCategory(category)">
+    <div class="zaboCategory" v-for="(category, index) in categories" :class="classByCategory(category)">
       <p class="zaboCategoryName">
         {{ categoryNames[index] }}
       </p>
       <div class="zaboThumbnailListContainer">
-        <div class="zaboThumbnailListPrevPage"
-             @click="pageChange(false)">
+        <div class="zaboThumbnailListPrevPage" @click="pageChange(false)">
         </div>
         <div class="zaboThumbnailList">
           <div class="zaboThumbnailRow" :key="n" v-for="n in 7">
-            <zaboThumbnail
-              :zaboDetail="zabo"
-              :number="index + (n - 1) * zaboRow"
-              :row="n"
-              :key="zabo.id"
-              v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
+            <zaboThumbnail :zaboDetail="zabo" :number="index + (n - 1) * zaboRow" :row="n" :key="zabo.id" v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
             </zaboThumbnail>
           </div>
         </div>
-        <div class="zaboThumbnailListNextPage"
-             @click="pageChange(true)">
+        <div class="zaboThumbnailListNextPage" @click="pageChange(true)">
         </div>
       </div>
     </div>
-    <div class="nextCategory"
-         @click="categoryChange(true)">
+    <div class="nextCategory" @click="categoryChange(true)">
       <p>&gt;</p>
     </div>
   </div>
@@ -45,7 +34,7 @@ export default {
   components: {
     zaboThumbnail: ZaboThumbnail,
   },
-  data() {
+  data () {
     return {
       zaboCursor: 0,
       windowWidth: 0,
@@ -56,7 +45,7 @@ export default {
       currentCategoryIndex: 0,
     };
   },
-  created() {
+  created () {
     this.getWindowWidth();
     this.$store.dispatch('zaboesGetPageCount', { pageSize: 4 })
       .then((res) => {
@@ -77,15 +66,15 @@ export default {
         }
       });
   },
-  beforeMount() {
+  beforeMount () {
     window.addEventListener('resize', this.getWindowWidth);
   },
-  updated() {
+  updated () {
     document.getElementsByClassName('zaboList')[0].classList.remove('mounted');
     document.getElementsByClassName('zaboList')[0].classList.add('mounted');
   },
   watch: {
-    currentPageBy4() {
+    currentPageBy4 () {
       if (this.currentPageBy4 + 11 <= this.totalPage) {
         if (!this.getPages.includes(this.currentPageBy4 + 11)) {
           this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 + 11, pageSize: 4 });
@@ -99,10 +88,10 @@ export default {
     },
   },
   computed: {
-    zaboes() {
+    zaboes () {
       return this.$store.getters.zaboes;
     },
-    zaboRow() {
+    zaboRow () {
       if (this.windowWidth > 1700) {
         return 4;
       }
@@ -114,7 +103,7 @@ export default {
       }
       return 1;
     },
-    zaboList() {
+    zaboList () {
       let zaboes = this.zaboes;
       if (zaboes.length === 0) return [];
       while (zaboes.length < this.zaboRow * 7) {
@@ -122,7 +111,7 @@ export default {
       }
       return zaboes;
     },
-    zaboRendered() {
+    zaboRendered () {
       const zaboes = this.zaboList;
       if (this.zaboCursor - (this.zaboRow * 3) < 0) {
         return zaboes.slice(zaboes.length + (this.zaboCursor - (this.zaboRow * 3)), zaboes.length)
@@ -135,29 +124,29 @@ export default {
       return zaboes.slice(this.zaboCursor - (this.zaboRow * 3),
         this.zaboCursor + (this.zaboRow * 4));
     },
-    currentPageBy4() {
+    currentPageBy4 () {
       return (this.currentPage % 4) === 0 ?
         parseInt((this.currentPage / 4) + 1, 10) :
         parseInt(this.currentPage / 4, 10);
     },
-    prevCategoryIndex() {
+    prevCategoryIndex () {
       return ((this.currentCategoryIndex - 1) + this.categories.length) % this.categories.length;
     },
-    nextCategoryIndex() {
+    nextCategoryIndex () {
       return (this.currentCategoryIndex + 1) % this.categories.length;
     },
-    currentCategory() {
+    currentCategory () {
       return this.categories[this.currentCategoryIndex];
     },
-    prevCategory() {
+    prevCategory () {
       return this.categories[this.prevCategoryIndex];
     },
-    nextCategory() {
+    nextCategory () {
       return this.categories[this.nextCategoryIndex];
     },
   },
   methods: {
-    pageChange(isNext) {
+    pageChange (isNext) {
       if (isNext) {
         this.currentPage += 1;
         this.currentPage %= this.totalPage;
@@ -173,8 +162,8 @@ export default {
         this.zaboCursor %= this.zaboList.length;
       }
     },
-    categoryChange(isNext) {
-      [].forEach.call(document.getElementsByClassName('ZaboCategory'), function(el) {
+    categoryChange (isNext) {
+      [].forEach.call(document.getElementsByClassName('ZaboCategory'), (el) => {
         el.classList.remove('current');
         el.classList.remove('prev');
         el.classList.remove('next');
@@ -195,11 +184,11 @@ export default {
         document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
       }
     },
-    getWindowWidth() {
+    getWindowWidth () {
       this.windowWidth = document.body.clientWidth ||
-      document.documentElement.clientWidth || window.innerWidth;
+        document.documentElement.clientWidth || window.innerWidth;
     },
-    classByCategory(category) {
+    classByCategory (category) {
       if (category === this.prevCategory) {
         return 'prev';
       }
@@ -212,7 +201,7 @@ export default {
       return '';
     },
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener('resize', this.getWindowWidth);
   },
 };
@@ -305,7 +294,8 @@ export default {
   transform: rotate(180deg);
 }
 
-.prevCategory, .nextCategory {
+.prevCategory,
+.nextCategory {
   border-radius: 50%;
   width: 62px;
   height: 62px;
@@ -315,7 +305,8 @@ export default {
   z-index: 9999;
 }
 
-.prevCategory > p, .nextCategory > p {
+.prevCategory > p,
+.nextCategory > p {
   position: relative;
   float: left;
   top: 50%;
