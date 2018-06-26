@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="textbox" contenteditable="true"
-    @input="$emit('update:content', $event.target.innerText)"
-    placeholder="리뷰를 입력하세요..."
-  >
+  <div class="textbox" contenteditable="true" @input="$emit('update:content', $event.target.innerText)" placeholder="리뷰를 입력하세요...">
   </div>
 </template>
 
