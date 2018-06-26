@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Participated from "./UserProfile/Participated.vue";
+import Participated from "./Userprofile/Participated.vue";
 
 export default {
   name: "userprofile",
