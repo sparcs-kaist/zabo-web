@@ -1,19 +1,15 @@
 <template>
   <div class="inputField">
-      <div class="form">
-        <textarea
-          class="textbox"
-          v-model="input"
-          :placeholder="placeholderText"
-        >
-        </textarea>
-        <!-- <editable-text
+    <div class="form">
+      <textarea class="textbox" v-model="input" :placeholder="placeholderText">
+      </textarea>
+      <!-- <editable-text
           :content="newComment"
           @update="updateComment"
         >
         </editable-text> -->
-        <span class="button" @click="onButtonClick">작성</span>
-      </div>
+      <span class="button" @click="onButtonClick">작성</span>
+    </div>
   </div>
 </template>
 
