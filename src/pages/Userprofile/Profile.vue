@@ -7,9 +7,9 @@
 </template>
 <script>
 export default {
-  name: "Profile",
+  name: 'Profile',
   computed: {
-    email: function() {
+    email() {
       return this.$store.getters.getEmail;
     },
     joined_date() {
@@ -17,8 +17,8 @@ export default {
     },
     phone() {
       return this.$store.getters.getPhonenumber;
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang=''>

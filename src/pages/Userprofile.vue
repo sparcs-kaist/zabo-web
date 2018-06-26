@@ -33,55 +33,47 @@
 </template>
 
 <script>
-import Participated from "./Userprofile/Participated.vue";
-import Profile from "./Userprofile/Profile.vue";
+import Participated from './Userprofile/Participated';
+import Profile from './Userprofile/Profile';
 
 export default {
-  name: "userprofile",
+  name: 'userprofile',
   data() {
     return {
       user: {
-        name: "",
-        imagesrc: ""
+        name: '',
+        imagesrc: '',
       },
-      tab: "tab1",
-      participatedZaboes: {}
+      tab: 'tab1',
+      participatedZaboes: {},
     };
   },
   components: {
     participated: Participated,
-    profile: Profile
+    profile: Profile,
   },
   methods: {
-    tab1: function() {
-      this.tab = "tab1";
+    tab1() {
+      this.tab = 'tab1';
     },
-    tab2: function() {
-      this.tab = "tab2";
+    tab2() {
+      this.tab = 'tab2';
     },
-    tab3: function() {
-      this.tab = "tab3";
-    }
+    tab3() {
+      this.tab = 'tab3';
+    },
   },
   created() {
-    console.log("consoles");
-    const {
-      first_name,
-      last_name,
-      email,
-      profile_image,
-      id
-    } = this.currentUser;
-    this.name = first_name + " " + last_name;
-    this.imagesrc = profile_image;
-    this.$store.dispatch("getParticipatedZaboes");
+    this.name = `${this.currentUser.first_name} ${this.currentUser.last_name}`;
+    this.imagesrc = this.currentUser.profile_image;
+    this.$store.dispatch('getParticipatedZaboes');
     this.participatedZaboes = this.$store.getters.participatedZaboes;
   },
   computed: {
     currentUser() {
       return this.$store.getters.currentUser;
-    }
-  }
+    },
+  },
 };
 </script>
 

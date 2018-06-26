@@ -2,20 +2,20 @@
   <div id="app">
     <Header></Header>
     <router-view/>
-    <div class = "footer">
-      <p style = "font-size : 15pt; font-weight: 800;">Footer</p>
+    <div class="footer">
+      <p style="font-size : 15pt; font-weight: 800;">Footer</p>
     </div>
   </div>
 </template>
 
 <script>
-import Header from "@/router/Header";
+import Header from '@/router/Header';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    Header
-  }
+    Header,
+  },
 };
 </script>
 

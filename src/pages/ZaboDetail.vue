@@ -15,17 +15,12 @@
             <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">Info</p>
             <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
           </div>
-          <input-field
-            v-show="toDisplay === 1"
-            :content.sync="newComment"
-            :on-click="onSubmitComment"
-            placeholder-text="리뷰를 입력하세요..."
-          >
+          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요...">
           </input-field>
         </div>
 
         <div class="bodyStyle" v-show="toDisplay === 0">
-          <info-screen :info="this.info"/>
+          <info-screen :info="this.info" />
         </div>
         <div class="bodyStyle" v-show="toDisplay === 1">
           <review-screen :comments="comments" />
@@ -33,7 +28,7 @@
       </div>
 
       <div class="right">
-        <img :src="this.img" height="450" width="340"/>
+        <img :src="this.img" height="450" width="340" />
       </div>
     </div>
   </div>
@@ -185,7 +180,7 @@ export default {
   height: 100vh;
 }
 .selected {
-  color: #FFF;
+  color: #fff;
   font-weight: bold;
 }
 .subheading {
