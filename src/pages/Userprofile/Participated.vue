@@ -5,14 +5,14 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      participatedZaboes: {}
-    }
+      participatedZaboes: {},
+    };
   },
-  created () {
+  created() {
   },
-}
+};
 </script>
 <style lang=''>
 </style>

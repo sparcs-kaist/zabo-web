@@ -3,7 +3,7 @@
     <div class="topline"></div>
     <div class="Buttons">
       <router-link to="/">
-        <img src="@/logo.svg" class= "logo">
+        <img src="@/logo.svg" class="logo">
       </router-link>
       <router-link to="/zabo">
         <div class="button">
@@ -16,7 +16,7 @@
         </div>
       </router-link>
       <router-link to="/zabo/user_profile">
-        <div class = "button">
+        <div class="button">
           Profile
         </div>
       </router-link>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: "Header"
+  name: 'Header',
 };
 </script>
 
