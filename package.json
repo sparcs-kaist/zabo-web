@@ -19,7 +19,7 @@
     "vue": "^2.5.2",
     "vue-fixed-header": "^1.0.1",
     "vue-router": "^3.0.1",
-    "vue-sticky": "^3.3.4",
+    "vuetify": "^1.0.19",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

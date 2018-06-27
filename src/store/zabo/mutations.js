@@ -33,6 +33,12 @@ const mutations = {
   },
   [types.GET_PARTICIPATED_ZABOES](state, participatedZaboes) {
     state.participatedZaboes = participatedZaboes;
+  },
+  [types.SET_USER_PROFILE](state, payload) {
+    // eslint-disable-nextline
+    console.log(payload[0], payload[1]);
+    state.currentUser.first_name = payload[0];
+    state.currentUser.last_name = payload[1];
   }
 };
 

@@ -7,7 +7,7 @@
     <p id="name"> {{ name }} </p>
     <button v-on:click="tab1" class="tab">
       내 정보<br/>
-      <div class="button-active" v-if="tab == 'tab1'">
+      <div class="button-active" v-if = "tab == 'tab1'">
       </div>
     </button>
     <button v-on:click="tab2" class="tab">
@@ -21,7 +21,8 @@
       </div>
     </button>
     <div v-if="tab == 'tab1'">
-      <profile></profile>
+      <profile v-on:editor = "editor"></profile>
+
     </div>
     <div v-else-if="tab == 'tab2'">
       <participated :participatedZaboes="participatedZaboes"></participated>
@@ -41,9 +42,9 @@ export default {
   data() {
     return {
       user: {
-        name: '',
         imagesrc: '',
       },
+      edit: false,
       tab: 'tab1',
       participatedZaboes: {},
     };
@@ -62,6 +63,9 @@ export default {
     tab3() {
       this.tab = 'tab3';
     },
+    editor() {
+      this.edit = true;
+    },
   },
   created() {
     this.name = `${this.currentUser.first_name} ${this.currentUser.last_name}`;
@@ -70,6 +74,9 @@ export default {
     this.participatedZaboes = this.$store.getters.participatedZaboes;
   },
   computed: {
+    name() {
+      return this.$store.getters.getName;
+    },
     currentUser() {
       return this.$store.getters.currentUser;
     },
