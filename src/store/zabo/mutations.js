@@ -33,6 +33,12 @@ const mutations = {
   },
   [types.GET_PARTICIPATED_ZABOES](state, participataedZaboes) {
     state.participatedZaboess = participatedZaboes;
+  },
+  [types.LOGIN](state, payload) {
+    state.loggedInState = true;
+  },
+  [types.LOGOUT](state, payload) {
+    state.loggedInState = false;
   }
 };
 

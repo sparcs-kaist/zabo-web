@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <template v-if="loginState">
-      <Header></Header>
-      <router-view/>
+    <template v-if="!loggingIn">
+      <Header @logged-in="handleLogin"></Header>
+      <router-view />
     </template>
-    <Login :loginState="loginState" @logged-in="handleLogin" v-else></Login>
+    <Login @logged-in="handleLogin" v-else></Login>
     <div class="footer">
       <p style="font-size : 15pt; font-weight: 800;">Footer</p>
     </div>
@@ -23,15 +23,14 @@ export default {
   },
   data () {
     return {
-      loginState: false
+      loggingIn: false
     }
   },
   created () {
   },
   methods: {
     handleLogin (value) {
-      this.loginState = true;
-      console.log('submmited')
+      this.loggingIn = !this.loggingIn;
     }
   }
 };

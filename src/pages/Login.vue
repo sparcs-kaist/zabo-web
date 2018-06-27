@@ -11,8 +11,6 @@
 import axios from "@/axios-auth";
 
 export default {
-  props: ['loginState']
-  ,
   data () {
     return {
       email: "",

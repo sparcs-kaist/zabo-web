@@ -21,7 +21,8 @@ export default {
       phone: "",
       groups: [],
       user_permissions: []
-    }
+    },
+    loggedInState: false
   },
   actions,
   mutations,

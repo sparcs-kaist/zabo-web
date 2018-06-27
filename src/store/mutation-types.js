@@ -9,3 +9,5 @@ export const ZABO_CREATE = "ZABO_CREATE";
 export const ZABO_DELETE = "ZABO_DELETE";
 export const ZABO_UPDATE = "ZABO_UPDATE";
 export const GET_PARTICIPATED_ZABOES = "ZABO_PARTICIPATED_ZABOES";
+export const LOGUT = "LOGOUT";
+export const LOGIN = "LOGIN";
