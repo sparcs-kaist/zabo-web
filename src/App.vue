@@ -1,20 +1,38 @@
 <template>
   <div id="app">
-    <Header></Header>
-    <router-view/>
-    <div class = "footer">
-      <p style = "font-size : 15pt; font-weight: 800;">Footer</p>
+    <template v-if="loginState">
+      <Header></Header>
+      <router-view/>
+    </template>
+    <Login :loginState="loginState" @logged-in="handleLogin" v-else></Login>
+    <div class="footer">
+      <p style="font-size : 15pt; font-weight: 800;">Footer</p>
     </div>
   </div>
 </template>
 
 <script>
 import Header from "@/router/Header";
+import Login from "@/pages/Login";
 
 export default {
   name: "App",
   components: {
-    Header
+    Header,
+    Login
+  },
+  data () {
+    return {
+      loginState: false
+    }
+  },
+  created () {
+  },
+  methods: {
+    handleLogin (value) {
+      this.loginState = true;
+      console.log('submmited')
+    }
   }
 };
 </script>
