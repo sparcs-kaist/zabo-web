@@ -30,6 +30,9 @@ const getters = {
   },
   getLastName(state) {
     return state.currentUser.last_name;
+  },
+  loggedInState(state) {
+    return state.loggedInState;
   }
 };
 

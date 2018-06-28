@@ -50,59 +50,59 @@
 </template>
 
 <script>
-import Participated from './Userprofile/Participated';
-import Profile from './Userprofile/Profile';
+import Participated from "./Userprofile/Participated";
+import Profile from "./Userprofile/Profile";
 
 export default {
-  name: 'userprofile',
+  name: "userprofile",
   data() {
     return {
       valid: true,
       user: {
-        imagesrc: '',
+        imagesrc: ""
       },
       edit: false,
-      tab: 'tab1',
+      tab: "tab1",
       participatedZaboes: {},
-      new_first_name: '',
-      new_last_name: '',
+      new_first_name: "",
+      new_last_name: "",
       namerules: [
-        v => !!v || '이름을 입력해주세요.',
-        v => (v && v.length <= 100) || '이름이 너무 길어요.',
-      ],
+        v => !!v || "이름을 입력해주세요.",
+        v => (v && v.length <= 100) || "이름이 너무 길어요."
+      ]
     };
   },
   components: {
     participated: Participated,
-    profile: Profile,
+    profile: Profile
   },
   methods: {
     tab1() {
-      this.tab = 'tab1';
+      this.tab = "tab1";
     },
     tab2() {
-      this.tab = 'tab2';
+      this.tab = "tab2";
     },
     tab3() {
-      this.tab = 'tab3';
+      this.tab = "tab3";
     },
     edit_toggle() {
       if (this.edit === false) {
         this.edit = true;
       } else if (this.edit === true) {
-        this.$store.commit('SET_USER_NAME', [
+        this.$store.commit("SET_USER_NAME", [
           this.new_first_name,
-          this.new_last_name,
+          this.new_last_name
         ]);
         this.edit = false;
       }
-    },
+    }
   },
   created() {
     this.new_first_name = this.$store.getters.getFirstName;
     this.new_last_name = this.$store.getters.getLastName;
     this.imagesrc = this.currentUser.profile_image;
-    this.$store.dispatch('getParticipatedZaboes');
+    this.$store.dispatch("getParticipatedZaboes");
     this.participatedZaboes = this.$store.getters.participatedZaboes;
   },
   computed: {
@@ -114,8 +114,8 @@ export default {
     },
     currentUser() {
       return this.$store.getters.currentUser;
-    },
-  },
+    }
+  }
 };
 </script>
 

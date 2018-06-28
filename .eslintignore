@@ -1,5 +1,9 @@
 /build/
 /config/
 /dist/
+<<<<<<< HEAD
 *.js
+=======
+/src/*
+>>>>>>> dev
 /test/unit/coverage/

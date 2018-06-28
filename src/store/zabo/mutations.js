@@ -39,6 +39,17 @@ const mutations = {
     console.log(payload[0], payload[1]);
     state.currentUser.first_name = payload[0];
     state.currentUser.last_name = payload[1];
+  },
+  [types.GET_PARTICIPATED_ZABOES](state, participataedZaboes) {
+    state.participatedZaboess = participatedZaboes;
+  },
+  [types.LOGIN](state, payload) {
+    state.loggedInState = true;
+    state.currentUser = payload;
+  },
+  [types.LOGOUT](state, payload) {
+    state.loggedInState = false;
+    state.currentUser = {};
   }
 };
 

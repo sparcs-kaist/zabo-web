@@ -39,23 +39,30 @@ const actions = {
         });
     });
   },
-  getParticipatedZaboes({ commit, state }) {
+  getParticipatedZaboes({ commit, state }, payload) {
     const {
       currentUser: { id }
     } = state;
-    axios({
+    return this.$http
+      .get(`/users/${id}`)
+      .then(response => response.json())
+      .then(json => {
+        commit(types.GET_PARTICIPATED_ZABOES, json);
+        return console.log(json);
+      })
+      .catch(err => console.log(err));
+  },
+  getMyInfo({ commit, state }, payload) {
+    console.log(state.loggedInState);
+    fetch("http://localhost:8000/api/users/myInfo", {
       method: "get",
-      url: `http://localhost:8000/users/${id}/`,
-      auth: {
-        username: "sbagi@sparcs.org",
-        password: "kjh5270!@#@!"
-        // 임시로 넣어놓은거!
+      headers: {
+        Authorization: localStorage.getItem("token")
       }
     })
-      .then(response => {
-        console.log(response.data);
-        commit(types.GET_PARTICIPATED_ZABOES, response.data);
-        return response.data;
+      .then(response => response.json())
+      .then(json => {
+        commit(types.LOGIN, json);
       })
       .catch(err => console.log(err));
   }

@@ -3,7 +3,7 @@
     <div class="prevCategory" @click="categoryChange(false)">
       <p>&lt;</p>
     </div>
-    <div class="zaboCategory" :key="index" v-for="(category, index) in categories" :class="classByCategory(category)">
+    <div :key="index" class="zaboCategory" v-for="(category, index) in categories" :class="classByCategory(category)">
       <p class="zaboCategoryName">
         {{ categoryNames[index] }}
       </p>
@@ -28,70 +28,83 @@
 
 <script>
 /*eslint-disable */
-import ZaboThumbnail from '@/components/ZaboThumbnail';
+import ZaboThumbnail from "@/components/ZaboThumbnail";
 
 export default {
   components: {
-    zaboThumbnail: ZaboThumbnail,
+    zaboThumbnail: ZaboThumbnail
   },
-  data () {
+  data() {
     return {
       zaboCursor: 0,
       windowWidth: 0,
       currentPage: 1,
       getPages: [],
-      categories: ['All', 'R', 'P', 'C', 'F', 'L', 'E'],
-      categoryNames: ['전체', '리쿠르팅', '퍼포먼스', '경쟁', '설명회', '강의', '전람회'],
-      currentCategoryIndex: 0,
+      categories: ["All", "R", "P", "C", "F", "L", "E"],
+      categoryNames: [
+        "전체",
+        "리쿠르팅",
+        "퍼포먼스",
+        "경쟁",
+        "설명회",
+        "강의",
+        "전람회"
+      ],
+      currentCategoryIndex: 0
     };
   },
-  created () {
+  created() {
     this.getWindowWidth();
-    this.$store.dispatch('zaboesGetPageCount', { pageSize: 4 })
-      .then((res) => {
-        this.totalPage = res;
-        for (let i = 1; i <= this.totalPage; i += 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
-          this.getPages.push(i);
-          if (i > 10) {
-            break;
-          }
+    this.$store.dispatch("zaboesGetPageCount", { pageSize: 4 }).then(res => {
+      this.totalPage = res;
+      for (let i = 1; i <= this.totalPage; i += 1) {
+        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4 });
+        this.getPages.push(i);
+        if (i > 10) {
+          break;
         }
-        for (let i = this.totalPage; i > 10; i -= 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
-          this.getPages.push(i);
-          if (i < this.totalPage - 9) {
-            break;
-          }
+      }
+      for (let i = this.totalPage; i > 10; i -= 1) {
+        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4 });
+        this.getPages.push(i);
+        if (i < this.totalPage - 9) {
+          break;
         }
-      });
+      }
+    });
   },
-  beforeMount () {
-    window.addEventListener('resize', this.getWindowWidth);
+  beforeMount() {
+    window.addEventListener("resize", this.getWindowWidth);
   },
-  updated () {
-    document.getElementsByClassName('zaboList')[0].classList.remove('mounted');
-    document.getElementsByClassName('zaboList')[0].classList.add('mounted');
+  updated() {
+    document.getElementsByClassName("zaboList")[0].classList.remove("mounted");
+    document.getElementsByClassName("zaboList")[0].classList.add("mounted");
   },
   watch: {
-    currentPageBy4 () {
+    currentPageBy4() {
       if (this.currentPageBy4 + 11 <= this.totalPage) {
         if (!this.getPages.includes(this.currentPageBy4 + 11)) {
-          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 + 11, pageSize: 4 });
+          this.$store.dispatch("zaboesList", {
+            pageNum: this.currentPageBy4 + 11,
+            pageSize: 4
+          });
         }
       }
       if (this.currentPageBy4 - 10 > 0) {
         if (!this.getPages.includes(this.currentPageBy4 - 10)) {
-          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 - 10, pageSize: 4 });
+          this.$store.dispatch("zaboesList", {
+            pageNum: this.currentPageBy4 - 10,
+            pageSize: 4
+          });
         }
       }
-    },
+    }
   },
   computed: {
-    zaboes () {
+    zaboes() {
       return this.$store.getters.zaboes;
     },
-    zaboRow () {
+    zaboRow() {
       if (this.windowWidth > 1700) {
         return 4;
       }
@@ -103,7 +116,7 @@ export default {
       }
       return 1;
     },
-    zaboList () {
+    zaboList() {
       let zaboes = this.zaboes;
       if (zaboes.length === 0) return [];
       while (zaboes.length < this.zaboRow * 7) {
@@ -111,42 +124,54 @@ export default {
       }
       return zaboes;
     },
-    zaboRendered () {
+    zaboRendered() {
       const zaboes = this.zaboList;
-      if (this.zaboCursor - (this.zaboRow * 3) < 0) {
-        return zaboes.slice(zaboes.length + (this.zaboCursor - (this.zaboRow * 3)), zaboes.length)
-          .concat(zaboes.slice(0, this.zaboCursor + (this.zaboRow * 4)));
+      if (this.zaboCursor - this.zaboRow * 3 < 0) {
+        return zaboes
+          .slice(
+            zaboes.length + (this.zaboCursor - this.zaboRow * 3),
+            zaboes.length
+          )
+          .concat(zaboes.slice(0, this.zaboCursor + this.zaboRow * 4));
       }
-      if (this.zaboCursor + ((this.zaboRow * 4) - 1) >= zaboes.length) {
-        return zaboes.slice(this.zaboCursor - (this.zaboRow * 3), zaboes.length)
-          .concat(zaboes.slice(0, (this.zaboCursor + (this.zaboRow * 4)) - zaboes.length));
+      if (this.zaboCursor + (this.zaboRow * 4 - 1) >= zaboes.length) {
+        return zaboes
+          .slice(this.zaboCursor - this.zaboRow * 3, zaboes.length)
+          .concat(
+            zaboes.slice(0, this.zaboCursor + this.zaboRow * 4 - zaboes.length)
+          );
       }
-      return zaboes.slice(this.zaboCursor - (this.zaboRow * 3),
-        this.zaboCursor + (this.zaboRow * 4));
+      return zaboes.slice(
+        this.zaboCursor - this.zaboRow * 3,
+        this.zaboCursor + this.zaboRow * 4
+      );
     },
-    currentPageBy4 () {
-      return (this.currentPage % 4) === 0 ?
-        parseInt((this.currentPage / 4) + 1, 10) :
-        parseInt(this.currentPage / 4, 10);
+    currentPageBy4() {
+      return this.currentPage % 4 === 0
+        ? parseInt(this.currentPage / 4 + 1, 10)
+        : parseInt(this.currentPage / 4, 10);
     },
-    prevCategoryIndex () {
-      return ((this.currentCategoryIndex - 1) + this.categories.length) % this.categories.length;
+    prevCategoryIndex() {
+      return (
+        (this.currentCategoryIndex - 1 + this.categories.length) %
+        this.categories.length
+      );
     },
-    nextCategoryIndex () {
+    nextCategoryIndex() {
       return (this.currentCategoryIndex + 1) % this.categories.length;
     },
-    currentCategory () {
+    currentCategory() {
       return this.categories[this.currentCategoryIndex];
     },
-    prevCategory () {
+    prevCategory() {
       return this.categories[this.prevCategoryIndex];
     },
-    nextCategory () {
+    nextCategory() {
       return this.categories[this.nextCategoryIndex];
-    },
+    }
   },
   methods: {
-    pageChange (isNext) {
+    pageChange(isNext) {
       if (isNext) {
         this.currentPage += 1;
         this.currentPage %= this.totalPage;
@@ -162,48 +187,71 @@ export default {
         this.zaboCursor %= this.zaboList.length;
       }
     },
-    categoryChange (isNext) {
-      [].forEach.call(document.getElementsByClassName('ZaboCategory'), (el) => {
-        el.classList.remove('current');
-        el.classList.remove('prev');
-        el.classList.remove('next');
+    categoryChange(isNext) {
+      [].forEach.call(document.getElementsByClassName("ZaboCategory"), el => {
+        el.classList.remove("current");
+        el.classList.remove("prev");
+        el.classList.remove("next");
       });
       if (isNext) {
-        this.currentCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        this.prevCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
-        this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
-        document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
-        document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
+        this.currentCategoryIndex =
+          (this.currentCategoryIndex + 1) % this.categories.length;
+        this.prevCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) %
+          this.categories.length;
+        this.nextCategoryIndex =
+          (this.currentCategoryIndex + 1) % this.categories.length;
+        document
+          .getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0]
+          .classList.add("current");
+        document
+          .getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0]
+          .classList.add("prev");
+        document
+          .getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0]
+          .classList.add("next");
       } else {
-        this.currentCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
-        this.prevCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
-        this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
-        document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
-        document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
+        this.currentCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) %
+          this.categories.length;
+        this.prevCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) %
+          this.categories.length;
+        this.nextCategoryIndex =
+          (this.currentCategoryIndex + 1) % this.categories.length;
+        document
+          .getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0]
+          .classList.add("current");
+        document
+          .getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0]
+          .classList.add("prev");
+        document
+          .getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0]
+          .classList.add("next");
       }
     },
-    getWindowWidth () {
-      this.windowWidth = document.body.clientWidth ||
-        document.documentElement.clientWidth || window.innerWidth;
+    getWindowWidth() {
+      this.windowWidth =
+        document.body.clientWidth ||
+        document.documentElement.clientWidth ||
+        window.innerWidth;
     },
-    classByCategory (category) {
+    classByCategory(category) {
       if (category === this.prevCategory) {
-        return 'prev';
+        return "prev";
       }
       if (category === this.currentCategory) {
-        return 'current';
+        return "current";
       }
       if (category === this.nextCategory) {
-        return 'next';
+        return "next";
       }
-      return '';
-    },
+      return "";
+    }
   },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.getWindowWidth);
-  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.getWindowWidth);
+  }
 };
 </script>
 

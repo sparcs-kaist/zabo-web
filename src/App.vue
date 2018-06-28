@@ -1,7 +1,10 @@
 <template>
   <div id="app">
-    <Header></Header>
-    <router-view/>
+    <template v-if="!loggingIn">
+      <Header @logged-in="handleLogin"></Header>
+      <router-view />
+    </template>
+    <Login v-else @logged-in="handleLogin"></Login>
     <div class="footer">
       <p style="font-size : 15pt; font-weight: 800;">Footer</p>
     </div>
@@ -9,13 +12,31 @@
 </template>
 
 <script>
-import Header from '@/router/Header';
+import Header from "@/router/Header";
+import Login from "@/pages/Login";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Header,
+    Login
   },
+  data() {
+    return {
+      loggingIn: false
+    };
+  },
+  created() {
+    this.$store.dispatch("getMyInfo");
+  },
+  mounted() {
+    // this.$store.dispatch('getMyInfo')
+  },
+  methods: {
+    handleLogin(value) {
+      this.loggingIn = !this.loggingIn;
+    }
+  }
 };
 </script>
 
