@@ -25,8 +25,11 @@ const getters = {
   getPhonenumber(state) {
     return state.currentUser.phone;
   },
-  getName(state) {
-    return state.currentUser.first_name + " " + state.currentUser.last_name;
+  getFirstName(state) {
+    return state.currentUser.first_name;
+  },
+  getLastName(state) {
+    return state.currentUser.last_name;
   }
 };
 

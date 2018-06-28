@@ -4,7 +4,24 @@
       프로필
     </div>
     <img :src="imagesrc" class="profile-image">
-    <p id="name"> {{ name }} </p>
+    <p id="name" v-if = "edit == false"> {{ first_name + " " + last_name }} </p>
+    <v-app id = "namefield" v-if = "edit == true">
+      <v-form v-model = "valid">
+        <v-text-field
+        label = "성"
+        v-model = "new_first_name"
+        :rules = "namerules"
+        required
+        class = "first">
+        </v-text-field>
+        <v-text-field
+        label = "이름"
+        v-model = "new_last_name"
+        :rules = "namerules"
+        required
+        class = "last"></v-text-field>
+      </v-form>
+    </v-app>
     <button v-on:click="tab1" class="tab">
       내 정보<br/>
       <div class="button-active" v-if = "tab == 'tab1'">
@@ -21,8 +38,7 @@
       </div>
     </button>
     <div v-if="tab == 'tab1'">
-      <profile v-on:editor = "editor"></profile>
-
+      <profile v-on:editmode = "edit_toggle" :valid = "valid"></profile>
     </div>
     <div v-else-if="tab == 'tab2'">
       <participated :participatedZaboes="participatedZaboes"></participated>
@@ -41,12 +57,19 @@ export default {
   name: 'userprofile',
   data() {
     return {
+      valid: true,
       user: {
         imagesrc: '',
       },
       edit: false,
       tab: 'tab1',
       participatedZaboes: {},
+      new_first_name: '',
+      new_last_name: '',
+      namerules: [
+        v => !!v || '이름을 입력해주세요.',
+        v => (v && v.length <= 100) || '이름이 너무 길어요.',
+      ],
     };
   },
   components: {
@@ -63,19 +86,31 @@ export default {
     tab3() {
       this.tab = 'tab3';
     },
-    editor() {
-      this.edit = true;
+    edit_toggle() {
+      if (this.edit === false) {
+        this.edit = true;
+      } else if (this.edit === true) {
+        this.$store.commit('SET_USER_NAME', [
+          this.new_first_name,
+          this.new_last_name,
+        ]);
+        this.edit = false;
+      }
     },
   },
   created() {
-    this.name = `${this.currentUser.first_name} ${this.currentUser.last_name}`;
+    this.new_first_name = this.$store.getters.getFirstName;
+    this.new_last_name = this.$store.getters.getLastName;
     this.imagesrc = this.currentUser.profile_image;
     this.$store.dispatch('getParticipatedZaboes');
     this.participatedZaboes = this.$store.getters.participatedZaboes;
   },
   computed: {
-    name() {
-      return this.$store.getters.getName;
+    first_name() {
+      return this.$store.getters.getFirstName;
+    },
+    last_name() {
+      return this.$store.getters.getLastName;
     },
     currentUser() {
       return this.$store.getters.currentUser;
@@ -105,13 +140,15 @@ export default {
   font-family: Nanumsquare;
   font-size: 25pt;
   font-weight: 800;
+  padding-top: 10px;
+  height: 54px;
 }
 
 .profile-image {
   height: 100px;
   width: 100px;
   border-radius: 100px;
-  margin-bottom: -20px;
+  margin-bottom: 20px;
 }
 
 .tabs {
@@ -142,5 +179,21 @@ export default {
 .tab:focus {
   outline: none;
   border: none;
+}
+
+#namefield {
+  background-color: white;
+  height: 70px;
+}
+
+.first {
+  width: 120px;
+  margin-right: 35px;
+  display: inline-block;
+}
+
+.last {
+  width: 170px;
+  display: inline-block;
 }
 </style>
