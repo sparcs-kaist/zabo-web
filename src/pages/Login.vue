@@ -1,18 +1,19 @@
 <template lang=''>
-  <div>
-    <v-app style="background-color: white; text-align: center;">
-      <v-form @submit = "login" id="loginForm" mehtod="get" @submit.prevent="login" class="loginform">
+  <div style="text-align: center;">
+    <img src="@/logo.svg" id="logo">
+    <v-app id="whole">
+      <v-form @submit = "login" id="loginForm" mehtod="get" @submit.prevent="login">
         <v-text-field
         label = "E-mail"
         v-model = "email"
         class = "form"/>
         <br>
         <v-text-field
-        label = "비밀번호"
+        label = "Password"
         v-model = "password"
         type = "password"
         class = "form"/><br>
-        <v-btn type="submit" :flat="true" :outline="true" color="indigo darken-4" class="loginbutton">로그인</v-btn>
+        <v-btn type="submit" depressed color="indigo darken-3" id="login_button">로그인</v-btn>
       </v-form>
     </v-app>
   </div>
@@ -21,26 +22,25 @@
 import axios from "@/axios-auth";
 
 export default {
-  data () {
+  data() {
     return {
       email: "",
       password: ""
-    }
+    };
   },
   methods: {
-    login: async function () {
-      await axios.post(
-        "http://localhost:8000/api-token-auth/",
-        {
+    login: async function() {
+      await axios
+        .post("http://localhost:8000/api-token-auth/", {
           email: this.email,
           password: this.password
-        }
-      )
+        })
         .then(response => {
-          this.$emit('logged-in');
-          localStorage.setItem("token", `ZABO ${response.data.token}`)
+          this.$emit("logged-in");
+          localStorage.setItem("token", `ZABO ${response.data.token}`);
           return console.log(response.data);
-        }).then(this.$store.dispatch('getMyInfo'))
+        })
+        .then(this.$store.dispatch("getMyInfo"))
         // .then(data => {
         //   this.$http({
         //     method: "get",
@@ -53,34 +53,40 @@ export default {
         //   })
         // }
         // )
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
     }
   }
-}
+};
 </script>
 <style lang=''>
-.class {
-  position: absolute;
-  width: 310px;
-  height: 300px;
-  background-color: black;
-  top: 50%;
+#whole {
+  width: 100%;
+  background-color: white;
+  text-align: center;
   /* left: 50%; */
-  margin-top: -155px;
   /* margin-left: -150px; */
 }
 
-.form {
-  display : inline-block;
-  width : 300px;
+#logo {
+  /* display: inline-block; */
+  width: 100px;
+  height: 50px;
+  margin-left: -20px;
+  margin-bottom: 30px;
 }
 
-.loginbutton {
+.form {
+  display: inline-block;
+  width: 300px;
+}
+
+#login_button {
   width: 300px;
   height: 50px;
-  font-size: 34;
+  font-size: 12pt;
   font-family: Nanumsquare;
   font-weight: 700;
+  color: white;
   display: inline-block;
 }
 </style>
