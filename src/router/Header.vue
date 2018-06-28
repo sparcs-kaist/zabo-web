@@ -23,9 +23,16 @@
       <div class="button right">
         Translate
       </div>
-      <div @click="login" class="button right">
-        Login
-      </div>
+      <template v-if="loggedInState">
+        <div @click="logout" class="button right">
+          Logout
+        </div>
+      </template>
+      <template v-else>
+        <div @click="login" class="button right">
+          Login
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -36,6 +43,9 @@ export default {
   methods: {
     login: function () {
       this.$emit('logged-in');
+    },
+    logout: function () {
+      this.$store.commit('LOGOUT')
     }
   },
   computed: {
@@ -46,7 +56,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .sandbox {
   width: 100%;
   height: 78px;

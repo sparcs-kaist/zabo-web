@@ -36,9 +36,11 @@ const mutations = {
   },
   [types.LOGIN](state, payload) {
     state.loggedInState = true;
+    state.currentUser = payload;
   },
   [types.LOGOUT](state, payload) {
     state.loggedInState = false;
+    state.currentUser = {};
   }
 };
 

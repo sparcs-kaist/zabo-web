@@ -30,7 +30,19 @@ export default {
           this.$emit('logged-in');
           localStorage.setItem("token", `ZABO ${response.data.token}`)
           return console.log(response.data);
-        })
+        }).then(this.$store.dispatch('getMyInfo'))
+        // .then(data => {
+        //   this.$http({
+        //     method: "get",
+        //     url: "http://localhost:8000/api/users/myInfo",
+        //     headers: {
+        //       Authorization: localStorage.getItem('token')
+        //     }
+        //   }).then(result => {
+        //     this.$store.commit("LOGIN", result.data)
+        //   })
+        // }
+        // )
         .catch(err => console.log(err))
     }
   }

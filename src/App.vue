@@ -4,7 +4,7 @@
       <Header @logged-in="handleLogin"></Header>
       <router-view />
     </template>
-    <Login @logged-in="handleLogin" v-else></Login>
+    <Login v-else @logged-in="handleLogin"></Login>
     <div class="footer">
       <p style="font-size : 15pt; font-weight: 800;">Footer</p>
     </div>
@@ -27,6 +27,10 @@ export default {
     }
   },
   created () {
+    this.$store.dispatch('getMyInfo')
+  },
+  mounted () {
+    // this.$store.dispatch('getMyInfo')
   },
   methods: {
     handleLogin (value) {

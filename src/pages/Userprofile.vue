@@ -3,30 +3,30 @@
     <div class="user-profile">
       프로필
     </div>
-    <img v-bind:src = "imagesrc" class = "profile-image" v-cloak>
+    <img v-bind:src="imagesrc" class="profile-image" v-cloak>
     <p id="name"> {{ name }} </p>
     <button v-on:click="tab1" class="tab">
       내 정보<br/>
-      <div class="button-active" v-if = "tab == 'tab1'">
+      <div class="button-active" v-if="tab == 'tab1'">
       </div>
     </button>
     <button v-on:click="tab2" class="tab">
       참여한 자보<br/>
-      <div class="button-active" v-if = "tab == 'tab2'">
+      <div class="button-active" v-if="tab == 'tab2'">
       </div>
     </button>
     <button v-on:click="tab3" class="tab">
       찜한 자보<br/>
-      <div class="button-active" v-if = "tab == 'tab3'">
+      <div class="button-active" v-if="tab == 'tab3'">
       </div>
     </button>
-    <div v-if = "tab == 'tab1'">
+    <div v-if="tab == 'tab1'">
       내 정보
     </div>
-    <div v-else-if = "tab == 'tab2'">
+    <div v-else-if="tab == 'tab2'">
       참여한 자보
     </div>
-    <div v-else-if = "tab == 'tab3'">
+    <div v-else-if="tab == 'tab3'">
       찜한 자보
     </div>
 
@@ -38,7 +38,7 @@ import Participated from "./Userprofile/Participated.vue";
 
 export default {
   name: "userprofile",
-  data() {
+  data () {
     return {
       name: "",
       imagesrc: "",
@@ -46,25 +46,25 @@ export default {
     };
   },
   methods: {
-    tab1: function() {
+    tab1: function () {
       this.tab = "tab1";
     },
-    tab2: function() {
+    tab2: function () {
       this.tab = "tab2";
     },
-    tab3: function() {
+    tab3: function () {
       this.tab = "tab3";
     }
   },
-  created: function() {
+  mounted: function () {
     this.$http({
       method: "get",
-      url: "http://localhost:8000/users/1",
-      auth: {
-        username: "thinkratomos@gmail.com",
-        password: "Michael5"
+      url: "http://localhost:8000/api/users/myInfo",
+      headers: {
+        Authorization: localStorage.getItem('token')
       }
     }).then(result => {
+      console.log(result)
       this.name = result.data.first_name + " " + result.data.last_name;
       this.imagesrc = result.data.profile_image;
       this.data = result.data;
@@ -73,7 +73,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 [v-cloak] {
   display: block;
 }

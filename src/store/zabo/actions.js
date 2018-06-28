@@ -44,11 +44,25 @@ const actions = {
       currentUser: { id }
     } = state;
     return this.$http
-      .get(`http://localhost:8000/users/${id}`)
+      .get(`/users/${id}`)
       .then(response => response.json())
       .then(json => {
         commit(types.GET_PARTICIPATED_ZABOES, json);
         return console.log(json);
+      })
+      .catch(err => console.log(err));
+  },
+  getMyInfo({ commit, state }, payload) {
+    console.log(state.loggedInState);
+    fetch("http://localhost:8000/api/users/myInfo", {
+      method: "get",
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    })
+      .then(response => response.json())
+      .then(json => {
+        commit(types.LOGIN, json);
       })
       .catch(err => console.log(err));
   }
