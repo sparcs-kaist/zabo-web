@@ -41,6 +41,7 @@ const mutations = {
   [types.LOGOUT](state, payload) {
     state.loggedInState = false;
     state.currentUser = {};
+    localStorage.removeItem("token");
   }
 };
 

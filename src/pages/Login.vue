@@ -27,10 +27,11 @@ export default {
         }
       )
         .then(response => {
-          this.$emit('logged-in');
           localStorage.setItem("token", `ZABO ${response.data.token}`)
+          this.$emit('logged-in');
+          this.$store.dispatch('getMyInfo')
           return console.log(response.data);
-        }).then(this.$store.dispatch('getMyInfo'))
+        })
         // .then(data => {
         //   this.$http({
         //     method: "get",
