@@ -16,6 +16,9 @@ const getters = {
   currentUser(state) {
     return state.currentUser;
   },
+  getMyID(state) {
+    return state.currentUser.id;
+  },
   getEmail(state) {
     return state.currentUser.email;
   },

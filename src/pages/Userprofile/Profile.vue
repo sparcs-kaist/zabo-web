@@ -1,13 +1,13 @@
 <template lang=''>
 <v-app id="template">
   <div class = "whole">
-    <v-btn :disabled="!valid" @click = "edittoggle"  color = "indigo darken-4" style="font-family:Nanumsquare; width : 130px; color:white" :loading="loading2">
+    <v-btn :disabled="!valid" @click = "edittoggle" :flat="true" :color = "color" style="font-family:Nanumsquare; font-weight:700; width : 130px;" >
       {{edit}}
     </v-btn><br/>
     <p v-if = "edit === '프로필 편집'">
       {{ phone }}
     </p>
-    <v-form v-model = "valid" v-if = "edit === '확인'">
+    <v-form v-model = "valid" v-if = "edit === '저장'">
       <v-text-field
       label = "전화번호"
       v-model = "new_phone"
@@ -19,14 +19,14 @@
 </template>
 <script>
 export default {
-  name: 'Profile',
-  props: ['valid'],
+  name: "Profile",
+  props: ["valid", "first", "last"],
   data() {
     return {
-      edit: '프로필 편집',
-      new_first_name: '',
-      new_last_name: '',
-      new_phone: '',
+      edit: "프로필 편집",
+      new_first_name: "",
+      new_last_name: "",
+      new_phone: ""
     };
   },
   created() {
@@ -42,19 +42,27 @@ export default {
     phone() {
       return this.$store.getters.getPhonenumber;
     },
+    color() {
+      return this.edit === "프로필 편집" ? "black" : "red";
+    }
   },
   methods: {
     edittoggle() {
-      if (this.edit === '프로필 편집') {
-        this.$emit('editmode');
-        this.edit = '확인';
-      } else if (this.edit === '확인') {
-        this.$emit('editmode');
-        this.name = this.$store.getters.getName;
-        this.edit = '프로필 편집';
+      if (this.edit === "프로필 편집") {
+        this.$emit("editmode");
+        this.edit = "저장";
+      } else if (this.edit === "저장") {
+        var payload = [
+          this.first,
+          this.last,
+          this.new_phone
+        ]
+        this.$emit("editmode");
+        this.$store.dispatch("setMyInfo", payload);
+        this.edit = "프로필 편집";
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang=''>

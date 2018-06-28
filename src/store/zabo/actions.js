@@ -52,8 +52,9 @@ const actions = {
       })
       .catch(err => console.log(err));
   },
-  getMyInfo({ commit, state }, payload) {
+  getMyInfo({ commit, state }) {
     console.log(state.loggedInState);
+    console.log("getmyinfo");
     fetch("http://localhost:8000/api/users/myInfo", {
       method: "get",
       headers: {
@@ -65,20 +66,41 @@ const actions = {
         commit(types.LOGIN, json);
       })
       .catch(err => console.log(err));
+  },
+  setMyInfo({ commit, dispatch, state }, payload) {
+    const {
+      currentUser: { id }
+    } = state;
+    console.log(payload);
+    fetch(`http://localhost:8000/api/users/${id}/`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token")
+      },
+      body : JSON.stringify({
+        "first_name" : payload[0],
+        "last_name" : payload[1],
+        "phone" : payload[2]
+      })
+    }).then(function(response) {
+      fetch(`http://localhost:8000/api/users/${id}`, {
+        method: "GET",
+        headers: {
+          'Authorization' : localStorage.getItem("token")
+        }
+      })
+      .then(function(response){
+        return response.json()
+      })
+      .then(function(response){
+        commit("SET_CURRENT_USER", response);
+      })
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
   }
-  // zaboUpdate({ commit }, zabo) {
-  //   axios.patch(`/zaboes/${zabo.pk}/`, zabo)
-  //     .then((res) => {
-  //       const result = res.data.result;
-  //       commit(types.ZABO_UPDATE, result);
-  //     });
-  // },
-  // zaboDelete({ commit }, zabo) {
-  //   axios.delete(`/zaboes/${zabo.pk}/`)
-  //     .then(() => {
-  //       commit(types.ZABO_DELETE);
-  //     });
-  // },
 };
 
 export default actions;

@@ -38,10 +38,10 @@
       </div>
     </button>
     <div v-if="tab == 'tab1'">
-      <profile v-on:editmode = "edit_toggle" :valid = "valid"></profile>
+      <profile v-on:editmode = "edit_toggle" :valid = "valid" :first = "new_first_name" :last = "new_last_name"></profile>
     </div>
     <div v-else-if="tab == 'tab2'">
-      <participated :participatedZaboes="participatedZaboes"></participated>
+      <!-- <participated :participatedZaboes="participatedZaboes"></participated> -->
     </div>
     <div v-else-if="tab == 'tab3'">
       찜한 자보
@@ -90,10 +90,6 @@ export default {
       if (this.edit === false) {
         this.edit = true;
       } else if (this.edit === true) {
-        this.$store.commit("SET_USER_NAME", [
-          this.new_first_name,
-          this.new_last_name
-        ]);
         this.edit = false;
       }
     }
@@ -102,7 +98,7 @@ export default {
     this.new_first_name = this.$store.getters.getFirstName;
     this.new_last_name = this.$store.getters.getLastName;
     this.imagesrc = this.currentUser.profile_image;
-    this.$store.dispatch("getParticipatedZaboes");
+    // this.$store.dispatch("getParticipatedZaboes");
     this.participatedZaboes = this.$store.getters.participatedZaboes;
   },
   computed: {
