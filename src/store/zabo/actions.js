@@ -81,7 +81,8 @@ const actions = {
       body : JSON.stringify({
         "first_name" : payload[0],
         "last_name" : payload[1],
-        "phone" : payload[2]
+        "nickName" : payload[2],
+        "phone" : payload[3]
       })
     }).then(function(response) {
       fetch(`http://localhost:8000/api/users/${id}`, {

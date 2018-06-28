@@ -19,6 +19,9 @@ const getters = {
   getMyID(state) {
     return state.currentUser.id;
   },
+  getNickName(state) {
+    return state.currentUser.nickName;
+  },
   getEmail(state) {
     return state.currentUser.email;
   },

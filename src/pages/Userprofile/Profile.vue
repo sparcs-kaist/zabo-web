@@ -1,16 +1,25 @@
 <template lang=''>
 <v-app id="template">
   <div class = "whole">
-    <v-btn :disabled="!valid" @click = "edittoggle" :flat="true" :color = "color" style="font-family:Nanumsquare; font-weight:700; width : 130px;" >
+    <v-btn :disabled="!valid" @click = "edittoggle" :flat="true" :outline="true" :color = "color" style="font-family:Nanumsquare; font-weight:700; width : 130px;" >
       {{edit}}
     </v-btn><br/>
     <p v-if = "edit === '프로필 편집'">
       {{ phone }}
+      <br>
+      {{ nick_name }}
+      <br>
     </p>
+      {{ email }}
     <v-form v-model = "valid" v-if = "edit === '저장'">
       <v-text-field
       label = "전화번호"
       v-model = "new_phone"
+      class = "textform">
+      </v-text-field>
+      <v-text-field
+      label = "닉네임"
+      v-model = "new_nick_name"
       class = "textform">
       </v-text-field>
     </v-form>
@@ -26,10 +35,12 @@ export default {
       edit: "프로필 편집",
       new_first_name: "",
       new_last_name: "",
+      new_nick_name: "",
       new_phone: ""
     };
   },
   created() {
+    this.new_nick_name = this.nick_name;
     this.new_phone = this.phone;
   },
   computed: {
@@ -42,8 +53,14 @@ export default {
     phone() {
       return this.$store.getters.getPhonenumber;
     },
+    nick_name() {
+      return this.$store.getters.getNickName;
+    },
+    email() {
+      return this.$store.getters.getEmail;
+    },
     color() {
-      return this.edit === "프로필 편집" ? "black" : "red";
+      return this.edit === "프로필 편집" ? "gray" : "red";
     }
   },
   methods: {
@@ -55,6 +72,7 @@ export default {
         var payload = [
           this.first,
           this.last,
+          this.new_nick_name,
           this.new_phone
         ]
         this.$emit("editmode");
