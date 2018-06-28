@@ -121,6 +121,7 @@ export default {
   height: 2000px;
   margin-left: 15%;
   margin-top: 90px;
+  text-align: center;
 }
 
 .user-profile {
