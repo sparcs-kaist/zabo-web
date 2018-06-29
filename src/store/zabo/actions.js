@@ -60,9 +60,11 @@ const actions = {
         Authorization: localStorage.getItem("token")
       }
     })
-      .then(response => response.json())
-      .then(json => {
-        commit(types.LOGIN, json);
+      .then(response => {
+        if (response.status !== 401) {
+          // console.log(response);
+          commit(types.LOGIN, response.json());
+        }
       })
       .catch(err => console.log(err));
   }

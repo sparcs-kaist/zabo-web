@@ -31,9 +31,7 @@ export default {
   created () {
     this.$store.dispatch('getMyInfo')
   },
-  mounted () {
-    // this.$store.dispatch('getMyInfo')
-  },
+  mounted () { },
   methods: {
     handleLogin (value) {
       this.loggingIn = !this.loggingIn;
