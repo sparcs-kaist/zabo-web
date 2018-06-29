@@ -40,6 +40,12 @@ const mutations = {
   [types.SET_CURRENT_USER](state, payload) {
     state.currentUser = payload;
   },
+  [types.GOT_RESPONSE](state) {
+    state.getResponse = true;
+  },
+  [types.START_AJAX](state) {
+    state.getResponse = false;
+  },
   [types.LOGIN](state, payload) {
     state.loggedInState = true;
     state.currentUser = payload;

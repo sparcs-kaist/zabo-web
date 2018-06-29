@@ -39,6 +39,9 @@ const getters = {
   },
   loggedInState(state) {
     return state.loggedInState;
+  },
+  isAjaxfinished(state) {
+    return state.getResponse;
   }
 };
 

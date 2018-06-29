@@ -11,5 +11,8 @@ export const ZABO_UPDATE = "ZABO_UPDATE";
 export const GET_PARTICIPATED_ZABOES = "GET_PARTICIPATED_ZABOES";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 
+export const GOT_RESPONSE = "GOT_RESPONSE";
+export const START_AJAX = "START_AJAX";
+
 export const LOGOUT = "LOGOUT";
 export const LOGIN = "LOGIN";

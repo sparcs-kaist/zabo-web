@@ -58,9 +58,7 @@ export default {
   data() {
     return {
       valid: true,
-      user: {
-        imagesrc: ""
-      },
+      imagesrc: "",
       edit: false,
       tab: "tab1",
       participatedZaboes: {},
@@ -145,6 +143,7 @@ export default {
   height: 100px;
   width: 100px;
   border-radius: 100px;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 

@@ -9,7 +9,8 @@ export default {
     zaboesPageCount: "",
     participatedZaboes: {},
     currentUser: {},
-    loggedInState: false
+    loggedInState: false,
+    getResponse: true
   },
   actions,
   mutations,

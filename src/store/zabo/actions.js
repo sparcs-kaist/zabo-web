@@ -71,36 +71,37 @@ const actions = {
     const {
       currentUser: { id }
     } = state;
-    console.log(payload);
+    commit("START_AJAX");
     fetch(`http://localhost:8000/api/users/${id}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token")
       },
-      body : JSON.stringify({
-        "first_name" : payload[0],
-        "last_name" : payload[1],
-        "nickName" : payload[2],
-        "phone" : payload[3]
-      })
-    }).then(function(response) {
-      fetch(`http://localhost:8000/api/users/${id}`, {
-        method: "GET",
-        headers: {
-          'Authorization' : localStorage.getItem("token")
-        }
-      })
-      .then(function(response){
-        return response.json()
-      })
-      .then(function(response){
-        commit("SET_CURRENT_USER", response);
+      body: JSON.stringify({
+        first_name: payload[0],
+        last_name: payload[1],
+        nickName: payload[2],
+        phone: payload[3]
       })
     })
-    .catch(function(error) {
-      console.log(error);
-    });
+      .then(function(response) {
+        fetch(`http://localhost:8000/api/users/${id}`, {
+          method: "GET",
+          headers: {
+            Authorization: localStorage.getItem("token")
+          }
+        })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(response) {
+            commit("SET_CURRENT_USER", response);
+          });
+      })
+      .then(function() {
+        commit("GOT_RESPONSE");
+      });
   }
 };
 
