@@ -12,6 +12,9 @@ const getters = {
   },
   loggedInState(state) {
     return state.loggedInState;
+  },
+  mainZaboSeen(state) {
+    return state.mainZaboSeen;
   }
 };
 

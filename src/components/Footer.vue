@@ -37,12 +37,12 @@ export default {
 }
 .column:first-child {
   justify-content: flex-start;
-  font-size: 15pt;
+  font-size: 1em;
   font-weight: 400;
 }
 .column:last-child {
   justify-content: flex-end;
-  font-size: 12pt;
+  font-size: 0.75em;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.6);
   padding-right: 27px;
@@ -53,7 +53,7 @@ export default {
   margin-left: 27px;
 }
 .image {
-  height: 2em;
+  height: 23px;
   /* margin-top: 18px;
   margin-left: 27px; */
 }

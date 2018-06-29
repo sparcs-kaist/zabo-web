@@ -41,6 +41,9 @@ const mutations = {
   [types.LOGOUT](state, payload) {
     state.loggedInState = false;
     state.currentUser = {};
+  },
+  [types.MAIN_ZABO_SEEN](state, payload) {
+    state.mainZaboSeen = true;
   }
 };
 
