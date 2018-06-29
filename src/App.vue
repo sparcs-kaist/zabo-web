@@ -5,21 +5,21 @@
       <router-view />
     </template>
     <Login v-else @logged-in="handleLogin"></Login>
-    <div class="footer">
-      <p style="font-size : 15pt; font-weight: 800;">Footer</p>
-    </div>
+    <Footer />
   </div>
 </template>
 
 <script>
-import Header from "@/router/Header";
+import Header from "@/pages/Header";
+import Footer from "@/pages/Footer";
 import Login from "@/pages/Login";
 
 export default {
   name: "App",
   components: {
     Header,
-    Login
+    Login,
+    Footer
   },
   data () {
     return {
@@ -46,7 +46,7 @@ body {
 }
 
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "NanumSquare", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
