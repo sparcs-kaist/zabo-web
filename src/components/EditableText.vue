@@ -1,21 +1,22 @@
 <template>
-  <div class="textbox" contenteditable="true" @input="$emit('update:content', $event.target.innerText)" placeholder="리뷰를 입력하세요...">
-  </div>
+  <!-- <div class="textbox" contenteditable="true" @input="$emit('update:content', $event.target.innerText)" placeholder="리뷰를 입력하세요..."> -->
+  <div></div>
+  <!-- </div> -->
 </template>
 
 <script>
 export default {
   props: ['content'],
   methods: {
-    emitChange(e) {
+    emitChange (e) {
       this.$emit('update', e.target.innerText);
     },
   },
-  mounted() {
+  mounted () {
     this.$el.innerText = this.content;
   },
   watch: {
-    content() {
+    content () {
       this.$el.innerText = this.content;
     },
   },

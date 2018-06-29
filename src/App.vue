@@ -2,7 +2,9 @@
   <div id="app">
     <template v-if="!loggingIn">
       <Header @logged-in="handleLogin"></Header>
-      <router-view />
+      <div class="headerMargin">
+        <router-view />
+      </div>
     </template>
     <Login v-else @logged-in="handleLogin"></Login>
     <Footer />
@@ -49,9 +51,13 @@ body {
   font-family: "NanumSquare", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  /* text-align: center; */
+  /* color: #2c3e50; */
   overflow: hidden;
+}
+
+.headerMargin {
+  margin-top: 78px;
 }
 
 .footer {

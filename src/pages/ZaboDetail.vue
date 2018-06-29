@@ -1,47 +1,43 @@
 <template>
-  <div class="root">
-    Header Component
-    <div class="main">
-
-      <div class="left">
-        <div class="headerStyle">
-          <p class="heading">Event name</p>
-          <p class="subheading">Date</p>
-          <div class="buttonRow">
-            <div class="joinButton">참여하기</div>
-            <div class="wishlistButton">찜하기</div>
-          </div>
-          <div class="navbar">
-            <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">Info</p>
-            <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
-          </div>
-          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요...">
-          </input-field>
+  <div class="main">
+    <div class="column">
+      <div class="headerStyle">
+        <p class="heading">Event name</p>
+        <p class="subheading">2018/06/29</p>
+        <div class="buttonWrapper">
+          <button class="buttonTap">참여하기</button>
+          <button class="buttonTap">찜하기</button>
         </div>
-
-        <div class="bodyStyle" v-show="toDisplay === 0">
-          <info-screen :info="this.info" />
+        <div class="navbar">
+          <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">Info</p>
+          <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
         </div>
-        <div class="bodyStyle" v-show="toDisplay === 1">
-          <review-screen :comments="comments" />
-        </div>
+        <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+        </input-field>
       </div>
 
-      <div class="right">
-        <img :src="this.img" height="450" width="340" />
+      <div class="bodyWrapper" v-show="toDisplay === 0">
+        <info-screen :info="this.info" />
       </div>
+      <div class="bodyWrapper" v-show="toDisplay === 1">
+        <review-screen :comments="comments" />
+      </div>
+    </div>
+
+    <div class="column">
+      <img :src="this.img" height="600" width="500" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
-import InfoScreen from '../components/InfoScreen';
-import InputField from '../components/InputField';
-import ReviewScreen from '../components/ReviewScreen';
+import InfoScreen from '@/components/InfoScreen';
+import InputField from '@/components/InputField';
+import ReviewScreen from '@/components/ReviewScreen';
 
 export default {
-  data() {
+  data () {
     return {
       comments: [],
       img: '',
@@ -58,7 +54,7 @@ export default {
     ReviewScreen,
   },
   methods: {
-    onSubmitComment() {
+    onSubmitComment () {
       axios({
         method: 'post',
         url: 'http://localhost:12345/api/comments/',
@@ -82,11 +78,11 @@ export default {
         });
       this.newComment = '';
     },
-    selectTab(selected) {
+    selectTab (selected) {
       this.toDisplay = selected;
     },
   },
-  mounted() {
+  mounted () {
     this.zabo_id = this.$route.params.zabo_id;
     axios({
       method: 'get',
@@ -110,97 +106,86 @@ export default {
 </script>
 
 <style scoped>
-.bodyStyle {
+.main {
+  background-color: rgb(128, 128, 128);
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+  height: calc(100vh - 146px);
+}
+.bodyWrapper {
   color: white;
-  height: 65%;
-  overflow-y: auto;
   margin: 20px 50px 50px 50px;
 }
 /* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
 .bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
 /* .root::-webkit-scrollbar{ display: none;}
 .root::-webkit-scrollbar:hover { display: none;} */
-.buttonRow {
-  align-items: center;
-  display: flex;
-  margin: 24px 0;
-}
 .headerStyle {
-  color: rgb(220, 220, 220);
   display: flex;
   flex-direction: column;
-  height: 35%;
-  margin: 50px 50px 0 50px;
 }
 .heading {
-  font-size: 2em;
+  color: rgb(255, 255, 255);
+  font-size: 3.8em;
   font-weight: bold;
   letter-spacing: 0.01em;
   margin: 0;
   text-align: left;
 }
-.joinButton {
-  background-color: rgb(15, 59, 120);
-  color: white;
-  cursor: pointer;
-  font-size: 1em;
+.subheading {
+  color: rgb(220, 220, 220);
   font-weight: bold;
-  height: 1.1em;
-  margin-right: 16px;
-  padding: 7px 24px;
-  text-align: center;
-  vertical-align: center;
+  font-size: 1.25em;
+  margin-top: 17px;
+  margin-bottom: 20px;
+  text-align: left;
 }
-.left {
+.buttonWrapper {
+  display: flex;
+  margin-bottom: 24px;
+}
+.buttonTap {
+  cursor: pointer;
+  font-size: 1.4em;
+  font-weight: bold;
+  margin-right: 16px;
+  padding: 11px 38px 10px 38px;
+  display: flex;
+  background-color: rgb(18, 57, 125);
+  color: white;
+}
+.buttonTap:last-child {
+  background-color: #e6e6e6;
+  color: #606060;
+}
+.column {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 60%;
+  width: 50%;
 }
-.main {
-  background-color: rgb(128, 128, 128);
-  display: flex;
-  height: 100%;
-  margin: 10px 50px 50px 50px;
+.column:first-child {
+  padding-top: 92px;
+  padding-left: 50px;
+}
+.column:last-child {
+  justify-content: center;
+  align-items: center;
 }
 .navbar {
   display: flex;
   justify-content: flex-start;
-  margin: 12px 0 25px 0;
-}
-.right {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 40%;
-}
-.root {
-  min-width: 100vw;
-  height: 100vh;
+  margin: 0.75em 0 1em 0;
 }
 .selected {
   color: #fff;
   font-weight: bold;
 }
-.subheading {
-  font-weight: bold;
-  margin: 0;
-  text-align: left;
-}
 .tab {
   color: rgb(220, 220, 220);
   cursor: pointer;
   margin: 0 16px 0 0;
-}
-.wishlistButton {
-  background-color: rgb(230, 230, 230);
-  color: rgb(80, 80, 80);
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
-  height: 1.1em;
-  padding: 7px 12px;
-  text-align: center;
+  font-size: 1.6em;
 }
 </style>

@@ -1,10 +1,20 @@
 <template lang=''>
   <div>
-    <form id="loginForm" mehtod="get" @submit.prevent="login">
-      <input type="text" v-model="email" />
-      <input type="password" v-model="password" />
-    </form>
-    <button type="submit" form="loginForm" value="Submit">Submit</button>
+    <v-app style="background-color: white; text-align: center;">
+      <v-form @submit = "login" id="loginForm" mehtod="get" @submit.prevent="login" class="loginform">
+        <v-text-field
+        label = "E-mail"
+        v-model = "email"
+        class = "form"/>
+        <br>
+        <v-text-field
+        label = "비밀번호"
+        v-model = "password"
+        type = "password"
+        class = "form"/><br>
+        <v-btn type="submit" :flat="true" :outline="true" color="indigo darken-4" class="loginbutton">로그인</v-btn>
+      </v-form>
+    </v-app>
   </div>
 </template>
 <script>
@@ -49,4 +59,28 @@ export default {
 }
 </script>
 <style lang=''>
+.class {
+  position: absolute;
+  width: 310px;
+  height: 300px;
+  background-color: black;
+  top: 50%;
+  /* left: 50%; */
+  margin-top: -155px;
+  /* margin-left: -150px; */
+}
+
+.form {
+  display : inline-block;
+  width : 300px;
+}
+
+.loginbutton {
+  width: 300px;
+  height: 50px;
+  font-size: 34;
+  font-family: Nanumsquare;
+  font-weight: 700;
+  display: inline-block;
+}
 </style>
