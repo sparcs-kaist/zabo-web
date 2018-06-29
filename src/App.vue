@@ -1,27 +1,32 @@
 <template>
   <div id="app">
-    <template v-if="!loggingIn">
-      <Header @logged-in="handleLogin"></Header>
-      <div class="headerMargin">
-        <router-view />
-      </div>
+    <template v-if="mainZaboSeen">
+      <template v-if="!loggingIn">
+        <Header @logged-in="handleLogin"></Header>
+        <div class="headerMargin">
+          <router-view />
+        </div>
+      </template>
+      <Login v-else @logged-in="handleLogin"></Login>
+      <Footer />
     </template>
-    <Login v-else @logged-in="handleLogin"></Login>
-    <Footer />
+    <MainZabo v-else></MainZabo>
   </div>
 </template>
 
 <script>
-import Header from "@/pages/Header";
-import Footer from "@/pages/Footer";
-import Login from "@/pages/Login";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import Login from "@/components/Login";
+import MainZabo from '@/components/MainZabo';
 
 export default {
   name: "App",
   components: {
     Header,
     Login,
-    Footer
+    Footer,
+    MainZabo
   },
   data () {
     return {
@@ -29,12 +34,17 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('getMyInfo')
+    this.$store.dispatch('getMyInfo');
+    this.mainZaboSeen = this.$store.getters.mainZaboSeen
   },
-  mounted () { },
   methods: {
     handleLogin (value) {
       this.loggingIn = !this.loggingIn;
+    }
+  },
+  computed: {
+    mainZaboSeen: function () {
+      return this.$store.getters.mainZaboSeen
     }
   }
 };
@@ -43,6 +53,9 @@ export default {
 <style>
 body {
   margin: 0;
+}
+p {
+  line-height: 1.6;
 }
 
 #app {
@@ -53,11 +66,9 @@ body {
   /* color: #2c3e50; */
   overflow: hidden;
 }
-
 .headerMargin {
   margin-top: 78px;
 }
-
 .footer {
   width: 100%;
   height: 65px;

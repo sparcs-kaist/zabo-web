@@ -42,6 +42,9 @@ const mutations = {
     state.loggedInState = false;
     state.currentUser = {};
     localStorage.removeItem("token");
+  },
+  [types.MAIN_ZABO_SEEN](state, payload) {
+    state.mainZaboSeen = true;
   }
 };
 

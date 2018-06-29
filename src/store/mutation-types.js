@@ -12,3 +12,4 @@ export const GET_PARTICIPATED_ZABOES = "ZABO_PARTICIPATED_ZABOES";
 export const LOGOUT = "LOGOUT";
 export const LOGIN = "LOGIN";
 export const SET_LANG = "SET_LANG";
+export const MAIN_ZABO_SEEN = "MAIN_ZABO_SEEN";
