@@ -1,6 +1,12 @@
 <template>
   <div class="zaboThumbnail"
-       :class="`row${parseInt( row )}`">
+       :class="`row${parseInt( row )}`"
+       v-if="!isRealZabo">
+    <div class="thumbnail"></div>
+  </div>
+  <div class="zaboThumbnail"
+       :class="`row${parseInt( row )}`"
+       v-else>
     <router-link
       v-if="row === 4"
       class="zaboDetailRouter"
@@ -8,18 +14,11 @@
       <div class="thumbnail"
            @click="showModal1"
            :style="style">
-        <p>
-          {{ zaboDetail.content }}
-        </p>
       </div>
     </router-link>
     <div class="thumbnail"
-         @click="showModal1"
          :style="style"
          v-else>
-      <p>
-        {{ zaboDetail.content }}
-      </p>
     </div>
     <transition name="modal">
       <div class="modalContainer" v-show="visible1" @click.self="hideModal1">
@@ -73,6 +72,9 @@ export default {
         style = `background-image: url(${this.zaboDetail.posters[0].image});`;
       }
       return style;
+    },
+    isRealZabo() {
+      return typeof this.zaboDetail !== 'undefined';
     },
   },
   methods: {
@@ -135,19 +137,19 @@ export default {
 }
 
 .zaboThumbnail.row2 {
-  margin-bottom: -40px;
+  margin-bottom: 338px;
 }
 
 .zaboThumbnail.row3 {
-  margin-bottom: -20px;
+  margin-bottom: 170px;
 }
 
 .zaboThumbnail.row5 {
-  margin-top: -20px;
+  margin-top: 170px;
 }
 
 .zaboThumbnail.row6 {
-  margin-top: -40px;
+  margin-top: 338px;
 }
 
 .zaboDetailRouter {
@@ -161,7 +163,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  background-color: rgba(217, 217, 217, 1);
+  background-color: rgba(220, 220, 220, 1);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50%;
@@ -169,14 +171,15 @@ export default {
 
 .modalContainer {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  top: calc(50% - 20px);
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
+  transform: translateX(-50%) translateY(-50%);
 }
 
 .thumbnailDetail {
