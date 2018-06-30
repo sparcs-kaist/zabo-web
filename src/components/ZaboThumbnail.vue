@@ -1,15 +1,34 @@
 <template>
   <div class="zaboThumbnail"
-       :class="`row${parseInt( row )}`">
+       :class="`row${parseInt( row )}`"
+       v-if="!isRealZabo">
+    <div class="thumbnail"></div>
+  </div>
+  <div class="zaboThumbnail"
+       :class="`row${parseInt( row )}`"
+       v-else>
+    <router-link
+      v-if="row === 4"
+      class="zaboDetailRouter"
+      :to="{ name: 'ZaboDetail', params: { category: category, zabo_id: zaboDetail.id } }">
+      <div class="thumbnail"
+           @click="showModal1"
+           :style="style">
+      </div>
+    </router-link>
     <div class="thumbnail"
-         @hover="zaboThumbnailDetailShow()"
-         :style="style">
-      <p>
-        {{ zaboDetail.content }}
-      </p>
+         :style="style"
+         v-else>
     </div>
-    <div class="thumbnailDetail">
-    </div>
+    <transition name="modal">
+      <div class="modalContainer" v-show="visible1" @click.self="hideModal1">
+        <modal
+          class="thumbnailDetail"
+          :visible="visible1">
+          <router-view></router-view>
+        </modal>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -19,6 +38,10 @@ export default {
     zaboDetail: {
       type: Object,
       default: () => {},
+    },
+    category: {
+      type: String,
+      default: '',
     },
     number: {
       type: Number,
@@ -31,11 +54,16 @@ export default {
   },
   data() {
     return {
+      visible1: false,
     };
   },
   created() {
+    this.checkDetailPage();
     console.log(this.zaboDetail.posters[0]);
     console.log(this.zaboDetail);
+  },
+  watch: {
+    '$route': 'checkDetailPage',
   },
   computed: {
     style() {
@@ -45,16 +73,44 @@ export default {
       }
       return style;
     },
+    isRealZabo() {
+      return typeof this.zaboDetail !== 'undefined';
+    },
   },
   methods: {
-    zaboThumbnailDetailShow() {
-      document.getElementsByClassName('thumbnailDetail')[this.number].style.display = 'block';
+    checkDetailPage() {
+      if (this.$route.path.includes('/zabo/detail/')) {
+        if (parseInt(this.$route.params.zabo_id, 10) === this.zaboDetail.id &&
+        this.$route.params.category === this.category) {
+          this.showModal1();
+        }
+      }
+    },
+    showModal1() {
+      this.visible1 = true;
+    },
+    hideModal1() {
+      console.log(this.$store.getters.detailPageFrom);
+      this.visible1 = false;
+      this.$router.push({ name: 'Zabo' });
     },
   },
 };
 </script>
 
 <style scoped>
+.modal-enter, .modal-leave-to {
+  opacity: 0
+}
+
+.modal-enter-active {
+  transition: opacity .5s;
+}
+
+.modal-leave-active {
+  transition: 0s;
+}
+
 .zaboThumbnail.row1 .thumbnail, .zaboThumbnail.row7 .thumbnail {
   display: none;
 }
@@ -81,19 +137,24 @@ export default {
 }
 
 .zaboThumbnail.row2 {
-  margin-bottom: -40px;
+  margin-bottom: 338px;
 }
 
 .zaboThumbnail.row3 {
-  margin-bottom: -20px;
+  margin-bottom: 170px;
 }
 
 .zaboThumbnail.row5 {
-  margin-top: -20px;
+  margin-top: 170px;
 }
 
 .zaboThumbnail.row6 {
-  margin-top: -40px;
+  margin-top: 338px;
+}
+
+.zaboDetailRouter {
+  width: 100%;
+  height: 100%;
 }
 
 .thumbnail {
@@ -102,13 +163,29 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  background-color: rgba(217, 217, 217, 1);
+  background-color: rgba(220, 220, 220, 1);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50%;
 }
 
+.modalContainer {
+  position: fixed;
+  top: calc(50% - 20px);
+  left: 50%;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transform: translateX(-50%) translateY(-50%);
+}
+
 .thumbnailDetail {
-  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>

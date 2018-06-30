@@ -21,18 +21,25 @@ export default new Router({
     {
       path: '/zabo',
       name: 'Zabo',
-      component: Zabo,
-    },
-    {
-      path: '/zabo/detail/:zabo_id',
-      name: 'ZaboDetail',
-      component: ZaboDetail,
-    },
-    {
-      path: '/zabo/list',
-      name: 'ZaboList',
       component: ZaboList,
+      children: [
+        {
+          path: 'detail/:category/:zabo_id',
+          name: 'ZaboDetail',
+          component: ZaboDetail,
+        },
+      ],
     },
+    // {
+    //   path: '/zabo/detail/:zabo_id',
+    //   name: 'ZaboDetail',
+    //   component: ZaboDetail,
+    // },
+    // {
+    //   path: '/zabo/list',
+    //   name: 'ZaboList',
+    //   component: ZaboList,
+    // },
     {
       path: '/zabo/update',
       name: 'ZaboUpdate',

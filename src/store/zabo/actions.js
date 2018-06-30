@@ -1,17 +1,24 @@
 import axios from '@/axios-auth';
 import * as types from '@/store/mutation-types';
 
-const setURL = function(subURL) {
-  return subURL === '' ? '' : typeof(subURL) === 'undefined' ? '' : `${subURL}/`;
+const category = function(payload) {
+  if (typeof payload.category === 'undefined') {
+    return '';
+  }
+  if (payload.category === 'All') {
+    return '';
+  }
+  return `&category=${payload.category}`;
 };
 
 const actions = {
   zaboesList({ commit, state }, passedPayload) {
     if (!Object.keys(state.zaboesObject).includes(passedPayload.pageNum)) {
-      axios.get(`/zaboes/?page=${passedPayload.pageNum}&page_size=${passedPayload.pageSize}`)
+      axios.get(`/zaboes/?page=${passedPayload.pageNum}
+      &page_size=${passedPayload.pageSize}${category(passedPayload)}`)
         .then((res) => {
           const result = res.data.data;
-          const payload = { result: result, pagenum: passedPayload.pageNum };
+          const payload = { result: result, pagenum: passedPayload.pageNum, category: passedPayload.category };
           commit(types.ZABOES_LIST, payload);
         });
     }
@@ -23,12 +30,13 @@ const actions = {
   //       commit(types.ZABO_CREATE, result);
   //     });
   // },
-  zaboesGetPageCount({ commit }, payload) {
+  zaboesGetPageCount({ commit }, passedPayload) {
     return new Promise((resolve) => {
-      axios.get(`/zaboes/${setURL(payload.subURL)}?page_size=${payload.pageSize}`)
+      axios.get(`/zaboes/?page_size=${passedPayload.pageSize}${category(passedPayload)}`)
         .then((res) => {
           const result = res.data.page_count;
-          commit(types.ZABOES_PAGECOUNT, result);
+          const payload = { pageCount: result, category: passedPayload.category };
+          commit(types.ZABOES_PAGECOUNT, payload);
           resolve(result);
         });
     });
@@ -46,6 +54,12 @@ const actions = {
   //       commit(types.ZABO_DELETE);
   //     });
   // },
+  DetailPageEnter({ commit }, from) {
+    commit(types.DETAIL_PAGE_FROM, from);
+  },
+  DetailPageLeave({ commit }) {
+    commit(types.DETAIL_PAGE_FROM, '');
+  },
 };
 
 export default actions;

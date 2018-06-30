@@ -66,7 +66,7 @@ export default {
     onSubmitReply() {
       axios({
         method: 'post',
-        url: 'http://localhost:12345/api/recomments/',
+        url: 'http://localhost:8000/api/recomments/',
         auth: {
           username: 'jidan@example.com',
           password: 'q1234321',

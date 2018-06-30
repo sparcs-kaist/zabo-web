@@ -1,6 +1,5 @@
 <template>
   <div class="root">
-    Header Component
     <div class="main">
 
       <div class="left">
@@ -16,7 +15,7 @@
             <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
           </div>
           <input-field
-            v-show="toDisplay === 1"
+            :style="{ visibility: toDisplay === 1 ? 'visible' : 'hidden'}"
             :content.sync="newComment"
             :on-click="onSubmitComment"
             placeholder-text="리뷰를 입력하세요..."
@@ -33,7 +32,7 @@
       </div>
 
       <div class="right">
-        <img :src="this.img" height="450" width="340"/>
+        <img class="image" :src="this.img" height="400" width="300"/>
       </div>
     </div>
   </div>
@@ -66,7 +65,7 @@ export default {
     onSubmitComment() {
       axios({
         method: 'post',
-        url: 'http://localhost:12345/api/comments/',
+        url: 'http://localhost:8000/api/comments/',
         auth: {
           username: 'jidan@example.com',
           password: 'q1234321',
@@ -95,7 +94,7 @@ export default {
     this.zabo_id = this.$route.params.zabo_id;
     axios({
       method: 'get',
-      url: `http://localhost:12345/api/zaboes/${this.zabo_id}/`,
+      url: `http://localhost:8000/api/zaboes/${this.zabo_id}/`,
       auth: {
         username: 'jidan@example.com',
         password: 'q1234321',
@@ -119,7 +118,7 @@ export default {
   color: white;
   height: 65%;
   overflow-y: auto;
-  margin: 20px 50px 50px 50px;
+  margin: 0 50px 50px 50px;
 }
 /* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
 .bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
@@ -128,7 +127,7 @@ export default {
 .buttonRow {
   align-items: center;
   display: flex;
-  margin: 24px 0;
+  margin: 24px 0 12px 0;
 }
 .headerStyle {
   color: rgb(220, 220, 220);
@@ -148,7 +147,7 @@ export default {
   background-color: rgb(15, 59, 120);
   color: white;
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   height: 1.1em;
   margin-right: 16px;
@@ -181,8 +180,8 @@ export default {
   width: 40%;
 }
 .root {
-  min-width: 100vw;
-  height: 100vh;
+  width: calc(100vw - 100px);
+  height: calc(100vh - 100px);
 }
 .selected {
   color: #FFF;
@@ -202,7 +201,7 @@ export default {
   background-color: rgb(230, 230, 230);
   color: rgb(80, 80, 80);
   cursor: pointer;
-  font-size: 1em;
+  font-size: 0.9em;
   font-weight: bold;
   height: 1.1em;
   padding: 7px 12px;
