@@ -5,6 +5,7 @@ import ZaboUpdate from "@/pages/ZaboUpdate";
 import ZaboUpload from "@/pages/ZaboUpload";
 import ZaboList from "@/pages/ZaboList";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
+import ZaboSearch from "@/pages/ZaboSearch.vue";
 // import store from '../store';
 
 Vue.use(Router);
@@ -36,6 +37,11 @@ export default new Router({
       path: "/user/profile",
       name: "Zabouserprofile",
       component: ZaboUserprofile
+    },
+    {
+      path: "/search",
+      name: "ZaboSearch",
+      component: ZaboSearch
     }
   ]
 });

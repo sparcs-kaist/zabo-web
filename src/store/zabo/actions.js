@@ -21,13 +21,12 @@ const actions = {
         });
     }
   },
-  // zaboCreate({ commit }, zabo) {
-  //   axios.post('/zaboes/', zabo)
-  //     .then((res) => {
-  //       const result = res.data.result;
-  //       commit(types.ZABO_CREATE, result);
-  //     });
-  // },
+  searchZaboes({ commit }, searchValue) {
+    axios.post("/zaboes/").then(res => {
+      const result = res.data.result;
+      commit(types.ZABO_SEARCH, { result, searchValue });
+    });
+  },
   zaboesGetPageCount({ commit }, payload) {
     return new Promise(resolve => {
       axios
@@ -61,10 +60,14 @@ const actions = {
       })
       .then(response => {
         if (response.status !== 401) {
-          console.log(response);
+          return response.json();
         } else {
-          commit(types.LOGIN, response.json());
+          console.log("response stauts 401!");
         }
+      })
+      .then(json => {
+        console.log(json);
+        commit(types.LOGIN, json);
       })
       .catch(err => console.log(err));
   },

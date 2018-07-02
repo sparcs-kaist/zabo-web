@@ -5,6 +5,7 @@ import getters from "./getters";
 export default {
   state: {
     zaboes: [],
+    searchedZaboes: [],
     zaboesObject: {},
     zaboesPageCount: "",
     participatedZaboes: {},

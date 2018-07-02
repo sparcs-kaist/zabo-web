@@ -13,8 +13,10 @@ const mutations = {
     }
     state.zaboes = temp;
   },
-  // [types.ZABO_CREATE](state, zabo) {
-  //   state.zaboes.push(zabo);
+  // [types.ZABO_SEARCH](state, {result, searchValue}) {
+  //   result.map(zabo => {
+  //     if (zabo)
+  //   })
   // },
   // [types.ZABO_UPDATE](state, zabo) {
   //   function func(x) {
