@@ -63,9 +63,14 @@ const actions = {
     })
       .then(response => {
         if (response.status !== 401) {
-          // console.log(response);
-          commit(types.LOGIN, response.json());
+          return response.json();
+        } else {
+          console.log("response stauts 401!");
         }
+      })
+      .then(json => {
+        console.log(json);
+        commit(types.LOGIN, json);
       })
       .catch(err => console.log(err));
   },
