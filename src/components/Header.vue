@@ -2,37 +2,43 @@
   <div class="sandbox">
     <div class="topline"></div>
     <div class="Buttons">
-      <router-link to="/">
-        <img src="@/logo.svg" class="logo">
-      </router-link>
-      <router-link to="/zabo">
-        <div class="button left">
-          {{ $t('내가 등록한 자보') }}
-        </div>
-      </router-link>
-      <router-link to="/zabo/list">
-        <div class="button left">
-          {{ $t('내가 참여한 자보') }}
-        </div>
-      </router-link>
-      <router-link to="/zabo/user_profile">
-        <div class="button left">
-          {{ $t('프로필 관리') }}
-        </div>
-      </router-link>
-      <div @click="setLang" class="button right">
-        {{ this.computedLang }}
+      <div class="column">
+        <router-link to="/">
+          <img src="@/logo.svg" class="logo">
+        </router-link>
+        <router-link to="/user/zaboes/uploaded">
+          <div class="button left">
+            {{ $t('내가 등록한 자보') }}
+          </div>
+        </router-link>
+        <router-link to="/user/zaboes/participated">
+          <div class="button left">
+            {{ $t('내가 참여한 자보') }}
+          </div>
+        </router-link>
+        <router-link to="/user/profile">
+          <div class="button left">
+            {{ $t('프로필 관리') }}
+          </div>
+        </router-link>
       </div>
-      <template v-if="loggedInState">
-        <div @click="logout" class="button right">
-          {{ $t('로그아웃') }}
+      <div class="column">
+        <div class="right">
         </div>
-      </template>
-      <template v-else>
-        <div @click="login" class="button right">
-          {{ $t('로그인') }}
+        <template v-if="loggedInState">
+          <div @click="logout" class="button right">
+            {{ $t('로그아웃') }}
+          </div>
+        </template>
+        <template v-else>
+          <div @click="login" class="button right">
+            {{ $t('로그인') }}
+          </div>
+        </template>
+        <div @click="setLang" class="button right">
+          {{ this.computedLang }}
         </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>
