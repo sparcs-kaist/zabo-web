@@ -36,7 +36,7 @@ export default {
       new_first_name: "",
       new_last_name: "",
       new_nick_name: "",
-      new_phone: "",
+      new_phone: ""
     };
   },
   created() {
@@ -80,13 +80,13 @@ export default {
         ];
         this.$store.dispatch("setMyInfo", payload);
         this.$emit("editmode");
-        this.edit = "편집"
+        this.edit = "편집";
       }
     }
   }
 };
 </script>
-<style lang=''>
+<style lang='' scoped>
 #template {
   background-color: white;
 }
@@ -106,10 +106,10 @@ export default {
 }
 
 .submit {
-  font-family:Nanumsquare;
-  font-weight:700;
+  font-family: Nanumsquare;
+  font-weight: 700;
   font-size: 12pt;
-  width : 110px;
-  height : 40px;
+  width: 110px;
+  height: 40px;
 }
 </style>
