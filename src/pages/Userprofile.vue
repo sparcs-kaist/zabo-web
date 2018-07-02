@@ -3,8 +3,10 @@
     <div class="user-profile">
       프로필
     </div>
-    <img :src="imagesrc" class="profile-image">
-    <p id="name" v-if = "edit == false"> {{ first_name + " " + last_name }} </p>
+    <div>
+      <img :src="imagesrc" class="profile-image">
+      <p id="name" v-if = "edit == false"> {{ first_name + " " + last_name }} </p>
+    </div>
     <v-app id = "namefield" v-if = "edit == true">
       <v-form v-model = "valid">
         <v-text-field
