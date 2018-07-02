@@ -21,14 +21,14 @@
 import axios from "@/axios-auth";
 
 export default {
-  data() {
+  data () {
     return {
       email: "",
       password: ""
     };
   },
   methods: {
-    login: async function() {
+    login: async function () {
       await axios
         .post("http://localhost:8000/api-token-auth/", {
           email: this.email,
@@ -70,8 +70,8 @@ export default {
 }
 
 .form {
-  display : inline-block;
-  width : 300px;
+  display: inline-block;
+  width: 300px;
 }
 
 .loginbutton {

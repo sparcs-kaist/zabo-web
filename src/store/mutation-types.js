@@ -5,7 +5,7 @@ export const USER_LOGOUT = "USER_LOGOUT";
 
 export const ZABOES_LIST = "ZABOES_LIST";
 export const ZABOES_PAGECOUNT = "ZABOES_PAGECOUNT";
-export const ZABO_CREATE = "ZABO_CREATE";
+export const ZABO_SEARCH = "ZABO_SEARCH";
 export const ZABO_DELETE = "ZABO_DELETE";
 export const ZABO_UPDATE = "ZABO_UPDATE";
 export const GET_PARTICIPATED_ZABOES = "GET_PARTICIPATED_ZABOES";

@@ -200,11 +200,4 @@ a {
 .headerMargin {
   margin-top: 78px;
 }
-.footer {
-  width: 100%;
-  height: 65px;
-  background-color: white;
-  bottom: 0px;
-  position: fixed;
-}
 </style>
