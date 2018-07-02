@@ -53,17 +53,16 @@ const actions = {
       .catch(err => console.log(err));
   },
   getMyInfo({ commit, state }) {
-    console.log(state.loggedInState);
-    console.log("getmyinfo");
-    fetch("http://localhost:8000/api/users/myInfo", {
-      method: "get",
-      headers: {
-        Authorization: localStorage.getItem("token")
-      }
-    })
+    axios
+      .get("/users/myInfo", {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`
+        }
+      })
       .then(response => {
         if (response.status !== 401) {
-          // console.log(response);
+          console.log(response);
+        } else {
           commit(types.LOGIN, response.json());
         }
       })

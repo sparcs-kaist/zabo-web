@@ -37,9 +37,10 @@ export default {
         .then(response => {
           this.$emit("logged-in");
           localStorage.setItem("token", `ZABO ${response.data.token}`);
-          return console.log(response.data);
         })
-        .then(this.$store.dispatch("getMyInfo"))
+        .then(() => {
+          this.$store.dispatch("getMyInfo");
+        })
         // .then(data => {
         //   this.$http({
         //     method: "get",
@@ -70,8 +71,8 @@ export default {
 }
 
 .form {
-  display : inline-block;
-  width : 300px;
+  display: inline-block;
+  width: 300px;
 }
 
 .loginbutton {
