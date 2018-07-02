@@ -10,7 +10,7 @@ export default {
     participatedZaboes: {},
     currentUser: {},
     loggedInState: false,
-    mainZaboSeen: false
+    mainZaboSeen: false,
     getResponse: true
   },
   actions,
