@@ -21,27 +21,25 @@
 import axios from "@/axios-auth";
 
 export default {
-  data () {
+  data() {
     return {
       email: "",
       password: ""
-    }
+    };
   },
   methods: {
-    login: async function () {
-      await axios.post(
-        "http://localhost:8000/api-token-auth/",
-        {
+    login: async function() {
+      await axios
+        .post("http://localhost:8000/api-token-auth/", {
           email: this.email,
           password: this.password
-        }
-      )
+        })
         .then(response => {
-          localStorage.setItem("token", `ZABO ${response.data.token}`)
-          this.$emit('logged-in');
-          this.$store.dispatch('getMyInfo')
+          this.$emit("logged-in");
+          localStorage.setItem("token", `ZABO ${response.data.token}`);
           return console.log(response.data);
         })
+        .then(this.$store.dispatch("getMyInfo"))
         // .then(data => {
         //   this.$http({
         //     method: "get",
@@ -54,10 +52,10 @@ export default {
         //   })
         // }
         // )
-        .catch(err => console.log(err))
+        .catch(err => console.log(err));
     }
   }
-}
+};
 </script>
 <style lang=''>
 .class {

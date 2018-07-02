@@ -5,12 +5,11 @@
 </template>
 
 <script>
-export default {
-};
+export default {};
 </script>
 
 <style scoped>
-  .home {
-    margin-top : 90px; 
-  }
+.home {
+  margin-top: 90px;
+}
 </style>

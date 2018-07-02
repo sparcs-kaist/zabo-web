@@ -11,6 +11,7 @@ export default {
     currentUser: {},
     loggedInState: false,
     mainZaboSeen: false
+    getResponse: true
   },
   actions,
   mutations,

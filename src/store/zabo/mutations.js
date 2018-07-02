@@ -31,8 +31,20 @@ const mutations = {
   [types.ZABOES_PAGECOUNT](state, pageCount) {
     state.zaboesPageCount = pageCount;
   },
+  [types.GET_PARTICIPATED_ZABOES](state, participatedZaboes) {
+    state.participatedZaboes = participatedZaboes;
+  },
   [types.GET_PARTICIPATED_ZABOES](state, participataedZaboes) {
     state.participatedZaboess = participatedZaboes;
+  },
+  [types.SET_CURRENT_USER](state, payload) {
+    state.currentUser = payload;
+  },
+  [types.GOT_RESPONSE](state) {
+    state.getResponse = true;
+  },
+  [types.START_AJAX](state) {
+    state.getResponse = false;
   },
   [types.LOGIN](state, payload) {
     state.loggedInState = true;

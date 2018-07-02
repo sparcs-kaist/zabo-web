@@ -1,13 +1,32 @@
 <template>
-  <div class="column" v-cloak>
+  <div class="column">
     <div class="user-profile">
       프로필
     </div>
-    <img v-bind:src="imagesrc" class="profile-image" v-cloak>
-    <p id="name"> {{ name }} </p>
+    <div>
+      <img :src="imagesrc" class="profile-image">
+      <p id="name" v-if = "edit == false"> {{ first_name + " " + last_name }} </p>
+    </div>
+    <v-app id = "namefield" v-if = "edit == true">
+      <v-form v-model = "valid">
+        <v-text-field
+        label = "성"
+        v-model = "new_first_name"
+        :rules = "namerules"
+        required
+        class = "first">
+        </v-text-field>
+        <v-text-field
+        label = "이름"
+        v-model = "new_last_name"
+        :rules = "namerules"
+        required
+        class = "last"></v-text-field>
+      </v-form>
+    </v-app>
     <button v-on:click="tab1" class="tab">
       내 정보<br/>
-      <div class="button-active" v-if="tab == 'tab1'">
+      <div class="button-active" v-if = "tab == 'tab1'">
       </div>
     </button>
     <button v-on:click="tab2" class="tab">
@@ -21,67 +40,88 @@
       </div>
     </button>
     <div v-if="tab == 'tab1'">
-      내 정보
+      <profile v-on:editmode = "edit_toggle" :valid = "valid" :first = "new_first_name" :last = "new_last_name"></profile>
     </div>
     <div v-else-if="tab == 'tab2'">
-      참여한 자보
+      <!-- <participated :participatedZaboes="participatedZaboes"></participated> -->
     </div>
     <div v-else-if="tab == 'tab3'">
       찜한 자보
     </div>
-
   </div>
 </template>
 
 <script>
-import Participated from "./Userprofile/Participated.vue";
+import Participated from "./Userprofile/Participated";
+import Profile from "./Userprofile/Profile";
 
 export default {
   name: "userprofile",
-  data () {
+  data() {
     return {
-      name: "",
+      valid: true,
       imagesrc: "",
-      tab: "tab1"
+      edit: false,
+      tab: "tab1",
+      participatedZaboes: {},
+      new_first_name: "",
+      new_last_name: "",
+      namerules: [
+        v => !!v || "이름을 입력해주세요.",
+        v => (v && v.length <= 100) || "이름이 너무 길어요."
+      ]
     };
   },
+  components: {
+    participated: Participated,
+    profile: Profile
+  },
   methods: {
-    tab1: function () {
+    tab1() {
       this.tab = "tab1";
     },
-    tab2: function () {
+    tab2() {
       this.tab = "tab2";
     },
-    tab3: function () {
+    tab3() {
       this.tab = "tab3";
+    },
+    edit_toggle() {
+      if (this.edit === false) {
+        this.edit = true;
+      } else if (this.edit === true) {
+        this.edit = false;
+      }
     }
   },
-  mounted: function () {
-    this.$http({
-      method: "get",
-      url: "http://localhost:8000/api/users/myInfo",
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    }).then(result => {
-      console.log(result)
-      this.name = result.data.first_name + " " + result.data.last_name;
-      this.imagesrc = result.data.profile_image;
-      this.data = result.data;
-    });
+  created() {
+    this.new_first_name = this.$store.getters.getFirstName;
+    this.new_last_name = this.$store.getters.getLastName;
+    this.imagesrc = this.currentUser.profile_image;
+    // this.$store.dispatch("getParticipatedZaboes");
+    this.participatedZaboes = this.$store.getters.participatedZaboes;
+  },
+  computed: {
+    first_name() {
+      return this.$store.getters.getFirstName;
+    },
+    last_name() {
+      return this.$store.getters.getLastName;
+    },
+    currentUser() {
+      return this.$store.getters.currentUser;
+    }
   }
 };
 </script>
 
-<style scoped>
-[v-cloak] {
-  display: block;
-}
+<style>
 .column {
   width: 70%;
-  height: 1000px;
+  height: 2000px;
   margin-left: 15%;
   margin-top: 90px;
+  text-align: center;
 }
 
 .user-profile {
@@ -97,13 +137,20 @@ export default {
   font-family: Nanumsquare;
   font-size: 25pt;
   font-weight: 800;
+  padding-top: 10px;
+  height: 54px;
 }
 
 .profile-image {
   height: 100px;
   width: 100px;
   border-radius: 100px;
-  margin-bottom: -20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  position: -webkit-sticky;
 }
 
 .tab {
@@ -130,5 +177,21 @@ export default {
 .tab:focus {
   outline: none;
   border: none;
+}
+
+#namefield {
+  background-color: white;
+  height: 70px;
+}
+
+.first {
+  width: 120px;
+  margin-right: 35px;
+  display: inline-block;
+}
+
+.last {
+  width: 170px;
+  display: inline-block;
 }
 </style>

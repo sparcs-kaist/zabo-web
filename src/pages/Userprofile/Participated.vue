@@ -1,14 +1,11 @@
 <template lang=''>
   <div id="participated">
-
   </div>
 </template>
 <script>
 export default {
-  data () {
-
-  }
-}
+  data() {}
+};
 </script>
 <style lang=''>
 </style>

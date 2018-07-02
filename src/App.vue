@@ -28,17 +28,17 @@ export default {
     Footer,
     MainZabo
   },
-  data () {
+  data() {
     return {
       loggingIn: false
-    }
+    };
   },
   created () {
     this.$store.dispatch('getMyInfo');
     this.mainZaboSeen = this.$store.getters.mainZaboSeen
   },
   methods: {
-    handleLogin (value) {
+    handleLogin(value) {
       this.loggingIn = !this.loggingIn;
     }
   },
