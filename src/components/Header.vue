@@ -24,6 +24,7 @@
       </div>
       <div class="column">
         <div class="right">
+          <Search/>
         </div>
         <template v-if="loggedInState">
           <div @click="logout" class="button right">
@@ -45,9 +46,13 @@
 
 <script>
 import app from '@/main';
+import Search from '@/components/Search';
 
 export default {
   name: "Header",
+  components: {
+    Search
+  },
   data () {
     return {
       lang: "kr"
@@ -90,9 +95,10 @@ export default {
   width: 100%;
   height: 78px;
   position: fixed;
-  z-index: 1;
   background-color: white;
   z-index: 500;
+  display: flex;
+  flex-direction: column;
 }
 
 .topline {
@@ -101,16 +107,15 @@ export default {
   background-color: #12397d;
 }
 .Buttons {
-  text-align: left;
   width: 100%;
-  height: 100px;
+  height: 73px;
+  display: flex;
 }
 
 .button {
   font-size: 15pt;
   font-family: Nanumsquare;
   font-weight: 400;
-  margin-top: 28px;
   color: black;
   opacity: 0.7;
   cursor: pointer;
@@ -118,21 +123,26 @@ export default {
 .button:hover {
   opacity: 1;
 }
-
+.column {
+  min-height: 73px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.column:last-child {
+  justify-content: flex-end;
+}
 .left {
-  float: left;
   margin-left: 27px;
 }
 
 .right {
-  float: right;
   margin-right: 27px;
 }
 
 .logo {
-  float: left;
   height: 37px;
-  margin-top: 18px;
   margin-left: 27px;
 }
 </style>
