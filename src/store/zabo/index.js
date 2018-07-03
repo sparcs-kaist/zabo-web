@@ -1,14 +1,20 @@
-import actions from './actions';
-import mutations from './mutations';
-import getters from './getters';
+import actions from "./actions";
+import mutations from "./mutations";
+import getters from "./getters";
 
 export default {
   state: {
     zaboes: [],
+    searchedZaboes: [],
     zaboesObject: {},
-    zaboesPageCount: '',
+    zaboesPageCount: "",
+    participatedZaboes: {},
+    currentUser: {},
+    loggedInState: false,
+    mainZaboSeen: false,
+    getResponse: true
   },
   actions,
   mutations,
-  getters,
+  getters
 };

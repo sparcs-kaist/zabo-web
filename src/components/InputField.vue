@@ -1,19 +1,11 @@
 <template>
   <div class="inputField">
-      <div class="form">
-        <textarea
-          class="textbox"
-          v-model="input"
-          :placeholder="placeholderText"
-        >
-        </textarea>
-        <!-- <editable-text
-          :content="newComment"
-          @update="updateComment"
-        >
-        </editable-text> -->
-        <span class="button" @click="onButtonClick">작성</span>
-      </div>
+    <form class="formWrapper">
+      <input class="textbox" v-model="input" :placeholder="placeholderText">
+      <span class="button" @click="onButtonClick">작성</span>
+    </form>
+    <editable-text :content="newComment" @update="updateComment">
+    </editable-text>
   </div>
 </template>
 
@@ -25,13 +17,13 @@ export default {
     EditableText,
   },
   props: ['content', 'onClick', 'placeholderText'],
-  data() {
+  data () {
     return {
       input: '',
     };
   },
   methods: {
-    onButtonClick() {
+    onButtonClick () {
       this.$emit('update:content', this.input);
       this.input = '';
       this.onClick();
@@ -41,32 +33,38 @@ export default {
 </script>
 
 <style scoped>
+.inputField {
+  width: 100%;
+}
 .button {
   align-items: center;
   border: 3px solid white;
   cursor: pointer;
   display: flex;
-  height: 2em;
+  height: 2.8em;
+  font-size: 1em;
   justify-content: center;
   margin-left: 10px;
-  width: 40px;
+  padding: 0 1em;
+  font-size: 1em;
+  color: white;
+  font-weight: bold;
 }
-.form {
+.formWrapper {
   align-items: center;
   display: flex;
 }
 .textbox {
-  background: transparent;
-  border: 0;
-  border-bottom: 3px solid white;
-  color: white;
+  background: white;
+  border: none;
+  color: rgba(0, 0, 0, 0.87);
   font-size: 1em;
-  height: 1em;
+  height: 2.8em;
   outline: none;
-  padding: 5px;
+  padding-left: 15px;
   resize: none;
   text-align: left;
-  width: 100%;
+  flex: 1;
 }
 .textbox[placeholder]:empty:before {
   content: attr(placeholder);

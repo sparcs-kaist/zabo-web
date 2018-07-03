@@ -10,6 +10,42 @@ const getters = {
   zaboesPageCount(state) {
     return state.zaboesPageCount;
   },
+  participatedZaboes(state) {
+    return state.getParticipatedZaboes;
+  },
+  currentUser(state) {
+    return state.currentUser;
+  },
+  getMyID(state) {
+    return state.currentUser.id;
+  },
+  getNickName(state) {
+    return state.currentUser.nickName;
+  },
+  getEmail(state) {
+    return state.currentUser.email;
+  },
+  getJoinedDate(state) {
+    return state.currentUser.joined_date;
+  },
+  getPhonenumber(state) {
+    return state.currentUser.phone;
+  },
+  getFirstName(state) {
+    return state.currentUser.first_name;
+  },
+  getLastName(state) {
+    return state.currentUser.last_name;
+  },
+  loggedInState(state) {
+    return state.loggedInState;
+  },
+  mainZaboSeen(state) {
+    return state.mainZaboSeen;
+  },
+  isAjaxfinished(state) {
+    return state.getResponse;
+  }
 };
 
 export default getters;

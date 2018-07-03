@@ -1,47 +1,46 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Home from '@/pages/Home';
-import Zabo from '@/pages/Zabo';
-import ZaboDetail from '@/pages/ZaboDetail';
-import ZaboUpdate from '@/pages/ZaboUpdate';
-import ZaboUpload from '@/pages/ZaboUpload';
-import ZaboList from '@/pages/ZaboList';
-// import store from '../store';
+import Vue from "vue";
+import Router from "vue-router";
+import ZaboDetail from "@/pages/ZaboDetail";
+import ZaboUpdate from "@/pages/ZaboUpdate";
+import ZaboUpload from "@/pages/ZaboUpload";
+import ZaboList from "@/pages/ZaboList";
+import ZaboUserprofile from "@/pages/Userprofile.vue";
+import ZaboSearch from "@/pages/ZaboSearch.vue";
 
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  mode: "history",
   routes: [
     {
-      path: '/',
-      name: 'Home',
-      component: Home,
+      path: "/",
+      name: "ZaboList",
+      component: ZaboList
     },
     {
-      path: '/zabo',
-      name: 'Zabo',
-      component: Zabo,
+      path: "/zabo/:zabo_id",
+      name: "ZaboDetail",
+      component: ZaboDetail
     },
     {
-      path: '/zabo/detail/:zabo_id',
-      name: 'ZaboDetail',
-      component: ZaboDetail,
+      path: "/zabo/update",
+      name: "ZaboUpdate",
+      component: ZaboUpdate
     },
     {
-      path: '/zabo/list',
-      name: 'ZaboList',
-      component: ZaboList,
+      path: "/zabo/upload",
+      name: "ZaboUpload",
+      component: ZaboUpload
     },
     {
-      path: '/zabo/update',
-      name: 'ZaboUpdate',
-      component: ZaboUpdate,
+      path: "/user/profile",
+      name: "Zabouserprofile",
+      component: ZaboUserprofile
     },
     {
-      path: '/zabo/upload',
-      name: 'ZaboUpload',
-      component: ZaboUpload,
-    },
-  ],
+      path: "/search/:search",
+      name: "ZaboSearch",
+      component: ZaboSearch
+    }
+  ]
 });

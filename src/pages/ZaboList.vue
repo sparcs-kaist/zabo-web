@@ -1,48 +1,38 @@
 <template>
   <div class="zaboList">
-    <div class="prevCategory"
-         @click="categoryChange(false)">
+    <div class="prevCategory" @click="categoryChange(false)">
       <p>&lt;</p>
     </div>
-    <div class="zaboCategory"
-         v-for="(category, index) in categories"
-         :class="classByCategory(category)">
+    <div :key="index" class="zaboCategory" v-for="(category, index) in categories" :class="classByCategory(category)">
       <p class="zaboCategoryName">
         {{ categoryNames[index] }}
       </p>
       <div class="zaboThumbnailListContainer">
-        <div class="zaboThumbnailListPrevPage"
-             @click="pageChange(false)">
+        <div class="zaboThumbnailListPrevPage" @click="pageChange(false)">
         </div>
         <div class="zaboThumbnailList">
           <div class="zaboThumbnailRow" :key="n" v-for="n in 7">
-            <zaboThumbnail
-              :zaboDetail="zabo"
-              :number="index + (n - 1) * zaboRow"
-              :row="n"
-              :key="zabo.id"
-              v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
+            <zaboThumbnail :zaboDetail="zabo" :number="index + (n - 1) * zaboRow" :row="n" :key="zabo.id" v-for="(zabo, index) in zaboRendered.slice((n - 1) * zaboRow, n * zaboRow)">
             </zaboThumbnail>
           </div>
         </div>
-        <div class="zaboThumbnailListNextPage"
-             @click="pageChange(true)">
+        <div class="zaboThumbnailListNextPage" @click="pageChange(true)">
         </div>
       </div>
     </div>
-    <div class="nextCategory"
-         @click="categoryChange(true)">
+    <div class="nextCategory" @click="categoryChange(true)">
       <p>&gt;</p>
     </div>
   </div>
 </template>
 
 <script>
-import ZaboThumbnail from '@/components/ZaboThumbnail';
+/*eslint-disable */
+import ZaboThumbnail from "@/components/ZaboThumbnail";
 
 export default {
   components: {
-    zaboThumbnail: ZaboThumbnail,
+    zaboThumbnail: ZaboThumbnail
   },
   data() {
     return {
@@ -50,52 +40,65 @@ export default {
       windowWidth: 0,
       currentPage: 1,
       getPages: [],
-      categories: ['All', 'R', 'P', 'C', 'F', 'L', 'E'],
-      categoryNames: ['전체', '리쿠르팅', '퍼포먼스', '경쟁', '설명회', '강의', '전람회'],
-      currentCategoryIndex: 0,
+      categories: ["All", "R", "P", "C", "F", "L", "E"],
+      categoryNames: [
+        "전체",
+        "리쿠르팅",
+        "퍼포먼스",
+        "경쟁",
+        "설명회",
+        "강의",
+        "전람회"
+      ],
+      currentCategoryIndex: 0
     };
   },
   created() {
     this.getWindowWidth();
-    this.$store.dispatch('zaboesGetPageCount', { pageSize: 4 })
-      .then((res) => {
-        this.totalPage = res;
-        for (let i = 1; i <= this.totalPage; i += 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
-          this.getPages.push(i);
-          if (i > 10) {
-            break;
-          }
+    this.$store.dispatch("zaboesGetPageCount", { pageSize: 4 }).then(res => {
+      this.totalPage = res;
+      for (let i = 1; i <= this.totalPage; i += 1) {
+        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4 });
+        this.getPages.push(i);
+        if (i > 10) {
+          break;
         }
-        for (let i = this.totalPage; i > 10; i -= 1) {
-          this.$store.dispatch('zaboesList', { pageNum: i, pageSize: 4 });
-          this.getPages.push(i);
-          if (i < this.totalPage - 9) {
-            break;
-          }
+      }
+      for (let i = this.totalPage; i > 10; i -= 1) {
+        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4 });
+        this.getPages.push(i);
+        if (i < this.totalPage - 9) {
+          break;
         }
-      });
+      }
+    });
   },
   beforeMount() {
-    window.addEventListener('resize', this.getWindowWidth);
+    window.addEventListener("resize", this.getWindowWidth);
   },
   updated() {
-    document.getElementsByClassName('zaboList')[0].classList.remove('mounted');
-    document.getElementsByClassName('zaboList')[0].classList.add('mounted');
+    document.getElementsByClassName("zaboList")[0].classList.remove("mounted");
+    document.getElementsByClassName("zaboList")[0].classList.add("mounted");
   },
   watch: {
     currentPageBy4() {
       if (this.currentPageBy4 + 11 <= this.totalPage) {
         if (!this.getPages.includes(this.currentPageBy4 + 11)) {
-          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 + 11, pageSize: 4 });
+          this.$store.dispatch("zaboesList", {
+            pageNum: this.currentPageBy4 + 11,
+            pageSize: 4
+          });
         }
       }
       if (this.currentPageBy4 - 10 > 0) {
         if (!this.getPages.includes(this.currentPageBy4 - 10)) {
-          this.$store.dispatch('zaboesList', { pageNum: this.currentPageBy4 - 10, pageSize: 4 });
+          this.$store.dispatch("zaboesList", {
+            pageNum: this.currentPageBy4 - 10,
+            pageSize: 4
+          });
         }
       }
-    },
+    }
   },
   computed: {
     zaboes() {
@@ -123,24 +126,36 @@ export default {
     },
     zaboRendered() {
       const zaboes = this.zaboList;
-      if (this.zaboCursor - (this.zaboRow * 3) < 0) {
-        return zaboes.slice(zaboes.length + (this.zaboCursor - (this.zaboRow * 3)), zaboes.length)
-          .concat(zaboes.slice(0, this.zaboCursor + (this.zaboRow * 4)));
+      if (this.zaboCursor - this.zaboRow * 3 < 0) {
+        return zaboes
+          .slice(
+            zaboes.length + (this.zaboCursor - this.zaboRow * 3),
+            zaboes.length
+          )
+          .concat(zaboes.slice(0, this.zaboCursor + this.zaboRow * 4));
       }
-      if (this.zaboCursor + ((this.zaboRow * 4) - 1) >= zaboes.length) {
-        return zaboes.slice(this.zaboCursor - (this.zaboRow * 3), zaboes.length)
-          .concat(zaboes.slice(0, (this.zaboCursor + (this.zaboRow * 4)) - zaboes.length));
+      if (this.zaboCursor + (this.zaboRow * 4 - 1) >= zaboes.length) {
+        return zaboes
+          .slice(this.zaboCursor - this.zaboRow * 3, zaboes.length)
+          .concat(
+            zaboes.slice(0, this.zaboCursor + this.zaboRow * 4 - zaboes.length)
+          );
       }
-      return zaboes.slice(this.zaboCursor - (this.zaboRow * 3),
-        this.zaboCursor + (this.zaboRow * 4));
+      return zaboes.slice(
+        this.zaboCursor - this.zaboRow * 3,
+        this.zaboCursor + this.zaboRow * 4
+      );
     },
     currentPageBy4() {
-      return (this.currentPage % 4) === 0 ?
-        parseInt((this.currentPage / 4) + 1, 10) :
-        parseInt(this.currentPage / 4, 10);
+      return this.currentPage % 4 === 0
+        ? parseInt(this.currentPage / 4 + 1, 10)
+        : parseInt(this.currentPage / 4, 10);
     },
     prevCategoryIndex() {
-      return ((this.currentCategoryIndex - 1) + this.categories.length) % this.categories.length;
+      return (
+        (this.currentCategoryIndex - 1 + this.categories.length) %
+        this.categories.length
+      );
     },
     nextCategoryIndex() {
       return (this.currentCategoryIndex + 1) % this.categories.length;
@@ -153,7 +168,7 @@ export default {
     },
     nextCategory() {
       return this.categories[this.nextCategoryIndex];
-    },
+    }
   },
   methods: {
     pageChange(isNext) {
@@ -173,47 +188,70 @@ export default {
       }
     },
     categoryChange(isNext) {
-      [].forEach.call(document.getElementsByClassName('ZaboCategory'), function(el) {
-        el.classList.remove('current');
-        el.classList.remove('prev');
-        el.classList.remove('next');
+      [].forEach.call(document.getElementsByClassName("ZaboCategory"), el => {
+        el.classList.remove("current");
+        el.classList.remove("prev");
+        el.classList.remove("next");
       });
       if (isNext) {
-        this.currentCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        this.prevCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
-        this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
-        document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
-        document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
+        this.currentCategoryIndex =
+          (this.currentCategoryIndex + 1) % this.categories.length;
+        this.prevCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) %
+          this.categories.length;
+        this.nextCategoryIndex =
+          (this.currentCategoryIndex + 1) % this.categories.length;
+        document
+          .getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0]
+          .classList.add("current");
+        document
+          .getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0]
+          .classList.add("prev");
+        document
+          .getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0]
+          .classList.add("next");
       } else {
-        this.currentCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
-        this.prevCategoryIndex = (this.currentCategoryIndex + (this.categories.length - 1)) % this.categories.length;
-        this.nextCategoryIndex = (this.currentCategoryIndex + 1) % this.categories.length;
-        document.getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0].classList.add('current');
-        document.getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0].classList.add('prev');
-        document.getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0].classList.add('next');
+        this.currentCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) %
+          this.categories.length;
+        this.prevCategoryIndex =
+          (this.currentCategoryIndex + (this.categories.length - 1)) %
+          this.categories.length;
+        this.nextCategoryIndex =
+          (this.currentCategoryIndex + 1) % this.categories.length;
+        document
+          .getElementsByClassName(`ZaboCategory${this.currentCategory}`)[0]
+          .classList.add("current");
+        document
+          .getElementsByClassName(`ZaboCategory${this.prevCategory}`)[0]
+          .classList.add("prev");
+        document
+          .getElementsByClassName(`ZaboCategory${this.nextCategory}`)[0]
+          .classList.add("next");
       }
     },
     getWindowWidth() {
-      this.windowWidth = document.body.clientWidth ||
-      document.documentElement.clientWidth || window.innerWidth;
+      this.windowWidth =
+        document.body.clientWidth ||
+        document.documentElement.clientWidth ||
+        window.innerWidth;
     },
     classByCategory(category) {
       if (category === this.prevCategory) {
-        return 'prev';
+        return "prev";
       }
       if (category === this.currentCategory) {
-        return 'current';
+        return "current";
       }
       if (category === this.nextCategory) {
-        return 'next';
+        return "next";
       }
-      return '';
-    },
+      return "";
+    }
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.getWindowWidth);
-  },
+    window.removeEventListener("resize", this.getWindowWidth);
+  }
 };
 </script>
 
@@ -222,6 +260,7 @@ export default {
   display: inline-flex;
   flex-direction: row;
   margin-left: 50%;
+  margin-top: 90px;
   transform: translateX(-50%);
 }
 
@@ -303,7 +342,8 @@ export default {
   transform: rotate(180deg);
 }
 
-.prevCategory, .nextCategory {
+.prevCategory,
+.nextCategory {
   border-radius: 50%;
   width: 62px;
   height: 62px;
@@ -313,7 +353,8 @@ export default {
   z-index: 9999;
 }
 
-.prevCategory > p, .nextCategory > p {
+.prevCategory > p,
+.nextCategory > p {
   position: relative;
   float: left;
   top: 50%;
