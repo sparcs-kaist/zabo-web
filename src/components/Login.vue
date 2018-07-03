@@ -31,10 +31,6 @@ export default {
   },
   methods: {
     login: function() {
-      // var payload = [this.email, this.password];
-      // this.$store.dispatch("login", payload).then(() => {
-      //   this.$emit("logged-in");
-      // });
       this.$store.commit("START_AJAX");
       axios
         .post("http://localhost:8000/api-token-auth/", {
@@ -43,6 +39,10 @@ export default {
         })
         .then(response => {
           localStorage.setItem("token", `ZABO ${response.data.token}`);
+        })
+        .catch(err => {
+          console.log("Wrong Email/password.");
+          this.$store.commit("GOT_RESPONSE");
         })
         .then(() => {
           axios("/users/myInfo", {
