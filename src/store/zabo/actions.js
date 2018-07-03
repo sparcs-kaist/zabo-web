@@ -47,32 +47,6 @@ const actions = {
         });
     });
   },
-  login({ commit, dispatch, state }, payload) {
-    commit(types.START_AJAX);
-    axios
-      .post("http://localhost:8000/api-token-auth/", {
-        email: payload[0],
-        password: payload[1]
-      })
-      .then(response => {
-        localStorage.setItem("token", `ZABO ${response.data.token}`);
-      })
-      .then(() => {
-        axios("/users/myInfo", {
-          method: "GET",
-          headers: {
-            Authorization: localStorage.getItem("token")
-          }
-        })
-          .then(function(response) {
-            commit(types.LOGIN, response.data);
-          })
-          .then(() => {
-            commit(types.GOT_RESPONSE);
-          });
-      })
-      .catch(err => console.log(err));
-  },
   getMyInfo({ commit, state }) {
     axios
       .get("/users/myInfo", {

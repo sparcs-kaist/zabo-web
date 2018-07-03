@@ -2,7 +2,7 @@
   <div style="height: 700px">
     <v-app id="whole">
       <div>
-      <img src="@/logo.svg" id="logo"> Login
+      <img src="@/logo.svg" id="logo">
       <v-form method="get" @submit.prevent="login">
         <v-text-field
         label = "E-mail"
@@ -30,10 +30,38 @@ export default {
     };
   },
   methods: {
-    login: async function() {
-      var payload = [this.email, this.password];
-      await this.$store.dispatch("login", payload);
-      await this.$emit("logged-in");
+    login: function() {
+      // var payload = [this.email, this.password];
+      // this.$store.dispatch("login", payload).then(() => {
+      //   this.$emit("logged-in");
+      // });
+      this.$store.commit("START_AJAX");
+      axios
+        .post("http://localhost:8000/api-token-auth/", {
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          localStorage.setItem("token", `ZABO ${response.data.token}`);
+        })
+        .then(() => {
+          axios("/users/myInfo", {
+            method: "GET",
+            headers: {
+              Authorization: localStorage.getItem("token")
+            }
+          })
+            .then(response => {
+              this.$store.commit("LOGIN", response.data);
+            })
+            .then(() => {
+              this.$store.commit("GOT_RESPONSE");
+            })
+            .then(() => {
+              console.log("hey");
+              this.$emit("logged-in");
+            });
+        });
     }
   },
   computed: {
