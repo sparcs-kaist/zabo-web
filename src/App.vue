@@ -8,7 +8,7 @@
       <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
       <Footer />
     </template>
-    <MainZabo v-if="mainZaboSeen"></MainZabo>
+    <MainZabo v-if="!mainZaboSeen"></MainZabo>
   </div>
 </template>
 

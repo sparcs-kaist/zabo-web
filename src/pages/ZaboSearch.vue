@@ -14,13 +14,7 @@ import axios from '@/axios-auth';
 
 export default {
   created () {
-    axios({
-      methods: 'get',
-      url: "/zaboes",
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    }).then(response => response.data.data)
+    axios.get('/zaboes').then(response => response.data.data)
       .then(data => {
         this.zaboList = data;
         this.isLoading = false;

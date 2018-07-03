@@ -3,7 +3,7 @@
     <div :class="[transition, 'mainZaboWrapper']">
       <div v-if="!loading" class="row">
         <div class="column">
-          <router-link to="/zabo/1" class="participateLink">{{$t("참여하기")}}</router-link>
+          <span @click="closeMain('redirect')" class="participateLink">{{$t("참여하기")}}</span>
           <span class="heading">{{title}}</span>
           <span id="subheading">{{location}}</span>
           <p class="description">
@@ -14,7 +14,7 @@
           <img :src="image" height="600" width="500" class="image"/>
         </div>
       </div>
-      <div @click="closeMain" class="row">
+      <div @click="closeMain('transition')" class="row">
         <v-icon class="icon">keyboard_arrow_up</v-icon>
         더 많은 자보 확인하기
       </div>
@@ -54,8 +54,12 @@ export default {
       })
   },
   methods: {
-    closeMain: function () {
+    closeMain: function (req) {
       this.transition = "transition";
+      console.log(req)
+      if (req === "redirect") {
+        this.$router.push({ path: "/zabo/1" })
+      }
       setTimeout(() => {
         this.$store.commit("MAIN_ZABO_SEEN");
       }, 500)
@@ -90,7 +94,7 @@ export default {
   align-items: flex-end;
   z-index: 1000;
   height: 100vh;
-  width: 55%;
+  width: 50%;
 }
 .row {
   z-index: 1000;
@@ -115,7 +119,7 @@ export default {
   color: white;
 }
 .column:last-child {
-  width: 45%;
+  width: 50%;
   align-items: flex-start;
 }
 .icon {
@@ -130,6 +134,7 @@ export default {
   margin-bottom: 26px;
   text-decoration: none;
   color: white;
+  cursor: pointer;
 }
 .heading {
   font-size: 6.25em;
