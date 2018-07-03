@@ -44,9 +44,6 @@ export default {
     mainZaboSeen: function () {
       return this.$store.getters.mainZaboSeen
     }
-  },
-  beforeRouteEnter (to, from, next) {
-
   }
 };
 </script>
