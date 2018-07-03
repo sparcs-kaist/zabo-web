@@ -1,22 +1,22 @@
 <template lang=''>
-  <div style="height: 700px">
-    <v-app id="whole">
-      <div>
-      <img src="@/logo.svg" id="logo">
-      <v-form method="get" @submit.prevent="login">
-        <v-text-field
-        label = "E-mail"
-        v-model = "email"
-        class = "form"/>
-        <v-text-field
-        label = "Password"
-        v-model = "password"
-        type = "password"
-        class = "form"/>
-        <v-btn type="submit" depressed :loading="loading" color="indigo darken-3" id="login_button">로그인</v-btn>
-      </v-form>
+  <div id="background_div">
+    <div id="loginbox">
+      <v-app id="vform">
+        <img src="@/logo.svg" id="logo">
+        <v-form method="get" @submit.prevent="login">
+          <v-text-field
+          label = "E-mail"
+          v-model = "email"
+          class = "form"/>
+          <v-text-field
+          label = "Password"
+          v-model = "password"
+          type = "password"
+          class = "form"/>
+          <v-btn type="submit" depressed :loading="loading" color="indigo darken-3" id="login_button">로그인</v-btn>
+        </v-form>
+      </v-app>
     </div>
-    </v-app>
   </div>
 </template>
 <script>
@@ -72,24 +72,52 @@ export default {
 };
 </script>
 <style lang='' scoped>
-#whole {
+#background_div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: auto auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.4)),
+    url("../assets/ozan-safak-484829-unsplash.jpg");
+  background-size: cover;
+}
+#loginbox {
+  width: 500px;
+  height: 500px;
+  /* transform: translateX(-50%); */
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  justify-content: center;
+  background-color: white;
+  box-shadow: 0px 15px 65px #424242;
+}
+
+#vform {
   width: 300px;
   height: 200px;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
+  transform: translate(-50%, -80%);
+  position: relative;
   background-color: white;
 }
 
 #logo {
   /* display: inline-block; */
-  width: 100px;
-  height: 50px;
+  width: 130px;
+  height: 70px;
   left: 50%;
   transform: translateX(-50%);
   position: relative;
   margin-left: -10px;
+  margin-bottom: 25px;
 }
 
 /* .form {
