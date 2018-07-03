@@ -36,9 +36,6 @@ const mutations = {
   [types.GET_PARTICIPATED_ZABOES](state, participatedZaboes) {
     state.participatedZaboes = participatedZaboes;
   },
-  [types.GET_PARTICIPATED_ZABOES](state, participataedZaboes) {
-    state.participatedZaboess = participatedZaboes;
-  },
   [types.SET_CURRENT_USER](state, payload) {
     state.currentUser = payload;
   },

@@ -1,17 +1,17 @@
 <template lang=''>
-  <div class="totWrapper">
-    <div class="mainZaboWrapper">
-      <div class="row">
+  <div>
+    <div :class="[transition, 'mainZaboWrapper']">
+      <div v-if="!loading" class="row">
         <div class="column">
-          <button class="button">참여하기</button>
-          <span class="heading">Fight Club</span>
-          <span id="subheading">Airbnb</span>
+          <router-link to="/zabo/1" class="participateLink">{{$t("참여하기")}}</router-link>
+          <span class="heading">{{title}}</span>
+          <span id="subheading">{{location}}</span>
           <p class="description">
-            비싼 가구들로 집 안을 채우지만 삶에 강한 공허함을 느끼는 자동차 리콜 심사관 ‘잭’. 거부할 수 없는 매력의 거친 남자 ‘테일러 더든’과의 우연한 만남으로 본능이 이끄는 대로 삶을 살기로 결심한다. 어느 날, “싸워봐야 네 자신을 알게 된다”라는 테일러 더든의 말에 통쾌한 한 방을 날리는 잭. 두 사람은 여태껏 경험해보지 못한 강렬한 카타르시스를 느끼며 ‘파이트 클럽’이라는 비밀 조직을 결성하고, 폭력으로 세상에 저항하는 거대한 집단이 형성된다. 하지만, 걷잡을 수 없이 커진 ‘파이트 클럽’은 시간이 지날수록 의미가 변질되고, 잭과 테일러 더든 사이의 갈등도 점차 깊어져 가는데…
+            {{content}}
           </p>
         </div>
         <div class="column">
-          <img :src="this.img" height="600" width="500" class="image"/>
+          <img :src="image" height="600" width="500" class="image"/>
         </div>
       </div>
       <div @click="closeMain" class="row">
@@ -19,45 +19,57 @@
         더 많은 자보 확인하기
       </div>
     </div>
-    <div class="backgroundImageWrapper">
+    <div v-if="!loading" :class="[transition, 'backgroundImageWrapper']">
       <img :src="this.background" class="backgroundImage"/>
     </div>
   </div>
 </template>
 <script>
+import axios from '@/axios-auth';
+
 export default {
   data () {
     return {
-      img: "",
-      background: ""
+      id: 1,
+      image: "",
+      background: "",
+      content: "",
+      title: "",
+      location: "",
+      loading: true,
+      transition: ""
     }
   },
-  mounted () {
-    fetch("http://localhost:8000/api/zaboes/1", {
-      method: "get",
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    })
+  created () {
+    axios.get("http://localhost:8000/api/zaboes/1")
       .then(response => {
-        console.log(response)
-        return response.json()
-      })
-      .then(json => {
-        const { posters } = json
-        this.img = posters[0].image
-        this.background = posters[0].image
+        const { posters, content, title, location } = response.data
+        this.image = posters["0"].image;
+        this.background = posters["0"].image;
+        this.content = content;
+        this.title = title;
+        this.location = location;
+        console.log(this.image, this.content, this.title, this.location)
+        this.loading = false;
       })
   },
   methods: {
     closeMain: function () {
-      this.$store.commit("MAIN_ZABO_SEEN")
+      this.transition = "transition";
+      setTimeout(() => {
+        this.$store.commit("MAIN_ZABO_SEEN");
+      }, 500)
     }
   }
 }
 </script>
 
 <style scoped lang=''>
+.transition {
+  transition: 0.5s;
+  transform: translateY(-2000px);
+  transition-timing-function: ease-in-out;
+}
 .mainZaboWrapper {
   width: 100%;
   display: flex;
@@ -110,11 +122,14 @@ export default {
   font-size: 2em;
   margin-bottom: 0.2em;
 }
-.button {
+.participateLink {
   padding: 11px 38px 10px 38px;
   background-color: #12397d;
   font-size: 1.25em;
+  font-weight: 400;
   margin-bottom: 26px;
+  text-decoration: none;
+  color: white;
 }
 .heading {
   font-size: 6.25em;
@@ -137,6 +152,7 @@ export default {
   width: 100%;
   margin: auto auto;
   z-index: 800;
+  overflow: hidden;
 }
 .backgroundImage {
   width: 150%;

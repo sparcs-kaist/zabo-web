@@ -1,16 +1,14 @@
 <template>
   <div id="app">
-    <template v-if="mainZaboSeen">
-      <template v-if="!loggingIn">
-        <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
-        <div class="headerMargin">
-          <router-view />
-        </div>
+    <template v-show="mainZaboSeen">
+      <template v-show="!loggingIn">
+        <Header @logged-in="handleLogin"></Header>
+        <router-view :key="$route.name + ($route.params.id || '')"></router-view>
       </template>
-      <Login v-else @logged-in="handleLogin"></Login>
+      <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
       <Footer />
     </template>
-    <MainZabo v-else></MainZabo>
+    <MainZabo v-if="mainZaboSeen"></MainZabo>
   </div>
 </template>
 
@@ -200,8 +198,5 @@ a {
   /* text-align: center; */
   /* color: #2c3e50; */
   overflow: hidden;
-}
-.headerMargin {
-  margin-top: 78px;
 }
 </style>

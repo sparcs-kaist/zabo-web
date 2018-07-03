@@ -1,14 +1,23 @@
 <template lang=''>
-<div id="searchBar" :searchValue="searchValue">
-  <input type="text" class="searchInput">{{searchValue}}</input>
+<div id="searchBar">
+  <input type="text" class="searchInput" @keyup.enter="onSubmit" v-model="computedSearchValue"></input>
   <router-link to="/search"><v-icon class="searchIcon">search</v-icon></router-link>
 </div>
 </template>
 <script>
 export default {
+  props: {
+    'searchValue': String
+  },
   data () {
     return {
-      searchValue: ""
+      computedSearchValue: this.searchValue
+    }
+  },
+  methods: {
+    onSubmit () {
+      this.computedSearchValue = ""
+      this.$emit('submitValue')
     }
   }
 }
