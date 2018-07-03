@@ -3,9 +3,7 @@
     <template v-if="mainZaboSeen">
       <template v-if="!loggingIn">
         <Header @logged-in="handleLogin"></Header>
-        <div class="headerMargin">
-          <router-view />
-        </div>
+        <router-view :key="$route.name + ($route.params.id || '')"></router-view>
       </template>
       <Login v-else @logged-in="handleLogin"></Login>
       <Footer />
@@ -46,6 +44,9 @@ export default {
     mainZaboSeen: function () {
       return this.$store.getters.mainZaboSeen
     }
+  },
+  beforeRouteEnter (to, from, next) {
+
   }
 };
 </script>
@@ -196,8 +197,5 @@ a {
   /* text-align: center; */
   /* color: #2c3e50; */
   overflow: hidden;
-}
-.headerMargin {
-  margin-top: 78px;
 }
 </style>

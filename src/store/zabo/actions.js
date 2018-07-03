@@ -8,17 +8,19 @@ const setURL = function(subURL) {
 const actions = {
   zaboesList({ commit, state }, passedPayload) {
     if (!Object.keys(state.zaboesObject).includes(passedPayload.pageNum)) {
-      axios
-        .get(
-          `/zaboes/?page=${passedPayload.pageNum}&page_size=${
-            passedPayload.pageSize
-          }`
-        )
-        .then(res => {
-          const result = res.data.data;
-          const payload = { result, pagenum: passedPayload.pageNum };
-          commit(types.ZABOES_LIST, payload);
-        });
+      axios({
+        method: "get",
+        url: `/zaboes/?page=${passedPayload.pageNum}&page_size=${
+          passedPayload.pageSize
+        }`,
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
+      }).then(res => {
+        const result = res.data.data;
+        const payload = { result, pagenum: passedPayload.pageNum };
+        commit(types.ZABOES_LIST, payload);
+      });
     }
   },
   searchZaboes({ commit }, searchValue) {
@@ -30,7 +32,14 @@ const actions = {
   zaboesGetPageCount({ commit }, payload) {
     return new Promise(resolve => {
       axios
-        .get(`/zaboes/${setURL(payload.subURL)}?page_size=${payload.pageSize}`)
+        .get(
+          `/zaboes/${setURL(payload.subURL)}?page_size=${payload.pageSize}`,
+          {
+            headers: {
+              Authorization: localStorage.getItem("token")
+            }
+          }
+        )
         .then(res => {
           const result = res.data.page_count;
           commit(types.ZABOES_PAGECOUNT, result);
@@ -52,14 +61,12 @@ const actions = {
       .catch(err => console.log(err));
   },
   getMyInfo({ commit, state }) {
-    console.log(state.loggedInState);
-    console.log("getmyinfo");
-    fetch("http://localhost:8000/api/users/myInfo", {
-      method: "get",
-      headers: {
-        Authorization: localStorage.getItem("token")
-      }
-    })
+    axios
+      .get("/users/myInfo", {
+        headers: {
+          Authorization: `${localStorage.getItem("token")}`
+        }
+      })
       .then(response => {
         if (response.status !== 401) {
           return response.json();
