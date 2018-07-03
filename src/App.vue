@@ -1,16 +1,14 @@
 <template>
   <div id="app">
-    <template v-if="mainZaboSeen">
-      <template v-if="!loggingIn">
-        <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
-        <div class="headerMargin">
-          <router-view />
-        </div>
-      </template>
-      <Login v-else @logged-in="handleLogin"></Login>
+    <div v-show="mainZaboSeen">
+      <div v-show="!loggingIn">
+        <Header @logged-in="handleLogin"></Header>
+        <router-view :key="$route.name + ($route.params.id || '')"></router-view>
+      </div>
+      <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
       <Footer />
-    </template>
-    <MainZabo v-else></MainZabo>
+    </div>
+    <MainZabo v-if="!mainZaboSeen"></MainZabo>
   </div>
 </template>
 
@@ -18,7 +16,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Login from "@/components/Login";
-import MainZabo from '@/components/MainZabo';
+import MainZabo from "@/components/MainZabo";
 
 export default {
   name: "App",
@@ -28,28 +26,28 @@ export default {
     Footer,
     MainZabo
   },
-  data () {
+  data() {
     return {
       loggingIn: false
     };
   },
-  created () {
+  created() {
     this.mainZaboSeen = this.$store.getters.mainZaboSeen;
-    this.$store.commit('LOGIN');
-    this.$store.dispatch('getMyInfo');
+    this.$store.commit("LOGIN");
+    this.$store.dispatch("getMyInfo");
   },
   methods: {
-    handleLogin (value) {
+    handleLogin(value) {
       this.loggingIn = !this.loggingIn;
     }
   },
   computed: {
-    mainZaboSeen: function () {
-      return this.$store.getters.mainZaboSeen
+    mainZaboSeen: function() {
+      return this.$store.getters.mainZaboSeen;
     },
-    loggedInState: function () {
-      return this.$store.getters.loggedInState
-    },
+    loggedInState: function() {
+      return this.$store.getters.loggedInState;
+    }
   }
 };
 </script>
@@ -200,8 +198,5 @@ a {
   /* text-align: center; */
   /* color: #2c3e50; */
   overflow: hidden;
-}
-.headerMargin {
-  margin-top: 78px;
 }
 </style>

@@ -24,7 +24,7 @@
       </div>
       <div class="column">
         <div class="right">
-          <Search/>
+          <Search @submitValue="onSubmit" :searchValue="searchValue" />
         </div>
         <template v-if="loggedInState">
           <div @click="logout" class="button right">
@@ -55,7 +55,8 @@ export default {
   },
   data () {
     return {
-      lang: "kr"
+      lang: "kr",
+      searchValue: ""
     }
   },
   props: {
@@ -76,6 +77,9 @@ export default {
         this.$i18n.set('kr')
         this.lang = "kr"
       }
+    },
+    onSubmit: function () {
+      this.$router.push({ name: "ZaboSearch" })
     }
   },
   computed: {

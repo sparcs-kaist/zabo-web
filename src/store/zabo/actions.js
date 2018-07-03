@@ -12,10 +12,7 @@ const actions = {
         method: "get",
         url: `/zaboes/?page=${passedPayload.pageNum}&page_size=${
           passedPayload.pageSize
-        }`,
-        headers: {
-          Authorization: localStorage.getItem("token")
-        }
+        }`
       }).then(res => {
         const result = res.data.data;
         const payload = { result, pagenum: passedPayload.pageNum };
@@ -32,14 +29,7 @@ const actions = {
   zaboesGetPageCount({ commit }, payload) {
     return new Promise(resolve => {
       axios
-        .get(
-          `/zaboes/${setURL(payload.subURL)}?page_size=${payload.pageSize}`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token")
-            }
-          }
-        )
+        .get(`/zaboes/${setURL(payload.subURL)}?page_size=${payload.pageSize}`)
         .then(res => {
           const result = res.data.page_count;
           commit(types.ZABOES_PAGECOUNT, result);
@@ -47,19 +37,6 @@ const actions = {
         });
     });
   },
-  // getParticipatedZaboes({ commit, state }, payload) {
-  //   const {
-  //     currentUser: { id }
-  //   } = state;
-  //   return this.$http
-  //     .get(`/users/${id}`)
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       commit(types.GET_PARTICIPATED_ZABOES, json);
-  //       return console.log(json);
-  //     })
-  //     .catch(err => console.log(err));
-  // },
   getMyInfo({ commit, state }) {
     axios
       .get("/users/myInfo", {
@@ -69,10 +46,14 @@ const actions = {
       })
       .then(response => {
         if (response.status !== 401) {
-          commit("SET_CURRENT_USER", response.data);
+          commit(types.SET_CURRENT_USER, response.data);
         } else {
           console.log("response stauts 401!");
         }
+      })
+      .then(() => {
+        commit(types.GOT_RESPONSE);
+        return true;
       })
       .catch(err => console.log(err));
   },
@@ -94,7 +75,7 @@ const actions = {
         phone: payload[3]
       }
     }).then(function(response) {
-      axios(`/users/${id}`, {
+      axios("/users/myInfo", {
         method: "GET",
         headers: {
           Authorization: localStorage.getItem("token")

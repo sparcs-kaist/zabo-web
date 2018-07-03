@@ -6,7 +6,6 @@ import ZaboUpload from "@/pages/ZaboUpload";
 import ZaboList from "@/pages/ZaboList";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
 import ZaboSearch from "@/pages/ZaboSearch.vue";
-// import store from '../store';
 
 Vue.use(Router);
 
