@@ -9,8 +9,8 @@
           <button class="buttonTap">{{$t("찜하기")}}</button>
         </div>
         <div class="navbar">
-          <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">Info</p>
-          <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">Review</p>
+          <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
+          <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
         </div>
         <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
         </input-field>
@@ -23,7 +23,6 @@
         <review-screen :comments="comments" />
       </div>
     </div>
-
     <div class="column">
       <img :src="this.image" height="600" width="500" />
     </div>
@@ -48,7 +47,7 @@ export default {
       newComment: '',
       // 0 displays Info, 1 displays Review
       toDisplay: 0,
-      zabo_id: 0,
+      zabo_id: -1,
       updated_time: ""
     };
   },
@@ -61,24 +60,17 @@ export default {
     onSubmitComment () {
       axios({
         method: 'post',
-        url: 'http://localhost:12345/api/comments/',
-        auth: {
-          username: 'jidan@example.com',
-          password: 'q1234321',
-        },
+        url: `http://localhost:8000/api/comments/${this.zabo_id}`,
         data: {
           content: this.newComment,
           zabo: this.zabo_id,
         },
       })
         .then((response) => {
-          // eslint-disable-next-line
-          console.log(response);
           this.comments.push(response.data);
         })
-        .catch((error) => {
-          // eslint-disable-next-line
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
       this.newComment = '';
     },
@@ -101,7 +93,6 @@ export default {
         this.location = location;
         this.updated_time = updated_time
         this.comments = comments;
-        console.log(response)
       })
       .catch((err) => {
         console.log(err);
@@ -124,7 +115,6 @@ export default {
 }
 .bodyWrapper {
   color: white;
-  margin: 20px 50px 50px 50px;
 }
 /* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
 .bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
