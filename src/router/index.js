@@ -1,12 +1,11 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "@/pages/Home";
-import Zabo from "@/pages/Zabo";
 import ZaboDetail from "@/pages/ZaboDetail";
 import ZaboUpdate from "@/pages/ZaboUpdate";
 import ZaboUpload from "@/pages/ZaboUpload";
 import ZaboList from "@/pages/ZaboList";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
+import ZaboSearch from "@/pages/ZaboSearch.vue";
 // import store from '../store';
 
 Vue.use(Router);
@@ -16,23 +15,13 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "Home",
-      component: Home
-    },
-    {
-      path: "/zabo",
-      name: "Zabo",
-      component: Zabo
-    },
-    {
-      path: "/zabo/detail/:zabo_id",
-      name: "ZaboDetail",
-      component: ZaboDetail
-    },
-    {
-      path: "/zabo/list",
       name: "ZaboList",
       component: ZaboList
+    },
+    {
+      path: "/zabo/:zabo_id",
+      name: "ZaboDetail",
+      component: ZaboDetail
     },
     {
       path: "/zabo/update",
@@ -45,9 +34,14 @@ export default new Router({
       component: ZaboUpload
     },
     {
-      path: "/zabo/user_profile",
+      path: "/user/profile",
       name: "Zabouserprofile",
       component: ZaboUserprofile
+    },
+    {
+      path: "/search",
+      name: "ZaboSearch",
+      component: ZaboSearch
     }
   ]
 });

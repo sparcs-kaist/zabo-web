@@ -13,8 +13,10 @@ const mutations = {
     }
     state.zaboes = temp;
   },
-  // [types.ZABO_CREATE](state, zabo) {
-  //   state.zaboes.push(zabo);
+  // [types.ZABO_SEARCH](state, {result, searchValue}) {
+  //   result.map(zabo => {
+  //     if (zabo)
+  //   })
   // },
   // [types.ZABO_UPDATE](state, zabo) {
   //   function func(x) {
@@ -31,16 +33,34 @@ const mutations = {
   [types.ZABOES_PAGECOUNT](state, pageCount) {
     state.zaboesPageCount = pageCount;
   },
+  [types.GET_PARTICIPATED_ZABOES](state, participatedZaboes) {
+    state.participatedZaboes = participatedZaboes;
+  },
   [types.GET_PARTICIPATED_ZABOES](state, participataedZaboes) {
     state.participatedZaboess = participatedZaboes;
   },
+  [types.SET_CURRENT_USER](state, payload) {
+    state.currentUser = payload;
+  },
+  [types.GOT_RESPONSE](state) {
+    state.getResponse = true;
+  },
+  [types.START_AJAX](state) {
+    state.getResponse = false;
+  },
   [types.LOGIN](state, payload) {
-    state.loggedInState = true;
+    if (localStorage.getItem("token")) {
+      state.loggedInState = true;
+    }
     state.currentUser = payload;
   },
   [types.LOGOUT](state, payload) {
     state.loggedInState = false;
     state.currentUser = {};
+    localStorage.removeItem("token");
+  },
+  [types.MAIN_ZABO_SEEN](state, payload) {
+    state.mainZaboSeen = true;
   }
 };
 

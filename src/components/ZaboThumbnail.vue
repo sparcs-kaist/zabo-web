@@ -1,9 +1,6 @@
 <template>
-  <div class="zaboThumbnail"
-       :class="`row${parseInt( row )}`">
-    <div class="thumbnail"
-         @hover="zaboThumbnailDetailShow()"
-         :style="style">
+  <div class="zaboThumbnail" :class="`row${parseInt( row )}`">
+    <div class="thumbnail" @hover="zaboThumbnailDetailShow()" :style="style">
       <p>
         {{ zaboDetail.content }}
       </p>
@@ -30,12 +27,11 @@ export default {
     },
   },
   data() {
-    return {
-    };
+    return {};
   },
   created() {
-    console.log(this.zaboDetail.posters[0]);
-    console.log(this.zaboDetail);
+    // console.log(this.zaboDetail.posters[0]);
+    // console.log(this.zaboDetail);
   },
   computed: {
     style() {
@@ -48,25 +44,31 @@ export default {
   },
   methods: {
     zaboThumbnailDetailShow() {
-      document.getElementsByClassName('thumbnailDetail')[this.number].style.display = 'block';
+      document.getElementsByClassName('thumbnailDetail')[
+        this.number
+      ].style.display =
+        'block';
     },
   },
 };
 </script>
 
 <style scoped>
-.zaboThumbnail.row1 .thumbnail, .zaboThumbnail.row7 .thumbnail {
+.zaboThumbnail.row1 .thumbnail,
+.zaboThumbnail.row7 .thumbnail {
   display: none;
 }
 
-.zaboThumbnail.row2 .thumbnail, .zaboThumbnail.row6 .thumbnail {
+.zaboThumbnail.row2 .thumbnail,
+.zaboThumbnail.row6 .thumbnail {
   width: 178px;
   height: 277px;
   margin: 0 5px 0 6px;
   z-index: 1001;
 }
 
-.zaboThumbnail.row3 .thumbnail, .zaboThumbnail.row5 .thumbnail {
+.zaboThumbnail.row3 .thumbnail,
+.zaboThumbnail.row5 .thumbnail {
   width: 226px;
   height: 394px;
   margin: 0 5px 0 6px;

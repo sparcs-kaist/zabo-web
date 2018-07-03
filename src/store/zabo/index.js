@@ -5,11 +5,14 @@ import getters from "./getters";
 export default {
   state: {
     zaboes: [],
+    searchedZaboes: [],
     zaboesObject: {},
     zaboesPageCount: "",
     participatedZaboes: {},
     currentUser: {},
-    loggedInState: false
+    loggedInState: false,
+    mainZaboSeen: false,
+    getResponse: true
   },
   actions,
   mutations,
