@@ -47,19 +47,32 @@ const actions = {
         });
     });
   },
-  // getParticipatedZaboes({ commit, state }, payload) {
-  //   const {
-  //     currentUser: { id }
-  //   } = state;
-  //   return this.$http
-  //     .get(`/users/${id}`)
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       commit(types.GET_PARTICIPATED_ZABOES, json);
-  //       return console.log(json);
-  //     })
-  //     .catch(err => console.log(err));
-  // },
+  login({ commit, dispatch, state }, payload) {
+    commit(types.START_AJAX);
+    axios
+      .post("http://localhost:8000/api-token-auth/", {
+        email: payload[0],
+        password: payload[1]
+      })
+      .then(response => {
+        localStorage.setItem("token", `ZABO ${response.data.token}`);
+      })
+      .then(() => {
+        axios("/users/myInfo", {
+          method: "GET",
+          headers: {
+            Authorization: localStorage.getItem("token")
+          }
+        })
+          .then(function(response) {
+            commit(types.LOGIN, response.data);
+          })
+          .then(() => {
+            commit(types.GOT_RESPONSE);
+          });
+      })
+      .catch(err => console.log(err));
+  },
   getMyInfo({ commit, state }) {
     axios
       .get("/users/myInfo", {
@@ -69,10 +82,14 @@ const actions = {
       })
       .then(response => {
         if (response.status !== 401) {
-          commit("SET_CURRENT_USER", response.data);
+          commit(types.SET_CURRENT_USER, response.data);
         } else {
           console.log("response stauts 401!");
         }
+      })
+      .then(() => {
+        commit(types.GOT_RESPONSE);
+        return true;
       })
       .catch(err => console.log(err));
   },
@@ -95,7 +112,7 @@ const actions = {
       }
     })
       .then(function(response) {
-        axios(`/users/${id}`, {
+        axios("/users/myInfo", {
           method: "GET",
           headers: {
             Authorization: localStorage.getItem("token")
