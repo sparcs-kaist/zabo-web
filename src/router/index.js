@@ -38,7 +38,7 @@ export default new Router({
       component: ZaboUserprofile
     },
     {
-      path: "/search",
+      path: "/search/:search",
       name: "ZaboSearch",
       component: ZaboSearch
     }

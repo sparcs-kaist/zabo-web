@@ -4,7 +4,7 @@
   <div class="zaboListWrapper" v-if="!isLoading">
     <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList">
       <img :src="zabo.posters[0].image" class="zaboImage">
-      <span class="zaboTitle">{{zabo.created_time}}</span>
+      <span class="zaboTitle">{{zabo.title}}</span>
     </div>
   </div>
 </div>
@@ -14,7 +14,14 @@ import axios from '@/axios-auth';
 
 export default {
   created () {
-    axios.get('/zaboes').then(response => response.data.data)
+    console.log(this.$route.params.search)
+    axios({
+      methods: 'get',
+      url: `/zaboes?search=${this.$route.params.search}`,
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
+    }).then(response => response.data.data)
       .then(data => {
         this.zaboList = data;
         this.isLoading = false;
