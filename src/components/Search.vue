@@ -1,6 +1,6 @@
 <template lang=''>
 <div id="searchBar">
-  <input type="text" class="searchInput" @keyup.enter="onSubmit" v-model="computedSearchValue"></input>
+  <input type="text" class="searchInput" @keyup.enter="onEnter" v-model="computedSearchValue"></input>
   <router-link to="/search"><v-icon class="searchIcon">search</v-icon></router-link>
 </div>
 </template>
@@ -15,9 +15,10 @@ export default {
     }
   },
   methods: {
-    onSubmit () {
-      this.computedSearchValue = ""
-      this.$emit('submitValue')
+    onEnter () {
+      console.log(this.computedSearchValue)
+      this.$emit('submitValue', this.computedSearchValue)
+      // this.computedSearchValue = ""
     }
   }
 }

@@ -24,7 +24,7 @@
       </div>
       <div class="column">
         <div class="right">
-          <Search @submitValue="onSubmit" :searchValue="searchValue" />
+          <Search @submitValue="onSearch" :searchValue="searchValue" />
         </div>
         <template v-if="loggedInState">
           <div @click="logout" class="button right">
@@ -78,8 +78,9 @@ export default {
         this.lang = "kr"
       }
     },
-    onSubmit: function () {
-      this.$router.push({ name: "ZaboSearch" })
+    onSearch (searchTerm) {
+      console.log(searchTerm)
+      this.$router.push({ name: 'ZaboSearch', params: { search: searchTerm } })
     }
   },
   computed: {
