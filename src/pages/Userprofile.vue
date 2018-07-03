@@ -115,7 +115,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .column {
   width: 70%;
   height: 2000px;

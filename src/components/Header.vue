@@ -59,6 +59,9 @@ export default {
       searchValue: ""
     }
   },
+  props: {
+    loggedInState: Boolean
+  },
   methods: {
     login: function () {
       this.$emit('logged-in');
@@ -80,9 +83,6 @@ export default {
     }
   },
   computed: {
-    loggedInState: function () {
-      return this.$store.getters.loggedInState
-    },
     computedLang: function () {
       if (this.lang === "kr") {
         return "en"

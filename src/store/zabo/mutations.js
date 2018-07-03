@@ -46,7 +46,9 @@ const mutations = {
     state.getResponse = false;
   },
   [types.LOGIN](state, payload) {
-    state.loggedInState = true;
+    if (localStorage.getItem("token")) {
+      state.loggedInState = true;
+    }
     state.currentUser = payload;
   },
   [types.LOGOUT](state, payload) {

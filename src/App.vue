@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <template v-if="mainZaboSeen">
-      <template v-if="!loggingIn">
+    <template v-show="mainZaboSeen">
+      <template v-show="!loggingIn">
         <Header @logged-in="handleLogin"></Header>
         <router-view :key="$route.name + ($route.params.id || '')"></router-view>
       </template>
-      <Login v-else @logged-in="handleLogin"></Login>
+      <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
       <Footer />
     </template>
-    <MainZabo v-else></MainZabo>
+    <MainZabo v-if="mainZaboSeen"></MainZabo>
   </div>
 </template>
 
@@ -32,8 +32,9 @@ export default {
     };
   },
   created () {
+    this.mainZaboSeen = this.$store.getters.mainZaboSeen;
+    this.$store.commit('LOGIN');
     this.$store.dispatch('getMyInfo');
-    this.mainZaboSeen = this.$store.getters.mainZaboSeen
   },
   methods: {
     handleLogin (value) {
@@ -43,7 +44,10 @@ export default {
   computed: {
     mainZaboSeen: function () {
       return this.$store.getters.mainZaboSeen
-    }
+    },
+    loggedInState: function () {
+      return this.$store.getters.loggedInState
+    },
   }
 };
 </script>

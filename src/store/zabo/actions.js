@@ -47,19 +47,19 @@ const actions = {
         });
     });
   },
-  getParticipatedZaboes({ commit, state }, payload) {
-    const {
-      currentUser: { id }
-    } = state;
-    return this.$http
-      .get(`/users/${id}`)
-      .then(response => response.json())
-      .then(json => {
-        commit(types.GET_PARTICIPATED_ZABOES, json);
-        return console.log(json);
-      })
-      .catch(err => console.log(err));
-  },
+  // getParticipatedZaboes({ commit, state }, payload) {
+  //   const {
+  //     currentUser: { id }
+  //   } = state;
+  //   return this.$http
+  //     .get(`/users/${id}`)
+  //     .then(response => response.json())
+  //     .then(json => {
+  //       commit(types.GET_PARTICIPATED_ZABOES, json);
+  //       return console.log(json);
+  //     })
+  //     .catch(err => console.log(err));
+  // },
   getMyInfo({ commit, state }) {
     axios
       .get("/users/myInfo", {
@@ -69,14 +69,10 @@ const actions = {
       })
       .then(response => {
         if (response.status !== 401) {
-          return response.json();
+          commit("SET_CURRENT_USER", response.data);
         } else {
           console.log("response stauts 401!");
         }
-      })
-      .then(json => {
-        console.log(json);
-        commit(types.LOGIN, json);
       })
       .catch(err => console.log(err));
   },
