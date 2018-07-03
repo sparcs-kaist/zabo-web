@@ -2,7 +2,7 @@
   <div id="app">
     <div v-show="mainZaboSeen">
       <div v-show="!loggingIn">
-        <Header @logged-in="handleLogin"></Header>
+        <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
         <router-view :key="$route.name + ($route.params.id || '')"></router-view>
       </div>
       <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
