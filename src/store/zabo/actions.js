@@ -81,35 +81,31 @@ const actions = {
       currentUser: { id }
     } = state;
     commit("START_AJAX");
-    fetch(`http://localhost:8000/api/users/${id}/`, {
+    axios(`/users/${id}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token")
       },
-      body: JSON.stringify({
+      data: {
         first_name: payload[0],
         last_name: payload[1],
         nickName: payload[2],
         phone: payload[3]
-      })
+      }
     })
       .then(function(response) {
-        fetch(`http://localhost:8000/api/users/${id}`, {
+        axios(`/users/${id}`, {
           method: "GET",
           headers: {
             Authorization: localStorage.getItem("token")
           }
-        })
-          .then(function(response) {
-            return response.json();
-          })
-          .then(function(response) {
-            commit("SET_CURRENT_USER", response);
-          });
+        }).then(function(response) {
+          commit(types.SET_CURRENT_USER, response.data);
+        });
       })
       .then(function() {
-        commit("GOT_RESPONSE");
+        commit(types.GOT_RESPONSE);
       });
   }
 };
