@@ -93,20 +93,20 @@ const actions = {
         nickName: payload[2],
         phone: payload[3]
       }
-    })
-      .then(function(response) {
-        axios(`/users/${id}`, {
-          method: "GET",
-          headers: {
-            Authorization: localStorage.getItem("token")
-          }
-        }).then(function(response) {
-          commit(types.SET_CURRENT_USER, response.data);
-        });
+    }).then(function(response) {
+      axios(`/users/${id}`, {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
       })
-      .then(function() {
-        commit(types.GOT_RESPONSE);
-      });
+        .then(function(response) {
+          commit(types.SET_CURRENT_USER, response.data);
+        })
+        .then(function() {
+          commit(types.GOT_RESPONSE);
+        });
+    });
   }
 };
 
