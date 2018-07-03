@@ -2,7 +2,7 @@
   <div id="app">
     <template v-if="mainZaboSeen">
       <template v-if="!loggingIn">
-        <Header @logged-in="handleLogin"></Header>
+        <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
         <div class="headerMargin">
           <router-view />
         </div>
@@ -34,8 +34,9 @@ export default {
     };
   },
   created () {
+    this.mainZaboSeen = this.$store.getters.mainZaboSeen;
+    this.$store.commit('LOGIN');
     this.$store.dispatch('getMyInfo');
-    this.mainZaboSeen = this.$store.getters.mainZaboSeen
   },
   methods: {
     handleLogin (value) {
@@ -45,7 +46,10 @@ export default {
   computed: {
     mainZaboSeen: function () {
       return this.$store.getters.mainZaboSeen
-    }
+    },
+    loggedInState: function () {
+      return this.$store.getters.loggedInState
+    },
   }
 };
 </script>
