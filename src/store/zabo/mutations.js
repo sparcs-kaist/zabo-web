@@ -1,23 +1,25 @@
 import * as types from "@/store/mutation-types";
 
 const mutations = {
+  // [types.ZABOES_LIST](state, payload) {
+  //   state.zaboesObject[payload.pagenum] = payload.result;
+  //   const temp = [];
+  //   const keys = Object.keys(state.zaboesObject);
+  //   keys.sort((a, b) => a - b);
+  //   for (let i = 0; i < keys.length; i += 1) {
+  //     for (const j in state.zaboesObject[keys[i]]) {
+  //       temp.push(state.zaboesObject[keys[i]][j]);
+  //     }
+  //   }
+  //   state.zaboes = temp;
+  // },
   [types.ZABOES_LIST](state, payload) {
-    state.zaboesObject[payload.pagenum] = payload.result;
-    const temp = [];
-    const keys = Object.keys(state.zaboesObject);
-    keys.sort((a, b) => a - b);
-    for (let i = 0; i < keys.length; i += 1) {
-      for (const j in state.zaboesObject[keys[i]]) {
-        temp.push(state.zaboesObject[keys[i]][j]);
+    for (let i = 0; i < payload.pagenum; i++) {
+      if (payload.result[i].posters[0].image) {
+        state.zaboes.push(payload.result[i]);
       }
     }
-    state.zaboes = temp;
   },
-  // [types.ZABO_SEARCH](state, {result, searchValue}) {
-  //   result.map(zabo => {
-  //     if (zabo)
-  //   })
-  // },
   // [types.ZABO_UPDATE](state, zabo) {
   //   function func(x) {
   //     return x.pk.toString() === zabo.pk.toString();

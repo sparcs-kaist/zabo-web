@@ -4,9 +4,17 @@ import getters from "./getters";
 
 export default {
   state: {
+    // zaboes: {
+    //   R: [],
+    //   P: [],
+    //   C: [],
+    //   F: [],
+    //   L: [],
+    //   E: []
+    // },
     zaboes: [],
     searchedZaboes: [],
-    zaboesObject: {},
+    // zaboesObject: [],
     zaboesPageCount: "",
     participatedZaboes: {},
     currentUser: {},
