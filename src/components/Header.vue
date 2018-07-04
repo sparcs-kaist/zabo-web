@@ -55,14 +55,9 @@ export default {
   },
   data() {
     return {
-<<<<<<< HEAD
       lang: "kr",
       searchValue: ""
-    }
-=======
-      lang: "kr"
     };
->>>>>>> login-page
   },
   props: {
     loggedInState: Boolean
@@ -83,9 +78,9 @@ export default {
         this.lang = "kr";
       }
     },
-    onSearch (searchTerm) {
-      console.log(searchTerm)
-      this.$router.push({ name: 'ZaboSearch', params: { search: searchTerm } })
+    onSearch(searchTerm) {
+      console.log(searchTerm);
+      this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
     }
   },
   computed: {
