@@ -3,40 +3,42 @@
     <div id="loginbox">
       <v-app id="vform">
         <a href="http://localhost:8080">
-          <img src="@/logo.svg" id="logo">
+          <img src="../assets/logo.svg" id="logo">
         </a>
-        <div v-if="isZabologin === false" style="padding-left: 0px;">
-          <v-btn depressed color="indigo darken-3" class="sso-login">
-            SPARCS SSO로 로그인
-          </v-btn>
-          <v-btn depressed color="grey lighten-3" class="zabo-login" @click="zabologin">
-            Zabo 단체 계정으로 로그인
-          </v-btn>
-        </div>
-        <div v-else style="margin-top: -20px;">
-          <div class="backward" @click="zabologin">
-            뒤로
-          </div>
-          <p class="zabologin-text">
-            단체 계정으로 로그인
-          </p>
-          <v-form v-model="valid" method="get" @submit.prevent="login">
-            <v-text-field
-            required
-            label = "E-mail"
-            v-model = "email"
-            :rules="emailRules"
-            class = "field"/>
-            <v-text-field
-            required
-            label = "Password"
-            v-model = "password"
-            :rules="passwordRules"
-            type = "password"
-            class = "field"/>
-            <v-btn type="submit" :disabled="!valid" depressed :loading="loading" color="indigo darken-3" id="login_button">로그인</v-btn>
-          </v-form>
-        </div>
+          <transition name="slide-fade" mode="out-in">
+            <div key="option" v-if="isZabologin === false" style="padding-left: 0px;">
+              <v-btn depressed color="indigo darken-3" class="sso-login">
+                sparcs sso로 로그인
+              </v-btn>
+              <v-btn depressed color="grey lighten-3" class="zabo-login" @click="zabologin">
+                zabo 단체 계정으로 로그인
+              </v-btn>
+            </div>
+            <div key="teamaccount" v-if="isZabologin === true" style="margin-top: -20px;">
+              <div class="zabologin-text" @click="zabologin">
+                <div style="width: 10px; float: left;">
+                  <img src="../assets/backword.svg" style="width: 10px; padding-top: 5px; margin-left: 60px;">
+                </div>
+                단체 계정으로 로그인
+              </div>
+              <v-form v-model="valid" method="get" @submit.prevent="login">
+                <v-text-field
+                required
+                label = "E-mail"
+                v-model = "email"
+                :rules="emailRules"
+                class = "field"/>
+                <v-text-field
+                required
+                label = "Password"
+                v-model = "password"
+                :rules="passwordRules"
+                type = "password"
+                class = "field"/>
+                <v-btn type="submit" :disabled="!valid" depressed :loading="loading" color="indigo darken-3" id="login_button">로그인</v-btn>
+              </v-form>
+            </div>
+          </transition>
         <p class="copyright">
           Copyright 2018. All right reserved.
         </p>
@@ -135,7 +137,7 @@ export default {
 
 #vform {
   width: 300px;
-  height: 230px;
+  height: 240px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -80%);
@@ -151,7 +153,7 @@ export default {
   transform: translateX(-50%);
   position: relative;
   margin-left: -10px;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
 }
 
 .sso-login {
@@ -173,26 +175,16 @@ export default {
   margin-left: 0px;
 }
 
-.backward {
-  width: 30px;
-  height: 20px;
-  float: left;
-  font-family: Nanumsquare;
-  font-size: 11pt;
-  font-weight: 700;
-  cursor: pointer;
-  position: absolute;
-  margin-top: -5px;
-}
-
 .zabologin-text {
   width: 300px;
+  height: 30px;
   text-align: center;
   font-family: Nanumsquare;
   color: #12397d;
   font-size: 13pt;
   font-weight: 800;
-  margin-top: -10px;
+  /* margin-top: -10px; */
+  cursor: pointer;
 }
 
 .field {
@@ -201,7 +193,7 @@ export default {
 
 #login_button {
   width: 300px;
-  height: 50px;
+  height: 55px;
   margin-left: 0px;
   font-size: 13pt;
   font-family: Nanumsquare;
@@ -215,5 +207,19 @@ export default {
   font-size: 8pt;
   position: absolute;
   top: 350px;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.1s ease-in-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translate(30px);
+  opacity: 0;
 }
 </style>

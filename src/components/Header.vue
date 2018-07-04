@@ -4,7 +4,7 @@
     <div class="Buttons">
       <div class="column">
         <router-link to="/">
-          <img src="@/logo.svg" class="logo">
+          <img src="../assets/logo.svg" class="logo">
         </router-link>
         <router-link to="/user/zaboes/uploaded">
           <div class="button left">
@@ -45,45 +45,45 @@
 </template>
 
 <script>
-import app from '@/main';
-import Search from '@/components/Search';
+import app from "@/main";
+import Search from "@/components/Search";
 
 export default {
   name: "Header",
   components: {
     Search
   },
-  data () {
+  data() {
     return {
       lang: "kr"
-    }
+    };
   },
   props: {
     loggedInState: Boolean
   },
   methods: {
-    login: function () {
-      this.$emit('logged-in');
+    login: function() {
+      this.$emit("logged-in");
     },
-    logout: function () {
-      this.$store.commit('LOGOUT')
+    logout: function() {
+      this.$store.commit("LOGOUT");
     },
-    setLang: function () {
+    setLang: function() {
       if (this.lang === "kr") {
-        this.$i18n.set('en')
-        this.lang = "en"
+        this.$i18n.set("en");
+        this.lang = "en";
       } else {
-        this.$i18n.set('kr')
-        this.lang = "kr"
+        this.$i18n.set("kr");
+        this.lang = "kr";
       }
     }
   },
   computed: {
-    computedLang: function () {
+    computedLang: function() {
       if (this.lang === "kr") {
-        return "en"
+        return "en";
       } else {
-        return "kr"
+        return "kr";
       }
     }
   }
