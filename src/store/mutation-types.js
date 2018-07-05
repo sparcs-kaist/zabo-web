@@ -4,6 +4,7 @@ export const USER_LOGIN_FAILURE = "USER_LOGIN_FAILURE";
 export const USER_LOGOUT = "USER_LOGOUT";
 
 export const ZABOES_LIST = "ZABOES_LIST";
+export const ZABOES_RESET = "ZABOES_RESET";
 export const ZABOES_PAGECOUNT = "ZABOES_PAGECOUNT";
 export const ZABO_SEARCH = "ZABO_SEARCH";
 export const ZABO_DELETE = "ZABO_DELETE";

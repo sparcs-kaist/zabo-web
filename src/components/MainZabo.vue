@@ -41,11 +41,11 @@ export default {
     }
   },
   created () {
-    axios.get("http://localhost:8000/api/zaboes/1")
+    axios.get("http://localhost:8000/api/zaboes/45/")
       .then(response => {
         const { posters, content, title, location } = response.data
-        this.image = posters["0"].image;
-        this.background = posters["0"].image;
+        this.image = posters[0].image;
+        this.background = posters[0].image;
         this.content = content;
         this.title = title;
         this.location = location;
@@ -58,7 +58,7 @@ export default {
       this.transition = "transition";
       console.log(req)
       if (req === "redirect") {
-        this.$router.push({ path: "/zabo/1" })
+        this.$router.push({ path: "/zabo/45" })
       }
       setTimeout(() => {
         this.$store.commit("MAIN_ZABO_SEEN");

@@ -26,26 +26,26 @@ export default {
     Footer,
     MainZabo
   },
-  data() {
+  data () {
     return {
       loggingIn: false
     };
   },
-  created() {
+  created () {
     this.mainZaboSeen = this.$store.getters.mainZaboSeen;
     this.$store.commit("LOGIN");
     this.$store.dispatch("getMyInfo");
   },
   methods: {
-    handleLogin(value) {
+    handleLogin (value) {
       this.loggingIn = !this.loggingIn;
     }
   },
   computed: {
-    mainZaboSeen: function() {
+    mainZaboSeen: function () {
       return this.$store.getters.mainZaboSeen;
     },
-    loggedInState: function() {
+    loggedInState: function () {
       return this.$store.getters.loggedInState;
     }
   }

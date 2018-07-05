@@ -14,11 +14,20 @@ const mutations = {
   //   state.zaboes = temp;
   // },
   [types.ZABOES_LIST](state, payload) {
-    for (let i = 0; i < payload.pagenum; i++) {
-      if (payload.result[i].posters[0].image) {
-        state.zaboes.push(payload.result[i]);
-      }
+    // for (let i = 0; i < payload.pagenum; i++) {
+    //   if (payload.result[i].posters[0].image) {
+    //   state.zaboes.push(payload.result[i]);
+    //   }
+    // }
+    let filteredZaboes = payload.result.filter(zabo => {
+      return zabo.posters.length >= 1;
+    });
+    for (let i = 0; i < filteredZaboes.length; i++) {
+      state.zaboes.push(filteredZaboes[i]);
     }
+  },
+  [types.ZABOES_RESET](state, payload) {
+    state.zaboes = [];
   },
   // [types.ZABO_UPDATE](state, zabo) {
   //   function func(x) {
