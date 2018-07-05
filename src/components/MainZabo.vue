@@ -1,6 +1,6 @@
 <template lang=''>
-  <div>
-    <div :class="[transition, 'mainZaboWrapper']">
+  <div class='mainZaboWrapper'>
+    <div>
       <div v-if="!loading" class="row">
         <div class="column">
           <span @click="closeMain('redirect')" class="participateLink">{{$t("참여하기")}}</span>
@@ -14,21 +14,21 @@
           <img :src="image" height="600" width="500" class="image"/>
         </div>
       </div>
-      <div @click="closeMain('transition')" class="row">
+      <div @click="closeMain" class="row">
         <v-icon class="icon">keyboard_arrow_up</v-icon>
         더 많은 자보 확인하기
       </div>
     </div>
-    <div v-if="!loading" :class="[transition, 'backgroundImageWrapper']">
+    <div v-if="!loading" class="backgroundImageWrapper">
       <img :src="this.background" class="backgroundImage"/>
     </div>
   </div>
 </template>
 <script>
-import axios from '@/axios-auth';
+import axios from "@/axios-auth";
 
 export default {
-  data () {
+  data() {
     return {
       id: 1,
       image: "",
@@ -38,47 +38,45 @@ export default {
       location: "",
       loading: true,
       transition: ""
-    }
+    };
   },
-  created () {
-    axios.get("http://localhost:8000/api/zaboes/1")
-      .then(response => {
-        const { posters, content, title, location } = response.data
-        this.image = posters["0"].image;
-        this.background = posters["0"].image;
-        this.content = content;
-        this.title = title;
-        this.location = location;
-        console.log(this.image, this.content, this.title, this.location)
-        this.loading = false;
-      })
+  created() {
+    axios.get("http://localhost:8000/api/zaboes/1").then(response => {
+      const { posters, content, title, location } = response.data;
+      this.image = posters["0"].image;
+      this.background = posters["0"].image;
+      this.content = content;
+      this.title = title;
+      this.location = location;
+      console.log(this.image, this.content, this.title, this.location);
+      this.loading = false;
+    });
   },
   methods: {
-    closeMain: function (req) {
-      this.transition = "transition";
-      console.log(req)
-      if (req === "redirect") {
-        this.$router.push({ path: "/zabo/1" })
-      }
-      setTimeout(() => {
-        this.$store.commit("MAIN_ZABO_SEEN");
-      }, 500)
+    closeMain: function() {
+      // this.transition = "transition";
+      // if (req === "redirect") {
+      //   this.$router.push({ path: "/zabo/1" });
+      // }
+      this.$emit("bullshitfunc");
+      // this.$store.commit("MAIN_ZABO_SEEN");
     }
   }
-}
+};
 </script>
 
 <style scoped lang=''>
-.transition {
+/* .transition {
   transition: 0.5s;
   transform: translateY(-2000px);
   transition-timing-function: ease-in-out;
-}
+} */
 .mainZaboWrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url("../assets/ozan-safak-484829-unsplash.jpg");
   margin: auto auto;
   left: 0;
   bottom: 0;

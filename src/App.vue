@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <div v-show="mainZaboSeen">
+    <transition name="component-slide-fade">
+      <component :is="voided" @bullshitfunc="anonyfunc"></component>
+    </transition>
+    <div>
       <div v-show="!loggingIn">
         <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
         <router-view :key="$route.name + ($route.params.id || '')"></router-view>
@@ -8,7 +11,6 @@
       <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
       <Footer />
     </div>
-    <MainZabo v-if="!mainZaboSeen"></MainZabo>
   </div>
 </template>
 
@@ -24,21 +26,28 @@ export default {
     Header,
     Login,
     Footer,
-    MainZabo
+    MainZabo,
+    "v-a": {
+      template: "<div></div>"
+    }
   },
   data() {
     return {
-      loggingIn: false
+      loggingIn: false,
+      voided: MainZabo
     };
   },
   created() {
-    this.mainZaboSeen = this.$store.getters.mainZaboSeen;
     this.$store.commit("LOGIN");
     this.$store.dispatch("getMyInfo");
   },
   methods: {
     handleLogin(value) {
       this.loggingIn = !this.loggingIn;
+    },
+    anonyfunc() {
+      this.voided = "v-a";
+      console.log("안녕");
     }
   },
   computed: {
@@ -198,5 +207,17 @@ a {
   /* text-align: center; */
   /* color: #2c3e50; */
   overflow: hidden;
+}
+
+/* .slide-enter-active {
+  transition: all 1s ease-in-out;
+} */
+
+.component-slide-fade-leave-active {
+  transition: all 0.4s ease-in;
+}
+
+.component-slide-fade-leave-to {
+  transform: translateY(-2000px);
 }
 </style>
