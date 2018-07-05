@@ -2,7 +2,7 @@
 <div class="totalWrapper">
   <span class="header">{{$t("검색 결과")}}</span>
   <div class="zaboListWrapper" v-if="!isLoading">
-    <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList">
+    <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in searchedZaboList">
       <img :src="zabo.posters[0].image" class="zaboImage">
       <span class="zaboTitle">{{zabo.title}}</span>
     </div>
@@ -15,22 +15,40 @@ import axios from '@/axios-auth';
 export default {
   created () {
     console.log(this.$route.params.search)
-    axios({
-      methods: 'get',
-      url: `/zaboes?search=${this.$route.params.search}`,
-      headers: {
-        Authorization: localStorage.getItem('token')
-      }
-    }).then(response => response.data.data)
-      .then(data => {
-        this.zaboList = data;
-        this.isLoading = false;
-      })
+    this.searchZaboes();
   },
   data () {
     return {
       zaboList: [],
       isLoading: true
+    }
+  },
+  beforeRouteLeave (to, from, next) {
+    this.searchZaboes()
+    next()
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.searchZaboes()
+    next()
+  },
+  computed: {
+    searchValue () {
+      return this.$route.params.search
+    },
+    searchedZaboList () {
+      return this.zaboList
+    }
+  },
+  methods: {
+    searchZaboes () {
+      axios({
+        methods: 'get',
+        url: `/zaboes?search=${this.$route.params.search}`
+      }).then(response => response.data.data)
+        .then(data => {
+          this.zaboList = data;
+          this.isLoading = false;
+        })
     }
   }
 }

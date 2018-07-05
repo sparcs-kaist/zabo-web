@@ -19,9 +19,9 @@ export default new Router({
       component: ZaboListTest
     },
     {
-      path: "/zabo/:zabo_id",
-      name: "ZaboDetail",
-      component: ZaboDetail
+      path: "/zabo/upload",
+      name: "ZaboUpload",
+      component: ZaboUpload
     },
     {
       path: "/zabo/update",
@@ -29,9 +29,9 @@ export default new Router({
       component: ZaboUpdate
     },
     {
-      path: "/zabo/upload",
-      name: "ZaboUpload",
-      component: ZaboUpload
+      path: "/zabo/:zabo_id",
+      name: "ZaboDetail",
+      component: ZaboDetail
     },
     {
       path: "/user/profile",
@@ -41,7 +41,11 @@ export default new Router({
     {
       path: "/search/:search",
       name: "ZaboSearch",
-      component: ZaboSearch
+      component: ZaboSearch,
+      beforeEnter: (to, from, next) => {
+        console.log("Entering User", to.params.search);
+        next();
+      }
     }
   ]
 });
