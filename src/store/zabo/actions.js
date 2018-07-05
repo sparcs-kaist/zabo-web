@@ -7,18 +7,18 @@ const setURL = function(subURL) {
 
 const actions = {
   zaboesList({ commit, state }, passedPayload) {
-    if (!Object.keys(state.zaboesObject).includes(passedPayload.pageNum)) {
-      axios({
-        method: "get",
-        url: `/zaboes/?page=${passedPayload.pageNum}&page_size=${
-          passedPayload.pageSize
-        }`
-      }).then(res => {
-        const result = res.data.data;
-        const payload = { result, pagenum: passedPayload.pageNum };
-        commit(types.ZABOES_LIST, payload);
-      });
-    }
+    // if (!Object.keys(state.zaboesObject).includes(passedPayload.pageNum)) {
+    axios({
+      method: "get",
+      url: `/zaboes/?page=${passedPayload.pageNum}&page_size=${
+        passedPayload.pageSize
+      }`
+    }).then(res => {
+      const result = res.data.data;
+      const payload = { result, pagenum: passedPayload.pageNum };
+      commit(types.ZABOES_LIST, payload);
+    });
+    // }
   },
   searchZaboes({ commit }, searchValue) {
     axios.post("/zaboes/").then(res => {

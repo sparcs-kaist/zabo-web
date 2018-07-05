@@ -20,6 +20,7 @@
     "vue-fixed-header": "^1.0.1",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.19",
+    "vue-carousel-3d": "~0.1.21",
     "vuex": "^3.0.1",
     "vuex-i18n": "^1.10.5"
   },

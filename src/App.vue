@@ -31,29 +31,29 @@ export default {
       template: "<div></div>"
     }
   },
-  data() {
+  data () {
     return {
       loggingIn: false,
       voided: MainZabo
     };
   },
-  created() {
+  created () {
     this.$store.commit("LOGIN");
     this.$store.dispatch("getMyInfo");
   },
   methods: {
-    handleLogin(value) {
+    handleLogin (value) {
       this.loggingIn = !this.loggingIn;
     },
-    closeintro() {
+    closeintro () {
       this.voided = "v-a";
     }
   },
   computed: {
-    mainZaboSeen: function() {
+    mainZaboSeen: function () {
       return this.$store.getters.mainZaboSeen;
     },
-    loggedInState: function() {
+    loggedInState: function () {
       return this.$store.getters.loggedInState;
     }
   }
@@ -203,14 +203,8 @@ a {
   font-family: "NanumSquare", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
-  /* color: #2c3e50; */
   overflow: hidden;
 }
-
-/* .slide-enter-active {
-  transition: all 1s ease-in-out;
-} */
 
 .component-slide-fade-leave-active {
   transition: all 0.4s ease-in;

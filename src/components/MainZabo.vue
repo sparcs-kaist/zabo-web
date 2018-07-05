@@ -1,6 +1,6 @@
 <template lang=''>
-  <div class='mainZaboWrapper'>
-    <div>
+  <div class='totWrapper'>
+    <div class="mainZaboWrapper">
       <div v-if="!loading" class="row">
         <div class="column">
           <span @click="closeMain('redirect')" class="participateLink">{{$t("참여하기")}}</span>
@@ -19,16 +19,13 @@
         더 많은 자보 확인하기
       </div>
     </div>
-    <div v-if="!loading" class="backgroundImageWrapper">
-      <img :src="this.background" class="backgroundImage"/>
-    </div>
   </div>
 </template>
 <script>
 import axios from "@/axios-auth";
 
 export default {
-  data() {
+  data () {
     return {
       id: 1,
       image: "",
@@ -40,11 +37,11 @@ export default {
       transition: ""
     };
   },
-  created() {
-    axios.get("http://localhost:8000/api/zaboes/1").then(response => {
+  created () {
+    axios.get("http://localhost:8000/api/zaboes/45").then(response => {
       const { posters, content, title, location } = response.data;
-      this.image = posters["0"].image;
-      this.background = posters["0"].image;
+      this.image = posters[0].image;
+      this.background = posters[0].image;
       this.content = content;
       this.title = title;
       this.location = location;
@@ -53,32 +50,22 @@ export default {
     });
   },
   methods: {
-    closeMain: function() {
-      // this.transition = "transition";
-      // if (req === "redirect") {
-      //   this.$router.push({ path: "/zabo/1" });
-      // }
+    closeMain: function (req) {
+      if (req === "redirect") {
+        this.$router.push({ path: "/zabo/45" });
+      }
       this.$emit("closeintro");
-      // this.$store.commit("MAIN_ZABO_SEEN");
     }
   }
 };
 </script>
 
 <style scoped lang=''>
-/* .transition {
-  transition: 0.5s;
-  transform: translateY(-2000px);
-  transition-timing-function: ease-in-out;
-} */
-.mainZaboWrapper {
+.totWrapper {
   width: 100%;
-  display: flex;
-  flex-direction: column;
   background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
     url("../assets/alexander-popov-522100-unsplash.jpg");
   background-size: cover;
-  margin: auto auto;
   left: 0;
   bottom: 0;
   top: 0;
@@ -86,17 +73,28 @@ export default {
   position: fixed;
   z-index: 900;
 }
+.mainZaboWrapper {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
 .column {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  z-index: 1000;
+  z-index: 999;
   height: 100vh;
   width: 50%;
 }
 .row {
-  z-index: 1000;
+  z-index: 999;
 }
 .row:first-child {
   flex: 1;
