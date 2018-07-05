@@ -58,7 +58,7 @@ export default {
       // if (req === "redirect") {
       //   this.$router.push({ path: "/zabo/1" });
       // }
-      this.$emit("bullshitfunc");
+      this.$emit("closeintro");
       // this.$store.commit("MAIN_ZABO_SEEN");
     }
   }
@@ -76,7 +76,8 @@ export default {
   display: flex;
   flex-direction: column;
   background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
-    url("../assets/ozan-safak-484829-unsplash.jpg");
+    url("../assets/alexander-popov-522100-unsplash.jpg");
+  background-size: cover;
   margin: auto auto;
   left: 0;
   bottom: 0;

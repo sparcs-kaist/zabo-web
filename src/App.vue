@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <transition name="component-slide-fade">
-      <component :is="voided" @bullshitfunc="anonyfunc"></component>
+      <component :is="voided" @closeintro="closeintro"></component>
     </transition>
     <div>
       <div v-show="!loggingIn">
@@ -45,9 +45,8 @@ export default {
     handleLogin(value) {
       this.loggingIn = !this.loggingIn;
     },
-    anonyfunc() {
+    closeintro() {
       this.voided = "v-a";
-      console.log("안녕");
     }
   },
   computed: {
