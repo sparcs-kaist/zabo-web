@@ -34,6 +34,9 @@ Vue.i18n.add("kr", translationKr);
 
 Vue.i18n.set("kr");
 
+// router setting
+// https://codepen.io/patrickodacre/pen/owjVNK
+
 /* eslint-disable no-new */
 export const app = new Vue({
   el: "#app",

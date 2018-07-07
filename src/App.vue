@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <div v-show="mainZaboSeen">
+    <transition name="component-slide-fade">
+      <component :is="voided" @closeintro="closeintro"></component>
+    </transition>
+    <div>
       <div v-show="!loggingIn">
         <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
         <router-view :key="$route.name + ($route.params.id || '')"></router-view>
@@ -8,7 +11,6 @@
       <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
       <Footer />
     </div>
-    <MainZabo v-if="!mainZaboSeen"></MainZabo>
   </div>
 </template>
 
@@ -24,28 +26,34 @@ export default {
     Header,
     Login,
     Footer,
-    MainZabo
+    MainZabo,
+    "v-a": {
+      template: "<div></div>"
+    }
   },
-  data() {
+  data () {
     return {
-      loggingIn: false
+      loggingIn: false,
+      voided: MainZabo
     };
   },
-  created() {
-    this.mainZaboSeen = this.$store.getters.mainZaboSeen;
+  created () {
     this.$store.commit("LOGIN");
     this.$store.dispatch("getMyInfo");
   },
   methods: {
-    handleLogin(value) {
+    handleLogin (value) {
       this.loggingIn = !this.loggingIn;
+    },
+    closeintro () {
+      this.voided = "v-a";
     }
   },
   computed: {
-    mainZaboSeen: function() {
+    mainZaboSeen: function () {
       return this.$store.getters.mainZaboSeen;
     },
-    loggedInState: function() {
+    loggedInState: function () {
       return this.$store.getters.loggedInState;
     }
   }
@@ -195,8 +203,14 @@ a {
   font-family: "NanumSquare", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
-  /* color: #2c3e50; */
   overflow: hidden;
+}
+
+.component-slide-fade-leave-active {
+  transition: all 0.4s ease-in;
+}
+
+.component-slide-fade-leave-to {
+  transform: translateY(-2000px);
 }
 </style>

@@ -4,16 +4,11 @@
     <div class="Buttons">
       <div class="column">
         <router-link to="/">
-          <img src="@/logo.svg" class="logo">
+          <img src="@/assets/logo.svg" class="logo">
         </router-link>
-        <router-link to="/user/zaboes/uploaded">
+        <router-link to="/zabo/upload">
           <div class="button left">
-            {{ $t('내가 등록한 자보') }}
-          </div>
-        </router-link>
-        <router-link to="/user/zaboes/participated">
-          <div class="button left">
-            {{ $t('내가 참여한 자보') }}
+            {{ $t('자보 올리기') }}
           </div>
         </router-link>
         <router-link to="/user/profile">
@@ -45,8 +40,8 @@
 </template>
 
 <script>
-import app from '@/main';
-import Search from '@/components/Search';
+import app from "@/main";
+import Search from "@/components/Search";
 
 export default {
   name: "Header",
@@ -57,38 +52,38 @@ export default {
     return {
       lang: "kr",
       searchValue: ""
-    }
+    };
   },
   props: {
     loggedInState: Boolean
   },
   methods: {
     login: function () {
-      this.$emit('logged-in');
+      this.$emit("logged-in");
     },
     logout: function () {
-      this.$store.commit('LOGOUT')
+      this.$store.commit("LOGOUT");
     },
     setLang: function () {
       if (this.lang === "kr") {
-        this.$i18n.set('en')
-        this.lang = "en"
+        this.$i18n.set("en");
+        this.lang = "en";
       } else {
-        this.$i18n.set('kr')
-        this.lang = "kr"
+        this.$i18n.set("kr");
+        this.lang = "kr";
       }
     },
     onSearch (searchTerm) {
-      console.log(searchTerm)
-      this.$router.push({ name: 'ZaboSearch', params: { search: searchTerm } })
+      console.log(searchTerm);
+      this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
     }
   },
   computed: {
     computedLang: function () {
       if (this.lang === "kr") {
-        return "en"
+        return "en";
       } else {
-        return "kr"
+        return "kr";
       }
     }
   }

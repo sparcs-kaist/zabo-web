@@ -6,12 +6,10 @@ export default {
   state: {
     zaboes: [],
     searchedZaboes: [],
-    zaboesObject: {},
     zaboesPageCount: "",
     participatedZaboes: {},
     currentUser: {},
     loggedInState: false,
-    mainZaboSeen: false,
     getResponse: true
   },
   actions,
