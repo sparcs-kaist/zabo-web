@@ -4,5 +4,26 @@
   "프로필 관리": "Profile",
   "로그아웃": "Logout",
   "로그인": "Login",
-  "검색 결과": "Search Result"
+  "검색 결과": "Search Result",
+  "자보 올리기": "Zabo Upload",
+  "필수 항목": "Essential",
+  "자보 이름": "Zabo Name",
+  "장소": "Place",
+  "카테고리": "Category",
+  "퍼포먼스": "Performance",
+  "대회": "Competition",
+  "페어": "Fair",
+  "강의": "Lecture",
+  "전시": "Exhibition",
+  "일정": "Schedule",
+  "여러 날": "Multiple Days",
+  "일정이 없습니다. 아래 버튼으로 추가하세요.":
+    "There's no schedule. Add it by clicking the button below.",
+  "참여 방법": "Participation Method",
+  "결제 필요 여부": "Necessarity of Payment",
+  "필요하지 않음": "Not Neccesary",
+  "자보 설명": "Explanation",
+  "참여 인원": "Numbers of People",
+  "자보 추가": "Add Zabo",
+  "리크루팅": "Recruiting"
 }
