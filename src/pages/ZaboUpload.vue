@@ -22,7 +22,9 @@
           <span class="topic">{{$t('장소')}}
             <div class="required"></div>
           </span>
-          <div class="googleAPI"> </div>
+          <iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD_9UqkwtRphrz-2txxvvOzyYShFaUG7Pc
+              &q=Space+Needle,Seattle+WA" allowfullscreen class="googleAPI">
+          </iframe>
         </div>
         <div class="formWrapper">
           <span class="topic">{{$t('카테고리')}}
@@ -95,6 +97,7 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -125,7 +128,7 @@ export default {
   },
   beforeDestroy () {
     console.log(this.name, this.selectedcategory, this.multipleDays, this.selectedMethod, this.paymentRequired, this.participateMembers)
-  },
+  }
 };
 </script>
 
@@ -170,7 +173,6 @@ export default {
 .googleAPI {
   width: 100%;
   height: 172px;
-  background-color: aqua;
 }
 .formWrapper {
   width: 100%;

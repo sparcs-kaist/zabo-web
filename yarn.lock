@@ -8798,6 +8798,10 @@ vue-fixed-header@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/vue-fixed-header/-/vue-fixed-header-1.0.1.tgz#b5e11b4d9c174ec1a7bf11c92616531ff76a2fea"
 
+vue-google-autocomplete@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-google-autocomplete/-/vue-google-autocomplete-1.1.0.tgz#74b700da8d905e2c3dd0bc219b3d740e99277b2e"
+
 vue-hot-reload-api@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.0.tgz#97976142405d13d8efae154749e88c4e358cf926"

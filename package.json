@@ -17,10 +17,11 @@
     "axios": "^0.18.0",
     "npm": "^6.1.0",
     "vue": "^2.5.2",
+    "vue-carousel-3d": "~0.1.21",
     "vue-fixed-header": "^1.0.1",
+    "vue-google-autocomplete": "^1.1.0",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.19",
-    "vue-carousel-3d": "~0.1.21",
     "vuex": "^3.0.1",
     "vuex-i18n": "^1.10.5"
   },
