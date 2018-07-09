@@ -11,7 +11,7 @@
   </nav>
   <div v-if="zaboesExist && !loading" class="currentZaboesWrapper">
     <nav class="horizontalNavButton">
-      <img src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
+      <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
     </nav>
     <carousel-3d :inverseScaling="-40"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
       <slide v-for="i in 5" :key="i-1" :index="i-1">
@@ -26,14 +26,14 @@
         </div>
       </slide>
     </carousel-3d>
-    <carousel-3d :inverseScaling="-40"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
+    <carousel-3d :inverseScaling="-40" :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
       <slide v-for="i in 5" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
         </div>
       </slide>
     </carousel-3d>
     <nav class="horizontalNavButton">
-      <img src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
+      <img @click="categoryright" src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
   </div>
   <v-progress-circular
@@ -68,7 +68,6 @@ export default {
   },
   created: async function () {
     this.getWindowWidth();
-    // for (let j = 0; j < this.categoryList.length; j++) {
     this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, category: this.calculatedCategoryList[1] }).then(res => {
       const totalPage = res;
       for (var i = 1; i <= totalPage; i++) {
@@ -98,6 +97,44 @@ export default {
         window.innerWidth;
       console.log(this.windowWidth)
     },
+    categoryleft () {
+      if (this.currentCategoryIndex === 0) {
+        this.currentCategoryIndex = 7;
+      } else {
+        this.currentCategoryIndex -= 1;
+      }
+      this.getWindowWidth();
+      this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, category: this.calculatedCategoryList[1] }).then(res => {
+        const totalPage = res;
+        for (var i = 1; i <= totalPage; i++) {
+          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, category: this.calculatedCategoryList[1] });
+        };
+      }).then(() => {
+        this.loading = false
+      })
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 1000)
+    },
+    categoryright () {
+      if (this.currentCategoryIndex === 7) {
+        this.currentCategoryIndex = 0;
+      } else {
+        this.currentCategoryIndex += 1;
+      }
+      this.getWindowWidth();
+      this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, category: this.calculatedCategoryList[1] }).then(res => {
+        const totalPage = res;
+        for (var i = 1; i <= totalPage; i++) {
+          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, category: this.calculatedCategoryList[1] });
+        };
+      }).then(() => {
+        this.loading = false
+      })
+      setTimeout(function () {
+        window.dispatchEvent(new Event('resize'));
+      }, 1000)
+    }
   },
   components: {
     'carousel-3d': Carousel3d,
@@ -153,7 +190,7 @@ export default {
         calculatedCategories.push(this.categoryList[this.currentCategoryIndex - 1])
       }
       calculatedCategories.push(this.categoryList[this.currentCategoryIndex])
-      if (this.currentCategoryIndex === 7) {
+      if (this.currentCategoryIndex === 6) {
         calculatedCategories.push(this.categoryList[0]);
       } else {
         calculatedCategories.push(this.categoryList[this.currentCategoryIndex + 1])
