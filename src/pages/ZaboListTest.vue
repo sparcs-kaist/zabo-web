@@ -1,5 +1,5 @@
 <template lang=''>
-<div class="mainWrapper">
+<div ref="carousel" class="mainWrapper">
   <h1 class="category">{{currentCategory.name}}</h1>
   <nav class="verticalNavButton">
     <v-icon class="keyboard_arrow">keyboard_arrow_up</v-icon>
@@ -65,7 +65,19 @@ export default {
         this.pageList.push(i);
       };
     })
-      .then(() => this.loading = false)
+      .then(() => {
+        this.loading = false
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
+        }, 700)
+      })
+  },
+  mounted () {
+    this.getWindowWidth();
+    setTimeout(function () {
+      window.dispatchEvent(new Event('resize'));
+    }, 1000)
+    // window.dispatchEvent(new Event('resize'));
   },
   beforeMount () {
     window.addEventListener("resize", this.getWindowWidth);
@@ -125,7 +137,7 @@ export default {
       for (let i = 0; i < this.zaboesRow; i++) {
         renderedList.push(this.zaboes.slice(i * this.columnNumber, (i + 1) * this.columnNumber))
       }
-      console.log(renderedList)
+      console.log(renderedList, this.zaboesRow)
       return renderedList
     }
   },
