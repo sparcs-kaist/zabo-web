@@ -1,22 +1,39 @@
 <template lang=''>
 <div ref="carousel" class="mainWrapper">
-  <h1 class="category">{{currentCategory.name}}</h1>
+  <div class="categoryWrapper">
+    <span class="category">{{calculatedCategoryList[0]}}</span>
+    <span class="category">{{calculatedCategoryList[1]}}</span>
+    <span class="category">{{calculatedCategoryList[2]}}</span>
+  </div>
   <nav class="verticalNavButton">
-    <v-icon class="keyboard_arrow">keyboard_arrow_up</v-icon>
+      <img src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
+      <img src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
   </nav>
   <div v-if="zaboesExist && !loading" class="currentZaboesWrapper">
     <nav class="horizontalNavButton">
-      <v-icon class="keyboard_arrow">keyboard_arrow_left</v-icon>
+      <img src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
     </nav>
-    <carousel-3d :inverseScaling="60" :display="5" :space="80" :animationSpeed="300" :perspective="0" :width="464" :height="posterWrapperHeight" id="carouselWrapper">
+    <carousel-3d :inverseScaling="-40"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
+      <slide v-for="i in 5" :key="i-1" :index="i-1">
+        <div class="posterWrapper" :class="'slide'+i">
+        </div>
+      </slide>
+    </carousel-3d>
+    <carousel-3d :inverseScaling="-40"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
             <img :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="poster" :src="zabo.posters[0].image">
         </div>
       </slide>
     </carousel-3d>
+    <carousel-3d :inverseScaling="-40"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
+      <slide v-for="i in 5" :key="i-1" :index="i-1">
+        <div class="posterWrapper" :class="'slide'+i">
+        </div>
+      </slide>
+    </carousel-3d>
     <nav class="horizontalNavButton">
-      <v-icon class="keyboard_arrow">keyboard_arrow_right</v-icon>
+      <img src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
   </div>
   <v-progress-circular
@@ -24,9 +41,6 @@
     color="primary"
     v-else
   ></v-progress-circular>
-  <nav class="verticalNavButton">
-    <v-icon class="keyboard_arrow">keyboard_arrow_down</v-icon>
-  </nav>
 </div>
 </template>
 <script>
@@ -45,39 +59,30 @@ export default {
         "강의": "L",
         "전람회": "E"
       },
-      currentCategory: {
-        name: "전체",
-        index: 0
-      },
+      currentCategoryIndex: 0,
       categoryList: ["전체", "리크루팅", "퍼포먼스", "경쟁", "설명회", "강의", "전람회"],
       loading: true,
-      pageList: [],
       defaultImage: "@/assets/logo.png",
       posterWrapperHeight: 0
     }
   },
   created: async function () {
     this.getWindowWidth();
-    this.$store.dispatch("zaboesGetPageCount", { pageSize: 4 }).then(res => {
+    // for (let j = 0; j < this.categoryList.length; j++) {
+    this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, category: this.calculatedCategoryList[1] }).then(res => {
       const totalPage = res;
       for (var i = 1; i <= totalPage; i++) {
-        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4 });
-        this.pageList.push(i);
+        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, category: this.calculatedCategoryList[1] });
       };
+    }).then(() => {
+      this.loading = false
     })
-      .then(() => {
-        this.loading = false
-        setTimeout(function () {
-          window.dispatchEvent(new Event('resize'));
-        }, 700)
-      })
   },
   mounted () {
     this.getWindowWidth();
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
     }, 1000)
-    // window.dispatchEvent(new Event('resize'));
   },
   beforeMount () {
     window.addEventListener("resize", this.getWindowWidth);
@@ -100,7 +105,7 @@ export default {
   },
   computed: {
     zaboes () {
-      return this.$store.getters.zaboes;
+      return this.$store.getters.zaboes[this.calculatedCategoryList[1]];
     },
     zaboesPageCount () {
       return this.$store.getters.zaboesPageCount;
@@ -139,6 +144,21 @@ export default {
       }
       console.log(renderedList, this.zaboesRow)
       return renderedList
+    },
+    calculatedCategoryList () {
+      let calculatedCategories = [];
+      if (this.currentCategoryIndex === 0) {
+        calculatedCategories.push(this.categoryList[6]);
+      } else {
+        calculatedCategories.push(this.categoryList[this.currentCategoryIndex - 1])
+      }
+      calculatedCategories.push(this.categoryList[this.currentCategoryIndex])
+      if (this.currentCategoryIndex === 7) {
+        calculatedCategories.push(this.categoryList[0]);
+      } else {
+        calculatedCategories.push(this.categoryList[this.currentCategoryIndex + 1])
+      }
+      return calculatedCategories;
     }
   },
   beforeDestroy () {
@@ -149,28 +169,62 @@ export default {
 </script>
 <style scoped lang=''>
 .mainWrapper {
-  padding-top: 78px;
   width: 100%;
   position: absolute;
-  top: 0;
+  top: 78px;
   bottom: 0;
   left: 0;
   right: 0;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: hidden;
+}
+.verticalNavButton {
+  position: absolute;
+  width: 100%;
+  top: 116px;
+  bottom: 78px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.categoryWrapper {
+  width: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 .category {
-  padding-top: 12px;
-  font-size: 2em;
+  padding-top: 42px;
+  font-size: 1.75em;
+  font-weight: 700;
+  flex: 1;
+  text-align: center;
+}
+.category:first-child {
+  text-align: left;
+  padding-left: 94px;
+}
+.category:last-child {
+  text-align: right;
+  padding-right: 94px;
 }
 .currentZaboesWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  height: 800px;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 95px;
 }
 .posterWrapper {
   display: flex;
@@ -187,18 +241,36 @@ export default {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-#carouselWrapper {
+.carouselWrapper {
   position: absolute;
-  top: 55%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) rotate(90deg);
 }
-.carousel-3d-slider {
-  background: transparent;
-  background-color: transparent;
+.fakeCarouselWrapper {
+  position: absolute;
+  top: 50%;
 }
-
-.keyboard_arrow {
-  font-size: 60px;
+.fake-left {
+  left: 0%;
+  transform: translate(-50%, -149px) rotate(90deg);
+}
+.fake-right {
+  left: 100%;
+  transform: translate(-50%, -149px) rotate(90deg);
+}
+.keyboard_arrow_updown {
+  width: 40px;
+  height: auto;
+  cursor: pointer;
+  z-index: 50;
+}
+.keyboard_arrow_leftright {
+  width: 62px;
+  height: auto;
+  cursor: pointer;
+}
+.horizontalNavButton {
+  z-index: 200;
 }
 </style>

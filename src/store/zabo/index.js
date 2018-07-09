@@ -4,9 +4,25 @@ import getters from "./getters";
 
 export default {
   state: {
-    zaboes: [],
+    zaboes: {
+      전체: [],
+      리크루팅: [],
+      퍼포먼스: [],
+      경쟁: [],
+      설명회: [],
+      강의: [],
+      전람회: []
+    },
     searchedZaboes: [],
-    zaboesPageCount: "",
+    zaboesPageCount: {
+      전체: "",
+      리크루팅: "",
+      퍼포먼스: "",
+      경쟁: "",
+      설명회: "",
+      강의: "",
+      전람회: ""
+    },
     participatedZaboes: {},
     currentUser: {},
     loggedInState: false,

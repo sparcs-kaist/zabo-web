@@ -6,17 +6,33 @@ const setURL = function(subURL) {
 };
 
 const actions = {
-  zaboesList({ commit, state }, passedPayload) {
-    // if (!Object.keys(state.zaboesObject).includes(passedPayload.pageNum)) {
+  zaboesList({ commit, state }, payload) {
+    let currentCategory = "";
+    if (payload.category == "리크루팅") {
+      currentCategory = "R";
+    } else if (payload.category == "퍼포먼스") {
+      currentCategory = "P";
+    } else if (payload.category == "경쟁") {
+      currentCategory = "C";
+    } else if (payload.category == "설명회") {
+      currentCategory = "F";
+    } else if (payload.category == "강의") {
+      currentCategory = "L";
+    } else if (payload.category == "전람회") {
+      currentCategory = "E";
+    }
     axios({
       method: "get",
-      url: `/zaboes/?page=${passedPayload.pageNum}&page_size=${
-        passedPayload.pageSize
-      }`
+      url: `/zaboes/?page=${payload.pageNum}&page_size=${
+        payload.pageSize
+      }&category=${currentCategory}`
     }).then(res => {
       const result = res.data.data;
-      const payload = { result, pagenum: passedPayload.pageNum };
-      commit(types.ZABOES_LIST, payload);
+      commit(types.ZABOES_LIST, {
+        result: result,
+        pagenum: payload.pageNum,
+        category: payload.category
+      });
     });
     // }
   },
@@ -27,12 +43,33 @@ const actions = {
     });
   },
   zaboesGetPageCount({ commit }, payload) {
+    let currentCategory = "";
+    if (payload.category == "리크루팅") {
+      currentCategory = "R";
+    } else if (payload.category == "퍼포먼스") {
+      currentCategory = "P";
+    } else if (payload.category == "경쟁") {
+      currentCategory = "C";
+    } else if (payload.category == "설명회") {
+      currentCategory = "F";
+    } else if (payload.category == "강의") {
+      currentCategory = "L";
+    } else if (payload.category == "전람회") {
+      currentCategory = "E";
+    }
     return new Promise(resolve => {
       axios
-        .get(`/zaboes/${setURL(payload.subURL)}?page_size=${payload.pageSize}`)
+        .get(
+          `/zaboes/${setURL(payload.subURL)}?page_size=${
+            payload.pageSize
+          }&category=${currentCategory}`
+        )
         .then(res => {
-          const result = res.data.page_count;
-          commit(types.ZABOES_PAGECOUNT, result);
+          let result = res.data.page_count;
+          commit(types.ZABOES_PAGECOUNT, {
+            result: result,
+            category: payload.category
+          });
           resolve(result);
         });
     });
