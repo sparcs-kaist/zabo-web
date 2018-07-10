@@ -2,22 +2,25 @@ import * as types from "@/store/mutation-types";
 
 const mutations = {
   [types.ZABOES_LIST](state, payload) {
-    state.zaboesObject[payload.pagenum] = payload.result;
-    const temp = [];
-    const keys = Object.keys(state.zaboesObject);
-    keys.sort((a, b) => a - b);
-    for (let i = 0; i < keys.length; i += 1) {
-      for (const j in state.zaboesObject[keys[i]]) {
-        temp.push(state.zaboesObject[keys[i]][j]);
-      }
+    let filteredZaboes = payload.result.filter(zabo => {
+      return zabo.posters.length >= 1;
+    });
+    for (let i = 0; i < filteredZaboes.length; i++) {
+      console.log(payload.category);
+      state.zaboes[payload.category].push(filteredZaboes[i]);
     }
-    state.zaboes = temp;
   },
-  // [types.ZABO_SEARCH](state, {result, searchValue}) {
-  //   result.map(zabo => {
-  //     if (zabo)
-  //   })
-  // },
+  [types.ZABOES_RESET](state, payload) {
+    state.zaboes = {
+      전체: [],
+      리크루팅: [],
+      퍼포먼스: [],
+      경쟁: [],
+      설명회: [],
+      강의: [],
+      전람회: []
+    };
+  },
   // [types.ZABO_UPDATE](state, zabo) {
   //   function func(x) {
   //     return x.pk.toString() === zabo.pk.toString();
@@ -30,11 +33,11 @@ const mutations = {
   //   }
   //   state.zaboes.splice(state.zaboes.indexOf(state.zaboes.find(func)), 1);
   // },
-  [types.ZABOES_PAGECOUNT](state, pageCount) {
-    state.zaboesPageCount = pageCount;
+  [types.ZABOES_PAGECOUNT](state, payload) {
+    state.zaboesPageCount[payload.category] = payload.result;
   },
-  [types.GET_PARTICIPATED_ZABOES](state, participatedZaboes) {
-    state.participatedZaboes = participatedZaboes;
+  [types.GET_PARTICIPATED_ZABOES](state, payload) {
+    state.participatedZaboes[payload.category] = payload.result;
   },
   [types.SET_CURRENT_USER](state, payload) {
     state.currentUser = payload;
@@ -55,9 +58,6 @@ const mutations = {
     state.loggedInState = false;
     state.currentUser = {};
     localStorage.removeItem("token");
-  },
-  [types.MAIN_ZABO_SEEN](state, payload) {
-    state.mainZaboSeen = true;
   }
 };
 

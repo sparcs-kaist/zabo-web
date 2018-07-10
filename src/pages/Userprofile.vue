@@ -1,5 +1,6 @@
 <template>
-  <div class="column">
+  <div id="whole">
+    <div style="width:100%; height:90px;"></div>
     <div class="user-profile">
       프로필
     </div>
@@ -116,11 +117,11 @@ export default {
 </script>
 
 <style scoped>
-.column {
+#whole {
   width: 70%;
   height: 2000px;
   margin-left: 15%;
-  margin-top: 90px;
+  /* margin-top: 90px; */
   text-align: center;
 }
 

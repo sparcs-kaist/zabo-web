@@ -1,21 +1,15 @@
 <template>
   <div class="inputField">
-    <form class="formWrapper">
-      <input class="textbox" v-model="input" :placeholder="placeholderText">
-      <span class="button" @click="onButtonClick">작성</span>
+    <form @submit.prevent class="formWrapper">
+      <input class="textbox" @keyup.enter="reviewSubmit" v-model="input" :placeholder="placeholderText">
+      <button class="button" type="submit" @click="reviewSubmit">{{$t('작성')}}</button>
     </form>
-    <editable-text :content="newComment" @update="updateComment">
-    </editable-text>
   </div>
 </template>
 
 <script>
-import EditableText from './EditableText';
 
 export default {
-  components: {
-    EditableText,
-  },
   props: ['content', 'onClick', 'placeholderText'],
   data () {
     return {
@@ -23,7 +17,7 @@ export default {
     };
   },
   methods: {
-    onButtonClick () {
+    reviewSubmit () {
       this.$emit('update:content', this.input);
       this.input = '';
       this.onClick();
@@ -35,6 +29,7 @@ export default {
 <style scoped>
 .inputField {
   width: 100%;
+  max-width: 544px;
 }
 .button {
   align-items: center;

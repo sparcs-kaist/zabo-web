@@ -3,6 +3,7 @@ import Router from "vue-router";
 import ZaboDetail from "@/pages/ZaboDetail";
 import ZaboUpdate from "@/pages/ZaboUpdate";
 import ZaboUpload from "@/pages/ZaboUpload";
+import ZaboListTest from "@/pages/ZaboListTest";
 import ZaboList from "@/pages/ZaboList";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
 import ZaboSearch from "@/pages/ZaboSearch.vue";
@@ -14,18 +15,8 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "ZaboList",
-      component: ZaboList
-    },
-    {
-      path: "/zabo/:zabo_id",
-      name: "ZaboDetail",
-      component: ZaboDetail
-    },
-    {
-      path: "/zabo/update",
-      name: "ZaboUpdate",
-      component: ZaboUpdate
+      name: "ZaboListTest",
+      component: ZaboListTest
     },
     {
       path: "/zabo/upload",
@@ -33,14 +24,28 @@ export default new Router({
       component: ZaboUpload
     },
     {
+      path: "/zabo/update",
+      name: "ZaboUpdate",
+      component: ZaboUpdate
+    },
+    {
+      path: "/zabo/:zabo_id",
+      name: "ZaboDetail",
+      component: ZaboDetail
+    },
+    {
       path: "/user/profile",
       name: "Zabouserprofile",
       component: ZaboUserprofile
     },
     {
-      path: "/search",
+      path: "/search/:search",
       name: "ZaboSearch",
-      component: ZaboSearch
+      component: ZaboSearch,
+      beforeEnter: (to, from, next) => {
+        console.log("Entering User", to.params.search);
+        next();
+      }
     }
   ]
 });

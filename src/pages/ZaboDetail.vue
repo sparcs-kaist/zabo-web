@@ -60,11 +60,18 @@ export default {
     onSubmitComment () {
       axios({
         method: 'post',
-        url: `http://localhost:8000/api/comments/${this.zabo_id}`,
+        url: `http://localhost:8000/api/comments/`,
         data: {
           content: this.newComment,
           zabo: this.zabo_id,
+          "is_private": true,
+          "is_deleted": true,
+          "is_blocked": true
         },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem('token')
+        }
       })
         .then((response) => {
           this.comments.push(response.data);
@@ -112,15 +119,23 @@ export default {
   left: 10%;
   right: 10%;
   margin-top: 78px;
+  overflow: hidden;
 }
 .bodyWrapper {
+  flex: 1;
   color: white;
+  position: relative;
+  width: 100%;
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
 }
 /* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
 .bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
 /* .root::-webkit-scrollbar{ display: none;}
 .root::-webkit-scrollbar:hover { display: none;} */
 .headerStyle {
+  /* flex: 1; */
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -141,12 +156,13 @@ export default {
   text-align: left;
 }
 .buttonWrapper {
+  width: 100%;
   display: flex;
   margin-bottom: 24px;
 }
 .buttonTap {
   cursor: pointer;
-  font-size: 1.4em;
+  font-size: 1.25em;
   font-weight: bold;
   margin-right: 16px;
   padding: 11px 38px 10px 38px;
@@ -165,12 +181,15 @@ export default {
   width: 50%;
 }
 .column:first-child {
-  padding-top: 92px;
-  padding-left: 50px;
+  padding-top: 80px;
+  padding-left: 40px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 .column:last-child {
   justify-content: center;
   align-items: center;
+  width: 50%;
 }
 .navbar {
   display: flex;

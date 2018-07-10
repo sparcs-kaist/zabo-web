@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <template v-show="mainZaboSeen">
-      <template v-show="!loggingIn">
-        <Header @logged-in="handleLogin"></Header>
+    <transition name="component-slide-fade">
+      <component :is="voided" @closeintro="closeintro"></component>
+    </transition>
+    <div>
+      <div v-show="!loggingIn">
+        <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
         <router-view :key="$route.name + ($route.params.id || '')"></router-view>
-      </template>
+      </div>
       <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
       <Footer />
-    </template>
-    <MainZabo v-if="!mainZaboSeen"></MainZabo>
+    </div>
   </div>
 </template>
 
@@ -16,7 +18,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Login from "@/components/Login";
-import MainZabo from '@/components/MainZabo';
+import MainZabo from "@/components/MainZabo";
 
 export default {
   name: "App",
@@ -24,30 +26,36 @@ export default {
     Header,
     Login,
     Footer,
-    MainZabo
+    MainZabo,
+    "v-a": {
+      template: "<div></div>"
+    }
   },
   data () {
     return {
-      loggingIn: false
+      loggingIn: false,
+      voided: MainZabo
     };
   },
   created () {
-    this.mainZaboSeen = this.$store.getters.mainZaboSeen;
-    this.$store.commit('LOGIN');
-    this.$store.dispatch('getMyInfo');
+    this.$store.commit("LOGIN");
+    this.$store.dispatch("getMyInfo");
   },
   methods: {
     handleLogin (value) {
       this.loggingIn = !this.loggingIn;
+    },
+    closeintro () {
+      this.voided = "v-a";
     }
   },
   computed: {
     mainZaboSeen: function () {
-      return this.$store.getters.mainZaboSeen
+      return this.$store.getters.mainZaboSeen;
     },
     loggedInState: function () {
-      return this.$store.getters.loggedInState
-    },
+      return this.$store.getters.loggedInState;
+    }
   }
 };
 </script>
@@ -195,8 +203,14 @@ a {
   font-family: "NanumSquare", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
-  /* color: #2c3e50; */
   overflow: hidden;
+}
+
+.component-slide-fade-leave-active {
+  transition: all 0.4s ease-in;
+}
+
+.component-slide-fade-leave-to {
+  transform: translateY(-2000px);
 }
 </style>

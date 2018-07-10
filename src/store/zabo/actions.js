@@ -6,19 +6,35 @@ const setURL = function(subURL) {
 };
 
 const actions = {
-  zaboesList({ commit, state }, passedPayload) {
-    if (!Object.keys(state.zaboesObject).includes(passedPayload.pageNum)) {
-      axios({
-        method: "get",
-        url: `/zaboes/?page=${passedPayload.pageNum}&page_size=${
-          passedPayload.pageSize
-        }`
-      }).then(res => {
-        const result = res.data.data;
-        const payload = { result, pagenum: passedPayload.pageNum };
-        commit(types.ZABOES_LIST, payload);
-      });
+  zaboesList({ commit, state }, payload) {
+    let currentCategory = "";
+    if (payload.category == "리크루팅") {
+      currentCategory = "R";
+    } else if (payload.category == "퍼포먼스") {
+      currentCategory = "P";
+    } else if (payload.category == "경쟁") {
+      currentCategory = "C";
+    } else if (payload.category == "설명회") {
+      currentCategory = "F";
+    } else if (payload.category == "강의") {
+      currentCategory = "L";
+    } else if (payload.category == "전람회") {
+      currentCategory = "E";
     }
+    axios({
+      method: "get",
+      url: `/zaboes/?page=${payload.pageNum}&page_size=${
+        payload.pageSize
+      }&category=${currentCategory}`
+    }).then(res => {
+      const result = res.data.data;
+      commit(types.ZABOES_LIST, {
+        result: result,
+        pagenum: payload.pageNum,
+        category: payload.category
+      });
+    });
+    // }
   },
   searchZaboes({ commit }, searchValue) {
     axios.post("/zaboes/").then(res => {
@@ -27,29 +43,37 @@ const actions = {
     });
   },
   zaboesGetPageCount({ commit }, payload) {
+    let currentCategory = "";
+    if (payload.category == "리크루팅") {
+      currentCategory = "R";
+    } else if (payload.category == "퍼포먼스") {
+      currentCategory = "P";
+    } else if (payload.category == "경쟁") {
+      currentCategory = "C";
+    } else if (payload.category == "설명회") {
+      currentCategory = "F";
+    } else if (payload.category == "강의") {
+      currentCategory = "L";
+    } else if (payload.category == "전람회") {
+      currentCategory = "E";
+    }
     return new Promise(resolve => {
       axios
-        .get(`/zaboes/${setURL(payload.subURL)}?page_size=${payload.pageSize}`)
+        .get(
+          `/zaboes/${setURL(payload.subURL)}?page_size=${
+            payload.pageSize
+          }&category=${currentCategory}`
+        )
         .then(res => {
-          const result = res.data.page_count;
-          commit(types.ZABOES_PAGECOUNT, result);
+          let result = res.data.page_count;
+          commit(types.ZABOES_PAGECOUNT, {
+            result: result,
+            category: payload.category
+          });
           resolve(result);
         });
     });
   },
-  // getParticipatedZaboes({ commit, state }, payload) {
-  //   const {
-  //     currentUser: { id }
-  //   } = state;
-  //   return this.$http
-  //     .get(`/users/${id}`)
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       commit(types.GET_PARTICIPATED_ZABOES, json);
-  //       return console.log(json);
-  //     })
-  //     .catch(err => console.log(err));
-  // },
   getMyInfo({ commit, state }) {
     axios
       .get("/users/myInfo", {
@@ -59,10 +83,14 @@ const actions = {
       })
       .then(response => {
         if (response.status !== 401) {
-          commit("SET_CURRENT_USER", response.data);
+          commit(types.SET_CURRENT_USER, response.data);
         } else {
           console.log("response stauts 401!");
         }
+      })
+      .then(() => {
+        commit(types.GOT_RESPONSE);
+        return true;
       })
       .catch(err => console.log(err));
   },
@@ -83,20 +111,20 @@ const actions = {
         nickName: payload[2],
         phone: payload[3]
       }
-    })
-      .then(function(response) {
-        axios(`/users/${id}`, {
-          method: "GET",
-          headers: {
-            Authorization: localStorage.getItem("token")
-          }
-        }).then(function(response) {
-          commit(types.SET_CURRENT_USER, response.data);
-        });
+    }).then(function(response) {
+      axios("/users/myInfo", {
+        method: "GET",
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
       })
-      .then(function() {
-        commit(types.GOT_RESPONSE);
-      });
+        .then(function(response) {
+          commit(types.SET_CURRENT_USER, response.data);
+        })
+        .then(function() {
+          commit(types.GOT_RESPONSE);
+        });
+    });
   }
 };
 
