@@ -31,7 +31,8 @@ const actions = {
       commit(types.ZABOES_LIST, {
         result: result,
         pagenum: payload.pageNum,
-        category: payload.category
+        category: payload.category,
+        pageSize: payload.pageSize
       });
     });
     // }

@@ -1,5 +1,5 @@
 <template lang=''>
-<div ref="carousel" class="mainWrapper">
+<div class="mainWrapper">
   <div class="categoryWrapper">
     <span class="category">{{calculatedCategoryList[0]}}</span>
     <span class="category">{{calculatedCategoryList[1]}}</span>
@@ -13,16 +13,23 @@
     <nav class="horizontalNavButton">
       <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
     </nav>
-    <carousel-3d :inverseScaling="-40"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
+    <carousel-3d :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
       <slide v-for="i in 5" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
         </div>
       </slide>
     </carousel-3d>
-    <carousel-3d :inverseScaling="-40"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
+    <carousel-3d :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
-            <img :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="poster" :src="zabo.posters[0].image">
+          <div @click="zaboDetail(zabo.id, zabo.founder.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
+            <img class="poster" :src="zabo.posters[0].image">
+            <div class="posterDescriptionWrapper">
+              <span class="posterDescription">{{$t('제목 : ')}}{{zabo.title}}</span>
+              <span class="posterDescription">{{$t('위치 : ')}}{{zabo.location}}</span>
+              <span class="posterDescription">{{$t('올린이 : ')}}{{zabo.founder.nickName}}</span>
+            </div>
+          </div>
         </div>
       </slide>
     </carousel-3d>
@@ -74,13 +81,17 @@ export default {
         this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, category: this.calculatedCategoryList[1] });
       };
     }).then(() => {
-      this.loading = false
+      this.loading = false;
     })
   },
   mounted () {
     this.getWindowWidth();
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+      }, 1000)
     }, 1000)
   },
   beforeMount () {
@@ -99,7 +110,7 @@ export default {
     },
     categoryleft () {
       if (this.currentCategoryIndex === 0) {
-        this.currentCategoryIndex = 7;
+        this.currentCategoryIndex = 6;
       } else {
         this.currentCategoryIndex -= 1;
       }
@@ -114,10 +125,14 @@ export default {
       })
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'))
+          setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+        }, 1000)
       }, 1000)
     },
     categoryright () {
-      if (this.currentCategoryIndex === 7) {
+      if (this.currentCategoryIndex === 6) {
         this.currentCategoryIndex = 0;
       } else {
         this.currentCategoryIndex += 1;
@@ -133,7 +148,16 @@ export default {
       })
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'))
+          setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+        }, 1000)
       }, 1000)
+    },
+    zaboDetail (id, nickname) {
+      if (nickname !== "None") {
+        this.$router.push({ name: "ZaboDetail", params: { zabo_id: id } })
+      }
     }
   },
   components: {
@@ -209,7 +233,7 @@ export default {
   width: 100%;
   position: absolute;
   top: 78px;
-  bottom: 0;
+  bottom: 68px;
   left: 0;
   right: 0;
   display: flex;
@@ -221,8 +245,8 @@ export default {
 .verticalNavButton {
   position: absolute;
   width: 100%;
-  top: 116px;
-  bottom: 78px;
+  top: 78px;
+  bottom: 40px;
   left: 0;
   right: 0;
   display: flex;
@@ -235,10 +259,11 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 20px;
 }
 .category {
-  padding-top: 42px;
-  font-size: 1.75em;
+  /* padding-top: 42px; */
+  font-size: 1.5em;
   font-weight: 700;
   flex: 1;
   text-align: center;
@@ -271,10 +296,41 @@ export default {
   width: 100%;
   height: 100%;
 }
-.poster {
+.posterDescriptionWrapper {
+  width: 298px;
+  height: 464px;
+  padding-top: 20px;
+  padding-left: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  position: absolute;
+  z-index: 100;
+  transform: rotate(90deg) translateY(-166px);
+  transform-origin: 149px 149px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.posterDescriptionWrapper:hover {
+  opacity: 1;
+}
+.posterDescription {
+  font-size: 1.5rem;
+}
+.individualPosterWrapper {
   width: 464px;
   height: 298px;
-  margin-top: 11px;
+  margin-bottom: 11px;
+  position: relative;
+}
+.individualPosterWrapper:last-child {
+  margin-bottom: 0;
+}
+.poster {
+  position: absolute;
+  width: 464px;
+  height: 298px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
@@ -282,19 +338,21 @@ export default {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(90deg);
+  transform: translate(-50%, -50%) rotate(-90deg);
+  transform-origin: 50% 50%;
 }
 .fakeCarouselWrapper {
   position: absolute;
   top: 50%;
+  transform-origin: 50% 50%;
 }
 .fake-left {
   left: 0%;
-  transform: translate(-50%, -149px) rotate(90deg);
+  transform: translate(-50%, -149px) rotate(-90deg);
 }
 .fake-right {
   left: 100%;
-  transform: translate(-50%, -149px) rotate(90deg);
+  transform: translate(-50%, -149px) rotate(-90deg);
 }
 .keyboard_arrow_updown {
   width: 40px;

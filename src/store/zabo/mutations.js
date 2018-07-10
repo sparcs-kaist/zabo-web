@@ -5,9 +5,81 @@ const mutations = {
     let filteredZaboes = payload.result.filter(zabo => {
       return zabo.posters.length >= 1;
     });
-    for (let i = 0; i < filteredZaboes.length; i++) {
-      console.log(payload.category);
-      state.zaboes[payload.category].push(filteredZaboes[i]);
+    const localCategory = payload.category;
+    let finalZaboes = { ...state.zaboes };
+    console.log(payload.result);
+    if (payload.result.length === 0) {
+      finalZaboes[localCategory] = [];
+      for (let k = 0; k < payload.pageSize; k++) {
+        finalZaboes[localCategory].push({
+          id: k + 1,
+          founder: {
+            url: null,
+            nickName: "None",
+            profile_image:
+              "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png/revision/latest?cb=20170330235552&format=original"
+          },
+          posters: [
+            {
+              zabo: k + 1,
+              image:
+                "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png/revision/latest?cb=20170330235552&format=original",
+              image_thumbnail:
+                "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png/revision/latest?cb=20170330235552&format=original"
+            }
+          ],
+          created_time: "0000-00-00 00:00",
+          updated_time: "0000-00-00 00:00",
+          like_count: 0,
+          title: "None",
+          content: "None",
+          location: "None"
+        });
+      }
+      state.zaboes = finalZaboes;
+    } else {
+      if (
+        Math.ceil(finalZaboes[localCategory].length / payload.pageSize) <
+        state.zaboesPageCount[localCategory]
+      ) {
+        for (let i = 0; i < filteredZaboes.length; i++) {
+          finalZaboes[localCategory].push(filteredZaboes[i]);
+        }
+        if (filteredZaboes.length < payload.pageSize) {
+          for (let j = 0; j < payload.pageSize - filteredZaboes.length; j++) {
+            finalZaboes[localCategory].push({
+              id: filteredZaboes[filteredZaboes.length - 1].id + j + 1,
+              founder: {
+                url: null,
+                nickName: "None",
+                profile_image:
+                  "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png/revision/latest?cb=20170330235552&format=original"
+              },
+              posters: [
+                {
+                  zabo: filteredZaboes[filteredZaboes.length - 1].id + j + 1,
+                  image:
+                    "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png/revision/latest?cb=20170330235552&format=original",
+                  image_thumbnail:
+                    "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png/revision/latest?cb=20170330235552&format=original"
+                }
+              ],
+              created_time: "0000-00-00 00:00",
+              updated_time: "0000-00-00 00:00",
+              like_count: 0,
+              title: "None",
+              content: "None",
+              location: "None"
+            });
+          }
+        }
+      }
+      const currentFinal = finalZaboes[localCategory];
+      currentFinal.sort(function(zaboA, zaboB) {
+        return zaboA.id - zaboB.id;
+      });
+      finalZaboes[localCategory] = currentFinal;
+      state.zaboes = finalZaboes;
     }
   },
   [types.ZABOES_RESET](state, payload) {
