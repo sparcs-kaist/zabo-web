@@ -12,7 +12,7 @@
       <div class="tag">ㄴ</div>
       <div class="pic"></div>
       <div class="name">
-        {{ author }}
+        {{ author.nickName }}
       </div>
     </div>
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
@@ -22,12 +22,6 @@
       </div>
       <div v-else>{{ content }}</div>
     </div>
-    <!-- <div v-show="depth === 0">
-      <input-field class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
-      </input-field>
-    </div> -->
-    <!-- <comment-box class="reply-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :key="r.id">
-    </comment-box> -->
   </div>
 </template>
 

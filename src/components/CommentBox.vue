@@ -11,7 +11,7 @@
     <div class="header">
       <div class="pic"></div>
       <div class="name">
-        {{ author }}
+        {{ author.nickName }}
       </div>
     </div>
     <div class="body">
