@@ -26,15 +26,19 @@ const actions = {
       url: `/zaboes/?page=${payload.pageNum}&page_size=${
         payload.pageSize
       }&category=${currentCategory}`
-    }).then(res => {
-      const result = res.data.data;
-      commit(types.ZABOES_LIST, {
-        result: result,
-        pagenum: payload.pageNum,
-        category: payload.category,
-        pageSize: payload.pageSize
+    })
+      .then(res => {
+        const result = res.data.data;
+        commit(types.ZABOES_LIST, {
+          result: result,
+          pagenum: payload.pageNum,
+          category: payload.category,
+          pageSize: payload.pageSize
+        });
+      })
+      .then(() => {
+        console.log("fake response");
       });
-    });
     // }
   },
   searchZaboes({ commit }, searchValue) {

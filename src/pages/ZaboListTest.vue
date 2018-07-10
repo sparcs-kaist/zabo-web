@@ -81,7 +81,7 @@ export default {
         this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, category: this.calculatedCategoryList[1] });
       };
     }).then(() => {
-      this.loading = false
+      this.loading = false;
     })
   },
   mounted () {

@@ -17,7 +17,7 @@ const mutations = {
       if (filteredZaboes.length < payload.pageSize) {
         for (let j = 0; j < payload.pageSize - filteredZaboes.length; j++) {
           finalZaboes[localCategory].push({
-            id: 10000 + Math.floor(Math.random() * 10000),
+            id: filteredZaboes[filteredZaboes.length - 1].id + j + 1,
             founder: {
               url: null,
               nickName: "None",
@@ -26,7 +26,7 @@ const mutations = {
             },
             posters: [
               {
-                zabo: 10000 + Math.floor(Math.random() * 10000),
+                zabo: filteredZaboes[filteredZaboes.length - 1].id + j + 1,
                 image:
                   "https://vignette.wikia.nocookie.net/project-pokemon/images/4/47/Placeholder.png/revision/latest?cb=20170330235552&format=original",
                 image_thumbnail:
@@ -42,8 +42,14 @@ const mutations = {
           });
         }
       }
-      state.zaboes = finalZaboes;
     }
+    finalZaboes[localCategory] = finalZaboes[localCategory].sort(function(
+      zaboA,
+      zaboB
+    ) {
+      zaboA.id - zaboB.id;
+    });
+    state.zaboes = finalZaboes;
   },
   [types.ZABOES_RESET](state, payload) {
     state.zaboes = {
