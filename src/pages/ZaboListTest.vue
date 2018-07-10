@@ -110,7 +110,7 @@ export default {
     },
     categoryleft () {
       if (this.currentCategoryIndex === 0) {
-        this.currentCategoryIndex = 7;
+        this.currentCategoryIndex = 6;
       } else {
         this.currentCategoryIndex -= 1;
       }
@@ -132,7 +132,7 @@ export default {
       }, 1000)
     },
     categoryright () {
-      if (this.currentCategoryIndex === 7) {
+      if (this.currentCategoryIndex === 6) {
         this.currentCategoryIndex = 0;
       } else {
         this.currentCategoryIndex += 1;
