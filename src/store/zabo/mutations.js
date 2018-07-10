@@ -36,6 +36,7 @@ const mutations = {
           location: "None"
         });
       }
+      state.zaboes = finalZaboes;
     } else {
       if (
         Math.ceil(finalZaboes[localCategory].length / payload.pageSize) <
@@ -73,14 +74,13 @@ const mutations = {
           }
         }
       }
-      finalZaboes[localCategory] = finalZaboes[localCategory].sort(function(
-        zaboA,
-        zaboB
-      ) {
-        zaboA.id - zaboB.id;
+      const currentFinal = finalZaboes[localCategory];
+      currentFinal.sort(function(zaboA, zaboB) {
+        return zaboA.id - zaboB.id;
       });
+      finalZaboes[localCategory] = currentFinal;
+      state.zaboes = finalZaboes;
     }
-    state.zaboes = finalZaboes;
   },
   [types.ZABOES_RESET](state, payload) {
     state.zaboes = {
