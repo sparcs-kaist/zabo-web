@@ -88,6 +88,10 @@ export default {
     this.getWindowWidth();
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+      }, 1000)
     }, 1000)
   },
   beforeMount () {
@@ -121,6 +125,10 @@ export default {
       })
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'))
+          setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+        }, 1000)
       }, 1000)
     },
     categoryright () {
@@ -140,6 +148,10 @@ export default {
       })
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'))
+          setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+        }, 1000)
       }, 1000)
     },
     zaboDetail (id, nickname) {
