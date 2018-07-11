@@ -19,15 +19,14 @@
               <span class="topic">{{$t('자보 이름')}}
                 <div class="required"></div>
               </span>
-              <v-text-field v-model="name" label="입력..." single-line solo style="width: 100%;"></v-text-field>
+              <v-text-field v-model="name" label="입력..." single-line solo style="width: 100%;" clearable></v-text-field>
             </div>
             <div class="formWrapper">
               <span class="topic">{{$t('장소')}}
                 <div class="required"></div>
               </span>
-              <div id="naverMap" style="width: 500px; height: 500px">
-                hey
-              </div>
+              <v-text-field v-model="location" solo label="입력..." style="width: 100%" clearable>
+              </v-text-field>
             </div>
             <div class="formWrapper">
               <span class="topic">{{$t('카테고리')}}
@@ -54,7 +53,7 @@
                 </div>
                 <div>
                   <div style="float: right; height: 100%;">
-                    <v-switch v-model="multipleDays" color="green" :value="true"></v-switch>
+                    <v-switch v-model="multipleDays" color="green" :value="true" disabled></v-switch>
                   </div>
                   <span class="label-text">
                     {{ multipleDaysString }}
@@ -64,26 +63,26 @@
               <div v-if="multipleDays" class="multi-days">
                 hey
               </div>
-              <v-container v-else class="one-day">
-                 <v-flex xs12>
+              <div v-else class="one-day">
+                 <v-flex xs11>
                   <v-menu
                     transition="slide-y-transition"
                     offset-y
                     full-width
-                    min-width="290px"
-                  >
+                    min-width="290px">
                     <v-text-field
                       slot="activator"
                       solo
                       label="날짜 선택..."
                       v-model="eventDate"
                       readonly
+                      prepend-icon="event"
                     ></v-text-field>
                     <v-date-picker v-model="eventDate" no-title scrollable :min="today">
                     </v-date-picker>
                   </v-menu>
                 </v-flex>
-              </v-container>
+              </div>
             </div>
           </div>
           <div class="column">
@@ -91,7 +90,7 @@
               <span class="topic">{{$t('참여 방법')}}
                 <div class="required"></div>
               </span>
-              <v-select :items="participateMethods" label="선택..." solo style="width: 100%;">
+              <v-select v-model="selectedMethod" :items="participateMethods" label="선택..." solo style="width: 100%;">
               </v-select>
             </div>
             <div class="formWrapper">
@@ -108,18 +107,24 @@
             <div class="formWrapper">
               <span class="topic">{{$t('자보 설명')}}</span>
               <v-textarea style="width: 100%;" solo label="입력..." v-model="introduction"></v-textarea>
-              {{introduction}}
             </div>
             <div class="formWrapper">
               <span class="topic">{{$t('참여 인원')}}</span>
-              <input class="textbox" v-model="participateMembers" type="number" placeholder="인원 수" />
+              <v-text-field v-model="participateMembers" type="number" label="입력..." solo style="width: 100%" clearable/>
             </div>
           </div>
           <div class="column">
             <div class="formWrapper">
-              <div class="zaboAddWrapper">
+              <div v-if="imagePreviewUrls.length == 0" class="zaboAddWrapper">
                 <span>{{$t('자보 추가')}}</span>
-                <v-icon class="material-icons icon-big">add_circle</v-icon>
+                <v-icon class="material-icons icon-big" @click="$refs.posterInput.click()">add_circle</v-icon>
+                <input style="display:none" type="file" @change="posteradded" ref="posterInput">
+              </div>
+              <div v-else>
+                <img :src="imagePreviewUrls[0]" style="width: 100%;height: 100%">
+                <div @click="deletePoster" style="width: 100px; height:100px;">
+                  delete
+                </div>
               </div>
             </div>
           </div>
@@ -135,6 +140,7 @@ export default {
     return {
       name: "",
       selectedcategory: "",
+      location: "",
       multipleDays: false,
       participateMethods: [
         "자보에서 신청",
@@ -147,8 +153,20 @@ export default {
       paymentRequired: false,
       explanation: "",
       participateMembers: 0,
-      introduction: ``
+      introduction: ``,
+      zaboPoster: [],
+      imagePreviewUrls: []
     };
+  },
+  methods: {
+    posteradded(event) {
+      this.zaboPoster = event.target.files[0];
+      this.imagePreviewUrls.push(URL.createObjectURL(this.zaboPoster));
+    },
+    deletePoster() {
+      this.zaboPoster = [];
+      this.imagePreviewUrls = [];
+    }
   },
   computed: {
     loggedIn() {
@@ -200,11 +218,11 @@ export default {
     display: relative;
   }
   .column {
-    margin: 0 auto;
+    margin-bottom: 40px;
   }
 }
 
-@media screen and (min-width: 1700px) {
+@media screen and (min-width: 1600px) {
   .mainWrapper {
     display: flex;
     min-width: 344px;
