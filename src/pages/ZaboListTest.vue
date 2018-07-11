@@ -245,10 +245,6 @@ export default {
       console.log(val);
     }
   },
-  beforeDestroy () {
-    this.$store.commit("ZABOES_RESET");
-    window.removeEventListener("resize", this.getWindowWidth);
-  }
 }
 </script>
 <style scoped lang=''>
