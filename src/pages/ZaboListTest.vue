@@ -6,8 +6,8 @@
     <span class="category">{{calculatedCategoryList[2]}}</span>
   </div>
   <nav class="verticalNavButton">
-      <img src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
-      <img src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
+      <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
+      <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
   </nav>
   <div v-if="zaboesExist && !loading" class="currentZaboesWrapper">
     <nav class="horizontalNavButton">
@@ -19,7 +19,7 @@
         </div>
       </slide>
     </carousel-3d>
-    <carousel-3d :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
+    <carousel-3d ref="bull" :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
           <div @click="zaboDetail(zabo.id, zabo.founder.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
@@ -48,37 +48,32 @@
     color="primary"
     v-else
   ></v-progress-circular>
+  <zabo-detail-modal @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
 </div>
 </template>
 <script>
 import { Carousel3d, Slide } from 'vue-carousel-3d';
+import ZaboDetailModal from '@/components/ZaboDetailModal';
 
 export default {
   data () {
     return {
       windowWidth: 0,
-      categories: {
-        "전체": "",
-        "리크루팅": "R",
-        "퍼포먼스": "P",
-        "경쟁": "C",
-        "설명회": "F",
-        "강의": "L",
-        "전람회": "E"
-      },
       currentCategoryIndex: 0,
-      categoryList: ["전체", "리크루팅", "퍼포먼스", "경쟁", "설명회", "강의", "전람회"],
+      categoryList: ["최신순", "인기있는 자보", "리크루팅", "퍼포먼스", "경쟁", "설명회", "강의", "전람회"],
       loading: true,
       defaultImage: "@/assets/logo.png",
-      posterWrapperHeight: 0
+      posterWrapperHeight: 0,
+      modalZaboId: -1,
+      currentPath: window.location.pathname,
     }
   },
   created: async function () {
     this.getWindowWidth();
-    this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, category: this.calculatedCategoryList[1] }).then(res => {
+    this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, method: this.calculatedCategoryList[1] }).then(res => {
       const totalPage = res;
       for (var i = 1; i <= totalPage; i++) {
-        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, category: this.calculatedCategoryList[1] });
+        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, method: this.calculatedCategoryList[1] });
       };
     }).then(() => {
       this.loading = false;
@@ -92,7 +87,7 @@ export default {
         window.dispatchEvent(new Event('resize'))
         setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
       }, 1000)
-    }, 1000)
+    }, 1000);
   },
   beforeMount () {
     window.addEventListener("resize", this.getWindowWidth);
@@ -106,19 +101,18 @@ export default {
         document.body.clientWidth ||
         document.documentElement.clientWidth ||
         window.innerWidth;
-      console.log(this.windowWidth)
     },
     categoryleft () {
       if (this.currentCategoryIndex === 0) {
-        this.currentCategoryIndex = 6;
+        this.currentCategoryIndex = 7;
       } else {
         this.currentCategoryIndex -= 1;
       }
       this.getWindowWidth();
-      this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, category: this.calculatedCategoryList[1] }).then(res => {
+      this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, method: this.calculatedCategoryList[1] }).then(res => {
         const totalPage = res;
         for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, category: this.calculatedCategoryList[1] });
+          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, method: this.calculatedCategoryList[1] });
         };
       }).then(() => {
         this.loading = false
@@ -132,16 +126,16 @@ export default {
       }, 1000)
     },
     categoryright () {
-      if (this.currentCategoryIndex === 6) {
+      if (this.currentCategoryIndex === 7) {
         this.currentCategoryIndex = 0;
       } else {
         this.currentCategoryIndex += 1;
       }
       this.getWindowWidth();
-      this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, category: this.calculatedCategoryList[1] }).then(res => {
+      this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, method: this.calculatedCategoryList[1] }).then(res => {
         const totalPage = res;
         for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, category: this.calculatedCategoryList[1] });
+          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, method: this.calculatedCategoryList[1] });
         };
       }).then(() => {
         this.loading = false
@@ -156,13 +150,27 @@ export default {
     },
     zaboDetail (id, nickname) {
       if (nickname !== "None") {
-        this.$router.push({ name: "ZaboDetail", params: { zabo_id: id } })
+        window.history.pushState(null, null, [`/zabo/${id}`]);
+        this.currentPath = window.location.pathname
+        this.modalZaboId = id;
       }
-    }
+    },
+    closeModal () {
+      this.currentPath = "/"
+      window.history.pushState(null, null, [`/`]);
+    },
+    mouseUp () {
+      // let carousel = document.getElementsByClassName('carouselWrapper')
+      document.getElementsByClassName('left-1')[1].click()
+    },
+    mouseDown () {
+      document.getElementsByClassName('right-1')[1].click()
+    },
   },
   components: {
     'carousel-3d': Carousel3d,
-    'slide': Slide
+    'slide': Slide,
+    ZaboDetailModal
   },
   computed: {
     zaboes () {
@@ -209,17 +217,32 @@ export default {
     calculatedCategoryList () {
       let calculatedCategories = [];
       if (this.currentCategoryIndex === 0) {
-        calculatedCategories.push(this.categoryList[6]);
+        calculatedCategories.push(this.categoryList[7]);
       } else {
         calculatedCategories.push(this.categoryList[this.currentCategoryIndex - 1])
       }
       calculatedCategories.push(this.categoryList[this.currentCategoryIndex])
-      if (this.currentCategoryIndex === 6) {
+      if (this.currentCategoryIndex === 7) {
         calculatedCategories.push(this.categoryList[0]);
       } else {
         calculatedCategories.push(this.categoryList[this.currentCategoryIndex + 1])
       }
       return calculatedCategories;
+    },
+    computedZaboId () {
+      return this.modalZaboId
+    },
+    computedModalState () {
+      if (this.currentPath === "/") {
+        return false
+      } else {
+        return true
+      }
+    }
+  },
+  watch: {
+    currentPath (val) {
+      console.log(val);
     }
   },
   beforeDestroy () {
@@ -331,7 +354,6 @@ export default {
   position: absolute;
   width: 464px;
   height: 298px;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .carouselWrapper {

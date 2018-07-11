@@ -24,6 +24,7 @@ export default {
   position: absolute;
   display: flex;
   flex-direction: column;
+  padding-bottom: 30px;
   /* overflow: scroll; */
 }
 </style>

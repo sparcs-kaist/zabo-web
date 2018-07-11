@@ -29,7 +29,7 @@ export default {
 <style scoped>
 .inputField {
   width: 100%;
-  max-width: 544px;
+  max-width: 629px;
 }
 .button {
   align-items: center;

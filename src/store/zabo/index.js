@@ -5,7 +5,8 @@ import getters from "./getters";
 export default {
   state: {
     zaboes: {
-      전체: [],
+      최신순: [],
+      "인기있는 자보": [],
       리크루팅: [],
       퍼포먼스: [],
       경쟁: [],

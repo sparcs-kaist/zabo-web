@@ -25,6 +25,7 @@
     </div>
     <div class="column">
       <img :src="this.image" height="600" width="500" />
+      <v-icon @click="closeModal" class="material-icon">close</v-icon>
     </div>
   </div>
 </template>
@@ -56,6 +57,12 @@ export default {
     InputField,
     ReviewScreen,
   },
+  props: ['zaboId'],
+  computed: {
+    zabodetailId () {
+      return this.zabo_id;
+    }
+  },
   methods: {
     onSubmitComment () {
       axios({
@@ -63,10 +70,7 @@ export default {
         url: `http://localhost:8000/api/comments/`,
         data: {
           content: this.newComment,
-          zabo: this.zabo_id,
-          "is_private": true,
-          "is_deleted": true,
-          "is_blocked": true
+          zabo: this.zabodetailId,
         },
         headers: {
           "Content-Type": "application/json",
@@ -84,12 +88,15 @@ export default {
     selectTab (selected) {
       this.toDisplay = selected;
     },
+    closeModal () {
+      this.$emit('closeModal');
+    }
   },
   created () {
-    this.zabo_id = this.$route.params.zabo_id;
+    this.zabo_id = this.zaboId;
     axios({
       method: 'get',
-      url: `http://localhost:8000/api/zaboes/${this.zabo_id}/`
+      url: `http://localhost:8000/api/zaboes/${this.zabodetailId}/`
     })
       .then((response) => {
         const { posters, content, title, location, updated_time, comments } = response.data
@@ -114,23 +121,39 @@ export default {
   display: flex;
   width: 80%;
   position: absolute;
-  top: 0px;
-  bottom: 68px;
+  top: 0;
+  bottom: 0;
   left: 10%;
   right: 10%;
-  margin-top: 78px;
   overflow: hidden;
   z-index: 500;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+.main:before {
+  content: “ ”;
+  background: inherit;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.3);
+  filter: blur(10px);
 }
 .bodyWrapper {
   flex: 1;
   color: white;
   position: relative;
   width: 100%;
-  /* overflow-y: scroll;
-  overflow-x: hidden; */
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
+.bodyWrapper::-webkit-scrollbar {
+  background-color: transparent;
+}
+.bodyWrapper::-webkit-scrollbar {
+  background-color: transparent;
+}
+
 /* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
 .bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
 /* .root::-webkit-scrollbar{ display: none;}
@@ -185,8 +208,8 @@ export default {
 .column:first-child {
   padding-top: 80px;
   padding-left: 40px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
 }
 .column:last-child {
   justify-content: center;
@@ -207,5 +230,13 @@ export default {
   cursor: pointer;
   margin: 0 16px 0 0;
   font-size: 1.6em;
+}
+.material-icon {
+  font-size: 40px;
+  color: white;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
 }
 </style>

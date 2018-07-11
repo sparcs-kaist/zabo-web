@@ -5,13 +5,13 @@ const mutations = {
     let filteredZaboes = payload.result.filter(zabo => {
       return zabo.posters.length >= 1;
     });
-    const localCategory = payload.category;
+    const localMethod = payload.method;
     let finalZaboes = { ...state.zaboes };
     console.log(payload.result);
     if (payload.result.length === 0) {
-      finalZaboes[localCategory] = [];
+      finalZaboes[localMethod] = [];
       for (let k = 0; k < payload.pageSize; k++) {
-        finalZaboes[localCategory].push({
+        finalZaboes[localMethod].push({
           id: k + 1,
           founder: {
             url: null,
@@ -39,15 +39,15 @@ const mutations = {
       state.zaboes = finalZaboes;
     } else {
       if (
-        Math.ceil(finalZaboes[localCategory].length / payload.pageSize) <
-        state.zaboesPageCount[localCategory]
+        Math.ceil(finalZaboes[localMethod].length / payload.pageSize) <
+        state.zaboesPageCount[localMethod]
       ) {
         for (let i = 0; i < filteredZaboes.length; i++) {
-          finalZaboes[localCategory].push(filteredZaboes[i]);
+          finalZaboes[localMethod].push(filteredZaboes[i]);
         }
         if (filteredZaboes.length < payload.pageSize) {
           for (let j = 0; j < payload.pageSize - filteredZaboes.length; j++) {
-            finalZaboes[localCategory].push({
+            finalZaboes[localMethod].push({
               id: filteredZaboes[filteredZaboes.length - 1].id + j + 1,
               founder: {
                 url: null,
@@ -74,11 +74,11 @@ const mutations = {
           }
         }
       }
-      const currentFinal = finalZaboes[localCategory];
+      const currentFinal = finalZaboes[localMethod];
       currentFinal.sort(function(zaboA, zaboB) {
         return zaboA.id - zaboB.id;
       });
-      finalZaboes[localCategory] = currentFinal;
+      finalZaboes[localMethod] = currentFinal;
       state.zaboes = finalZaboes;
     }
   },
@@ -106,10 +106,10 @@ const mutations = {
   //   state.zaboes.splice(state.zaboes.indexOf(state.zaboes.find(func)), 1);
   // },
   [types.ZABOES_PAGECOUNT](state, payload) {
-    state.zaboesPageCount[payload.category] = payload.result;
+    state.zaboesPageCount[payload.method] = payload.result;
   },
   [types.GET_PARTICIPATED_ZABOES](state, payload) {
-    state.participatedZaboes[payload.category] = payload.result;
+    state.participatedZaboes[payload.method] = payload.result;
   },
   [types.SET_CURRENT_USER](state, payload) {
     state.currentUser = payload;

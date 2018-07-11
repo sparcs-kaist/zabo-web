@@ -7,31 +7,35 @@ const setURL = function(subURL) {
 
 const actions = {
   zaboesList({ commit, state }, payload) {
-    let currentCategory = "";
-    if (payload.category == "리크루팅") {
-      currentCategory = "R";
-    } else if (payload.category == "퍼포먼스") {
-      currentCategory = "P";
-    } else if (payload.category == "경쟁") {
-      currentCategory = "C";
-    } else if (payload.category == "설명회") {
-      currentCategory = "F";
-    } else if (payload.category == "강의") {
-      currentCategory = "L";
-    } else if (payload.category == "전람회") {
-      currentCategory = "E";
+    let method = "";
+    if (payload.method == "최신순") {
+      method = "&ordering=created_time";
+    } else if (payload.method == "인기있는 자보") {
+      method = "&ordering=likes";
+    } else if (payload.method == "리크루팅") {
+      method = "&category=R";
+    } else if (payload.method == "퍼포먼스") {
+      method = "&category=P";
+    } else if (payload.method == "경쟁") {
+      method = "&category=C";
+    } else if (payload.method == "설명회") {
+      method = "&category=F";
+    } else if (payload.method == "강의") {
+      method = "&category=L";
+    } else if (payload.method == "전람회") {
+      method = "&category=E";
     }
     axios({
       method: "get",
       url: `/zaboes/?page=${payload.pageNum}&page_size=${
         payload.pageSize
-      }&category=${currentCategory}`
+      }${method}`
     }).then(res => {
       const result = res.data.data;
       commit(types.ZABOES_LIST, {
         result: result,
         pagenum: payload.pageNum,
-        category: payload.category,
+        method: payload.method,
         pageSize: payload.pageSize
       });
     });
@@ -44,42 +48,40 @@ const actions = {
     });
   },
   zaboesGetPageCount({ commit }, payload) {
-    let currentCategory = "";
-    if (payload.category == "리크루팅") {
-      currentCategory = "R";
-    } else if (payload.category == "퍼포먼스") {
-      currentCategory = "P";
-    } else if (payload.category == "경쟁") {
-      currentCategory = "C";
-    } else if (payload.category == "설명회") {
-      currentCategory = "F";
-    } else if (payload.category == "강의") {
-      currentCategory = "L";
-    } else if (payload.category == "전람회") {
-      currentCategory = "E";
+    let method = "";
+    if (payload.method == "최신순") {
+      method = "&ordering=created_time";
+    } else if (payload.method == "인기있는 자보") {
+      method = "&ordering=likes";
+    } else if (payload.method == "리크루팅") {
+      method = "&category=R";
+    } else if (payload.method == "퍼포먼스") {
+      method = "&category=P";
+    } else if (payload.method == "경쟁") {
+      method = "&category=C";
+    } else if (payload.method == "설명회") {
+      method = "&category=F";
+    } else if (payload.method == "강의") {
+      method = "&category=L";
+    } else if (payload.method == "전람회") {
+      method = "&category=E";
     }
     return new Promise(resolve => {
-      axios
-        .get(
-          `/zaboes/${setURL(payload.subURL)}?page_size=${
-            payload.pageSize
-          }&category=${currentCategory}`
-        )
-        .then(res => {
-          let result = res.data.page_count;
-          commit(types.ZABOES_PAGECOUNT, {
-            result: result,
-            category: payload.category
-          });
-          resolve(result);
+      axios.get(`/zaboes/?page_size=${payload.pageSize}${method}`).then(res => {
+        let result = res.data.page_count;
+        commit(types.ZABOES_PAGECOUNT, {
+          result: result,
+          method: payload.method
         });
+        resolve(result);
+      });
     });
   },
   getMyInfo({ commit, state }) {
     axios
       .get("/users/myInfo", {
         headers: {
-          Authorization: `${localStorage.getItem("token")}`
+          Authorization: localStorage.getItem("token")
         }
       })
       .then(response => {

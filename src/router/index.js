@@ -13,11 +13,6 @@ export default new Router({
   mode: "history",
   routes: [
     {
-      path: "/",
-      name: "ZaboListTest",
-      component: ZaboListTest
-    },
-    {
       path: "/zabo/upload",
       name: "ZaboUpload",
       component: ZaboUpload
@@ -45,6 +40,11 @@ export default new Router({
         console.log("Entering User", to.params.search);
         next();
       }
+    },
+    {
+      path: "/",
+      name: "ZaboListDetailAdded",
+      component: ZaboListTest
     }
   ]
 });
