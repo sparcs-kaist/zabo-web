@@ -31,29 +31,29 @@ export default {
       template: "<div></div>"
     }
   },
-  data () {
+  data() {
     return {
       loggingIn: false,
       voided: MainZabo
     };
   },
-  created () {
+  created() {
     this.$store.commit("LOGIN");
     this.$store.dispatch("getMyInfo");
   },
   methods: {
-    handleLogin (value) {
+    handleLogin(value) {
       this.loggingIn = !this.loggingIn;
     },
-    closeintro () {
+    closeintro() {
       this.voided = "v-a";
     }
   },
   computed: {
-    mainZaboSeen: function () {
+    mainZaboSeen: function() {
       return this.$store.getters.mainZaboSeen;
     },
-    loggedInState: function () {
+    loggedInState: function() {
       return this.$store.getters.loggedInState;
     }
   }

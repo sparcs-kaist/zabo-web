@@ -21,22 +21,24 @@
                 </div>
                 단체 계정으로 로그인
               </div>
-              <v-form v-model="valid" method="get" @submit.prevent="login">
-                <v-text-field
-                required
-                label = "E-mail"
-                v-model = "email"
-                :rules="emailRules"
-                class = "field"/>
-                <v-text-field
-                required
-                label = "Password"
-                v-model = "password"
-                :rules="passwordRules"
-                type = "password"
-                class = "field"/>
-                <v-btn type="submit" :disabled="!valid" depressed :loading="loading" color="indigo darken-3" id="login_button">로그인</v-btn>
-              </v-form>
+                <v-form v-model="valid" method="get" @submit.prevent="login">
+                  <div style="height:15px;"/>
+                  <v-text-field
+                  required
+                  label = "E-mail"
+                  v-model = "email"
+                  :rules="emailRules"
+                  class = "field"/>
+                  <div style="height:20px;"/>
+                  <v-text-field
+                  required
+                  label = "Password"
+                  v-model = "password"
+                  :rules="passwordRules"
+                  type = "password"
+                  class = "field"/>
+                  <v-btn type="submit" :disabled="!valid" depressed :loading="loading" color="indigo darken-3" id="login_button">로그인</v-btn>
+                </v-form>
             </div>
           </transition>
         <p class="copyright">

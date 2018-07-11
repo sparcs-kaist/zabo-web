@@ -1,55 +1,58 @@
 <template>
-  <div id="whole">
-    <div style="width:100%; height:90px;"></div>
-    <div class="user-profile">
-      프로필
-    </div>
-    <div>
-      <img :src="imagesrc" class="profile-image">
-      <p id="name" v-if = "edit == false"> {{ first_name + " " + last_name }} </p>
-    </div>
-    <v-app id = "namefield" v-if = "edit == true">
-      <v-form v-model = "valid">
-        <v-text-field
-        label = "성"
-        v-model = "new_first_name"
-        :rules = "namerules"
-        required
-        class = "first">
-        </v-text-field>
-        <v-text-field
-        label = "이름"
-        v-model = "new_last_name"
-        :rules = "namerules"
-        required
-        class = "last"></v-text-field>
-      </v-form>
-    </v-app>
-    <button v-on:click="tab1" class="tab">
-      내 정보<br/>
-      <div class="button-active" v-if = "tab == 'tab1'">
+  <v-app style="background-color: white">
+      <div id="whole">
+        <div style="width:100%; height:90px;"></div>
+        <div class="user-profile">
+          프로필
+        </div>
+        <div v-if="!edit">
+          <img :src="imagesrc" class="profile-image">
+          <p id="name"> {{ first_name + " " + last_name }} </p>
+        </div>
+        <v-app id = "namefield" v-else>
+          <input type="file" @change="onFileSelected">
+          <v-form v-model = "valid">
+            <v-text-field
+            label = "성"
+            v-model = "new_first_name"
+            :rules = "namerules"
+            required
+            class = "first">
+            </v-text-field>
+            <v-text-field
+            label = "이름"
+            v-model = "new_last_name"
+            :rules = "namerules"
+            required
+            class = "last"></v-text-field>
+          </v-form>
+        </v-app>
+        <button v-on:click="tab1" class="tab">
+          내 정보<br/>
+          <div class="button-active" v-if = "tab == 'tab1'">
+          </div>
+        </button>
+        <button v-on:click="tab2" class="tab">
+          참여한 자보<br/>
+          <div class="button-active" v-if="tab == 'tab2'">
+          </div>
+        </button>
+        <button v-on:click="tab3" class="tab">
+          찜한 자보<br/>
+          <div class="button-active" v-if="tab == 'tab3'">
+          </div>
+        </button>
+        <div v-if="tab == 'tab1'">
+          <profile v-on:editmode = "edit_toggle" :valid = "valid" :first = "new_first_name" :last = "new_last_name" :image = "new_profile_image"></profile>
+        </div>
+        <div v-else-if="tab == 'tab2'">
+          <!-- <participated :participatedZaboes="participatedZaboes"></participated> -->
+        </div>
+        <div v-else-if="tab == 'tab3'">
+          찜한 자보
+        </div>
       </div>
-    </button>
-    <button v-on:click="tab2" class="tab">
-      참여한 자보<br/>
-      <div class="button-active" v-if="tab == 'tab2'">
-      </div>
-    </button>
-    <button v-on:click="tab3" class="tab">
-      찜한 자보<br/>
-      <div class="button-active" v-if="tab == 'tab3'">
-      </div>
-    </button>
-    <div v-if="tab == 'tab1'">
-      <profile v-on:editmode = "edit_toggle" :valid = "valid" :first = "new_first_name" :last = "new_last_name"></profile>
-    </div>
-    <div v-else-if="tab == 'tab2'">
-      <!-- <participated :participatedZaboes="participatedZaboes"></participated> -->
-    </div>
-    <div v-else-if="tab == 'tab3'">
-      찜한 자보
-    </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -61,12 +64,12 @@ export default {
   data() {
     return {
       valid: true,
-      imagesrc: "",
       edit: false,
       tab: "tab1",
       participatedZaboes: {},
       new_first_name: "",
       new_last_name: "",
+      new_profile_image: null,
       namerules: [
         v => !!v || "이름을 입력해주세요.",
         v => (v && v.length <= 100) || "이름이 너무 길어요."
@@ -93,13 +96,14 @@ export default {
       } else if (this.edit === true) {
         this.edit = false;
       }
+    },
+    onFileSelected(event) {
+      this.new_profile_image = event.target.files[0];
     }
   },
   created() {
     this.new_first_name = this.$store.getters.getFirstName;
     this.new_last_name = this.$store.getters.getLastName;
-    this.imagesrc = this.currentUser.profile_image;
-    // this.$store.dispatch("getParticipatedZaboes");
     this.participatedZaboes = this.$store.getters.participatedZaboes;
   },
   computed: {
@@ -108,6 +112,9 @@ export default {
     },
     last_name() {
       return this.$store.getters.getLastName;
+    },
+    imagesrc() {
+      return this.$store.getters.getProfileImagesource;
     },
     currentUser() {
       return this.$store.getters.currentUser;
@@ -131,7 +138,7 @@ export default {
   text-align: left;
   font-size: 22pt;
   font-family: Nanumsquare;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 #name {

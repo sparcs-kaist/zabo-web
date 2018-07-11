@@ -1,179 +1,230 @@
 <template>
-  <div class="zaboUpload">
-    <div v-if="!loggedIn" class="warning">You're not logged In!</div>
-    <div class="mainWrapper" v-else>
-      <div class="column">
-        <div class="headingWrapper">
-          <span class="heading">
-            {{$t('자보 올리기')}}
-          </span>
-          <div class="explanationWrapper">
-            <div class="required"></div>
-            <span class="font-light">| {{$t('필수 항목')}}</span>
-          </div>
-        </div>
-        <div class="formWrapper">
-          <span class="topic">{{$t('자보 이름')}}
-            <div class="required"></div>
-          </span>
-          <input class="textbox" placeholder="이름을 입력해주세요." type="text" v-model="name" />
-        </div>
-        <div class="formWrapper">
-          <span class="topic">{{$t('장소')}}
-            <div class="required"></div>
-          </span>
-          <iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD_9UqkwtRphrz-2txxvvOzyYShFaUG7Pc
-              &q=Space+Needle,Seattle+WA" allowfullscreen class="googleAPI">
-          </iframe>
-        </div>
-        <div class="formWrapper">
-          <span class="topic">{{$t('카테고리')}}
-            <div class="required"></div>
-          </span>
-          <div class="categoriesWrapper">
-            <div v-for="(category, index) in categoryList" :key="index" class="radioWrapper">
-              <input :id="category" class="categoryRadio" :value="category" type="radio" v-model="selectedcategory" />
-              <label :for="category" class="categoryLabel">{{$t(category)}}</label>
-            </div>
-          </div>
-        </div>
-        <div class="formWrapper">
-          <span class="topic">
-            <div class="topicWrapper">
-              {{$t('일정')}}
-              <div class="required"></div>
-            </div>
-            <div class="checkboxWrapper">
-              <label for="multipleDays">{{$t('여러 날')}}</label>
-              <input id="multipleDays" type="checkbox" v-model="multipleDays" />
-            </div>
-          </span>
-          <div class="scheduleWrapper">
-            <span>{{$t('일정이 없습니다. 아래 버튼으로 추가하세요.')}}</span>
-            <v-icon class="material-icons icon-small">add_circle</v-icon>
-          </div>
-        </div>
-        <div class="formWrapper">
-          <span class="topic">{{$t('참여 방법')}}
-            <div class="required"></div>
-          </span>
-          <select class="selectTag" v-model="selectedMethod">
-            <option disabled value="">참여 방법을 선택하세요.</option>
-            <option v-for="(method, index) in participateMethods" :key="index">{{method}}</option>
-          </select>
+  <v-app style="background-color: white; padding-top: 0px;">
+    <div class="zaboUpload">
+      <div style="height: 90px;"/>
+      <div class="headingWrapper">
+        <span class="heading">
+          {{$t('자보 올리기')}}
+        </span>
+        <div class="explanationWrapper">
+          <div class="required"></div>
+          <span class="font-light">| {{$t('필수 항목')}}</span>
         </div>
       </div>
-      <div class="column">
-        <div class="formWrapper">
-          <span class="topic">
-            <div class="topicWrapper">
-              {{$t('결제 필요 여부')}}
+      <div v-if="!loggedIn" class="warning">You're not logged In!</div>
+      <v-form v-else>
+        <div class="mainWrapper">
+          <div class="column">
+            <div class="formWrapper">
+              <span class="topic">{{$t('자보 이름')}}
+                <div class="required"></div>
+              </span>
+              <v-text-field v-model="name" label="입력..." single-line solo style="width: 100%;"></v-text-field>
             </div>
-            <div class="checkboxWrapper">
-              <label for="paymentRequired">{{$t('필요하지 않음')}}</label>
-              <input id="paymentRequired" type="checkbox" v-model="paymentRequired" />
+            <div class="formWrapper">
+              <span class="topic">{{$t('장소')}}
+                <div class="required"></div>
+              </span>
+              <div id="naverMap" style="width: 500px; height: 500px">
+                hey
+              </div>
             </div>
-          </span>
-        </div>
-        <div class="formWrapper">
-          <span class="topic">{{$t('자보 설명')}}</span>
-          <textarea class="textarea" v-model="explanation" placeholder="입력..."></textarea>
-        </div>
-        <div class="formWrapper">
-          <span class="topic">{{$t('참여 인원')}}</span>
-          <input class="textbox" v-model="participateMembers" type="number" placeholder="인원 수" />
-        </div>
-      </div>
-      <div class="column">
-        <div class="formWrapper">
-          <div class="zaboAddWrapper">
-            <span>{{$t('자보 추가')}}</span>
-            <v-icon class="material-icons icon-big">add_circle</v-icon>
+            <div class="formWrapper">
+              <span class="topic">{{$t('카테고리')}}
+                <div class="required"></div>
+              </span>
+                <v-radio-group v-model="selectedcategory" style="width: 100%;">
+                  <div style="display: flex;">
+                    <v-radio color="blue" label="리크루팅" value="recruiting" style="flex: 1;"></v-radio>
+                    <v-radio color="blue" label="공연" value="performance" style="flex: 1;"></v-radio>
+                    <v-radio color="blue" label="대회" value="competition" style="flex: 1;"></v-radio>
+                  </div>
+                  <div style="display: flex;">
+                    <v-radio color="blue" label="세미나" value="seminar" style="flex: 1;"></v-radio>
+                    <v-radio color="blue" label="설명회" value="information" style="flex: 1;"></v-radio>
+                    <v-radio color="blue" label="전시회" value="expo" style="flex: 1;"></v-radio>
+                  </div>
+                </v-radio-group>
+            </div>
+            <div class="formWrapper">
+              <span class="topic">
+                <div class="topicWrapper">
+                  {{$t('일정')}}
+                  <div class="required"></div>
+                </div>
+                <div>
+                  <div style="float: right; height: 100%;">
+                    <v-switch v-model="multipleDays" color="green" :value="true"></v-switch>
+                  </div>
+                  <span class="label-text">
+                    {{ multipleDaysString }}
+                  </span>
+                </div>
+              </span>
+              <div v-if="multipleDays" class="multi-days">
+                hey
+              </div>
+              <v-container v-else class="one-day">
+                 <v-flex xs12>
+                  <v-menu
+                    transition="slide-y-transition"
+                    offset-y
+                    full-width
+                    min-width="290px"
+                  >
+                    <v-text-field
+                      slot="activator"
+                      solo
+                      label="날짜 선택..."
+                      v-model="eventDate"
+                      readonly
+                    ></v-text-field>
+                    <v-date-picker v-model="eventDate" no-title scrollable :min="today">
+                    </v-date-picker>
+                  </v-menu>
+                </v-flex>
+              </v-container>
+            </div>
+          </div>
+          <div class="column">
+            <div class="formWrapper">
+              <span class="topic">{{$t('참여 방법')}}
+                <div class="required"></div>
+              </span>
+              <v-select :items="participateMethods" label="선택..." solo style="width: 100%;">
+              </v-select>
+            </div>
+            <div class="formWrapper">
+              <span class="topic">
+                <div class="topicWrapper">
+                  {{$t('결제 필요 여부')}}
+                </div>
+                <span class="font-light">필요하지 않음</span>
+                <div>
+                  <v-switch v-model="paymentRequired" color="green" :value="false" disabled></v-switch>
+                </div>
+              </span>
+            </div>
+            <div class="formWrapper">
+              <span class="topic">{{$t('자보 설명')}}</span>
+              <v-textarea style="width: 100%;" solo label="입력..." v-model="introduction"></v-textarea>
+              {{introduction}}
+            </div>
+            <div class="formWrapper">
+              <span class="topic">{{$t('참여 인원')}}</span>
+              <input class="textbox" v-model="participateMembers" type="number" placeholder="인원 수" />
+            </div>
+          </div>
+          <div class="column">
+            <div class="formWrapper">
+              <div class="zaboAddWrapper">
+                <span>{{$t('자보 추가')}}</span>
+                <v-icon class="material-icons icon-big">add_circle</v-icon>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </v-form>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
-
 export default {
-  data () {
+  data() {
     return {
       name: "",
       selectedcategory: "",
-      categoryList: [
-        "리크루팅",
-        "퍼포먼스",
-        "대회",
-        "페어",
-        "강의",
-        "전시"
-      ],
       multipleDays: false,
       participateMethods: [
-        "자보에서 신청", "현장 접수", "외부 링크를 통한 신청"
+        "자보에서 신청",
+        "현장 접수",
+        "외부 링크를 통한 신청"
       ],
       selectedMethod: "",
+      eventDate: "",
+      multiEventDates: [],
       paymentRequired: false,
       explanation: "",
-      participateMembers: 0
-    }
+      participateMembers: 0,
+      introduction: ``
+    };
   },
   computed: {
-    loggedIn () {
-      return this.$store.getters.loggedInState
+    loggedIn() {
+      return this.$store.getters.loggedInState;
+    },
+    multipleDaysString() {
+      return this.multipleDays ? "여러 날" : "하루";
+    },
+    today() {
+      var day = new Date();
+      var dd = day.getDate() + "";
+      if (dd.length < 2) {
+        dd = "0" + dd;
+      }
+      var mm = day.getMonth() + 1 + "";
+      if (mm.length < 2) {
+        mm = "0" + mm;
+      }
+      var yyyy = day.getFullYear();
+      return yyyy + "-" + mm + "-" + dd;
     }
   },
-  beforeDestroy () {
-    console.log(this.name, this.selectedcategory, this.multipleDays, this.selectedMethod, this.paymentRequired, this.participateMembers)
+  created() {
+    var map = new naver.maps.Map(document.getElementById("naverMap"));
+    console.log("hell");
   }
 };
 </script>
 
 <style scoped>
 .zaboUpload {
-  position: absolute;
-  top: 90px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+  width: 70%;
+  margin-left: 15%;
 }
 .warning {
   font-size: 100px;
 }
 .required {
-  width: 0.5em;
-  height: 0.5em;
+  width: 5px;
+  height: 5px;
   background-color: #e52f2f;
   border-radius: 50%;
-  margin-left: 0.25em;
-  margin-right: 0.25em;
+  margin-left: 10px;
+  margin-right: 10px;
 }
-.mainWrapper {
-  display: flex;
-  width: 65%;
-  min-width: 344px;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: flex-start;
+
+@media screen and (max-width: 1599px) {
+  .mainWrapper {
+    display: relative;
+  }
+  .column {
+    margin: 0 auto;
+  }
 }
-.column {
-  flex: 1;
-  /* padding: 0 3%; */
-  position: relative;
-  min-height: 614px;
-  margin-right: 89px;
+
+@media screen and (min-width: 1700px) {
+  .mainWrapper {
+    display: flex;
+    min-width: 344px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .column {
+    flex: 1;
+    position: relative;
+    min-height: 614px;
+    margin-right: 89px;
+  }
 }
+
 .column:last-child {
   flex: 1.2;
   margin-right: 0;
 }
-.googleAPI {
-  width: 100%;
-  height: 172px;
-}
+
 .formWrapper {
   width: 100%;
   height: 100%;
@@ -181,7 +232,7 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 2em;
+  margin-top: 15px;
 }
 .categoriesWrapper {
   display: flex;
@@ -190,17 +241,7 @@ export default {
   flex-wrap: wrap;
   align-items: flex-start;
 }
-.categoryRadio {
-  width: 0.75em;
-  height: 0.75em;
-  margin-right: 0.25em;
-  margin-bottom: 0.75em;
-}
-.categoryLabel {
-  font-size: 1em;
-  margin-right: 0.25em;
-  margin-bottom: 0.75em;
-}
+
 .scheduleWrapper {
   width: 100%;
   height: 4em;
@@ -216,9 +257,7 @@ export default {
 .scheduleWrapper:hover {
   background-color: #e9e9e9;
 }
-/* .multipleDays {
 
-} */
 .material-icons {
   color: #12397d;
   cursor: pointer;
@@ -235,10 +274,11 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  margin-bottom: 45px;
 }
 .heading {
-  font-size: 2em;
-  font-weight: 700;
+  font-size: 22pt;
+  font-weight: 900;
 }
 .explanationWrapper {
   margin-left: 1.5em;
@@ -250,13 +290,23 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 1em;
-  font-size: 1em;
+  margin-bottom: 9px;
+  font-size: 15pt;
 }
 .font-light {
   color: #b8b8b8;
-  font-size: 0.75em;
+  font-size: 10pt;
+  margin-right: 10px;
 }
+
+.label-text {
+  color: #b8b8b8;
+  font-size: 10pt;
+  margin-right: 10px;
+  float: right;
+  margin-top: 27px;
+}
+
 .topicWrapper {
   flex: 1;
   display: flex;
@@ -271,6 +321,7 @@ export default {
   color: #b6b6b6;
   font-size: 0.75em;
 }
+
 .textarea {
   width: 100%;
   min-height: 10em;
@@ -300,11 +351,8 @@ export default {
 }
 .zaboAddWrapper {
   width: 100%;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  /* position: absolute; */
+  height: 700px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -324,5 +372,29 @@ export default {
 }
 option {
   cursor: pointer;
+}
+
+.multi-days {
+  width: 100%;
+  height: 100%;
+  background-color: #f6f6f6;
+}
+
+.one-day {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  width: 100%;
+  padding-top: 7px;
+  height: 65px;
+  background-color: #f6f6f6;
+  margin-top: -15px;
+}
+
+.one-timeslot {
+  width: 90%;
+  height: 40px;
+  border-radius: 10px;
+  background-color: white;
 }
 </style>

@@ -68,12 +68,7 @@ const actions = {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token")
       },
-      data: {
-        first_name: payload[0],
-        last_name: payload[1],
-        nickName: payload[2],
-        phone: payload[3]
-      }
+      data: payload
     }).then(function(response) {
       axios("/users/myInfo", {
         method: "GET",

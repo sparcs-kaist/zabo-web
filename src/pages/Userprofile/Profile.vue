@@ -29,7 +29,7 @@
 <script>
 export default {
   name: "Profile",
-  props: ["valid", "first", "last"],
+  props: ["valid", "first", "last", "image"],
   data() {
     return {
       edit: "편집",
@@ -72,15 +72,28 @@ export default {
         this.$emit("editmode");
         this.edit = "저장";
       } else if (this.edit === "저장") {
-        var payload = [
-          this.first,
-          this.last,
-          this.new_nick_name,
-          this.new_phone
-        ];
-        this.$store.dispatch("setMyInfo", payload);
-        this.$emit("editmode");
-        this.edit = "편집";
+        if ((this.image = null)) {
+          var payload = {
+            first_name: this.first,
+            last_name: this.last,
+            nick_name: this.new_nick_name,
+            phone: this.new_phone
+          };
+          this.$store.dispatch("setMyInfo", payload);
+          this.$emit("editmode");
+          this.edit = "편집";
+        } else {
+          var payload = {
+            first_name: this.first,
+            last_name: this.last,
+            nick_name: this.new_nick_name,
+            phone: this.new_phone,
+            profile: this.image
+          };
+          this.$store.dispatch("setMyInfo", payload);
+          this.$emit("editmode");
+          this.edit = "편집";
+        }
       }
     }
   }

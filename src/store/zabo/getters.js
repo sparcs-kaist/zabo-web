@@ -37,6 +37,9 @@ const getters = {
   getLastName(state) {
     return state.currentUser.last_name;
   },
+  getProfileImagesource(state) {
+    return state.currentUser.profile_image;
+  },
   loggedInState(state) {
     return state.loggedInState;
   },
