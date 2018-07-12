@@ -397,7 +397,7 @@ export default {
 
 .zaboAdded {
   width: 430px;
-  min-height: 729px;
+  /* min-height: 729px; */
   height: 100%;
   display: flex;
   flex-direction: column;
