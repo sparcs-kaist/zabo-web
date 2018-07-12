@@ -9,63 +9,65 @@
   </div> -->
   <div class="main">
     <div class="header">
-      <div v-show="depth === 1" class="tag">ㄴ</div>
       <div class="pic"></div>
       <div class="name">
-        {{ author }}
+        {{ author.nickName }}
       </div>
     </div>
-    <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
+    <div class="body">
       <div v-if="isLong() && !seeMore">
         {{ shortenedComment }}
         <span class="more" @click="seeMore = true">더 보기</span>
       </div>
       <div v-else>{{ content }}</div>
     </div>
-    <div v-show="depth === 0">
+    <div>
       <input-field class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
       </input-field>
     </div>
-    <comment-box class="reply-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
-    </comment-box>
+    <re-comment-box class="recomment-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
+    </re-comment-box>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import InputField from './InputField';
+import ReCommentBox from './ReCommentBox';
 
 export default {
   components: {
     InputField,
+    ReCommentBox
   },
   props: ['author', 'comment_id', 'content', 'depth', 'replies'],
   name: 'comment-box',
-  data() {
+  data () {
     return {
       newReply: '',
       seeMore: false,
     };
   },
   methods: {
-    isLong() {
+    isLong () {
       return this.content.length > 200;
     },
-    onSubmitReply() {
+    onSubmitReply () {
       axios({
         method: 'post',
-        url: 'http://localhost:12345/api/recomments/',
-        auth: {
-          username: 'jidan@example.com',
-          password: 'q1234321',
-        },
+        url: 'http://localhost:8000/api/recomments/',
         data: {
           content: this.newReply,
           comment: this.comment_id,
         },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem('token')
+        }
       })
         .then((response) => {
           // eslint-disable-next-line
+          console.log('what!')
           console.log(response);
           this.replies.push(response.data);
         })
@@ -74,9 +76,30 @@ export default {
           console.log(error);
         });
     },
+    // idToName (user_id) {
+    //   axios({
+    //     method: 'get',
+    //     url: `http://localhost:8000/api/users/${user_id}`,
+    //     // data: {
+    //     //   content: this.newReply,
+    //     //   comment: this.comment_id,
+    //     // },
+    //     headers: {
+    //       // "Content-Type": "application/json",
+    //       Authorization: localStorage.getItem('token')
+    //     }
+    //   })
+    //     .then((response) => {
+    //       console.log(response);
+    //       return response.data
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
   },
   computed: {
-    shortenedComment() {
+    shortenedComment () {
       return `${this.content.substring(0, 200)}...`;
     },
   },
@@ -117,8 +140,8 @@ export default {
   margin-right: 10px;
   width: 30px;
 }
-.reply-box {
-  transform: translate(30px);
+.recomment-box {
+  /* transform: translate(30px); */
 }
 .tag {
   color: white;
