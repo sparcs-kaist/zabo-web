@@ -136,8 +136,12 @@ export default {
   width: 183px;
   height: 286px;
   margin-bottom: 0.75em;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24), 0px 5px 10px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24);
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.zaboImage:hover {
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.16), 0px 4px 10px rgba(0, 0, 0, 0.24);
 }
 .zaboTitle {
   font-size: 1.25em;
