@@ -129,8 +129,12 @@
             </div>
           </div>
         </div>
+        <div class="upload_submit">
+          upload
+        </div>
       </v-form>
     </div>
+    <div style="height: 78px"/>
   </v-app>
 </template>
 
@@ -414,5 +418,12 @@ option {
   height: 40px;
   border-radius: 10px;
   background-color: white;
+}
+
+.upload_submit {
+  width: 300px;
+  height: 40px;
+  background-color: #12397d;
+  color: white;
 }
 </style>
