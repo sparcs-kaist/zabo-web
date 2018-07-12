@@ -13,13 +13,13 @@
     <nav class="horizontalNavButton">
       <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
     </nav>
-    <carousel-3d :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
-      <slide v-for="i in 5" :key="i-1" :index="i-1">
-        <div class="posterWrapper" :class="'slide'+i">
+    <carousel-3d :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
+      <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
+        <div >
         </div>
       </slide>
     </carousel-3d>
-    <carousel-3d ref="bull" :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
+    <carousel-3d ref="bull" :inverseScaling="180"  :display="5" :space="120" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
           <div @click="zaboDetail(zabo.id, zabo.founder.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
@@ -33,9 +33,9 @@
         </div>
       </slide>
     </carousel-3d>
-    <carousel-3d :inverseScaling="-40" :display="5" :space="50" :animationSpeed="300" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
-      <slide v-for="i in 5" :key="i-1" :index="i-1">
-        <div class="posterWrapper" :class="'slide'+i">
+    <carousel-3d :inverseScaling="-40" :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
+      <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
+        <div >
         </div>
       </slide>
     </carousel-3d>
@@ -54,6 +54,23 @@
 <script>
 import { Carousel3d, Slide } from 'vue-carousel-3d';
 import ZaboDetailModal from '@/components/ZaboDetailModal';
+
+function carouselCssControler () {
+  for (let c = 0; c < document.getElementsByClassName('carousel-3d-container')[1].childNodes[0].childNodes.length; c++) {
+    document.getElementsByClassName('carousel-3d-container')[1].childNodes[0].childNodes[c].style['backgroundColor'] = 'transparent'
+    document.getElementsByClassName('carousel-3d-container')[1].childNodes[0].childNodes[c].style['border'] = 'none'
+  }
+  for (let f = 0; f < 3; f++) {
+    document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[f].style['border'] = 'none'
+    document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[f].style['border'] = 'none'
+  }
+  document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[0].style['backgroundColor'] = '#f6f6f6'
+  document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[0].style['backgroundColor'] = '#f6f6f6'
+  document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[1].style['backgroundColor'] = '#ececec'
+  document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[1].style['backgroundColor'] = '#ececec'
+  document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[2].style['backgroundColor'] = '#ececec'
+  document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[2].style['backgroundColor'] = '#ececec'
+}
 
 export default {
   data () {
@@ -83,9 +100,14 @@ export default {
     this.getWindowWidth();
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
+      carouselCssControler();
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
-        setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+        carouselCssControler();
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'))
+          carouselCssControler();
+        }, 1000)
       }, 1000)
     }, 1000);
   },
@@ -119,8 +141,10 @@ export default {
       })
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
+        carouselCssControler();
         setTimeout(() => {
           window.dispatchEvent(new Event('resize'))
+          carouselCssControler();
           setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
         }, 1000)
       }, 1000)
@@ -142,8 +166,10 @@ export default {
       })
       setTimeout(function () {
         window.dispatchEvent(new Event('resize'));
+        carouselCssControler();
         setTimeout(() => {
           window.dispatchEvent(new Event('resize'))
+          carouselCssControler();
           setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
         }, 1000)
       }, 1000)
@@ -200,7 +226,7 @@ export default {
       }
     },
     zaboesExist () {
-      if (this.zaboes.length > 1) {
+      if (this.zaboes.length >= 1) {
         return true
       } else {
         return false
@@ -330,6 +356,7 @@ export default {
   flex-direction: column;
   opacity: 0;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 .posterDescriptionWrapper:hover {
   opacity: 1;
@@ -350,6 +377,8 @@ export default {
   position: absolute;
   width: 464px;
   height: 298px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5), 0px 3px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
 .carouselWrapper {
@@ -382,6 +411,12 @@ export default {
   width: 62px;
   height: auto;
   cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.47);
+  transition: all 0.2s ease;
+}
+.keyboard_arrow_leftright:hover {
+  box-shadow: 0px 9px 17px rgba(0, 0, 0, 0.6);
 }
 .horizontalNavButton {
   z-index: 200;
