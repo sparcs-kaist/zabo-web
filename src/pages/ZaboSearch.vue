@@ -37,50 +37,51 @@ export default {
 </script>
 <style scoped lang=''>
 .totalWrapper {
-  z-index: 800;
   width: 100%;
   position: absolute;
   top: 78px;
   left: 0;
   bottom: 0;
   right: 0;
-  padding-top: 20px;
+  padding-top: 27px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
 .header {
-  font-size: 2rem;
-  width: 80%;
+  font-size: 1.375em;
+  font-weight: 900;
+  width: 75%;
   min-width: 900px;
   text-align: left;
   margin-bottom: 20px;
+  padding-left: 9px;
 }
 .zaboListWrapper {
-  width: 80%;
+  width: 75%;
   min-width: 400px;
-  min-height: 800px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
 }
 .zaboWrapper {
   display: flex;
+  min-width: 201px;
+  height: 100%;
   flex-direction: column;
   align-items: center;
-  margin-right: 1em;
-}
-.zaboWrapper:last-child {
-  margin-right: 0;
+  margin-bottom: 2em;
 }
 .zaboImage {
-  width: 200px;
-  height: 300px;
+  width: 183px;
+  height: 286px;
   margin-bottom: 0.75em;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24), 0px 5px 10px rgba(0, 0, 0, 0.16);
 }
 .zaboTitle {
   font-size: 1.25em;
+  font-weight: 900;
 }
 </style>
