@@ -1,7 +1,6 @@
 <template>
-  <v-app style="background-color: white; padding-top: 0px;">
+  <v-app style="width: 100%; height: 100%; background-color: white; padding-top: 0px;">
     <div class="zaboUpload">
-      <div style="height: 90px;"/>
       <div class="headingWrapper">
         <span class="heading">
           {{$t('자보 올리기')}}
@@ -12,7 +11,7 @@
         </div>
       </div>
       <div v-if="!loggedIn" class="warning">You're not logged In!</div>
-      <v-form v-else>
+      <v-form class="totalFormWrapper" v-else>
         <div class="mainWrapper">
           <div class="column">
             <div class="formWrapper">
@@ -32,18 +31,18 @@
               <span class="topic">{{$t('카테고리')}}
                 <div class="required"></div>
               </span>
-                <v-radio-group v-model="selectedcategory" style="width: 100%;">
-                  <div style="display: flex;">
-                    <v-radio color="blue" label="리크루팅" value="recruiting" style="flex: 1;"></v-radio>
-                    <v-radio color="blue" label="공연" value="performance" style="flex: 1;"></v-radio>
-                    <v-radio color="blue" label="대회" value="competition" style="flex: 1;"></v-radio>
-                  </div>
-                  <div style="display: flex;">
-                    <v-radio color="blue" label="세미나" value="seminar" style="flex: 1;"></v-radio>
-                    <v-radio color="blue" label="설명회" value="information" style="flex: 1;"></v-radio>
-                    <v-radio color="blue" label="전시회" value="expo" style="flex: 1;"></v-radio>
-                  </div>
-                </v-radio-group>
+              <v-radio-group v-model="selectedcategory" style="width: 100%;">
+                <div style="display: flex;">
+                  <v-radio color="blue" label="리크루팅" value="recruiting" style="flex: 1;"></v-radio>
+                  <v-radio color="blue" label="공연" value="performance" style="flex: 1;"></v-radio>
+                  <v-radio color="blue" label="대회" value="competition" style="flex: 1;"></v-radio>
+                </div>
+                <div style="display: flex;">
+                  <v-radio color="blue" label="세미나" value="seminar" style="flex: 1;"></v-radio>
+                  <v-radio color="blue" label="설명회" value="information" style="flex: 1;"></v-radio>
+                  <v-radio color="blue" label="전시회" value="expo" style="flex: 1;"></v-radio>
+                </div>
+              </v-radio-group>
             </div>
             <div class="formWrapper">
               <span class="topic">
@@ -64,20 +63,9 @@
                 hey
               </div>
               <div v-else class="one-day">
-                 <v-flex xs11>
-                  <v-menu
-                    transition="slide-y-transition"
-                    offset-y
-                    full-width
-                    min-width="290px">
-                    <v-text-field
-                      slot="activator"
-                      solo
-                      label="날짜 선택..."
-                      v-model="eventDate"
-                      readonly
-                      prepend-icon="event"
-                    ></v-text-field>
+                <v-flex xs11>
+                  <v-menu transition="slide-y-transition" offset-y full-width min-width="290px">
+                    <v-text-field slot="activator" solo label="날짜 선택..." v-model="eventDate" readonly prepend-icon="event"></v-text-field>
                     <v-date-picker v-model="eventDate" no-title scrollable :min="today">
                     </v-date-picker>
                   </v-menu>
@@ -120,27 +108,35 @@
                 <v-icon class="material-icons icon-big" @click="$refs.posterInput.click()">add_circle</v-icon>
                 <input style="display:none" type="file" @change="posteradded" ref="posterInput">
               </div>
-              <div v-else>
-                <img :src="imagePreviewUrls[0]" style="width: 100%;height: 100%">
-                <div @click="deletePoster" style="width: 100px; height:100px;">
-                  delete
+              <div class="zaboAdded" v-else>
+                <img class="zaboPoster" :src="imagePreviewUrls[0]">
+                <div class="zaboSmallPosterWrapper">
+                  <div class="zaboSmallPoster"></div>
+                  <div class="zaboSmallPoster"></div>
+                  <div class="zaboSmallPoster"></div>
+                  <div class="zaboSmallPoster"></div>
                 </div>
+                <!-- <div @click="deletePoster" style="width: 100px; height:100px;">
+                  delete
+                </div> -->
               </div>
             </div>
           </div>
         </div>
-        <div class="upload_submit">
-          upload
-        </div>
+        <button class="cancelButton">
+          {{$t('취소')}}
+        </button>
+        <button class="finalButton">
+          {{$t('자보 올리기')}}
+        </button>
       </v-form>
     </div>
-    <div style="height: 78px"/>
   </v-app>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       name: "",
       selectedcategory: "",
@@ -163,23 +159,23 @@ export default {
     };
   },
   methods: {
-    posteradded(event) {
+    posteradded (event) {
       this.zaboPoster = event.target.files[0];
       this.imagePreviewUrls.push(URL.createObjectURL(this.zaboPoster));
     },
-    deletePoster() {
+    deletePoster () {
       this.zaboPoster = [];
       this.imagePreviewUrls = [];
     }
   },
   computed: {
-    loggedIn() {
+    loggedIn () {
       return this.$store.getters.loggedInState;
     },
-    multipleDaysString() {
+    multipleDaysString () {
       return this.multipleDays ? "여러 날" : "하루";
     },
-    today() {
+    today () {
       var day = new Date();
       var dd = day.getDate() + "";
       if (dd.length < 2) {
@@ -193,7 +189,7 @@ export default {
       return yyyy + "-" + mm + "-" + dd;
     }
   },
-  created() {
+  created () {
     var map = new naver.maps.Map(document.getElementById("naverMap"));
     console.log("hell");
   }
@@ -202,8 +198,13 @@ export default {
 
 <style scoped>
 .zaboUpload {
+  margin: 78px auto 68px auto;
   width: 70%;
-  margin-left: 15%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 .warning {
   font-size: 100px;
@@ -223,31 +224,41 @@ export default {
   }
   .column {
     margin-bottom: 40px;
+    height: 100%;
   }
 }
 
 @media screen and (min-width: 1600px) {
   .mainWrapper {
-    display: flex;
     min-width: 344px;
-    margin: 0 auto;
+    display: flex;
     justify-content: center;
     align-items: flex-start;
+    margin-bottom: 50px;
   }
   .column {
     flex: 1;
     position: relative;
     min-height: 614px;
     margin-right: 89px;
+    height: 100%;
+  }
+  .column:last-child {
+    margin-right: 0px;
   }
 }
 
+.totalFormWrapper {
+  width: 100%;
+  height: 100%;
+}
+
 .column:last-child {
-  flex: 1.2;
   margin-right: 0;
 }
 
 .formWrapper {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -296,7 +307,7 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-bottom: 45px;
+  margin-bottom: 20px;
 }
 .heading {
   font-size: 22pt;
@@ -372,9 +383,8 @@ export default {
   background-color: #e9e9e9;
 }
 .zaboAddWrapper {
-  width: 100%;
-  /* position: absolute; */
-  height: 700px;
+  width: 400px;
+  height: 614px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -384,6 +394,49 @@ export default {
 .zaboAddWrapper:hover {
   background-color: #e9e9e9;
 }
+
+.zaboAdded {
+  width: 430px;
+  min-height: 729px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.zaboPoster {
+  width: 100%;
+  height: auto;
+  margin-bottom: 11px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+.zaboPoster:hover {
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.zaboSmallPosterWrapper {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.zaboSmallPoster {
+  width: 100px;
+  height: 100px;
+  background-color: #777777;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+.zaboSmallPoster:hover {
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
 .selectTag {
   width: 100%;
   font-size: 1em;
@@ -404,12 +457,12 @@ option {
 
 .one-day {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: baseline;
   width: 100%;
   padding-top: 7px;
+  padding-left: 5px;
   height: 65px;
-  background-color: #f6f6f6;
   margin-top: -15px;
 }
 
@@ -420,10 +473,25 @@ option {
   background-color: white;
 }
 
-.upload_submit {
-  width: 300px;
-  height: 40px;
+.finalButton {
+  width: 332px;
+  height: 32px;
   background-color: #12397d;
   color: white;
+  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  font-weight: 700;
+}
+.cancelButton {
+  width: 232px;
+  height: 32px;
+  margin-left: 11px;
+  background-color: white;
+  color: #777777;
+  float: right;
+  border: 1px solid #777777;
 }
 </style>

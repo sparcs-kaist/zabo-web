@@ -1,7 +1,7 @@
 <template lang=''>
 <div id="searchBar">
   <input type="text" class="searchInput" @keyup.enter="onEnter" v-model="computedSearchValue"></input>
-  <router-link to="/search"><v-icon class="searchIcon">search</v-icon></router-link>
+  <v-icon @click="onEnter" class="searchIcon">search</v-icon>
 </div>
 </template>
 <script>
@@ -16,9 +16,8 @@ export default {
   },
   methods: {
     onEnter () {
-      console.log(this.computedSearchValue)
       this.$emit('submitValue', this.computedSearchValue)
-      // this.computedSearchValue = ""
+      this.computedSearchValue = ""
     }
   }
 }

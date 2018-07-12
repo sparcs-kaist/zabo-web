@@ -48,7 +48,7 @@ export default {
   components: {
     Search
   },
-  data() {
+  data () {
     return {
       lang: "kr",
       searchValue: ""
@@ -58,13 +58,13 @@ export default {
     loggedInState: Boolean
   },
   methods: {
-    login: function() {
+    login: function () {
       this.$emit("logged-in");
     },
-    logout: function() {
+    logout: function () {
       this.$store.commit("LOGOUT");
     },
-    setLang: function() {
+    setLang: function () {
       if (this.lang === "kr") {
         this.$i18n.set("en");
         this.lang = "en";
@@ -73,13 +73,13 @@ export default {
         this.lang = "kr";
       }
     },
-    onSearch(searchTerm) {
-      console.log(searchTerm);
-      this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
+    onSearch (searchTerm) {
+      this.$router.push({ name: 'ZaboSearch', params: { search: searchTerm } })
+      this.searchTerm = ""
     }
   },
   computed: {
-    computedLang: function() {
+    computedLang: function () {
       if (this.lang === "kr") {
         return "en";
       } else {
