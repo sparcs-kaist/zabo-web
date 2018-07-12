@@ -79,8 +79,8 @@ export default {
       }
     },
     onSearch (searchTerm) {
-      console.log(searchTerm)
       this.$router.push({ name: 'ZaboSearch', params: { search: searchTerm } })
+      this.searchTerm = ""
     }
   },
   computed: {

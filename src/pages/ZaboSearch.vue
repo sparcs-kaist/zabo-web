@@ -1,8 +1,14 @@
 <template lang=''>
 <div class="totalWrapper">
   <span class="header">{{$t("검색 결과")}}</span>
-  <div class="zaboListWrapper" v-if="!isLoading">
-    <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList">
+  <v-progress-circular
+      v-if="computedLoading"
+      indeterminate
+      color="primary"
+      class="zaboListWrapper"
+    ></v-progress-circular>
+  <div class="zaboListWrapper" v-else>
+    <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in changedZaboList">
       <img :src="zabo.posters[0].image" class="zaboImage">
       <span class="zaboTitle">{{zabo.title}}</span>
     </div>
@@ -14,10 +20,9 @@ import axios from '@/axios-auth';
 
 export default {
   created () {
-    console.log(this.$route.params.search)
     axios({
       methods: 'get',
-      url: `/zaboes?search=${this.$route.params.search}`,
+      url: `/zaboes?search=${this.searchValue}`,
       headers: {
         Authorization: localStorage.getItem('token')
       }
@@ -31,6 +36,33 @@ export default {
     return {
       zaboList: [],
       isLoading: true
+    }
+  },
+  computed: {
+    searchValue () {
+      return this.$route.params.search
+    },
+    changedZaboList () {
+      return this.zaboList
+    },
+    computedLoading () {
+      return this.isLoading
+    }
+  },
+  watch: {
+    '$route.params.search': function (search) {
+      this.isLoading = true;
+      axios({
+        methods: 'get',
+        url: `/zaboes?search=${this.searchValue}`,
+        headers: {
+          Authorization: localStorage.getItem('token')
+        }
+      }).then(response => response.data.data)
+        .then(data => {
+          this.zaboList = data;
+          this.isLoading = false;
+        })
     }
   }
 }
