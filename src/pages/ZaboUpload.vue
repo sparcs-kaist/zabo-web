@@ -103,22 +103,35 @@
           </div>
           <div class="column">
             <div class="formWrapper">
-              <div v-if="imagePreviewUrls.length == 0" class="zaboAddWrapper">
-                <span>{{$t('자보 추가')}}</span>
-                <v-icon class="material-icons icon-big" @click="$refs.posterInput.click()">add_circle</v-icon>
-                <input style="display:none" type="file" @change="posteradded" ref="posterInput">
-              </div>
-              <div class="zaboAdded" v-else>
+              <div v-if="posterBool[0]" class="zaboAdded">
                 <img class="zaboPoster" :src="imagePreviewUrls[0]">
                 <div class="zaboSmallPosterWrapper">
-                  <div class="zaboSmallPoster"></div>
-                  <div class="zaboSmallPoster"></div>
-                  <div class="zaboSmallPoster"></div>
-                  <div class="zaboSmallPoster"></div>
+                  <img v-if="posterBool[1]" class="zaboSmallPoster" :src="imagePreviewUrls[1]">
+                  <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputA.click()">
+                    <v-icon class="material-icons icon-big">add_circle</v-icon>
+                    <input style="display:none" type="file" @change="posteradd(1, $event)" ref="posterInputA">
+                  </div>
+                  <img v-if="posterBool[2]" class="zaboSmallPoster" :src="imagePreviewUrls[2]">
+                  <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputB.click()">
+                    <v-icon class="material-icons icon-big">add_circle</v-icon>
+                    <input style="display:none" type="file" @change="posteradd(2, $event)" ref="posterInputB">
+                  </div>
+                  <img v-if="posterBool[3]" class="zaboSmallPoster" :src="imagePreviewUrls[3]">
+                  <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputC.click()">
+                    <v-icon class="material-icons icon-big">add_circle</v-icon>
+                    <input style="display:none" type="file" @change="posteradd(3, $event)" ref="posterInputC">
+                  </div>
+                  <img v-if="posterBool[4]" class="zaboSmallPoster" :src="imagePreviewUrls[4]">
+                  <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputD.click()">
+                    <v-icon class="material-icons icon-big">add_circle</v-icon>
+                    <input style="display:none" type="file" @change="posteradd(4, $event)" ref="posterInputD">
+                  </div>
                 </div>
-                <!-- <div @click="deletePoster" style="width: 100px; height:100px;">
-                  delete
-                </div> -->
+              </div>
+              <div v-else class="zaboAddWrapper" @click="$refs.posterInput.click()">
+                <span>{{$t('자보 추가')}}</span>
+                <v-icon class="material-icons icon-big">add_circle</v-icon>
+                <input style="display:none" type="file" @change="posteradd(0, $event)" ref="posterInput">
               </div>
             </div>
           </div>
@@ -155,13 +168,21 @@ export default {
       participateMembers: 0,
       introduction: ``,
       zaboPoster: [],
-      imagePreviewUrls: []
+      imagePreviewUrls: {
+        0: "none",
+        1: "none",
+        2: "none",
+        3: "none",
+        4: "none",
+      },
     };
   },
   methods: {
-    posteradded (event) {
-      this.zaboPoster = event.target.files[0];
-      this.imagePreviewUrls.push(URL.createObjectURL(this.zaboPoster));
+    posteradd (num, event) {
+      const url = URL.createObjectURL(event.target.files[0]);
+      console.log(url, num);
+      this.imagePreviewUrls[num] = url;
+      console.log(this.imagePreviewUrls[num] !== "none");
     },
     deletePoster () {
       this.zaboPoster = [];
@@ -187,7 +208,20 @@ export default {
       }
       var yyyy = day.getFullYear();
       return yyyy + "-" + mm + "-" + dd;
-    }
+    },
+    posterBool () {
+      let bull = {
+        0: false,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+      };
+      for (let p = 0; p < 5; p++) {
+        bull[p] = this.imagePreviewUrls[p] != "none"
+      }
+      return bull;
+    },
   },
   created () {
     var map = new naver.maps.Map(document.getElementById("naverMap"));
@@ -383,13 +417,14 @@ export default {
   background-color: #e9e9e9;
 }
 .zaboAddWrapper {
-  width: 400px;
+  width: 430px;
   height: 614px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f6f6f6;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 .zaboAddWrapper:hover {
   background-color: #e9e9e9;
@@ -407,7 +442,7 @@ export default {
 
 .zaboPoster {
   width: 100%;
-  height: auto;
+  height: 614px;
   margin-bottom: 11px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
   cursor: pointer;
@@ -418,7 +453,7 @@ export default {
 }
 
 .zaboSmallPosterWrapper {
-  width: 100%;
+  width: 430px;
   height: 100px;
   display: flex;
   justify-content: space-between;
@@ -433,7 +468,24 @@ export default {
   cursor: pointer;
   transition: all 0.2s ease-in;
 }
+
 .zaboSmallPoster:hover {
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.smallZaboAddWrapper {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ececec;
+  cursor: pointer;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
+  transition: all 0.2s ease-in;
+  border-radius: 3px;
+}
+.smallZaboAddWrapper:hover {
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
