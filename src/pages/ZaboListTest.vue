@@ -15,11 +15,9 @@
     </nav>
     <carousel-3d :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
-        <div >
-        </div>
       </slide>
     </carousel-3d>
-    <carousel-3d ref="bull" :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
+    <carousel-3d ref="bull" :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
           <div @click="zaboDetail(zabo.id, zabo.founder.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
@@ -33,10 +31,8 @@
         </div>
       </slide>
     </carousel-3d>
-    <carousel-3d :inverseScaling="-40" :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
+    <carousel-3d :inverseScaling="-50" :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
-        <div >
-        </div>
       </slide>
     </carousel-3d>
     <nav class="horizontalNavButton">
@@ -377,7 +373,7 @@ export default {
   position: absolute;
   width: 464px;
   height: 298px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5), 0px 3px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
 

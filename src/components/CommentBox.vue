@@ -110,9 +110,6 @@ export default {
   margin-right: 10px;
   width: 30px;
 }
-.recomment-box {
-  /* transform: translate(30px); */
-}
 .tag {
   color: white;
   font-size: 24px;
