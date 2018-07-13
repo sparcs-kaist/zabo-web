@@ -9,28 +9,51 @@
         취소
       </v-btn>
     </div>
-    <p v-if = "edit === '편집'">
-      {{ phone }}
-      <br>
-      {{ nick_name }}
-      <br>
-      {{ gender }}
-    </p>
-    <v-layout style="width: 100%; max-width: 900px" row wrap v-if = "edit === '저장'"> 
+    <div style="width: 100%; max-width: 900px; display: flex; margin-bottom: 10px">
+      <span class="sub-header">
+        기본 정보
+      </span>
+    </div>
+    <div class="small-col" style="margin-top: 10px">
+      <div style="width: 100%; dispaly: flex">
+        <div style="flex: 1; text-align: left;"v-if = "edit === '편집'">
+          <span class="info-label">닉네임</span>
+          <div class="data-slot">{{ nick_name }}</div>
+          <div style="height: 20px;" />
+          <span class="info-label">전화번호</span>
+          <div class="data-slot">{{ phone }}</div>
+        </div>
+      </div>
+      <div class="small-col">
+        <div style="width: 100%; display: flex">
+          <div style="flex: 1; text-align: left;"v-if = "edit === '편집'">
+            <span class="info-label">성별</span>
+            <div class="data-slot">{{ gender }}</div>
+            <div style="height: 20px;"/>
+            <span class="info-label">이메일</span>
+            <div class="data-slot">{{ email }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <v-layout style="width: 100%; max-width: 900px; background-color: cyan; text-align: left" row wrap v-if = "edit === '저장'"> 
       <v-flex xs6>
         <v-form v-model = "valid">
-          <v-text-field label = "전화번호" v-model = "new_phone" style="width: 90%;">
+          <span class="info-label">닉네임</span>
+          <v-text-field v-model = "new_nick_name" style="width: 90%; margin-top: 9px;" solo clearable>
           </v-text-field>
-          <v-text-field label = "닉네임" v-model = "new_nick_name" style="width: 90%;">
+          <span class="info-label">전화번호</span></span>
+          <v-text-field v-model = "new_phone" style="width: 90%; margin-top: 9px;" solo clearable>
           </v-text-field>
-          <v-select :items="genders" v-model="dropdown_selected_gender" label="성별" style="width: 90%;" outline></v-select>
         </v-form>
       </v-flex>
       <v-flex xs6>
-        오른쪽
+        <v-form v-model = "valid">
+          <span class="info-label">성별</span>
+          <v-select :items="genders" v-model="dropdown_selected_gender" label="성별" style="width: 90%; margin-top: 9px;" solo></v-select>
+        </v-form>
       </v-flex>
     </v-layout>
-    {{ email }}
   </div>
 </v-app>
 </template>
@@ -172,5 +195,37 @@ export default {
   height: 40px;
   color: white;
   margin-left: -3px;
+}
+
+.sub-header {
+  font-family: Nanumsquare;
+  font-weight: 900;
+  font-size: 17pt;
+  position: relative;
+  margin-top: 22px;
+  margin-right: auto;
+  margin-left: -10px;
+}
+
+.small-col {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  /* margin-top: 30px; */
+}
+
+.info-label {
+  font-family: Nanumsquare;
+  font-size: 15pt;
+}
+
+.data-slot {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  width: 90%;
+  background-color: #f6f6f6;
+  height: 50px;
+  margin-top: 9px;
 }
 </style>
