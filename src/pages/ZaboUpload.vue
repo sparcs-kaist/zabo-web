@@ -12,138 +12,135 @@
       </div>
       <div v-if="!loggedIn" class="warning">You're not logged In!</div>
       <v-form class="totalFormWrapper" v-else>
-        <div class="mainWrapper">
-          <div class="column">
-            <div class="formWrapper">
-              <span class="topic">{{$t('자보 이름')}}
+        <div class="column">
+          <div class="formWrapper">
+            <span class="topic">{{$t('자보 이름')}}
+              <div class="required"></div>
+            </span>
+            <v-text-field v-model="name" label="입력..." single-line solo style="width: 100%;" clearable></v-text-field>
+          </div>
+          <div class="formWrapper">
+            <span class="topic">{{$t('장소')}}
+              <div class="required"></div>
+            </span>
+            <v-text-field v-model="location" solo label="입력..." style="width: 100%" clearable>
+            </v-text-field>
+          </div>
+          <div class="formWrapper">
+            <span class="topic">{{$t('카테고리')}}
+              <div class="required"></div>
+            </span>
+            <v-radio-group class="radioGroup" v-model="selectedcategory" style="width: 100%;">
+              <div style="display: flex;">
+                <v-radio color="blue" label="리크루팅" value="recruiting" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="공연" value="performance" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="대회" value="competition" style="flex: 1;"></v-radio>
+              </div>
+              <div style="display: flex;">
+                <v-radio color="blue" label="세미나" value="seminar" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="설명회" value="information" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="전시회" value="expo" style="flex: 1;"></v-radio>
+              </div>
+            </v-radio-group>
+          </div>
+          <div class="formWrapper">
+            <span class="topic">{{$t('참여 방법')}}
+              <div class="required"></div>
+            </span>
+            <v-select v-model="selectedMethod" :items="participateMethods" label="선택..." solo style="width: 100%;">
+            </v-select>
+          </div>
+          <div class="formWrapper">
+            <span class="topic">{{$t('참여 인원')}}</span>
+            <v-text-field v-model="participateMembers" type="number" label="입력..." solo style="width: 100%" clearable/>
+          </div>
+          <div class="formWrapper">
+            <span class="topic">
+              <div class="topicWrapper">
+                {{$t('결제 필요 여부')}}
+              </div>
+              <span class="font-light">필요하지 않음</span>
+              <div>
+                <v-switch v-model="paymentRequired" color="green" :value="false" disabled></v-switch>
+              </div>
+            </span>
+          </div>
+          <div class="formWrapper">
+            <span class="topic">
+              <div class="topicWrapper">
+                {{$t('일정')}}
                 <div class="required"></div>
-              </span>
-              <v-text-field v-model="name" label="입력..." single-line solo style="width: 100%;" clearable></v-text-field>
-            </div>
-            <div class="formWrapper">
-              <span class="topic">{{$t('장소')}}
-                <div class="required"></div>
-              </span>
-              <v-text-field v-model="location" solo label="입력..." style="width: 100%" clearable>
-              </v-text-field>
-            </div>
-            <div class="formWrapper">
-              <span class="topic">{{$t('카테고리')}}
-                <div class="required"></div>
-              </span>
-              <v-radio-group v-model="selectedcategory" style="width: 100%;">
-                <div style="display: flex;">
-                  <v-radio color="blue" label="리크루팅" value="recruiting" style="flex: 1;"></v-radio>
-                  <v-radio color="blue" label="공연" value="performance" style="flex: 1;"></v-radio>
-                  <v-radio color="blue" label="대회" value="competition" style="flex: 1;"></v-radio>
-                </div>
-                <div style="display: flex;">
-                  <v-radio color="blue" label="세미나" value="seminar" style="flex: 1;"></v-radio>
-                  <v-radio color="blue" label="설명회" value="information" style="flex: 1;"></v-radio>
-                  <v-radio color="blue" label="전시회" value="expo" style="flex: 1;"></v-radio>
-                </div>
-              </v-radio-group>
-            </div>
-            <div class="formWrapper">
-              <span class="topic">
-                <div class="topicWrapper">
-                  {{$t('일정')}}
-                  <div class="required"></div>
-                </div>
-                <div>
-                  <div style="float: right; height: 100%;">
-                    <v-switch v-model="multipleDays" color="green" :value="true" disabled></v-switch>
+              </div>
+            </span>
+            <div class="scheduleWrapper">
+              <div class="scheduleInputWrapper" v-if="!single">
+                <div class="singleScheduleWrapper" v-for="(schedule, index) in scheduleDates" :key="index">
+                  <div class="scheduleTimeWrapper">
+                    <div class="scheduleSingleTime">
+                      <span class="scheduleSpan">{{$t('시작 :')}}</span>
+                      <input type="datetime-local" class="scheduleStart" v-model="schedule.start_time" />
+                    </div>
+                    <div class="scheduleSingleTime">
+                      <span class="scheduleSpan">{{$t('종료 :')}}</span>
+                      <input type="datetime-local" class="scheduleEnd" v-model="schedule.end_time" />
+                    </div>
                   </div>
-                  <span class="label-text">
-                    {{ multipleDaysString }}
-                  </span>
+                  <input type="text" placeholder="제목을 입력해주세요." class="scheduleContent" v-model="schedule.content" />
+                  <v-icon class="cancelIcon">cancel</v-icon>
                 </div>
-              </span>
-              <div v-if="multipleDays" class="multi-days">
-                hey
               </div>
-              <div v-else class="one-day">
-                <v-flex xs11>
-                  <v-menu transition="slide-y-transition" offset-y full-width min-width="290px">
-                    <v-text-field slot="activator" solo label="날짜 선택..." v-model="eventDate" readonly prepend-icon="event"></v-text-field>
-                    <v-date-picker v-model="eventDate" no-title scrollable :min="today">
-                    </v-date-picker>
-                  </v-menu>
-                </v-flex>
-              </div>
+              <span v-else v-show="!scheduleAdding" class="smallSpan">{{$t('일정이 없습니다. 아래 버튼으로 추가하세요.')}}</span>
+              <v-icon @click="zaboScheduleAdd" class="plusIcon icon-small">add_circle</v-icon>
             </div>
           </div>
-          <div class="column">
-            <div class="formWrapper">
-              <span class="topic">{{$t('참여 방법')}}
-                <div class="required"></div>
-              </span>
-              <v-select v-model="selectedMethod" :items="participateMethods" label="선택..." solo style="width: 100%;">
-              </v-select>
-            </div>
-            <div class="formWrapper">
-              <span class="topic">
-                <div class="topicWrapper">
-                  {{$t('결제 필요 여부')}}
+          <div class="formWrapper">
+            <span class="topic">{{$t('자보 설명')}}</span>
+            <v-textarea style="width: 100%;" solo label="입력..." v-model="introduction"></v-textarea>
+          </div>
+        </div>
+        <div class="column">
+          <div class="formWrapper">
+            <div v-if="posterBool[0]" class="zaboAdded">
+              <img class="zaboPoster" :src="imagePreviewUrls[0]">
+              <div class="zaboSmallPosterWrapper">
+                <div v-if="posterBool[1]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[1]})`"></div>
+                <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputA.click()">
+                  <v-icon class="plusIcon icon-big">add_circle</v-icon>
+                  <input style="display:none" type="file" @change="posteradd(1, $event)" ref="posterInputA">
                 </div>
-                <span class="font-light">필요하지 않음</span>
-                <div>
-                  <v-switch v-model="paymentRequired" color="green" :value="false" disabled></v-switch>
+                <div v-if="posterBool[2]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[2]})`"></div>
+                <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputB.click()">
+                  <v-icon class="plusIcon icon-big">add_circle</v-icon>
+                  <input style="display:none" type="file" @change="posteradd(2, $event)" ref="posterInputB">
                 </div>
-              </span>
+                <div v-if="posterBool[3]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[3]})`"></div>
+                <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputC.click()">
+                  <v-icon class="plusIcon icon-big">add_circle</v-icon>
+                  <input style="display:none" type="file" @change="posteradd(3, $event)" ref="posterInputC">
+                </div>
+                <div v-if="posterBool[4]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[4]})`"></div>
+                <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputD.click()">
+                  <v-icon class="plusIcon icon-big">add_circle</v-icon>
+                  <input style="display:none" type="file" @change="posteradd(4, $event)" ref="posterInputD">
+                </div>
+              </div>
             </div>
-            <div class="formWrapper">
-              <span class="topic">{{$t('자보 설명')}}</span>
-              <v-textarea style="width: 100%;" solo label="입력..." v-model="introduction"></v-textarea>
-            </div>
-            <div class="formWrapper">
-              <span class="topic">{{$t('참여 인원')}}</span>
-              <v-text-field v-model="participateMembers" type="number" label="입력..." solo style="width: 100%" clearable/>
+            <div v-else class="zaboAddWrapper" @click="$refs.posterInput.click()">
+              <span>{{$t('자보 추가')}}</span>
+              <v-icon class="plusIcon icon-big">add_circle</v-icon>
+              <input style="display:none" type="file" @change="posteradd(0, $event)" ref="posterInput">
             </div>
           </div>
-          <div class="column">
-            <div class="formWrapper">
-              <div v-if="posterBool[0]" class="zaboAdded">
-                <img class="zaboPoster" :src="imagePreviewUrls[0]">
-                <div class="zaboSmallPosterWrapper">
-                  <img v-if="posterBool[1]" class="zaboSmallPoster" :src="imagePreviewUrls[1]">
-                  <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputA.click()">
-                    <v-icon class="material-icons icon-big">add_circle</v-icon>
-                    <input style="display:none" type="file" @change="posteradd(1, $event)" ref="posterInputA">
-                  </div>
-                  <img v-if="posterBool[2]" class="zaboSmallPoster" :src="imagePreviewUrls[2]">
-                  <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputB.click()">
-                    <v-icon class="material-icons icon-big">add_circle</v-icon>
-                    <input style="display:none" type="file" @change="posteradd(2, $event)" ref="posterInputB">
-                  </div>
-                  <img v-if="posterBool[3]" class="zaboSmallPoster" :src="imagePreviewUrls[3]">
-                  <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputC.click()">
-                    <v-icon class="material-icons icon-big">add_circle</v-icon>
-                    <input style="display:none" type="file" @change="posteradd(3, $event)" ref="posterInputC">
-                  </div>
-                  <img v-if="posterBool[4]" class="zaboSmallPoster" :src="imagePreviewUrls[4]">
-                  <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputD.click()">
-                    <v-icon class="material-icons icon-big">add_circle</v-icon>
-                    <input style="display:none" type="file" @change="posteradd(4, $event)" ref="posterInputD">
-                  </div>
-                </div>
-              </div>
-              <div v-else class="zaboAddWrapper" @click="$refs.posterInput.click()">
-                <span>{{$t('자보 추가')}}</span>
-                <v-icon class="material-icons icon-big">add_circle</v-icon>
-                <input style="display:none" type="file" @change="posteradd(0, $event)" ref="posterInput">
-              </div>
+          <div class="buttonWrapper">
+            <div @click="postPoster" class="finalButton">
+              {{$t('자보 올리기')}}
+            </div>
+            <div class="cancelButton">
+              {{$t('취소')}}
             </div>
           </div>
         </div>
-        <div class="buttonWrapper">
-          <div @click="postPoster" class="finalButton">
-            {{$t('자보 올리기')}}
-          </div>
-          <div class="cancelButton">
-            {{$t('취소')}}
-          </div>
-        </div>
+
       </v-form>
     </div>
   </v-app>
@@ -165,12 +162,11 @@ export default {
         "외부 링크를 통한 신청"
       ],
       selectedMethod: "",
-      eventDate: "",
-      multiEventDates: [],
+      scheduleDates: [],
       paymentRequired: false,
-      explanation: "",
       participateMembers: 0,
-      introduction: ``,
+      introduction: "",
+      zaboPosters: ["none", "none", "none", "none", "none"],
       imagePreviewUrls: {
         0: "none",
         1: "none",
@@ -178,6 +174,7 @@ export default {
         3: "none",
         4: "none",
       },
+      scheduleAdding: false
     };
   },
   created () {
@@ -187,7 +184,10 @@ export default {
   methods: {
     posteradd (num, event) {
       const url = URL.createObjectURL(event.target.files[0]);
+      const file = event.target.files[0];
+      console.log(event.target.files[0]);
       this.imagePreviewUrls[num] = url;
+      this.zaboPosters[num] = file;
     },
     deletePoster () {
       this.imagePreviewUrls = [];
@@ -218,12 +218,13 @@ export default {
 
       let uploadposters = [];
       for (let i = 0; i < 5; i++) {
-        if (this.imagePreviewUrls[i] != "none") {
-          uploadposters.push(this.imagePreviewUrls[i]);
+        if (this.zaboPosters[i] != "none") {
+          uploadposters.push(this.zaboPosters[i]);
         }
       }
+
       axios({
-        methods: 'post',
+        method: 'post',
         url: 'http://localhost:8000/api/zaboes/',
         headers: {
           'Content-Type': "multipart/form-data",
@@ -232,29 +233,32 @@ export default {
         data: {
           title: this.name,
           location: this.location,
-          content: this.explanation,
+          content: this.introduction,
           apply: selapp,
           payment: 'F',
           category: selcat,
-          posters: uploadposters
+          posters: uploadposters,
+          timeslots: this.computedScheduleDates
         }
       }).then(res => {
         if (res.status === 200) {
           console.log('succedd!')
           console.log(res)
-        } else {
-          console.log('failed')
-          console.log(res);
         }
       });
+    },
+    zaboScheduleAdd () {
+      this.scheduleAdding = !this.scheduleAdding;
+      this.scheduleDates.push({
+        "content": "",
+        "start_time": "",
+        "end_time": ""
+      })
     }
   },
   computed: {
     loggedIn () {
       return this.$store.getters.loggedInState;
-    },
-    multipleDaysString () {
-      return this.multipleDays ? "여러 날" : "하루";
     },
     today () {
       var day = new Date();
@@ -282,6 +286,21 @@ export default {
       }
       return bull;
     },
+    single () {
+      return (this.scheduleDates.length < 1)
+    },
+    computedScheduleDates () {
+      let scheduleArray = [];
+      this.scheduleDates.map(schedule => {
+        scheduleArray.push(
+          {
+            ...schedule,
+            "end_time": schedule.end_time.split("T")[0] + ' ' + schedule.end_time.split("T")[1] + ":00",
+            "start_time": schedule.start_time.split("T")[0] + ' ' + schedule.start_time.split("T")[1] + ":00"          }
+        )
+      })
+      return scheduleArray;
+    }
   },
 };
 </script>
@@ -290,11 +309,13 @@ export default {
 .appWrapper {
   width: 100%;
   height: 100%;
+  padding-top: 78px;
+  padding-bottom: 68px;
   background-color: white;
 }
 
 .zaboUpload {
-  margin: 78px auto 68px auto;
+  margin: 0 auto 0 auto;
   width: 70%;
   height: 100%;
   display: flex;
@@ -325,38 +346,35 @@ export default {
 }
 
 @media screen and (min-width: 1600px) {
-  .mainWrapper {
-    min-width: 344px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin-bottom: 50px;
-  }
   .column {
-    flex: 1;
+    flex: 2;
     position: relative;
-    min-height: 614px;
-    margin-right: 89px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .column:first-child {
     height: 100%;
+    margin-right: 89px;
+    padding-right: 20px;
   }
   .column:last-child {
-    margin-right: 0px;
+    flex: 1;
+    height: 100%;
   }
 }
 
 .totalFormWrapper {
   width: 100%;
   height: 100%;
-}
-
-.column:last-child {
-  margin-right: 0;
+  display: flex;
+  /* justify-content: center; */
+  align-items: flex-start;
 }
 
 .formWrapper {
-  position: relative;
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -370,24 +388,97 @@ export default {
   flex-wrap: wrap;
   align-items: flex-start;
 }
-
+.radioGroup {
+  height: 100%;
+}
 .scheduleWrapper {
   width: 100%;
-  height: 4em;
+  padding: 10px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #f6f6f6;
-  font-size: 0.75em;
-  color: #a5a5a5;
   transition: all 0.3s ease;
 }
 .scheduleWrapper:hover {
   background-color: #e9e9e9;
 }
+.smallSpan {
+  font-size: 0.75em;
+  color: #a5a5a5;
+}
+.scheduleInputWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.singleScheduleWrapper {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 0.5em;
+  margin-bottom: 10px;
+}
+.singleScheduleWrapper:last-child {
+  margin-bottom: 0;
+}
+.cancelIcon {
+  font-size: 2em;
+  color: black;
+}
+.scheduleTimeWrapper {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: flex-start;
+  align-items: center;
+  flex: 2;
+  height: 37px;
+  font-size: 1em;
+}
+.scheduleSingleTime {
+  flex: 1;
+  height: 23px;
+  font-size: 1.125em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.scheduleSpan {
+  margin-right: 0.5em;
+}
+.scheduleStart {
+  flex: 1;
+  color: black;
+  height: 23px;
+}
+.scheduleEnd {
+  flex: 1;
+  color: #848484;
+  height: 23px;
+}
+.scheduleContent {
+  flex: 1;
+  word-wrap: break-word;
+  word-break: break-all;
+  height: 37px;
+  font-size: 1.125em;
+  font-weight: 400;
+  color: black;
+  text-align: right;
+  padding-right: 0.5em;
+}
+.scheduleContent:focus {
+  outline: none;
+}
 
-.material-icons {
+.plusIcon {
   color: #12397d;
   cursor: pointer;
 }
@@ -400,6 +491,7 @@ export default {
 }
 .headingWrapper {
   width: 100%;
+  height: 50px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -438,6 +530,7 @@ export default {
 
 .topicWrapper {
   flex: 1;
+  height: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -453,6 +546,7 @@ export default {
 
 .textarea {
   width: 100%;
+  height: 100%;
   min-height: 10em;
   background-color: #f6f6f6;
   font-size: 0.75em;
@@ -467,6 +561,7 @@ export default {
 }
 .textbox {
   width: 100%;
+  height: 100%;
   background-color: #f6f6f6;
   padding: 0.75em;
   font-size: 0.75em;
@@ -479,32 +574,34 @@ export default {
   background-color: #e9e9e9;
 }
 .zaboAddWrapper {
-  width: 430px;
-  height: 614px;
+  width: 100%;
+  height: 0;
+  padding-top: 75%;
+  padding-bottom: 75%;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f6f6f6;
   transition: all 0.3s ease;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 .zaboAddWrapper:hover {
   background-color: #e9e9e9;
 }
 
 .zaboAdded {
-  width: 430px;
-  /* min-height: 729px; */
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .zaboPoster {
   width: 100%;
-  height: 614px;
+  height: auto;
   margin-bottom: 11px;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
   cursor: pointer;
@@ -515,16 +612,22 @@ export default {
 }
 
 .zaboSmallPosterWrapper {
-  width: 430px;
-  height: 100px;
+  width: 100%;
+  height: 0;
+  padding-top: 12.5%;
+  padding-bottom: 12.5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .zaboSmallPoster {
-  width: 100px;
-  height: 100px;
+  width: 22%;
+  height: 0;
+  background-size: cover;
+  padding-top: 11%;
+  padding-bottom: 11%;
   background-color: #777777;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
   cursor: pointer;
@@ -536,8 +639,10 @@ export default {
 }
 
 .smallZaboAddWrapper {
-  width: 100px;
-  height: 100px;
+  width: 22%;
+  height: 0;
+  padding-top: 11%;
+  padding-bottom: 11%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -553,6 +658,7 @@ export default {
 
 .selectTag {
   width: 100%;
+  height: 100%;
   font-size: 1em;
   height: 2em;
   padding-left: 0.5em;
@@ -561,23 +667,6 @@ export default {
 }
 option {
   cursor: pointer;
-}
-
-.multi-days {
-  width: 100%;
-  height: 100%;
-  background-color: #f6f6f6;
-}
-
-.one-day {
-  display: flex;
-  justify-content: flex-start;
-  align-items: baseline;
-  width: 100%;
-  padding-top: 7px;
-  padding-left: 5px;
-  height: 65px;
-  margin-top: -15px;
 }
 
 .one-timeslot {
@@ -590,13 +679,16 @@ option {
 .buttonWrapper {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
 }
 
 .finalButton {
-  width: 332px;
-  height: 32px;
+  /* flex: 1; */
+  width: 100%;
+  height: 38px;
+  margin-bottom: 0.5em;
   background-color: #12397d;
   color: white;
   display: flex;
@@ -607,9 +699,9 @@ option {
   cursor: pointer;
 }
 .cancelButton {
-  width: 232px;
-  height: 32px;
-  margin-left: 11px;
+  /* flex: 1; */
+  width: 100%;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
