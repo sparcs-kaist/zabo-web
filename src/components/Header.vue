@@ -22,9 +22,11 @@
           <Search @submitValue="onSearch" :searchValue="searchValue" />
         </div>
         <template v-if="loggedInState">
-          <div @click="logout" class="button right">
-            {{ $t('로그아웃') }}
-          </div>
+          <a href="http://localhost:8080/">
+            <div @click="logout" class="button right">
+              {{ $t('로그아웃') }}
+            </div>
+          </a>
         </template>
         <template v-else>
           <div @click="login" class="button right">
@@ -48,7 +50,7 @@ export default {
   components: {
     Search
   },
-  data () {
+  data() {
     return {
       lang: "kr",
       searchValue: ""
@@ -58,13 +60,13 @@ export default {
     loggedInState: Boolean
   },
   methods: {
-    login: function () {
+    login: function() {
       this.$emit("logged-in");
     },
-    logout: function () {
+    logout: function() {
       this.$store.commit("LOGOUT");
     },
-    setLang: function () {
+    setLang: function() {
       if (this.lang === "kr") {
         this.$i18n.set("en");
         this.lang = "en";
@@ -73,13 +75,13 @@ export default {
         this.lang = "kr";
       }
     },
-    onSearch (searchTerm) {
-      this.$router.push({ name: 'ZaboSearch', params: { search: searchTerm } })
-      this.searchTerm = ""
+    onSearch(searchTerm) {
+      this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
+      this.searchTerm = "";
     }
   },
   computed: {
-    computedLang: function () {
+    computedLang: function() {
       if (this.lang === "kr") {
         return "en";
       } else {

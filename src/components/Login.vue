@@ -39,6 +39,9 @@
                   class = "field"/>
                   <v-btn type="submit" :disabled="!valid" depressed :loading="loading" color="indigo darken-3" id="login_button">로그인</v-btn>
                 </v-form>
+                <div v-if="loginfailed" class="error-message">
+                  아이디/비밀번호가 틀렸습니다.
+                </div>
             </div>
           </transition>
         <p class="copyright">
@@ -62,7 +65,8 @@ export default {
         v => !!v || "이메일을 입력해주세요.",
         v => /.+@.+/.test(v) || "유효한 이메일 형식이 아닙니다."
       ],
-      passwordRules: [v => !!v || "비밀번호를 입력해주세요."]
+      passwordRules: [v => !!v || "비밀번호를 입력해주세요."],
+      loginfailed: false
     };
   },
   methods: {
@@ -80,7 +84,7 @@ export default {
           localStorage.setItem("token", `ZABO ${response.data.token}`);
         })
         .catch(err => {
-          console.warn("Wrong Email/password.");
+          this.loginfailed = true;
           this.$store.commit("GOT_RESPONSE");
         })
         .then(() => {
@@ -208,7 +212,7 @@ export default {
   text-align: center;
   font-size: 8pt;
   position: absolute;
-  top: 350px;
+  top: 360px;
 }
 
 .slide-fade-enter-active {
@@ -223,5 +227,11 @@ export default {
 .slide-fade-leave-to {
   transform: translate(30px);
   opacity: 0;
+}
+
+.error-message {
+  text-align: center;
+  font-size: 10pt;
+  color: red;
 }
 </style>
