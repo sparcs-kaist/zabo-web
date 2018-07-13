@@ -1,5 +1,5 @@
 <template>
-  <v-app style="width: 100%; height: 100%; background-color: white; padding-top: 0px;">
+  <v-app class="appWrapper">
     <div class="zaboUpload">
       <div class="headingWrapper">
         <span class="heading">
@@ -136,18 +136,22 @@
             </div>
           </div>
         </div>
-        <button class="cancelButton">
-          {{$t('취소')}}
-        </button>
-        <button class="finalButton">
-          {{$t('자보 올리기')}}
-        </button>
+        <div class="buttonWrapper">
+          <div @click="postPoster" class="finalButton">
+            {{$t('자보 올리기')}}
+          </div>
+          <div class="cancelButton">
+            {{$t('취소')}}
+          </div>
+        </div>
       </v-form>
     </div>
   </v-app>
 </template>
 
 <script>
+import axios from '@/axios-auth';
+
 export default {
   data () {
     return {
@@ -167,7 +171,6 @@ export default {
       explanation: "",
       participateMembers: 0,
       introduction: ``,
-      zaboPoster: [],
       imagePreviewUrls: {
         0: "none",
         1: "none",
@@ -177,16 +180,73 @@ export default {
       },
     };
   },
+  created () {
+    var map = new naver.maps.Map(document.getElementById("naverMap"));
+    console.log("hell");
+  },
   methods: {
     posteradd (num, event) {
       const url = URL.createObjectURL(event.target.files[0]);
-      console.log(url, num);
       this.imagePreviewUrls[num] = url;
-      console.log(this.imagePreviewUrls[num] !== "none");
     },
     deletePoster () {
-      this.zaboPoster = [];
       this.imagePreviewUrls = [];
+    },
+    postPoster () {
+      let selcat = ""
+      if (this.selectedcategory == "리크루팅") {
+        selcat = "R"
+      } else if (this.selectedcategory == "퍼포먼스") {
+        selcat = "P"
+      } else if (this.selectedcategory == "경쟁") {
+        selcat = "C"
+      } else if (this.selectedcategory == "설명회") {
+        selcat = "F"
+      } else if (this.selectedcategory == "강의") {
+        selcat = "L"
+      } else if (this.selectedcategory == "전람회") {
+        selcat = "E"
+      }
+      let selapp = ""
+      if (this.selectedMethod == "자보에서 신청") {
+        selapp = "Z"
+      } else if (this.selectedMethod == "현장 접수") {
+        selapp = "S"
+      } else if (this.selectedMethod == "외부 링크를 통한 신청") {
+        selapp = "E"
+      }
+
+      let uploadposters = [];
+      for (let i = 0; i < 5; i++) {
+        if (this.imagePreviewUrls[i] != "none") {
+          uploadposters.push(this.imagePreviewUrls[i]);
+        }
+      }
+      axios({
+        methods: 'post',
+        url: 'http://localhost:8000/api/zaboes/',
+        headers: {
+          'Content-Type': "multipart/form-data",
+          Authorization: localStorage.getItem('token')
+        },
+        data: {
+          title: this.name,
+          location: this.location,
+          content: this.explanation,
+          apply: selapp,
+          payment: 'F',
+          category: selcat,
+          posters: uploadposters
+        }
+      }).then(res => {
+        if (res.status === 200) {
+          console.log('succedd!')
+          console.log(res)
+        } else {
+          console.log('failed')
+          console.log(res);
+        }
+      });
     }
   },
   computed: {
@@ -223,14 +283,16 @@ export default {
       return bull;
     },
   },
-  created () {
-    var map = new naver.maps.Map(document.getElementById("naverMap"));
-    console.log("hell");
-  }
 };
 </script>
 
 <style scoped>
+.appWrapper {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+
 .zaboUpload {
   margin: 78px auto 68px auto;
   width: 70%;
@@ -525,25 +587,37 @@ option {
   background-color: white;
 }
 
+.buttonWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .finalButton {
   width: 332px;
   height: 32px;
   background-color: #12397d;
   color: white;
-  float: right;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1em;
   font-weight: 700;
+  cursor: pointer;
 }
 .cancelButton {
   width: 232px;
   height: 32px;
   margin-left: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  font-weight: 700;
   background-color: white;
   color: #777777;
-  float: right;
   border: 1px solid #777777;
+  cursor: pointer;
 }
 </style>
