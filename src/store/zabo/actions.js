@@ -155,14 +155,29 @@ const actions = {
     const {
       currentUser: { id }
     } = state;
+    let formData = new FormData();
+    if (payload.length == 5) {
+      formData.append("first_name", payload[0]);
+      formData.append("last_name", payload[1]);
+      formData.append("nickName", payload[2]);
+      formData.append("phone", payload[3]);
+      formData.append("gender", payload[4]);
+    } else if (payload.length == 6) {
+      formData.append("first_name", payload[0]);
+      formData.append("last_name", payload[1]);
+      formData.append("nickName", payload[2]);
+      formData.append("phone", payload[3]);
+      formData.append("gender", payload[4]);
+      formData.append("profile_image", payload[5]);
+    }
     commit("START_AJAX");
     axios(`/users/${id}/`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "multipart/form-data",
         Authorization: localStorage.getItem("token")
       },
-      data: payload
+      data: formData
     }).then(function(response) {
       axios("/users/myInfo", {
         method: "GET",

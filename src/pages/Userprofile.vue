@@ -9,9 +9,15 @@
           <img :src="imagesrc" class="profile-image">
           <p id="name"> {{ first_name + " " + last_name }} </p>
         </div>
-        <v-app id = "namefield" v-else>
-          <input type="file" @change="onFileSelected">
-          <v-form v-model = "valid">
+        <div v-else style="margin-bottom: -17px;">
+          <div class="name-image">
+            <img :src="profilePreview" class="profile-image-preview">
+            <div class="imageChange" @click="$refs.profileImageinput.click()">
+              <img src="../assets/photo-camera_black.svg" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+          <input type="file" @change="onFileSelected" style="display: none" ref="profileImageinput">
+          <v-form v-model = "valid" style="margin-top: 10px;">
             <v-text-field
             label = "성"
             v-model = "new_first_name"
@@ -26,31 +32,33 @@
             required
             class = "last"></v-text-field>
           </v-form>
-        </v-app>
-        <button v-on:click="tab1" class="tab">
-          내 정보<br/>
-          <div class="button-active" v-if = "tab == 'tab1'">
-          </div>
-        </button>
-        <button v-on:click="tab2" class="tab">
-          참여한 자보<br/>
-          <div class="button-active" v-if="tab == 'tab2'">
-          </div>
-        </button>
-        <button v-on:click="tab3" class="tab">
-          찜한 자보<br/>
-          <div class="button-active" v-if="tab == 'tab3'">
-          </div>
-        </button>
-        <div v-if="tab == 'tab1'">
-          <profile v-on:editmode = "edit_toggle" :valid = "valid" :first = "new_first_name" :last = "new_last_name" :image = "new_profile_image"></profile>
         </div>
-        <div v-else-if="tab == 'tab2'">
-          <!-- <participated :participatedZaboes="participatedZaboes"></participated> -->
-        </div>
-        <div v-else-if="tab == 'tab3'">
-          찜한 자보
-        </div>
+        <v-tabs fixed-tabs v-model="tab" style="margin-top: 20px; margin-bottom: 20px;">
+          <v-tab :key="1" style="font-size: 17pt; font-weight: 800;">
+            내 정보
+          </v-tab>
+          <v-tab :disabled="edit" :key="2" style="font-size: 17pt; font-weight: 800;">
+            참여한 자보
+          </v-tab>
+          <v-tab :disabled="edit" :key="3" style="font-size: 17pt; font-weight: 800;">
+            좋아한 자보
+          </v-tab>
+        </v-tabs>
+        <v-tabs-items v-model="tab" style="height: 500px;">
+          <v-tab-item :key="1">
+            <profile @cancel = "cancel" @editmode = "edit_toggle" :valid = "valid" :first = "new_first_name" :last = "new_last_name" :image = "new_profile_image"></profile>
+          </v-tab-item>
+          <v-tab-item :key="2">
+            <div>
+              참여한 자보
+            </div>
+          </v-tab-item>
+          <v-tab-item :key="3">
+            <div>
+              좋아한 자보
+            </div>
+          </v-tab-item>
+        </v-tabs-items>
       </div>
   </v-app>
 </template>
@@ -73,7 +81,8 @@ export default {
       namerules: [
         v => !!v || "이름을 입력해주세요.",
         v => (v && v.length <= 100) || "이름이 너무 길어요."
-      ]
+      ],
+      profilePreview: null
     };
   },
   components: {
@@ -92,19 +101,29 @@ export default {
     },
     edit_toggle() {
       if (this.edit === false) {
+        this.profilePreview = this.imagesrc;
         this.edit = true;
       } else if (this.edit === true) {
         this.edit = false;
       }
     },
+    cancel() {
+      this.new_first_name = this.first_name;
+      this.new_last_name = this.last_name;
+      this.valid = true;
+      this.edit = false;
+    },
     onFileSelected(event) {
       this.new_profile_image = event.target.files[0];
+      this.profilePreview = URL.createObjectURL(this.new_profile_image);
     }
   },
-  created() {
-    this.new_first_name = this.$store.getters.getFirstName;
-    this.new_last_name = this.$store.getters.getLastName;
-    this.participatedZaboes = this.$store.getters.participatedZaboes;
+  mounted() {
+    setTimeout(() => {
+      this.new_first_name = this.$store.getters.getFirstName;
+      this.new_last_name = this.$store.getters.getLastName;
+      this.participatedZaboes = this.$store.getters.participatedZaboes;
+    }, 3000);
   },
   computed: {
     first_name() {
@@ -154,7 +173,13 @@ export default {
   width: 100px;
   border-radius: 100px;
   margin-top: 20px;
-  margin-bottom: 20px;
+}
+
+.profile-image-preview {
+  height: 100px;
+  width: 100px;
+  border-radius: 100px;
+  margin-top: 20px;
 }
 
 .tabs {
@@ -187,11 +212,6 @@ export default {
   border: none;
 }
 
-#namefield {
-  background-color: white;
-  height: 70px;
-}
-
 .first {
   width: 120px;
   margin-right: 35px;
@@ -201,5 +221,28 @@ export default {
 .last {
   width: 170px;
   display: inline-block;
+}
+
+.name-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageChange {
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  background-color: rgba(255, 255, 255, 0.397);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.imageChange:hover {
+  background-color: rgba(223, 223, 223, 0.171);
 }
 </style>
