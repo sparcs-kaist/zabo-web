@@ -1,12 +1,4 @@
 <template>
-  <!-- <div class="info-screen">
-    <div class="description">
-      <p v-if="!seeMore">
-        {{ shortenedInfo }} <span class="more" @click="seeMore = true">더 보기</span>
-      </p>
-      <p v-else>{{ info }}</p>
-    </div>
-  </div> -->
   <div class="main">
     <div class="header">
       <div class="pic"></div>
@@ -66,37 +58,14 @@ export default {
         }
       })
         .then((response) => {
-          // eslint-disable-next-line
           console.log('what!')
           console.log(response);
           this.replies.push(response.data);
         })
         .catch((error) => {
-          // eslint-disable-next-line
           console.log(error);
         });
     },
-    // idToName (user_id) {
-    //   axios({
-    //     method: 'get',
-    //     url: `http://localhost:8000/api/users/${user_id}`,
-    //     // data: {
-    //     //   content: this.newReply,
-    //     //   comment: this.comment_id,
-    //     // },
-    //     headers: {
-    //       // "Content-Type": "application/json",
-    //       Authorization: localStorage.getItem('token')
-    //     }
-    //   })
-    //     .then((response) => {
-    //       console.log(response);
-    //       return response.data
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }
   },
   computed: {
     shortenedComment () {
@@ -108,7 +77,7 @@ export default {
 
 <style scoped>
 .body {
-  font-size: 0.9em;
+  font-size: 1.25em;
   margin-top: 15px;
   text-align: left;
 }
@@ -119,6 +88,7 @@ export default {
 }
 .input {
   padding-left: 15px;
+  margin-top: 1em;
 }
 .main {
   margin: 20px 0 0 0;

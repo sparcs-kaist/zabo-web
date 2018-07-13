@@ -1,12 +1,4 @@
 <template>
-  <!-- <div class="info-screen">
-    <div class="description">
-      <p v-if="!seeMore">
-        {{ shortenedInfo }} <span class="more" @click="seeMore = true">더 보기</span>
-      </p>
-      <p v-else>{{ info }}</p>
-    </div>
-  </div> -->
   <div class="main">
     <div class="header">
       <div class="tag">ㄴ</div>
@@ -46,27 +38,6 @@ export default {
       return this.content.length > 200;
     },
     onSubmitReply () {
-      // axios({
-      //   method: 'post',
-      //   url: 'http://localhost:8000/api/recomments/',
-      //   data: {
-      //     content: this.newReply,
-      //     comment: this.comment_id,
-      //   },
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     Authorization: localStorage.getItem('token')
-      //   }
-      // })
-      //   .then((response) => {
-      //     // eslint-disable-next-line
-      //     console.log(response);
-      //     this.replies.push(response.data);
-      //   })
-      //   .catch((error) => {
-      //     // eslint-disable-next-line
-      //     console.log(error);
-      //   });
     },
   },
   computed: {

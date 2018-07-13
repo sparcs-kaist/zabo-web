@@ -60,6 +60,7 @@ export default {
   resize: none;
   text-align: left;
   flex: 1;
+  border-radius: 1px;
 }
 .textbox[placeholder]:empty:before {
   content: attr(placeholder);

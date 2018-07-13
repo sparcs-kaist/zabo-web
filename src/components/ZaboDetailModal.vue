@@ -1,32 +1,35 @@
 <template>
-  <div class="main">
-    <div class="column">
-      <div class="headerStyle">
-        <p class="heading">{{title}}</p>
-        <p class="subheading">{{updated_time}}</p>
-        <div class="buttonWrapper">
-          <button class="buttonTap">{{$t("참여하기")}}</button>
-          <button class="buttonTap">{{$t("찜하기")}}</button>
+  <div class="hide">
+    <div class="main">
+      <div class="column">
+        <div class="headerStyle">
+          <p class="heading">{{title}}</p>
+          <p class="subheading">{{updated_time}}</p>
+          <div class="buttonWrapper">
+            <button class="buttonTap">{{$t("참여하기")}}</button>
+            <button class="buttonTap">{{$t("찜하기")}}</button>
+          </div>
+          <div class="navbar">
+            <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
+            <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
+          </div>
+          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+          </input-field>
         </div>
-        <div class="navbar">
-          <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
-          <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
-        </div>
-        <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
-        </input-field>
-      </div>
 
-      <div class="bodyWrapper" v-show="toDisplay === 0">
-        <info-screen :info="this.content" />
+        <div class="bodyWrapper" v-show="toDisplay === 0">
+          <info-screen :info="this.content" />
+        </div>
+        <div class="bodyWrapper" v-show="toDisplay === 1">
+          <review-screen :comments="comments" />
+        </div>
       </div>
-      <div class="bodyWrapper" v-show="toDisplay === 1">
-        <review-screen :comments="comments" />
+      <div class="column">
+        <img :src="this.image" height="600" width="500" />
+        <v-icon @click="closeModal" class="material-icon">close</v-icon>
       </div>
     </div>
-    <div class="column">
-      <img :src="this.image" height="600" width="500" />
-      <v-icon @click="closeModal" class="material-icon">close</v-icon>
-    </div>
+    <div class="coverImage"></div>
   </div>
 </template>
 
@@ -117,28 +120,43 @@ export default {
 
 <style scoped>
 .main {
-  background-color: rgb(128, 128, 128);
+  /* background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url("../assets/alexander-popov-522100-unsplash.jpg");
+  background-size: cover; */
   display: flex;
-  width: 80%;
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 10%;
-  right: 10%;
+  left: 0%;
+  right: 0%;
+  overflow: hidden;
+  z-index: 502;
+  border-radius: 3px;
+}
+.coverImage {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url("../assets/alexander-popov-522100-unsplash.jpg");
+  background-size: cover;
+  /* display: flex; */
+  position: absolute;
+  top: -5px;
+  bottom: -5px;
+  left: -5px;
+  right: -5px;
   overflow: hidden;
   z-index: 500;
+  filter: blur(5px);
 }
-.main:before {
-  content: “ ”;
-  background: inherit;
+.hide {
   position: absolute;
-  left: 0;
-  right: 0;
   top: 0;
   bottom: 0;
-  box-shadow: inset 0 0 0 3000px rgba(255, 255, 255, 0.3);
-  filter: blur(10px);
+  left: 12.5%;
+  right: 12.5%;
+  overflow: hidden;
+  border-radius: 3px;
 }
+
 .bodyWrapper {
   flex: 1;
   color: white;
@@ -148,16 +166,22 @@ export default {
   overflow-x: hidden;
 }
 .bodyWrapper::-webkit-scrollbar {
+  width: 10px;
   background-color: transparent;
+  border-radius: 5px;
 }
-.bodyWrapper::-webkit-scrollbar {
-  background-color: transparent;
+.bodyWrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+}
+.bodyWrapper::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.bodyWrapper::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 
-/* .bodyStyle::-webkit-scrollbar{ background-color: transparent;}
-.bodyStyle::-webkit-scrollbar:hover {background-color: transparent;} */
-/* .root::-webkit-scrollbar{ display: none;}
-.root::-webkit-scrollbar:hover { display: none;} */
 .headerStyle {
   /* flex: 1; */
   width: 100%;

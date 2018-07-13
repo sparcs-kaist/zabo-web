@@ -38,7 +38,7 @@ export default {
 <style scoped>
 .description {
   color: #fff;
-  font-size: 0.9em;
+  font-size: 1em;
   text-align: left;
 }
 .infoScreen {
