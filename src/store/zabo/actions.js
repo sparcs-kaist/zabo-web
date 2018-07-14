@@ -42,13 +42,13 @@ const actions = {
       return;
     } else if (payload.method == "리크루팅") {
       method = "?category=R";
-    } else if (payload.method == "퍼포먼스") {
+    } else if (payload.method == "공연") {
       method = "?category=P";
-    } else if (payload.method == "경쟁") {
+    } else if (payload.method == "대회") {
       method = "?category=C";
     } else if (payload.method == "설명회") {
       method = "?category=F";
-    } else if (payload.method == "강의") {
+    } else if (payload.method == "세미나") {
       method = "?category=L";
     } else if (payload.method == "전람회") {
       method = "?category=E";
@@ -109,13 +109,13 @@ const actions = {
       });
     } else if (payload.method == "리크루팅") {
       method = "&category=R";
-    } else if (payload.method == "퍼포먼스") {
+    } else if (payload.method == "공연") {
       method = "&category=P";
-    } else if (payload.method == "경쟁") {
+    } else if (payload.method == "대회") {
       method = "&category=C";
     } else if (payload.method == "설명회") {
       method = "&category=F";
-    } else if (payload.method == "강의") {
+    } else if (payload.method == "세미나") {
       method = "&category=L";
     } else if (payload.method == "전람회") {
       method = "&category=E";

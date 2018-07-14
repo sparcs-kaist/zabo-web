@@ -73,7 +73,7 @@ export default {
     return {
       windowWidth: 0,
       currentCategoryIndex: 0,
-      categoryList: ["최신순", "인기있는 자보", "마감임박 자보", "리크루팅", "퍼포먼스", "경쟁", "설명회", "강의", "전람회"],
+      categoryList: ["최신순", "인기있는 자보", "마감임박 자보", "리크루팅", "공연", "대회", "설명회", "세미나", "전람회"],
       loading: true,
       defaultImage: "@/assets/logo.png",
       posterWrapperHeight: 0,

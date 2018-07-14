@@ -7,7 +7,7 @@
           <p class="subheading">{{updated_time}}</p>
           <div class="buttonWrapper">
             <button class="buttonTap">{{$t("참여하기")}}</button>
-            <button class="buttonTap">{{$t("찜하기")}}</button>
+            <button @click="likeZabo" class="buttonTap">{{$t("찜하기")}}</button>
           </div>
           <div class="navbar">
             <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
@@ -87,6 +87,20 @@ export default {
     selectTab (selected) {
       this.toDisplay = selected;
     },
+    likeZabo () {
+      console.log(this.zabo_id)
+      axios({
+        url: 'http://localhost:8000/api/likes/dislike/',
+        method: 'delete',
+        data: {
+          zabo: this.zabo_id
+        },
+        headers: {
+          Authorization: localStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+      }).then(res => console.log(res));
+    }
   },
   created () {
     this.zabo_id = this.$route.params.zabo_id;
@@ -146,6 +160,7 @@ export default {
   right: 12.5%;
   overflow: hidden;
   border-radius: 3px;
+  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
 }
 
 .bodyWrapper {
@@ -222,6 +237,7 @@ export default {
 .column:first-child {
   padding-top: 80px;
   padding-left: 40px;
+  padding-bottom: 20px;
 }
 .column:last-child {
   justify-content: center;

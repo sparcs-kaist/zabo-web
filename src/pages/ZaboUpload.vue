@@ -32,14 +32,14 @@
             </span>
             <v-radio-group class="radioGroup" v-model="selectedcategory" style="width: 100%;">
               <div style="display: flex;">
-                <v-radio color="blue" label="리크루팅" value="recruiting" style="flex: 1;"></v-radio>
-                <v-radio color="blue" label="공연" value="performance" style="flex: 1;"></v-radio>
-                <v-radio color="blue" label="대회" value="competition" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="리크루팅" value="리크루팅" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="공연" value="공연" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="대회" value="대회" style="flex: 1;"></v-radio>
               </div>
               <div style="display: flex;">
-                <v-radio color="blue" label="세미나" value="seminar" style="flex: 1;"></v-radio>
-                <v-radio color="blue" label="설명회" value="information" style="flex: 1;"></v-radio>
-                <v-radio color="blue" label="전시회" value="expo" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="세미나" value="세미나" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="설명회" value="설명회" style="flex: 1;"></v-radio>
+                <v-radio color="blue" label="전시회" value="전시회" style="flex: 1;"></v-radio>
               </div>
             </v-radio-group>
           </div>
@@ -51,8 +51,17 @@
             </v-select>
           </div>
           <div class="formWrapper">
-            <span class="topic">{{$t('참여 인원')}}</span>
-            <v-text-field v-model="participateMembers" type="number" label="입력..." solo style="width: 100%" clearable/>
+            <span class="topic">
+              <div class="topicWrapper">
+                {{$t('URL')}}
+              </div>
+              <span :class="zaboUrlExist ? 'font-heavy' : 'font-light'">{{$t('URL 포함하기')}}</span>
+              <div>
+                <v-switch v-model="zaboUrlExist" color="green" :value="false"></v-switch>
+              </div>
+            </span>
+            <v-text-field v-if="zaboUrlExist" v-model="zaboUrl" solo label="입력..." style="width: 100%" clearable>
+            </v-text-field>
           </div>
           <div class="formWrapper">
             <span class="topic">
@@ -132,8 +141,7 @@
             </div>
           </div>
           <div class="buttonWrapper">
-            <div @click="postPoster" class="finalButton">
-              {{$t('자보 올리기')}}
+            <div @click="postPoster" :class="zaboUploadValidation ? 'finalButton': 'buttonDisabled' ">
             </div>
             <div class="cancelButton">
               {{$t('취소')}}
@@ -164,7 +172,6 @@ export default {
       selectedMethod: "",
       scheduleDates: [],
       paymentRequired: false,
-      participateMembers: 0,
       introduction: "",
       zaboPosters: ["none", "none", "none", "none", "none"],
       imagePreviewUrls: {
@@ -174,7 +181,10 @@ export default {
         3: "none",
         4: "none",
       },
-      scheduleAdding: false
+      scheduleAdding: false,
+      zaboPosterBool: false,
+      zaboUrl: "",
+      zaboUrlExist: false
     };
   },
   created () {
@@ -185,7 +195,6 @@ export default {
     posteradd (num, event) {
       const url = URL.createObjectURL(event.target.files[0]);
       const file = event.target.files[0];
-      console.log(event.target.files[0]);
       this.imagePreviewUrls[num] = url;
       this.zaboPosters[num] = file;
     },
@@ -193,59 +202,74 @@ export default {
       this.imagePreviewUrls = [];
     },
     postPoster () {
-      let selcat = ""
-      if (this.selectedcategory == "리크루팅") {
-        selcat = "R"
-      } else if (this.selectedcategory == "퍼포먼스") {
-        selcat = "P"
-      } else if (this.selectedcategory == "경쟁") {
-        selcat = "C"
-      } else if (this.selectedcategory == "설명회") {
-        selcat = "F"
-      } else if (this.selectedcategory == "강의") {
-        selcat = "L"
-      } else if (this.selectedcategory == "전람회") {
-        selcat = "E"
-      }
-      let selapp = ""
-      if (this.selectedMethod == "자보에서 신청") {
-        selapp = "Z"
-      } else if (this.selectedMethod == "현장 접수") {
-        selapp = "S"
-      } else if (this.selectedMethod == "외부 링크를 통한 신청") {
-        selapp = "E"
-      }
+      if (this.zaboUploadValidation) {
+        let selcat = ""
+        if (this.selectedcategory == "리크루팅") {
+          selcat = "R"
+        } else if (this.selectedcategory == "공연") {
+          selcat = "P"
+        } else if (this.selectedcategory == "대회") {
+          selcat = "C"
+        } else if (this.selectedcategory == "설명회") {
+          selcat = "F"
+        } else if (this.selectedcategory == "세미나") {
+          selcat = "L"
+        } else if (this.selectedcategory == "전시회") {
+          selcat = "E"
+        }
 
-      let uploadposters = [];
-      for (let i = 0; i < 5; i++) {
-        if (this.zaboPosters[i] != "none") {
-          uploadposters.push(this.zaboPosters[i]);
+        let selapp = ""
+        if (this.selectedMethod == "자보에서 신청") {
+          selapp = "Z"
+        } else if (this.selectedMethod == "현장 접수") {
+          selapp = "S"
+        } else if (this.selectedMethod == "외부 링크를 통한 신청") {
+          selapp = "E"
         }
-      }
+        let formData = new FormData();
 
-      axios({
-        method: 'post',
-        url: 'http://localhost:8000/api/zaboes/',
-        headers: {
-          'Content-Type': "multipart/form-data",
-          Authorization: localStorage.getItem('token')
-        },
-        data: {
-          title: this.name,
-          location: this.location,
-          content: this.introduction,
-          apply: selapp,
-          payment: 'F',
-          category: selcat,
-          posters: uploadposters,
-          timeslots: this.computedScheduleDates
+        let uploadposters = [];
+        for (let i = 0; i < 5; i++) {
+          if (this.zaboPosters[i] != "none") {
+            uploadposters.push(this.zaboPosters[i]);
+            formData.set(`posters[${i}]`, this.zaboPosters[i]);
+          }
         }
-      }).then(res => {
-        if (res.status === 200) {
-          console.log('succedd!')
-          console.log(res)
+        console.log(this.selectedcategory);
+
+        console.log(this.scheduleDates);
+        console.log(this.computedScheduleDates);
+        console.log(selcat);
+        formData.append('title', this.name);
+        formData.append('location', this.location);
+        formData.append('content', this.introduction);
+        formData.append('apply', selapp);
+        formData.append('payment', "F");
+        formData.append('category', selcat);
+        formData.append('timeslots', JSON.stringify(this.computedScheduleDates));
+        if (this.zaboUrlExist) {
+          formData.append('url', this.zaboUrl);
         }
-      });
+
+        axios({
+          method: 'post',
+          url: 'http://localhost:8000/api/zaboes/',
+          headers: {
+            'Content-Type': "multipart/form-data",
+            Authorization: localStorage.getItem('token'),
+          },
+          data: formData
+        }).then(res => {
+          if (res.status === 201) {
+            this.$route.push({ name: "" })
+          }
+        })
+          .catch(err => {
+            console.log(err)
+          });
+      } else {
+        alert('You should fill out every form!')
+      }
     },
     zaboScheduleAdd () {
       this.scheduleAdding = !this.scheduleAdding;
@@ -300,8 +324,50 @@ export default {
         )
       })
       return scheduleArray;
+    },
+    zaboUploadValidation () {
+      if (this.name == "") {
+        return false
+      }
+      if (!this.posterBool[0]) {
+        return false
+      }
+      if (this.selectedcategory == "") {
+        return false
+      }
+      if (this.selectedMethod == "") {
+        return false
+      }
+      if (this.location == "") {
+        return false
+      }
+      if (this.introduction == "") {
+        return false
+      }
+      if (this.scheduleDates.length == 0) {
+        return false
+      } else {
+        for (let s = 0; s < this.scheduleDates.length; s++) {
+          if (this.scheduleDates[s].content == "") {
+            return false
+          }
+          if (this.scheduleDates[s].end_time == "") {
+            return false
+          }
+          if (this.scheduleDates[s].start_time == "") {
+            return false
+          }
+        }
+      }
+      if (this.zaboUrlExist) {
+        if (this.zaboUrl == "") {
+          return false
+        }
+      }
+      return true
     }
   },
+
 };
 </script>
 
@@ -487,7 +553,7 @@ export default {
   font-size: 1.5em;
 }
 .icon-big {
-  font-size: 3em;
+  font-size: 2.25em;
 }
 .headingWrapper {
   width: 100%;
@@ -516,13 +582,19 @@ export default {
 }
 .font-light {
   color: #b8b8b8;
-  font-size: 10pt;
+  font-size: 0.75em;
   margin-right: 10px;
+}
+.font-heavy {
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.75em;
+  margin-right: 10px;
+  font-weight: 700;
 }
 
 .label-text {
   color: #b8b8b8;
-  font-size: 10pt;
+  font-size: 0.75em;
   margin-right: 10px;
   float: right;
   margin-top: 27px;
@@ -697,7 +769,37 @@ option {
   font-size: 1em;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
+.finalButton::before {
+  content: "자보 올리기";
+}
+.finalButton:hover {
+  background-color: #123958;
+}
+.buttonDisabled {
+  width: 100%;
+  height: 38px;
+  margin-bottom: 0.5em;
+  background-color: #ff4444;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* opacity: 0.3; */
+}
+.buttonDisabled::before {
+  content: "모든 입력란을 채워주세요.";
+}
+.buttonDisabled:hover {
+  background-color: rgba(255, 0, 0, 0.9);
+  color: white;
+}
+
 .cancelButton {
   /* flex: 1; */
   width: 100%;
