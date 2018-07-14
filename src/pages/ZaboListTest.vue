@@ -81,30 +81,6 @@ export default {
       currentPath: window.location.pathname,
     }
   },
-  created: async function () {
-    this.getWindowWidth();
-    this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
-      const totalPage = res;
-      for (var i = 1; i <= totalPage; i++) {
-        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
-      };
-    }).then(() => {
-      this.loading = false
-      carouselCssControler();
-    })
-    setTimeout(function () {
-      window.dispatchEvent(new Event('resize'));
-      carouselCssControler();
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'))
-        carouselCssControler();
-        setTimeout(() => {
-          window.dispatchEvent(new Event('resize'))
-          carouselCssControler();
-        }, 1000)
-      }, 1000)
-    }, 1000);
-  },
   mounted () {
     this.getWindowWidth();
     this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {

@@ -7,7 +7,9 @@
           <p class="subheading">{{updated_time}}</p>
           <div class="buttonWrapper">
             <button class="buttonTap">{{$t("참여하기")}}</button>
-            <button class="buttonTap">{{$t("찜하기")}}</button>
+            <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
+            <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
+            <span class="likeCount">{{this.likeCount}}</span>
           </div>
           <div class="navbar">
             <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
@@ -26,7 +28,7 @@
       </div>
       <div class="column">
         <img :src="this.image" height="600" width="500" />
-        <v-icon @click="closeModal" class="material-icon">close</v-icon>
+        <v-icon @click="closeModal" class="closeIcon">close</v-icon>
       </div>
     </div>
     <div class="coverImage"></div>
@@ -52,7 +54,9 @@ export default {
       // 0 displays Info, 1 displays Review
       toDisplay: 0,
       zabo_id: -1,
-      updated_time: ""
+      updated_time: "",
+      isLiked: false,
+      likeCount: -1
     };
   },
   components: {
@@ -93,16 +97,70 @@ export default {
     },
     closeModal () {
       this.$emit('closeModal');
+    },
+    likeZabo () {
+      this.isLiked = true;
+      this.likeCount += 1;
+      axios({
+        url: 'http://localhost:8000/api/likes/',
+        method: 'post',
+        data: {
+          zabo: this.zabo_id
+        },
+        headers: {
+          Authorization: localStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+      }).then(res => {
+        console.log(res)
+        if (res.status == 201) {
+          this.isLiked = true;
+        }
+      })
+        .catch(err => {
+          alert('You are not logged In!')
+          console.log(err)
+          this.likeCount -= 1;
+        })
+        ;
+    },
+    dislikeZabo () {
+      this.isLiked = false;
+      this.likeCount -= 1;
+      axios({
+        url: 'http://localhost:8000/api/likes/dislike/',
+        method: 'delete',
+        data: {
+          zabo: this.zabo_id
+        },
+        headers: {
+          Authorization: localStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+      }).then(res => {
+        console.log(res)
+        if (res.status == 201) {
+          this.isLiked = false;
+        }
+      })
+        .catch(err => {
+          alert('You are not logged In!')
+          console.log(err)
+          this.likeCount += 1;
+        });
     }
   },
-  created () {
+  mounted () {
     this.zabo_id = this.zaboId;
     axios({
       method: 'get',
-      url: `http://localhost:8000/api/zaboes/${this.zabodetailId}/`
+      url: `http://localhost:8000/api/zaboes/${this.zabodetailId}/`,
+      headers: {
+        Authorization: localStorage.getItem('token')
+      }
     })
       .then((response) => {
-        const { posters, content, title, location, updated_time, comments } = response.data
+        const { posters, content, title, location, updated_time, comments, is_liked, like_count } = response.data
         this.image = posters["0"].image;
         this.background = posters["0"].image;
         this.content = content;
@@ -110,6 +168,9 @@ export default {
         this.location = location;
         this.updated_time = updated_time
         this.comments = comments;
+        this.isLiked = is_liked;
+        this.likeCount = like_count;
+        console.log(response);
       })
       .catch((err) => {
         console.log(err);
@@ -255,12 +316,21 @@ export default {
   margin: 0 16px 0 0;
   font-size: 1.6em;
 }
-.material-icon {
+.closeIcon {
   font-size: 40px;
   color: white;
   position: absolute;
   top: 30px;
   right: 30px;
   cursor: pointer;
+}
+.favoriteIcon {
+  font-size: 2em;
+}
+.likeCount {
+  font-size: 2em;
+  font-weight: 700;
+  color: white;
+  margin-left: 0.25em;
 }
 </style>
