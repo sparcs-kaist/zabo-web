@@ -1,5 +1,5 @@
 <template>
-  <v-app class="appWrapper">
+  <v-app v-if="postState" class="appWrapper">
     <div class="zaboUpload">
       <div class="headingWrapper">
         <span class="heading">
@@ -152,6 +152,24 @@
       </v-form>
     </div>
   </v-app>
+  <div class="postFinished" v-else>
+    <span class="postFinishedTitle">You posted successfully!</span>
+    <a href="http://sparcs.org/">
+      <div class="routerLinks">
+        {{ $t('자보 신청 링크 만들기') }}
+      </div>
+    </a>
+    <router-link to="/">
+      <div class="routerLinks">
+        {{ $t('메인 화면으로 돌아가기') }}
+      </div>
+    </router-link>
+    <router-link to="/user/profile">
+      <div class="routerLinks">
+        {{ $t('마이페이지') }}
+      </div>
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -184,7 +202,8 @@ export default {
       scheduleAdding: false,
       zaboPosterBool: false,
       zaboUrl: "",
-      zaboUrlExist: false
+      zaboUrlExist: false,
+      postState: true,
     };
   },
   created () {
@@ -248,7 +267,7 @@ export default {
         formData.append('category', selcat);
         formData.append('timeslots', JSON.stringify(this.computedScheduleDates));
         if (this.zaboUrlExist) {
-          formData.append('url', this.zaboUrl);
+          formData.append('link_url', this.zaboUrl);
         }
 
         axios({
@@ -261,7 +280,7 @@ export default {
           data: formData
         }).then(res => {
           if (res.status === 201) {
-            this.$route.push({ name: "" })
+            this.postState = false
           }
         })
           .catch(err => {
@@ -813,5 +832,26 @@ option {
   color: #777777;
   border: 1px solid #777777;
   cursor: pointer;
+}
+.postFinished {
+  position: absolute;
+  top: 78px;
+  bottom: 78px;
+  left: 15%;
+  right: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+.posterFinishedTitle {
+  font-size: 4em;
+  font-weight: 700;
+}
+.routerLinks {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  font-size: 3em;
 }
 </style>
