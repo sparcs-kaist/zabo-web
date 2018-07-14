@@ -83,17 +83,39 @@ export default {
   },
   created: async function () {
     this.getWindowWidth();
-    this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, method: this.calculatedCategoryList[1] }).then(res => {
+    this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
       const totalPage = res;
       for (var i = 1; i <= totalPage; i++) {
-        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, method: this.calculatedCategoryList[1] });
+        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
       };
     }).then(() => {
       this.loading = false
+      carouselCssControler();
     })
+    setTimeout(function () {
+      window.dispatchEvent(new Event('resize'));
+      carouselCssControler();
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+        carouselCssControler();
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'))
+          carouselCssControler();
+        }, 1000)
+      }, 1000)
+    }, 1000);
   },
   mounted () {
     this.getWindowWidth();
+    this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
+      const totalPage = res;
+      for (var i = 1; i <= totalPage; i++) {
+        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
+      };
+    }).then(() => {
+      this.loading = false
+      carouselCssControler();
+    })
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
       carouselCssControler();
@@ -127,23 +149,24 @@ export default {
         this.currentCategoryIndex -= 1;
       }
       this.getWindowWidth();
-      this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, method: this.calculatedCategoryList[1] }).then(res => {
+      this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
         const totalPage = res;
         for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, method: this.calculatedCategoryList[1] });
+          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
         };
       }).then(() => {
         this.loading = false
-      })
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
         carouselCssControler();
-        setTimeout(() => {
-          window.dispatchEvent(new Event('resize'))
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
           carouselCssControler();
-          setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+          setTimeout(() => {
+            window.dispatchEvent(new Event('resize'))
+            carouselCssControler();
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+          }, 1000)
         }, 1000)
-      }, 1000)
+      })
     },
     categoryright () {
       if (this.currentCategoryIndex === 8) {
@@ -152,23 +175,24 @@ export default {
         this.currentCategoryIndex += 1;
       }
       this.getWindowWidth();
-      this.$store.dispatch("zaboesGetPageCount", { pageSize: 4, method: this.calculatedCategoryList[1] }).then(res => {
+      this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
         const totalPage = res;
         for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 4, method: this.calculatedCategoryList[1] });
+          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
         };
       }).then(() => {
         this.loading = false
-      })
-      setTimeout(function () {
-        window.dispatchEvent(new Event('resize'));
         carouselCssControler();
-        setTimeout(() => {
-          window.dispatchEvent(new Event('resize'))
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
           carouselCssControler();
-          setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+          setTimeout(() => {
+            window.dispatchEvent(new Event('resize'))
+            carouselCssControler();
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
+          }, 1000)
         }, 1000)
-      }, 1000)
+      })
     },
     zaboDetail (id, nickname) {
       if (nickname !== "None") {
