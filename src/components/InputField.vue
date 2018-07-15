@@ -1,8 +1,8 @@
 <template>
   <div class="inputField">
     <form @submit.prevent class="formWrapper">
-      <input class="textbox" @keyup.enter="reviewSubmit" v-model="input" :placeholder="placeholderText">
-      <button class="button" type="submit" @click="reviewSubmit">{{$t('작성')}}</button>
+      <input class="textbox" :class="small && 'smallTextBox'" @keyup.enter="reviewSubmit" v-model="input" :placeholder="placeholderText">
+      <button class="button" :class="small && 'smallButton'" type="submit" @click="reviewSubmit">{{$t('작성')}}</button>
     </form>
   </div>
 </template>
@@ -10,11 +10,14 @@
 <script>
 
 export default {
-  props: ['content', 'onClick', 'placeholderText'],
+  props: ['small', 'content', 'onClick', 'placeholderText'],
   data () {
     return {
       input: '',
     };
+  },
+  created () {
+    this.input = this.content;
   },
   methods: {
     reviewSubmit () {
@@ -68,5 +71,15 @@ export default {
 }
 .textbox[placeholder]:empty:focus:before {
   content: "";
+}
+.smallTextBox {
+  height: 2em;
+  font-size: 0.875em;
+}
+.smallButton {
+  height: 2em;
+  font-size: 0.875em;
+  border: 2px solid white;
+  padding: 0.125em 0.5em;
 }
 </style>

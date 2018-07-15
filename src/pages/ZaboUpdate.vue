@@ -322,7 +322,7 @@ export default {
         }
 
         axios({
-          method: 'put',
+          method: 'PUT',
           url: `http://localhost:8000/api/zaboes/${this.zabo_id}/`,
           headers: {
             'Content-Type': "multipart/form-data",
