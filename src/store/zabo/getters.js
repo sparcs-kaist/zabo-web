@@ -22,6 +22,9 @@ const getters = {
   getNotifications(state) {
     return state.notifications;
   },
+  getCreatedZaboes(state) {
+    return state.createdZaboes;
+  },
   getNickName(state) {
     return state.currentUser.nickName;
   },
