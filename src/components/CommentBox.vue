@@ -1,24 +1,24 @@
 <template>
   <div class="main">
-    <div class="header">
-      <div class="pic"></div>
-      <div class="name">
-        {{ author.nickName }}
-      </div>
-    </div>
     <div class="body">
-      <div v-if="isLong() && !seeMore">
-        {{ shortenedComment }}
-        <span class="more" @click="seeMore = true">더 보기</span>
+      <div class="pic"></div>
+      <div>
+        <span class="name">
+          {{ author.nickName }}
+        </span>
+        <span class="commentBoxContent">{{ content }}</span>
+        <span class="replyHandler" @click="recommentInputState = !recommentInputState">댓글 달기</span>
       </div>
-      <div v-else>{{ content }}</div>
     </div>
     <div>
-      <input-field class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
-      </input-field>
     </div>
-    <re-comment-box class="recomment-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
+    <div class="recommentBoxHandler" v-show="!recommentBoxState" @click="recommentBoxState = !recommentBoxState">
+      ㄴ 댓글 더보기
+    </div>
+    <re-comment-box v-show="recommentBoxState" class="recomment-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
     </re-comment-box>
+    <input-field v-show="!recommentInputState" class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
+    </input-field>
   </div>
 </template>
 
@@ -38,6 +38,8 @@ export default {
     return {
       newReply: '',
       seeMore: false,
+      recommentInputState: false,
+      recommentBoxState: false
     };
   },
   methods: {
@@ -71,15 +73,20 @@ export default {
     shortenedComment () {
       return `${this.content.substring(0, 200)}...`;
     },
+    recommentBoxLength () {
+      return this.replies.length
+    },
   },
 };
 </script>
 
 <style scoped>
 .body {
-  font-size: 1.25em;
+  font-size: 1em;
   margin-top: 15px;
   text-align: left;
+  display: flex;
+  align-items: center;
 }
 .header {
   align-items: center;
@@ -99,20 +106,34 @@ export default {
 }
 .name {
   color: white;
-  font-size: 20px;
+  font-size: 1.25em;
   font-weight: bold;
   letter-spacing: 0.01em;
+  margin-right: 0.5em;
 }
 .pic {
   border-radius: 50%;
   background-color: white;
   height: 30px;
   margin-right: 10px;
-  width: 30px;
+  min-width: 30px;
 }
 .tag {
   color: white;
   font-size: 24px;
   margin-right: 8px;
+}
+.replyHandler {
+  font-size: 1em;
+  cursor: pointer;
+  margin-left: 0.5em;
+}
+.recommentBoxHandler {
+  cursor: pointer;
+  font-size: 1em;
+  margin-left: 0.5em;
+}
+.commentBoxContent {
+  flex: 1;
 }
 </style>

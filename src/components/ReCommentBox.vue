@@ -1,18 +1,15 @@
 <template>
   <div class="main">
-    <div class="header">
-      <div class="tag">ㄴ</div>
-      <div class="pic"></div>
-      <div class="name">
-        {{ author.nickName }}
-      </div>
-    </div>
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
-      <div v-if="isLong() && !seeMore">
+      <div class="pic"></div>
+      <span class="name">
+        {{ author.nickName }}
+      </span>
+      <span class="recommentContent" v-if="isLong() && !seeMore">
         {{ shortenedComment }}
         <span class="more" @click="seeMore = true">더 보기</span>
-      </div>
-      <div v-else>{{ content }}</div>
+      </span>
+      <span class="recommentContent" v-else>{{ content }}</span>
     </div>
   </div>
 </template>
@@ -50,9 +47,10 @@ export default {
 
 <style scoped>
 .body {
-  font-size: 0.9em;
-  margin-top: 15px;
+  font-size: 1em;
   text-align: left;
+  display: flex;
+  align-items: center;
 }
 .header {
   align-items: center;
@@ -82,12 +80,7 @@ export default {
   margin-right: 10px;
   width: 30px;
 }
-.reply-box {
-  transform: translate(30px);
-}
-.tag {
-  color: white;
-  font-size: 24px;
-  margin-right: 8px;
+.recommentContent {
+  margin-left: 0.5em;
 }
 </style>

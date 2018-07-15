@@ -10,7 +10,7 @@
       ></v-progress-circular>
     <div class="zaboListWrapper" v-else>
       <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in changedZaboList">
-        <img @click="zaboDetail(zabo.id, zabo.founder.nickName)" :src="zabo.posters[0].image" class="zaboImage">
+        <img @click="zaboDetail(zabo.id, zabo.author.nickName)" :src="zabo.posters[0].image" class="zaboImage">
         <span class="zaboTitle">{{zabo.title}}</span>
       </div>
     </div>

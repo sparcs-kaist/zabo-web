@@ -20,12 +20,12 @@
     <carousel-3d ref="bull" :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
-          <div @click="zaboDetail(zabo.id, zabo.founder.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
+          <div @click="zaboDetail(zabo.id, zabo.author.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
             <img class="poster" :src="zabo.posters[0].image_thumbnail">
             <div class="posterDescriptionWrapper">
               <span class="posterDescription">{{$t('제목 : ')}}{{zabo.title}}</span>
               <span class="posterDescription">{{$t('위치 : ')}}{{zabo.location}}</span>
-              <span class="posterDescription">{{$t('올린이 : ')}}{{zabo.founder.nickName}}</span>
+              <span class="posterDescription">{{$t('올린이 : ')}}{{zabo.author.nickName}}</span>
             </div>
           </div>
         </div>

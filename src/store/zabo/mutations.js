@@ -13,7 +13,7 @@ const mutations = {
       for (let k = 0; k < 4; k++) {
         finalZaboes[localMethod].push({
           id: k + 1,
-          founder: {
+          author: {
             url: null,
             nickName: "None",
             profile_image:

@@ -15,14 +15,14 @@
             <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
             <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
           </div>
-          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
-          </input-field>
         </div>
 
         <div class="bodyWrapper" v-show="toDisplay === 0">
           <info-screen :info="this.content" />
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
+          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+          </input-field>
           <review-screen :comments="comments" />
         </div>
       </div>
@@ -181,9 +181,6 @@ export default {
 
 <style scoped>
 .main {
-  /* background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
-    url("../assets/alexander-popov-522100-unsplash.jpg");
-  background-size: cover; */
   display: flex;
   position: absolute;
   top: 0;
