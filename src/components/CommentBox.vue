@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="body">
-      <div class="pic"></div>
+      <img class="pic" :src="author.profile_image">
       <div>
         <span class="name">
           {{ author.nickName }}
@@ -113,10 +113,11 @@ export default {
 }
 .pic {
   border-radius: 50%;
-  background-color: white;
-  height: 30px;
+  min-height: 30px;
+  max-height: 30px;
   margin-right: 10px;
   min-width: 30px;
+  max-width: 30px;
 }
 .tag {
   color: white;

@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
-      <div class="pic"></div>
+      <img :src="author.profile_image" class="pic">
       <span class="name">
         {{ author.nickName }}
       </span>
@@ -76,9 +76,11 @@ export default {
 .pic {
   border-radius: 50%;
   background-color: white;
-  height: 30px;
+  min-height: 30px;
+  max-height: 30px;
   margin-right: 10px;
-  width: 30px;
+  min-width: 30px;
+  max-width: 30px;
 }
 .recommentContent {
   margin-left: 0.5em;
