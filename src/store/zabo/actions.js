@@ -192,6 +192,17 @@ const actions = {
           commit(types.GOT_RESPONSE);
         });
     });
+  },
+  getNotifications({ commit }, payload) {
+    axios
+      .get("http://localhost:8000/api/notifications/", {
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
+      })
+      .then(res => {
+        commit(types.SET_NOTIFICATIONS, res.data.data);
+      });
   }
 };
 

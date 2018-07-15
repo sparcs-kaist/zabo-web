@@ -40,6 +40,7 @@ export default {
   created () {
     this.$store.commit("LOGIN");
     this.$store.dispatch("getMyInfo");
+    this.$store.dispatch("getNotifications");
   },
   methods: {
     handleLogin (value) {
@@ -52,6 +53,9 @@ export default {
   computed: {
     loggedInState: function () {
       return this.$store.getters.loggedInState;
+    },
+    notifications () {
+      return this.$store.getters.notifications;
     }
   }
 };

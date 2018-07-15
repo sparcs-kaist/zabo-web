@@ -106,6 +106,9 @@ const mutations = {
   //   }
   //   state.zaboes.splice(state.zaboes.indexOf(state.zaboes.find(func)), 1);
   // },
+  [types.SET_NOTIFICATIONS](state, payload) {
+    state.notifications = payload;
+  },
   [types.ZABOES_PAGECOUNT](state, payload) {
     state.zaboesPageCount[payload.method] = payload.result;
   },

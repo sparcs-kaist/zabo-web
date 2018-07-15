@@ -28,7 +28,8 @@ export default {
     participatedZaboes: {},
     currentUser: {},
     loggedInState: false,
-    getResponse: true
+    getResponse: true,
+    notifications: []
   },
   actions,
   mutations,

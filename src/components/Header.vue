@@ -21,6 +21,16 @@
         <div class="right">
           <Search @submitValue="onSearch" :searchValue="searchValue" />
         </div>
+        <div style="position: relative;">
+          <v-icon @click="notificationsModal = !notificationsModal" class="right">notifications</v-icon>
+          <div class="notificationWrapper" v-if="notificationsModal">
+            <div class="singleNotiWrapper" v-for="(noti, index) in notifications" :key="index">
+              <span>{{noti.from}}</span>
+              <span>{{noti.type}}</span>
+              <span>{{noti.content}}</span>
+            </div>
+          </div>
+        </div>
         <template v-if="loggedInState">
           <div @click="logout" class="button right">
             {{ $t('로그아웃') }}
@@ -51,7 +61,8 @@ export default {
   data () {
     return {
       lang: "kr",
-      searchValue: ""
+      searchValue: "",
+      notificationsModal: false
     };
   },
   props: {
@@ -85,6 +96,9 @@ export default {
       } else {
         return "kr";
       }
+    },
+    notifications () {
+      return this.$store.getters.getNotifications;
     }
   }
 };
@@ -144,5 +158,33 @@ export default {
 .logo {
   height: 37px;
   margin-left: 27px;
+}
+
+.notificationWrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: gray;
+  /* width: 200px; */
+  padding: 10px;
+}
+.notificationWrapper::after {
+  content: "";
+  position: absolute;
+  /* top: 40px; */
+  right: 14%;
+  border: 10px solid transparent;
+  border-bottom-color: gray;
+  border-top: 0;
+  width: 0;
+  height: 0;
+  margin-right: -10px;
+  margin-top: -20px;
+}
+
+.singleNotiWrapper {
+  display: flex;
 }
 </style>

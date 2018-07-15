@@ -19,6 +19,9 @@ const getters = {
   getMyID(state) {
     return state.currentUser.id;
   },
+  getNotifications(state) {
+    return state.notifications;
+  },
   getNickName(state) {
     return state.currentUser.nickName;
   },
