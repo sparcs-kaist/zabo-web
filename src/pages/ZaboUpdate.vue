@@ -141,7 +141,7 @@
             </div>
           </div>
           <div class="buttonWrapper">
-            <div @click="postPoster" :class="zaboUploadValidation ? 'finalButton': 'buttonDisabled' ">
+            <div @click="editPoster" :class="zaboUploadValidation ? 'finalButton': 'buttonDisabled' ">
             </div>
             <div class="cancelButton">
               {{$t('취소')}}
@@ -204,11 +204,51 @@ export default {
       zaboUrl: "",
       zaboUrlExist: false,
       postState: true,
+      zabo_id: -1,
+      deadline: ""
     };
   },
   created () {
-    var map = new naver.maps.Map(document.getElementById("naverMap"));
-    console.log("hell");
+    this.zabo_id = this.$route.params.zabo_id
+    axios.get(`http://localhost:8000/api/zaboes/${this.zabo_id}/`).then(res => {
+      console.log(res.data);
+      const { apply, author, category, content, deadline, link_url, location, posters, timeslots, title } = res.data;
+      if (apply == "Z") {
+        this.selectedMethod = "자보에서 신청"
+      } else if (apply == "S") {
+        this.selectedMethod = "현장 접수"
+      } else if (apply == "E") {
+        this.selectedMethod = "외부 링크를 통한 신청"
+      }
+      if (category == "R") {
+        this.selectedcategory = "리크루팅"
+      } else if (category == "P") {
+        this.selectedcategory = "공연"
+      } else if (category == "C") {
+        this.selectedcategory = "대회"
+      } else if (category == "F") {
+        this.selectedcategory = "설명회"
+      } else if (category == "L") {
+        this.selectedcategory = "세미나"
+      } else if (category == "E") {
+        this.selectedcategory = "전시회"
+      }
+      if (timeslots.length > 0) {
+        timeslots.map(timeslot => {
+          this.scheduleDates.push({
+            content: timeslot.content,
+            "start_time": timeslot.start_time.split(" ")[0] + "T" + timeslot.start_time.split(" ")[1],
+            "end_time": timeslot.end_time.split(" ")[0] + "T" + timeslot.end_time.split(" ")[1]
+          })
+        })
+      }
+      // this.zaboPosters
+      this.name = title;
+      this.location = location;
+      this.introduction = content;
+      this.zaboUrl = link_url;
+      this.deadline = deadline;
+    })
   },
   methods: {
     posteradd (num, event) {
@@ -220,7 +260,7 @@ export default {
     deletePoster () {
       this.imagePreviewUrls = [];
     },
-    postPoster () {
+    editPoster () {
       if (this.zaboUploadValidation) {
         let selcat = ""
         if (this.selectedcategory == "리크루팅") {
@@ -254,25 +294,21 @@ export default {
             formData.set(`posters[${i}]`, this.zaboPosters[i]);
           }
         }
-        console.log(this.selectedcategory);
-
-        console.log(this.scheduleDates);
-        console.log(this.computedScheduleDates);
-        console.log(selcat);
         formData.append('title', this.name);
         formData.append('location', this.location);
         formData.append('content', this.introduction);
         formData.append('apply', selapp);
         formData.append('payment', "F");
         formData.append('category', selcat);
+        formData.append('deadline', this.deadline);
         formData.append('timeslots', JSON.stringify(this.computedScheduleDates));
         if (this.zaboUrlExist) {
           formData.append('link_url', this.zaboUrl);
         }
 
         axios({
-          method: 'post',
-          url: 'http://localhost:8000/api/zaboes/',
+          method: 'put',
+          url: `http://localhost:8000/api/zaboes/${this.zabo_id}`,
           headers: {
             'Content-Type': "multipart/form-data",
             Authorization: localStorage.getItem('token'),
@@ -339,7 +375,8 @@ export default {
           {
             ...schedule,
             "end_time": schedule.end_time.split("T")[0] + ' ' + schedule.end_time.split("T")[1] + ":00",
-            "start_time": schedule.start_time.split("T")[0] + ' ' + schedule.start_time.split("T")[1] + ":00"          }
+            "start_time": schedule.start_time.split("T")[0] + ' ' + schedule.start_time.split("T")[1] + ":00"
+          }
         )
       })
       return scheduleArray;
