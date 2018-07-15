@@ -29,6 +29,7 @@
       <div class="column">
         <img :src="this.image" height="600" width="500" />
         <v-icon @click="closeModal" class="closeIcon">close</v-icon>
+        <v-icon v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
     </div>
     <div class="coverImage"></div>
@@ -68,6 +69,9 @@ export default {
   computed: {
     zabodetailId () {
       return this.zabo_id;
+    },
+    loggedInState () {
+      return this.$store.getters.loggedInState
     }
   },
   methods: {
@@ -97,6 +101,9 @@ export default {
     },
     closeModal () {
       this.$emit('closeModal');
+    },
+    editZabo () {
+      this.$router.push({ name: "ZaboUpdate", params: { zabo_id: this.zabo_id } })
     },
     likeZabo () {
       this.isLiked = true;
@@ -319,6 +326,14 @@ export default {
   position: absolute;
   top: 30px;
   right: 30px;
+  cursor: pointer;
+}
+.editIcon {
+  font-size: 38px;
+  color: white;
+  position: absolute;
+  top: 30px;
+  right: 80px;
   cursor: pointer;
 }
 .favoriteIcon {

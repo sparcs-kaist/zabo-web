@@ -28,6 +28,7 @@
       </div>
       <div class="column">
         <img :src="this.image" height="600" width="500" />
+        <v-icon v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
     </div>
     <div class="coverImage"></div>
@@ -63,6 +64,11 @@ export default {
     InputField,
     ReviewScreen,
   },
+  computed: {
+    loggedInState () {
+      return this.$store.getters.loggedInState
+    }
+  },
   methods: {
     onSubmitComment () {
       axios({
@@ -90,6 +96,9 @@ export default {
     },
     selectTab (selected) {
       this.toDisplay = selected;
+    },
+    editZabo () {
+      this.$router.push({ name: "ZaboUpdate", params: { zabo_id: this.zabo_id } })
     },
     likeZabo () {
       this.isLiked = true;
@@ -310,6 +319,14 @@ export default {
 }
 .favoriteIcon {
   font-size: 2em;
+}
+.editIcon {
+  font-size: 38px;
+  color: white;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
 }
 .likeCount {
   font-size: 2em;

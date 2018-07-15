@@ -18,7 +18,7 @@ export default new Router({
       component: ZaboUpload
     },
     {
-      path: "/zabo/update",
+      path: "/zabo/update/:zabo_id",
       name: "ZaboUpdate",
       component: ZaboUpdate
     },
