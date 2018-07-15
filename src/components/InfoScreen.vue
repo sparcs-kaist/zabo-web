@@ -6,13 +6,15 @@
         <span class="more" @click="seeMore = true">더 보기</span>
       </p>
       <p v-else>{{ info }}</p>
+      <p>{{this.category}}</p>
+      <p>{{this.payment}}</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['info'],
+  props: ['info', 'category', 'payment'],
   data () {
     return {
       seeMore: false,
