@@ -1,83 +1,80 @@
 <template>
-  <!-- <div class="info-screen">
-    <div class="description">
-      <p v-if="!seeMore">
-        {{ shortenedInfo }} <span class="more" @click="seeMore = true">더 보기</span>
-      </p>
-      <p v-else>{{ info }}</p>
-    </div>
-  </div> -->
   <div class="main">
-    <div class="header">
-      <div v-show="depth === 1" class="tag">ㄴ</div>
-      <div class="pic"></div>
-      <div class="name">
-        {{ author }}
+    <div class="body">
+      <img class="pic" :src="author.profile_image">
+      <div>
+        <span class="name">
+          {{ author.nickName }}
+        </span>
+        <span class="commentBoxContent">{{ content }}</span>
+        <span class="replyHandler" @click="recommentInputState = !recommentInputState">댓글 달기</span>
       </div>
     </div>
-    <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
-      <div v-if="isLong() && !seeMore">
-        {{ shortenedComment }}
-        <span class="more" @click="seeMore = true">더 보기</span>
-      </div>
-      <div v-else>{{ content }}</div>
+    <div>
     </div>
-    <div v-show="depth === 0">
-      <input-field class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
-      </input-field>
+    <div class="recommentBoxHandler" v-show="!recommentBoxState" @click="recommentBoxState = !recommentBoxState">
+      ㄴ 댓글 더보기
     </div>
-    <comment-box class="reply-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
-    </comment-box>
+    <re-comment-box v-show="recommentBoxState" class="recomment-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
+    </re-comment-box>
+    <input-field v-show="!recommentInputState" class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
+    </input-field>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import InputField from './InputField';
+import ReCommentBox from './ReCommentBox';
 
 export default {
   components: {
     InputField,
+    ReCommentBox
   },
   props: ['author', 'comment_id', 'content', 'depth', 'replies'],
   name: 'comment-box',
-  data() {
+  data () {
     return {
       newReply: '',
       seeMore: false,
+      recommentInputState: false,
+      recommentBoxState: false
     };
   },
   methods: {
-    isLong() {
+    isLong () {
       return this.content.length > 200;
     },
-    onSubmitReply() {
+    onSubmitReply () {
       axios({
         method: 'post',
-        url: 'http://localhost:12345/api/recomments/',
-        auth: {
-          username: 'jidan@example.com',
-          password: 'q1234321',
-        },
+        url: 'http://localhost:8000/api/recomments/',
         data: {
           content: this.newReply,
           comment: this.comment_id,
         },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: localStorage.getItem('token')
+        }
       })
         .then((response) => {
-          // eslint-disable-next-line
+          console.log('what!')
           console.log(response);
           this.replies.push(response.data);
         })
         .catch((error) => {
-          // eslint-disable-next-line
           console.log(error);
         });
     },
   },
   computed: {
-    shortenedComment() {
+    shortenedComment () {
       return `${this.content.substring(0, 200)}...`;
+    },
+    recommentBoxLength () {
+      return this.replies.length
     },
   },
 };
@@ -85,9 +82,11 @@ export default {
 
 <style scoped>
 .body {
-  font-size: 0.9em;
+  font-size: 1em;
   margin-top: 15px;
   text-align: left;
+  display: flex;
+  align-items: center;
 }
 .header {
   align-items: center;
@@ -96,6 +95,7 @@ export default {
 }
 .input {
   padding-left: 15px;
+  margin-top: 1em;
 }
 .main {
   margin: 20px 0 0 0;
@@ -106,23 +106,35 @@ export default {
 }
 .name {
   color: white;
-  font-size: 20px;
+  font-size: 1.25em;
   font-weight: bold;
   letter-spacing: 0.01em;
+  margin-right: 0.5em;
 }
 .pic {
   border-radius: 50%;
-  background-color: white;
-  height: 30px;
+  min-height: 30px;
+  max-height: 30px;
   margin-right: 10px;
-  width: 30px;
-}
-.reply-box {
-  transform: translate(30px);
+  min-width: 30px;
+  max-width: 30px;
 }
 .tag {
   color: white;
   font-size: 24px;
   margin-right: 8px;
+}
+.replyHandler {
+  font-size: 1em;
+  cursor: pointer;
+  margin-left: 0.5em;
+}
+.recommentBoxHandler {
+  cursor: pointer;
+  font-size: 1em;
+  margin-left: 0.5em;
+}
+.commentBoxContent {
+  flex: 1;
 }
 </style>

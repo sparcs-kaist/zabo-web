@@ -1,7 +1,7 @@
 <template>
   <div class="infoScreen">
     <div class="description">
-      <p v-if="isLong() && !seeMore">
+      <p v-if="!isLong">
         {{ shortenedInfo }}
         <span class="more" @click="seeMore = true">더 보기</span>
       </p>
@@ -13,19 +13,23 @@
 <script>
 export default {
   props: ['info'],
-  data() {
+  data () {
     return {
       seeMore: false,
     };
   },
   computed: {
-    shortenedInfo() {
+    shortenedInfo () {
       return `${this.info.substring(0, 1000)}...`;
     },
   },
   methods: {
-    isLong() {
-      return this.info.length > 1000;
+    isLong () {
+      if (this.info.length > 1000) {
+        return true
+      } else {
+        return false
+      }
     },
   },
 };
@@ -34,12 +38,12 @@ export default {
 <style scoped>
 .description {
   color: #fff;
-  font-size: 0.9em;
+  font-size: 1em;
   text-align: left;
 }
 .infoScreen {
   height: 100%;
-  width: 80%;
+  width: 100%;
 }
 .more {
   color: rgb(140, 140, 140);

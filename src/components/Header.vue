@@ -74,8 +74,8 @@ export default {
       }
     },
     onSearch (searchTerm) {
-      console.log(searchTerm);
-      this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
+      this.$router.push({ name: 'ZaboSearch', params: { search: searchTerm } })
+      this.searchTerm = ""
     }
   },
   computed: {
@@ -95,7 +95,7 @@ export default {
   width: 100%;
   height: 78px;
   position: fixed;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.9);
   z-index: 500;
   display: flex;
   flex-direction: column;

@@ -50,9 +50,6 @@ export default {
     }
   },
   computed: {
-    mainZaboSeen: function () {
-      return this.$store.getters.mainZaboSeen;
-    },
     loggedInState: function () {
       return this.$store.getters.loggedInState;
     }

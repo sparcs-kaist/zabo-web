@@ -15,19 +15,20 @@
             <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
             <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
           </div>
-          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
-          </input-field>
         </div>
 
         <div class="bodyWrapper" v-show="toDisplay === 0">
           <info-screen :info="this.content" />
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
+          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+          </input-field>
           <review-screen :comments="comments" />
         </div>
       </div>
       <div class="column">
         <img :src="this.image" height="600" width="500" />
+        <v-icon @click="closeModal" class="closeIcon">close</v-icon>
         <v-icon v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
     </div>
@@ -64,7 +65,11 @@ export default {
     InputField,
     ReviewScreen,
   },
+  props: ['zaboId'],
   computed: {
+    zabodetailId () {
+      return this.zabo_id;
+    },
     loggedInState () {
       return this.$store.getters.loggedInState
     }
@@ -76,10 +81,7 @@ export default {
         url: `http://localhost:8000/api/comments/`,
         data: {
           content: this.newComment,
-          zabo: this.zabo_id,
-          "is_private": true,
-          "is_deleted": true,
-          "is_blocked": true
+          zabo: this.zabodetailId,
         },
         headers: {
           "Content-Type": "application/json",
@@ -96,6 +98,9 @@ export default {
     },
     selectTab (selected) {
       this.toDisplay = selected;
+    },
+    closeModal () {
+      this.$emit('closeModal');
     },
     editZabo () {
       this.$router.push({ name: "ZaboUpdate", params: { zabo_id: this.zabo_id } })
@@ -153,10 +158,10 @@ export default {
     }
   },
   mounted () {
-    this.zabo_id = this.$route.params.zabo_id;
+    this.zabo_id = this.zaboId;
     axios({
       method: 'get',
-      url: `http://localhost:8000/api/zaboes/${this.zabo_id}/`,
+      url: `http://localhost:8000/api/zaboes/${this.zabodetailId}/`,
       headers: {
         Authorization: localStorage.getItem('token')
       }
@@ -185,14 +190,13 @@ export default {
 .main {
   display: flex;
   position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0;
-  right: 0;
-  /* margin-top: 78px; */
+  top: 0;
+  bottom: 0;
+  left: 0%;
+  right: 0%;
   overflow: hidden;
   z-index: 502;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
 }
 .coverImage {
   background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
@@ -210,13 +214,12 @@ export default {
 }
 .hide {
   position: absolute;
-  top: 78px;
-  bottom: 68px;
+  top: 0;
+  bottom: 0;
   left: 12.5%;
   right: 12.5%;
   overflow: hidden;
   border-radius: 3px;
-  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
 }
 
 .bodyWrapper {
@@ -245,6 +248,7 @@ export default {
 }
 
 .headerStyle {
+  /* flex: 1; */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -269,8 +273,6 @@ export default {
   width: 100%;
   display: flex;
   margin-bottom: 24px;
-  align-items: center;
-  justify-content: flex-start;
 }
 .buttonTap {
   cursor: pointer;
@@ -295,7 +297,8 @@ export default {
 .column:first-child {
   padding-top: 80px;
   padding-left: 40px;
-  padding-bottom: 20px;
+  /* overflow-y: scroll;
+  overflow-x: hidden; */
 }
 .column:last-child {
   justify-content: center;
@@ -317,16 +320,24 @@ export default {
   margin: 0 16px 0 0;
   font-size: 1.6em;
 }
-.favoriteIcon {
-  font-size: 2em;
+.closeIcon {
+  font-size: 40px;
+  color: white;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  cursor: pointer;
 }
 .editIcon {
   font-size: 38px;
   color: white;
   position: absolute;
   top: 30px;
-  right: 30px;
+  right: 80px;
   cursor: pointer;
+}
+.favoriteIcon {
+  font-size: 2em;
 }
 .likeCount {
   font-size: 2em;

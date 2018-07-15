@@ -37,11 +37,14 @@ const getters = {
   getLastName(state) {
     return state.currentUser.last_name;
   },
+  getGender(state) {
+    return state.currentUser.gender;
+  },
+  getProfileImagesource(state) {
+    return state.currentUser.profile_image;
+  },
   loggedInState(state) {
     return state.loggedInState;
-  },
-  mainZaboSeen(state) {
-    return state.mainZaboSeen;
   },
   isAjaxfinished(state) {
     return state.getResponse;
