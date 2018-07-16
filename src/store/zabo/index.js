@@ -25,7 +25,6 @@ export default {
       강의: "",
       전람회: ""
     },
-    createdZaboes: [],
     participatedZaboes: {},
     currentUser: {},
     loggedInState: false,

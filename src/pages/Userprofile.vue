@@ -35,13 +35,13 @@
             팔로우
           </v-tab>
         </v-tabs>
-        <v-tabs-items v-model="tab" style="height: 500px;">
+        <v-tabs-items v-model="tab" class="tabsWrapper">
           <v-tab-item :key="1">
             <profile @cancel="cancel" @editmode="edit_toggle" :valid="valid" :first="new_first_name" :last="new_last_name" :image="new_profile_image"></profile>
           </v-tab-item>
-          <v-tab-item v-if="zaboesExist" :key="2">
-            <div class="zaboListWrapper">
-              <div class="zaboWrapper" v-for="(zabo,index) in createdZaboes" :key="index">
+          <v-tab-item :key="2">
+            <div v-if="!zaboLoading" class="zaboListWrapper">
+              <div class="zaboWrapper" v-for="(zabo,index) in computedCreatedZaboes" :key="index">
                 <img @click="zaboDetail(zabo.id, zabo.author.nickName)" :src="zabo.posters[0].image" class="zaboImage">
                 <span class="zaboTitle">{{zabo.title}}</span>
               </div>
@@ -65,6 +65,8 @@
 import Participated from "./Userprofile/Participated";
 import Profile from "./Userprofile/Profile";
 import ZaboDetailModal from '@/components/ZaboDetailModal';
+import axios from '@/axios-auth';
+import * as types from "@/store/mutation-types";
 
 export default {
   name: "userprofile",
@@ -84,6 +86,8 @@ export default {
       profilePreview: null,
       modalState: false,
       modalZaboId: -1,
+      zaboLoading: true,
+      createdZaboes: []
     };
   },
   components: {
@@ -126,6 +130,9 @@ export default {
         this.modalZaboId = id;
       }
     },
+    closeModal () {
+      this.modalState = false;
+    }
   },
   mounted () {
     setTimeout(() => {
@@ -147,15 +154,27 @@ export default {
     currentUser () {
       return this.$store.getters.currentUser;
     },
-    createdZaboes () {
-      return this.$store.getters.getCreatedZaboes;
-    },
-    zaboesExist () {
-      return this.createdZaboes.length > 0;
+    computedCreatedZaboes () {
+      let finalZaboes = [];
+      for (let i = 0; i < this.createdZaboes.length; i++) {
+        if (this.createdZaboes[i].posters.length > 0) {
+          finalZaboes.push(this.createdZaboes[i])
+        }
+      }
+      return finalZaboes
     },
   },
   created () {
-    this.$store.dispatch("getCreatedZaboes");
+    axios
+      .get("http://localhost:8000/api/zaboes/created/", {
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
+      })
+      .then(res => {
+        this.createdZaboes = res.data.data;
+        this.zaboLoading = false;
+      });
   }
 };
 </script>
@@ -163,7 +182,7 @@ export default {
 <style scoped>
 #whole {
   width: 70%;
-  height: 2000px;
+  /* height: 2000px; */
   margin-left: 15%;
   /* margin-top: 90px; */
   text-align: center;
@@ -265,15 +284,15 @@ export default {
 }
 
 .zaboListWrapper {
-  width: 75%;
+  width: 100%;
   min-width: 400px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
 }
 
-.zaboaWrapper {
+.zaboWrapper {
   display: flex;
   min-width: 201px;
   height: 100%;
@@ -282,13 +301,21 @@ export default {
   margin-bottom: 2em;
 }
 
+.zaboTitle {
+  font-size: 1.25em;
+  font-weight: 700;
+}
+
 .zaboImage {
   width: 183px;
   height: 286px;
   margin-bottom: 0.75em;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+}
+.zaboImage:hover {
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
 }
 
 .zaboModalWrapper {
@@ -296,5 +323,9 @@ export default {
   position: absolute;
   top: 78px;
   bottom: 68px;
+}
+
+.tabsWrapper {
+  margin-bottom: 68px;
 }
 </style>

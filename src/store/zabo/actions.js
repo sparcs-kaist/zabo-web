@@ -183,18 +183,6 @@ const actions = {
       .then(res => {
         commit(types.SET_NOTIFICATIONS, res.data.data);
       });
-  },
-  getCreatedZaboes({ commit }, payload) {
-    axios
-      .get("http://localhost:8000/api/zaboes/created/", {
-        headers: {
-          Authorization: localStorage.getItem("token")
-        }
-      })
-      .then(res => {
-        commit(types.SET_CREATED_ZABOES, res.data.data);
-        return res.data;
-      });
   }
 };
 

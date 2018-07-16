@@ -134,17 +134,6 @@ const mutations = {
     state.loggedInState = false;
     state.currentUser = {};
     localStorage.removeItem("token");
-  },
-  [types.SET_CREATED_ZABOES](state, payload) {
-    let finalZaboes = [];
-    let currentZaboes = payload;
-    currentZaboes.map(zabo => {
-      if (zabo.posters.length > 0) {
-        finalZaboes.push(zabo);
-      }
-    });
-    console.log(finalZaboes);
-    state.createdZaboes = finalZaboes;
   }
 };
 
