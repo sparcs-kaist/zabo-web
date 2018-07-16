@@ -152,7 +152,7 @@ export default {
     },
     zaboesExist () {
       return this.createdZaboes.length > 0;
-    }
+    },
   },
   created () {
     this.$store.dispatch("getCreatedZaboes");

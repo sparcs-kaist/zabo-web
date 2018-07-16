@@ -1,13 +1,16 @@
 <template>
   <div class="infoScreen">
     <div class="description">
-      <p v-if="!isLong">
+      <h1 class="header">카테고리</h1>
+      <p class="content">{{this.category}}</p>
+      <h1 class="header">결제 여부</h1>
+      <p class="content">{{this.payment}}</p>
+      <h1 class="header">자보 설명</h1>
+      <p class="content" v-if="!isLong">
         {{ shortenedInfo }}
         <span class="more" @click="seeMore = true">더 보기</span>
       </p>
       <p v-else>{{ info }}</p>
-      <p>{{this.category}}</p>
-      <p>{{this.payment}}</p>
     </div>
   </div>
 </template>
@@ -47,6 +50,10 @@ export default {
   height: 100%;
   width: 100%;
 }
+.content {
+  font-size: 1em;
+}
+
 .more {
   color: rgb(140, 140, 140);
   cursor: pointer;

@@ -22,12 +22,10 @@
           <info-screen :info="this.content" :category="category" :payment="payment" />
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
-          <div class="bodyWrapper" v-show="toDisplay === 1">
-            <div v-for="(timeslot, index) in timeslots" :key="index">
-              <span>{{timeslot.content}}</span>
-              <span>{{timeslot.start_time}}</span>
-              <span>{{timeslot.end_time}}</span>
-            </div>
+          <div v-for="(timeslot, index) in timeslots" :key="index">
+            <span>{{timeslot.content}}</span>
+            <span>{{timeslot.start_time}}</span>
+            <span>{{timeslot.end_time}}</span>
           </div>
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 2">
@@ -66,7 +64,7 @@ export default {
       zabo_id: -1,
       updated_time: "",
       isLiked: false,
-      likeCount: -1,
+      likeCount: 0,
       timeslots: [],
       category: "",
       payment: ""
@@ -130,6 +128,9 @@ export default {
         console.log(res)
         if (res.status == 201) {
           this.isLiked = true;
+        } else {
+          this.likeCount -= 1;
+          this.isLiked = false;
         }
       })
         .catch(err => {
@@ -154,8 +155,11 @@ export default {
         },
       }).then(res => {
         console.log(res)
-        if (res.status == 201) {
+        if (res.status == 204) {
           this.isLiked = false;
+        } else {
+          this.likeCount += 1;
+          this.isLiked = true;
         }
       })
         .catch(err => {

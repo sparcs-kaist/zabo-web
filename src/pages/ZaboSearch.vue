@@ -25,9 +25,17 @@
         class="ListWrapper"
       ></v-progress-circular>
     <div class="ListWrapper" v-else>
-      <div @click="userDetail(user.nickName)" class="userWrapper" :key="index" v-for="(user, index) in userList">
-        <img :src="user.profile_image" class="userImage">
-        <span class="userName">{{user.nickName}}</span>
+      <div class="userWrapper" :key="index" v-for="(user, index) in userList">
+        <div @click="userDetail(user.nickName)" class="userInfoWrapper">
+          <img :src="user.profile_image" class="userImage">
+          <span class="userName">{{user.nickName}}</span>
+        </div>
+        <button v-show="!following" class="Follow" @click="followUser(user.nickName)">
+          팔로우
+        </button>
+        <button v-show="following" class="Follow" @click="unfollowUser(user.nickName)">
+          팔로우 취소
+        </button>
       </div>
       <div class="doesNotExist" v-show="userList.length == 0">
         <span>{{$t('유저가 존재하지 않습니다.')}}</span>
@@ -56,6 +64,7 @@ export default {
       modalZaboId: -1,
       searchTerm: "",
       modalState: false,
+      following: false
     }
   },
   components: {
@@ -116,8 +125,38 @@ export default {
     },
     userDetail (nickName) {
       this.$router.push({ name: "UserDetail", params: { nickName: nickName } })
+    },
+    followUser (nickName) {
+      axios({
+        url: 'http://localhost:8000/api/users/followOther/',
+        method: 'post',
+        headers: {
+          Authorization: localStorage.getItem('token')
+        },
+        data: {
+          nickname: nickName
+        }
+      }).then(res => {
+        this.following = true;
+        console.log(res)
+      })
+    },
+    unfollowUser (nickName) {
+      axios({
+        url: 'http://localhost:8000/api/users/unfollowOther/',
+        method: 'post',
+        headers: {
+          Authorization: localStorage.getItem('token')
+        },
+        data: {
+          nickname: nickName
+        }
+      }).then(res => {
+        console.log(res)
+        this.following = false;
+      })
     }
-  }
+  },
 }
 </script>
 <style scoped lang=''>
@@ -158,22 +197,41 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-bottom: 2em;
+  margin-right: 10px;
 }
 .userWrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
+  border: 1px solid #ececec;
+  border-radius: 3px;
+  padding: 15px 20px;
+  margin-right: 10px;
+}
+.userInfoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.Follow {
+  width: 100%;
+  height: 30px;
+  background-color: #12397d;
+  border-radius: 3px;
+  color: white;
+  margin-top: 1em;
 }
 .userImage {
-  width: 30px;
-  height: 30px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
 }
 .userName {
-  font-size: 1.5em;
+  font-size: 1.875em;
   font-weight: 700;
-  margin-left: 0.5em;
+  margin-left: 10px;
 }
 .zaboImage {
   width: 183px;

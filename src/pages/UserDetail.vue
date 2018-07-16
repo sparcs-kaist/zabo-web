@@ -11,7 +11,7 @@
       </div>
       <v-tabs fixed-tabs v-model="tab" style="margin-top: 20px; margin-bottom: 20px;">
         <v-tab :key="1" style="font-size: 17pt; font-weight: 800;">
-          유저 정보
+          정보
         </v-tab>
         <v-tab :key="2" style="font-size: 17pt; font-weight: 800;">
           업로드한 자보
@@ -20,12 +20,27 @@
           팔로우 하는 유저
         </v-tab>
       </v-tabs>
+      <v-tabs-items v-model="tab" style="height: 500px;">
+        <v-tab-item :key="1">
+          <profile :valid="valid" :first="first_name" :last="last_name" :image="profile_image"></profile>
+        </v-tab-item>
+        <v-tab-item v-if="zaboesExist" :key="2">
+          <div class="zaboListWrapper">
+          </div>
+        </v-tab-item>
+        <v-tab-item :key="3">
+          <div>
+            팔로우
+          </div>
+        </v-tab-item>
+      </v-tabs-items>
     </div>
   </v-app>
 </template>
 
 <script>
 import axios from '@/axios-auth';
+import Profile from "./Userprofile/Profile";
 
 export default {
   name: "userDetail",
@@ -45,9 +60,12 @@ export default {
           })
       })
   },
+  components: {
+    profile: Profile,
+  },
   data () {
     return {
-      valid: true,
+      valid: false,
       tab: "tab1",
       imagesrc: "",
       first_name: "",
