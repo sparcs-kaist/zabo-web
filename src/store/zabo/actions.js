@@ -131,26 +131,6 @@ const actions = {
       });
     });
   },
-  getMyInfo({ commit, state }) {
-    axios
-      .get("/users/myInfo", {
-        headers: {
-          Authorization: localStorage.getItem("token")
-        }
-      })
-      .then(response => {
-        if (response.status !== 401) {
-          commit(types.SET_CURRENT_USER, response.data);
-        } else {
-          console.log("response stauts 401!");
-        }
-      })
-      .then(() => {
-        commit(types.GOT_RESPONSE);
-        return true;
-      })
-      .catch(err => console.log(err));
-  },
   setMyInfo({ commit, dispatch, state }, payload) {
     const {
       currentUser: { id }

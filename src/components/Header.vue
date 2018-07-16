@@ -25,11 +25,30 @@
           <v-icon @click="notificationsModal = !notificationsModal" class="right">notifications</v-icon>
           <div class="notificationWrapper" v-if="notificationsModal">
             <div class="singleNotiWrapper" v-for="(noti, index) in notifications" :key="index">
-              <span>{{noti.from}}</span>
-              <span>{{noti.type}}</span>
-              <span>{{noti.content}}</span>
+              <div class="notiInfoWrapper" v-if="noti.type == 'SomeoneFollowing'">
+                <img :src="'http://localhost:8000'+noti.from_profile" class="notiProfileImage">
+                <span class="notiContent">
+                  <span class="notiFrom">{{noti.from}}</span>님이 팔로우를 시작했습니다.</span>
+              </div>
+              <div class="notiInfoWrapper" v-if="noti.type == 'CommentReaction'">
+                <img :src="'http://localhost:8000'+noti.from_profile" class="notiProfileImage">
+                <span class="notiContent">
+                  <span class="notiFrom">{{noti.from}}</span>님이 답글을 달았습니다. {{noti.content}}</span>
+              </div>
+              <div class="notiInfoWrapper" v-if="noti.type == 'ZaboReaction'">
+                <img :src="'http://localhost:8000'+noti.from_profile" class="notiProfileImage">
+                <span class="notiContent">
+                  <span class="notiFrom">{{noti.from}}</span>님이 자보에 댓글을 남겼습니다. {{noti.content}}</span>
+              </div>
+              <div class="notiInfoWrapper" v-if="noti.type == 'ZaboFollowing'">
+                <img :src="'http://localhost:8000'+noti.from_profile" class="notiProfileImage">
+                <span class="notiContent">
+                  <span class="notiFrom">{{noti.from}}</span>님이 새로운 자보를 올렸습니다. {{noti.content}}</span>
+              </div>
             </div>
           </div>
+          <div v-if="notificationsModal" class="triangle"></div>
+          <div v-if="notificationsModal" class="triangle triangleBorder"></div>
         </div>
         <template v-if="loggedInState">
           <a href="http://localhost:8080/">
@@ -289,28 +308,82 @@ export default {
   display: flex;
   flex-direction: column;
   position: absolute;
+  align-items: flex-start;
+  justify-content: flex-start;
   top: 40px;
   right: 0;
-  background-color: gray;
-  /* width: 200px; */
-  padding: 10px;
+  background-color: white;
+  border: 0px solid transparent;
+  width: 100%;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  min-width: 500px;
+  max-width: 500px;
+  min-height: 250px;
+  max-height: 250px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  z-index: 1000;
 }
-.notificationWrapper::after {
-  content: "";
-  position: absolute;
-  /* top: 40px; */
-  right: 14%;
-  border: 10px solid transparent;
-  border-bottom-color: gray;
-  border-top: 0;
-  width: 0;
-  height: 0;
-  margin-right: -10px;
-  margin-top: -20px;
+.notificationWrapper::-webkit-scrollbar {
+  width: 10px;
+  background-color: transparent;
+  border-radius: 5px;
+}
+.notificationWrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+.notificationWrapper::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.notificationWrapper::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .singleNotiWrapper {
+  width: 100%;
   display: flex;
+  min-height: 60px;
+  /* max-height: 55px; */
+  padding: 30px 10px;
+  border-bottom: 1px solid #ececec;
+  align-items: center;
+  justify-content: flex-start;
+}
+.triangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 30px;
+  right: 27px;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-bottom: 10px solid white;
+  z-index: 1001;
+}
+.triangleBorder {
+  top: 29px;
+  border-bottom: 10px solid #e0e0e0;
+  z-index: 2;
+}
+
+.notiContent {
+  margin-left: 0.5em;
+  font-size: 1em;
+}
+
+.notiProfileImage {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.notiFrom {
+  font-weight: 700;
+}
+.notiInfoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .profile-image {
