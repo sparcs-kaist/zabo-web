@@ -34,7 +34,7 @@
         <template v-if="loggedInState">
           <a href="http://localhost:8080/">
             <div @click="logout" class="button right">
-              {{ $t('로그아웃') }}
+              <img :src="imagesrc" class="profile-image">
             </div>
           </a>
         </template>
@@ -46,7 +46,34 @@
         <div @click="setLang" class="button right">
           {{ this.computedLang }}
         </div>
+        <div class="dropdown" @click="dropdownOpen" v-if="!isDropdownOpened">
+          <div class="bar-container">
+            <div class="minibar">
+            </div>
+            <div class="minibar">
+            </div>
+            <div class="minibar">
+            </div>
+          </div>
+        </div>
+        <div v-else @click="dropdownClose">
+          <div style="width: 15px; height: 15px; margin-right: 15px; cursor: pointer;">
+            <img src="../assets/dropdownClose.svg"/>
+          </div>
+        </div>
       </div>
+    </div>
+    <div v-if="isDropdownOpened" class="dropdown-list">
+      <router-link to="/zabo/upload">
+        <div @click="dropdownClose" class="dropdown-content">
+          {{ $t('자보 올리기') }}
+        </div>
+      </router-link>
+      <router-link to="/user/profile">
+        <div @click="dropdownClose" class="dropdown-content">
+          {{ $t('프로필 관리') }}
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -64,7 +91,8 @@ export default {
     return {
       lang: "kr",
       searchValue: "",
-      notificationsModal: false
+      notificationsModal: false,
+      isDropdownOpened: false
     };
   },
   props: {
@@ -89,6 +117,12 @@ export default {
     onSearch(searchTerm) {
       this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
       this.searchTerm = "";
+    },
+    dropdownOpen() {
+      this.isDropdownOpened = true;
+    },
+    dropdownClose() {
+      this.isDropdownOpened = false;
     }
   },
   computed: {
@@ -99,22 +133,39 @@ export default {
         return "kr";
       }
     },
-    notifications () {
+    notifications() {
       return this.$store.getters.getNotifications;
+    },
+    imagesrc() {
+      return this.$store.getters.getProfileImagesource;
     }
   }
 };
 </script>
 
 <style scoped>
-.sandbox {
-  width: 100%;
-  height: 78px;
-  position: fixed;
-  background-color: rgba(255, 255, 255, 0.9);
-  z-index: 500;
-  display: flex;
-  flex-direction: column;
+@media screen and (min-width: 900px) {
+  .sandbox {
+    width: 100%;
+    min-height: 78px;
+    position: fixed;
+    background-color: rgba(255, 255, 255);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .sandbox {
+    width: 100%;
+    min-height: 64px;
+    position: fixed;
+    background-color: rgba(255, 255, 255);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .topline {
@@ -122,25 +173,43 @@ export default {
   height: 5px;
   background-color: #12397d;
 }
-.Buttons {
-  width: 100%;
-  height: 73px;
-  display: flex;
+@media screen and (max-width: 899px) {
+  .Buttons {
+    width: 100%;
+    height: 59px;
+    display: flex;
+  }
 }
 
-.button {
-  font-size: 15pt;
-  font-family: Nanumsquare;
-  font-weight: 400;
-  color: black;
-  opacity: 0.7;
-  cursor: pointer;
+@media screen and (min-width: 900px) {
+  .Buttons {
+    width: 100%;
+    height: 73px;
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .button {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .button {
+    font-size: 15pt;
+    font-family: Nanumsquare;
+    font-weight: 400;
+    color: black;
+    opacity: 0.7;
+    ]cursor: pointer;
+  }
 }
 .button:hover {
   opacity: 1;
 }
 .column {
-  min-height: 73px;
+  min-height: 59px;
   flex: 1;
   display: flex;
   align-items: center;
@@ -153,13 +222,67 @@ export default {
   margin-left: 27px;
 }
 
-.right {
-  margin-right: 27px;
+@media screen and (min-width: 900px) {
+  .right {
+    margin-right: 27px;
+  }
 }
 
-.logo {
-  height: 37px;
-  margin-left: 27px;
+@media screen and (max-width: 899px) {
+  .right {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .logo {
+    height: 37px;
+    margin-left: 27px;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .logo {
+    height: 27px;
+    margin-left: 15px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .dropdown {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .dropdown {
+    margin-right: 15px;
+    cursor: pointer;
+  }
+}
+
+.bar-container {
+  width: 15px;
+  height: 15px;
+}
+
+.minibar {
+  width: 15px;
+  height: 3px;
+  margin-bottom: 3px;
+  background-color: black;
+}
+
+.dropdown-list {
+  height: 100%;
+  width: 100%;
+  padding-left: 15px;
+}
+
+.dropdown-content {
+  color: black;
+  font-size: 13pt;
+  margin-bottom: 25px;
 }
 
 .notificationWrapper {
@@ -188,5 +311,11 @@ export default {
 
 .singleNotiWrapper {
   display: flex;
+}
+
+.profile-image {
+  width: 25px;
+  height: 25px;
+  border-radius: 15px;
 }
 </style>
