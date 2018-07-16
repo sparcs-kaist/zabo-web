@@ -34,6 +34,16 @@
         <div @click="setLang" class="button right">
           {{ this.computedLang }}
         </div>
+        <div class="dropdown">
+          <div class="bar-container">
+            <div class="minibar">
+            </div>
+            <div class="minibar">
+            </div>
+            <div class="minibar">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -48,7 +58,7 @@ export default {
   components: {
     Search
   },
-  data () {
+  data() {
     return {
       lang: "kr",
       searchValue: ""
@@ -58,13 +68,13 @@ export default {
     loggedInState: Boolean
   },
   methods: {
-    login: function () {
+    login: function() {
       this.$emit("logged-in");
     },
-    logout: function () {
+    logout: function() {
       this.$store.commit("LOGOUT");
     },
-    setLang: function () {
+    setLang: function() {
       if (this.lang === "kr") {
         this.$i18n.set("en");
         this.lang = "en";
@@ -73,13 +83,13 @@ export default {
         this.lang = "kr";
       }
     },
-    onSearch (searchTerm) {
-      this.$router.push({ name: 'ZaboSearch', params: { search: searchTerm } })
-      this.searchTerm = ""
+    onSearch(searchTerm) {
+      this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
+      this.searchTerm = "";
     }
   },
   computed: {
-    computedLang: function () {
+    computedLang: function() {
       if (this.lang === "kr") {
         return "en";
       } else {
@@ -91,14 +101,28 @@ export default {
 </script>
 
 <style scoped>
-.sandbox {
-  width: 100%;
-  height: 78px;
-  position: fixed;
-  background-color: rgba(255, 255, 255, 0.9);
-  z-index: 500;
-  display: flex;
-  flex-direction: column;
+@media screen and (min-width: 900px) {
+  .sandbox {
+    width: 100%;
+    height: 78px;
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .sandbox {
+    width: 100%;
+    height: 64px;
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.9);
+    z-index: 500;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .topline {
@@ -106,19 +130,37 @@ export default {
   height: 5px;
   background-color: #12397d;
 }
-.Buttons {
-  width: 100%;
-  height: 73px;
-  display: flex;
+@media screen and (max-width: 899px) {
+  .Buttons {
+    width: 100%;
+    height: 59px;
+    display: flex;
+  }
 }
 
-.button {
-  font-size: 15pt;
-  font-family: Nanumsquare;
-  font-weight: 400;
-  color: black;
-  opacity: 0.7;
-  cursor: pointer;
+@media screen and (min-width: 900px) {
+  .Buttons {
+    width: 100%;
+    height: 73px;
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .button {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .button {
+    font-size: 15pt;
+    font-family: Nanumsquare;
+    font-weight: 400;
+    color: black;
+    opacity: 0.7;
+    ]cursor: pointer;
+  }
 }
 .button:hover {
   opacity: 1;
@@ -137,12 +179,44 @@ export default {
   margin-left: 27px;
 }
 
-.right {
-  margin-right: 27px;
+@media screen and (min-width: 900px) {
+  .right {
+    margin-right: 27px;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .right {
+    display: none;
+  }
 }
 
 .logo {
   height: 37px;
   margin-left: 27px;
+}
+
+@media screen and (min-width: 900px) {
+  .dropdown {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .dropdown {
+    margin-right: 15px;
+  }
+}
+
+.bar-container {
+  width: 15px;
+  height: 15px;
+}
+
+.minibar {
+  width: 15px;
+  height: 3px;
+  margin-bottom: 3px;
+  background-color: black;
 }
 </style>
