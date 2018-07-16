@@ -5,71 +5,59 @@
       <div class="user-profile">
         프로필
       </div>
-      <div v-if="!edit">
+      <div>
         <img :src="imagesrc" class="profile-image">
         <p id="name"> {{ first_name + " " + last_name }} </p>
       </div>
-      <div v-else style="margin-bottom: -17px;">
-        <div class="name-image">
-          <img :src="profilePreview" class="profile-image-preview">
-          <div class="imageChange" @click="$refs.profileImageinput.click()">
-            <img src="../assets/photo-camera_black.svg" style="width: 25px; height: 25px;">
-          </div>
-        </div>
-        <input type="file" @change="onFileSelected" style="display: none" ref="profileImageinput">
-      </div>
       <v-tabs fixed-tabs v-model="tab" style="margin-top: 20px; margin-bottom: 20px;">
         <v-tab :key="1" style="font-size: 17pt; font-weight: 800;">
-          내 정보
+          유저 정보
         </v-tab>
-        <v-tab :disabled="edit" :key="2" style="font-size: 17pt; font-weight: 800;">
-          참여한 자보
+        <v-tab :key="2" style="font-size: 17pt; font-weight: 800;">
+          업로드한 자보
         </v-tab>
-        <v-tab :disabled="edit" :key="3" style="font-size: 17pt; font-weight: 800;">
-          좋아요한 자보
+        <v-tab :key="3" style="font-size: 17pt; font-weight: 800;">
+          팔로우 하는 유저
         </v-tab>
       </v-tabs>
-      <!-- <v-tabs-items v-model="tab" style="height: 500px;">
-        <v-tab-item :key="1">
-          <profile @cancel="cancel" @editmode="edit_toggle" :valid="valid" :first="new_first_name" :last="new_last_name" :image="new_profile_image"></profile>
-        </v-tab-item>
-        <v-tab-item :key="2">
-          <div>
-            참여한 자보
-          </div>
-        </v-tab-item>
-        <v-tab-item :key="3">
-          <div>
-            좋아요한 자보
-          </div>
-        </v-tab-item>
-      </v-tabs-items> -->
     </div>
   </v-app>
 </template>
 
 <script>
-import Profile from "./Userprofile/Profile";
+import axios from '@/axios-auth';
 
 export default {
-  name: "userprofile",
+  name: "userDetail",
+  created () {
+    axios.get(`http://localhost:8000/api/users/?search=${this.$route.params.nickName}`)
+      .then(res => res.data.data[0])
+      .then(user => {
+        axios.get(`http://localhost:8000/api/users/${user.id}/`)
+          .then(res => {
+            const { first_name, last_name, gender, joined_date, profile_image, following } = res.data;
+            this.imagesrc = profile_image;
+            this.first_name = first_name;
+            this.last_name = last_name;
+            this.gender = gender;
+            this.joined_date = joined_date;
+            this.following = following
+          })
+      })
+  },
   data () {
     return {
       valid: true,
-      edit: false,
       tab: "tab1",
-      new_first_name: "",
-      new_last_name: "",
-      new_profile_image: null,
-      namerules: [
-        v => !!v || "이름을 입력해주세요.",
-        v => (v && v.length <= 100) || "이름이 너무 길어요."
-      ],
+      imagesrc: "",
+      first_name: "",
+      last_name: "",
+      gender: "",
+      joined_date: "",
+      following: [],
+      profile_image: null,
       profilePreview: null
     };
-  },
-  components: {
-    profile: Profile
   },
   methods: {
     tab1 () {
@@ -81,37 +69,7 @@ export default {
     tab3 () {
       this.tab = "tab3";
     },
-    cancel () {
-      this.new_first_name = this.first_name;
-      this.new_last_name = this.last_name;
-      this.valid = true;
-      this.edit = false;
-    },
-    onFileSelected (event) {
-      this.new_profile_image = event.target.files[0];
-      this.profilePreview = URL.createObjectURL(this.new_profile_image);
-    }
   },
-  mounted () {
-    setTimeout(() => {
-      this.new_first_name = this.$store.getters.getFirstName;
-      this.new_last_name = this.$store.getters.getLastName;
-    }, 3000);
-  },
-  computed: {
-    first_name () {
-      return this.$store.getters.getFirstName;
-    },
-    last_name () {
-      return this.$store.getters.getLastName;
-    },
-    imagesrc () {
-      return this.$store.getters.getProfileImagesource;
-    },
-    currentUser () {
-      return this.$store.getters.currentUser;
-    }
-  }
 };
 </script>
 

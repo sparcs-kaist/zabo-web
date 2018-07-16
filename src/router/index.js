@@ -5,6 +5,7 @@ import ZaboUpdate from "@/pages/ZaboUpdate";
 import ZaboUpload from "@/pages/ZaboUpload";
 import ZaboListTest from "@/pages/ZaboListTest";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
+import UserDetail from "@/pages/UserDetail.vue";
 import ZaboSearch from "@/pages/ZaboSearch.vue";
 
 Vue.use(Router);
@@ -31,6 +32,11 @@ export default new Router({
       path: "/user/profile",
       name: "Zabouserprofile",
       component: ZaboUserprofile
+    },
+    {
+      path: "/user/detail/:nickName",
+      name: "UserDetail",
+      component: UserDetail
     },
     {
       path: "/search/:search",

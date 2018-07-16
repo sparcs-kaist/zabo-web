@@ -25,14 +25,14 @@
         class="ListWrapper"
       ></v-progress-circular>
     <div class="ListWrapper" v-else>
-      <div class="userWrapper" :key="index" v-for="(user, index) in userList">
+      <div @click="userDetail(user.nickName)" class="userWrapper" :key="index" v-for="(user, index) in userList">
         <img :src="user.profile_image" class="userImage">
         <span class="userName">{{user.nickName}}</span>
       </div>
-    </div>
-    <div class="doesNotExist" v-show="userList.length == 0">
+      <div class="doesNotExist" v-show="userList.length == 0">
         <span>{{$t('유저가 존재하지 않습니다.')}}</span>
       </div>
+    </div>
   </div>
   <div v-if="computedModalState" class="zaboModalWrapper">
     <zabo-detail-modal @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
@@ -84,6 +84,8 @@ export default {
   },
   methods: {
     searchZaboes () {
+      this.zaboIsLoading = true;
+      this.userIsLoading = true;
       axios({
         methods: 'get',
         url: `/zaboes/?search=${this.$route.params.search}`
@@ -112,6 +114,9 @@ export default {
         this.modalZaboId = id;
       }
     },
+    userDetail (nickName) {
+      this.$router.push({ name: "UserDetail", params: { nickName: nickName } })
+    }
   }
 }
 </script>
@@ -155,10 +160,10 @@ export default {
   margin-bottom: 2em;
 }
 .userWrapper {
-  max-width: 300px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  cursor: pointer;
 }
 .userImage {
   width: 30px;
