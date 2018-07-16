@@ -34,7 +34,7 @@
         <div @click="setLang" class="button right">
           {{ this.computedLang }}
         </div>
-        <div class="dropdown">
+        <div class="dropdown" @click="dropdownOpen" v-if="!isDropdownOpened">
           <div class="bar-container">
             <div class="minibar">
             </div>
@@ -44,7 +44,24 @@
             </div>
           </div>
         </div>
+        <div v-else @click="dropdownClose">
+          <div style="width: 15px; height: 15px; margin-right: 15px; cursor: pointer;">
+            <img src="../assets/dropdownClose.svg"/>
+          </div>
+        </div>
       </div>
+    </div>
+    <div v-if="isDropdownOpened" class="dropdown-list">
+      <router-link to="/zabo/upload">
+        <div @click="dropdownClose" class="dropdown-content">
+          {{ $t('자보 올리기') }}
+        </div>
+      </router-link>
+      <router-link to="/user/profile">
+        <div @click="dropdownClose" class="dropdown-content">
+          {{ $t('프로필 관리') }}
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -61,7 +78,8 @@ export default {
   data() {
     return {
       lang: "kr",
-      searchValue: ""
+      searchValue: "",
+      isDropdownOpened: false
     };
   },
   props: {
@@ -86,6 +104,12 @@ export default {
     onSearch(searchTerm) {
       this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
       this.searchTerm = "";
+    },
+    dropdownOpen() {
+      this.isDropdownOpened = true;
+    },
+    dropdownClose() {
+      this.isDropdownOpened = false;
     }
   },
   computed: {
@@ -104,9 +128,9 @@ export default {
 @media screen and (min-width: 900px) {
   .sandbox {
     width: 100%;
-    height: 78px;
+    min-height: 78px;
     position: fixed;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255);
     z-index: 500;
     display: flex;
     flex-direction: column;
@@ -116,9 +140,9 @@ export default {
 @media screen and (max-width: 899px) {
   .sandbox {
     width: 100%;
-    height: 64px;
+    min-height: 64px;
     position: fixed;
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: rgba(255, 255, 255);
     z-index: 500;
     display: flex;
     flex-direction: column;
@@ -166,7 +190,7 @@ export default {
   opacity: 1;
 }
 .column {
-  min-height: 73px;
+  min-height: 59px;
   flex: 1;
   display: flex;
   align-items: center;
@@ -191,9 +215,18 @@ export default {
   }
 }
 
-.logo {
-  height: 37px;
-  margin-left: 27px;
+@media screen and (min-width: 900px) {
+  .logo {
+    height: 37px;
+    margin-left: 27px;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .logo {
+    height: 27px;
+    margin-left: 15px;
+  }
 }
 
 @media screen and (min-width: 900px) {
@@ -205,6 +238,7 @@ export default {
 @media screen and (max-width: 899px) {
   .dropdown {
     margin-right: 15px;
+    cursor: pointer;
   }
 }
 
@@ -218,5 +252,17 @@ export default {
   height: 3px;
   margin-bottom: 3px;
   background-color: black;
+}
+
+.dropdown-list {
+  height: 100%;
+  width: 100%;
+  padding-left: 15px;
+}
+
+.dropdown-content {
+  color: black;
+  font-size: 13pt;
+  margin-bottom: 25px;
 }
 </style>
