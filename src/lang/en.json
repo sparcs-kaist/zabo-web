@@ -32,5 +32,9 @@
   "리뷰": "Reviews",
   "제목 : ": "Title : ",
   "위치 : ": "Location : ",
-  "올린이 : ": "Username : "
+  "올린이 : ": "Username : ",
+  "작성": "Write",
+  "자보 검색 결과": "Zabo Searched Result",
+  "유저 검색 결과": "User Searched Result",
+  "자보가 존재하지 않습니다.": "Zabo Does not Exist"
 }
