@@ -4,12 +4,12 @@
       <component :is="voided" @closeintro="closeintro"></component>
     </transition>
     <div>
-      <div v-show="!loggingIn">
-        <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
+      <div v-if="loading">
+        <Header v-show="!loggingIn" @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
         <router-view :key="$route.name + ($route.params.id || '')"></router-view>
       </div>
       <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
-      <Footer />
+      <Footer v-show="!loggingIn" />
     </div>
   </div>
 </template>
@@ -19,6 +19,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Login from "@/components/Login";
 import MainZabo from "@/components/MainZabo";
+import axios from '@/axios-auth';
+import * as types from "@/store/mutation-types";
 
 export default {
   name: "App",
@@ -34,12 +36,31 @@ export default {
   data () {
     return {
       loggingIn: false,
-      voided: MainZabo
+      voided: MainZabo,
+      loading: false
     };
   },
   created () {
     this.$store.commit("LOGIN");
-    this.$store.dispatch("getMyInfo");
+    axios
+      .get("/users/myInfo", {
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
+      })
+      .then(response => {
+        if (response.status === 401) {
+          this.loading = true;
+          console.log("response stauts 401!");
+        } else {
+          this.$store.commit(types.SET_CURRENT_USER, response.data);
+          this.loading = true;
+        }
+      })
+      .catch(err => {
+        this.loading = true;
+      })
+    this.$store.dispatch("getNotifications");
   },
   methods: {
     handleLogin (value) {
@@ -52,6 +73,9 @@ export default {
   computed: {
     loggedInState: function () {
       return this.$store.getters.loggedInState;
+    },
+    notifications () {
+      return this.$store.getters.notifications;
     }
   }
 };

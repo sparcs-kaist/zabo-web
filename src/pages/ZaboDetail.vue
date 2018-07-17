@@ -6,23 +6,31 @@
           <p class="heading">{{title}}</p>
           <p class="subheading">{{updated_time}}</p>
           <div class="buttonWrapper">
-            <button class="buttonTap">{{$t("참여하기")}}</button>
+            <a :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
             <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
             <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
             <span class="likeCount">{{this.likeCount}}</span>
           </div>
           <div class="navbar">
             <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
-            <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
+            <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("일정")}}</p>
+            <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
           </div>
-          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
-          </input-field>
         </div>
 
         <div class="bodyWrapper" v-show="toDisplay === 0">
-          <info-screen :info="this.content" />
+          <info-screen :info="this.content" :category="category" :payment="payment" />
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
+          <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
+            <span class="timeSlotTime">{{$t('시작 : ')}}{{timeslot.start_time}}</span>
+            <span class="timeSlotTime">{{$t('종료 : ')}}{{timeslot.end_time}}</span>
+            <span class="timeSlotContent">{{$t('내용 : ')}}{{timeslot.content}}</span>
+          </div>
+        </div>
+        <div class="bodyWrapper" v-show="toDisplay === 2">
+          <input-field v-show="toDisplay === 2" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+          </input-field>
           <review-screen :comments="comments" />
         </div>
       </div>
@@ -56,7 +64,11 @@ export default {
       zabo_id: -1,
       updated_time: "",
       isLiked: false,
-      likeCount: -1
+      likeCount: 0,
+      timeslots: [],
+      category: "",
+      payment: "",
+      link_url: ""
     };
   },
   components: {
@@ -117,6 +129,9 @@ export default {
         console.log(res)
         if (res.status == 201) {
           this.isLiked = true;
+        } else {
+          this.likeCount -= 1;
+          this.isLiked = false;
         }
       })
         .catch(err => {
@@ -141,8 +156,11 @@ export default {
         },
       }).then(res => {
         console.log(res)
-        if (res.status == 201) {
+        if (res.status == 204) {
           this.isLiked = false;
+        } else {
+          this.likeCount += 1;
+          this.isLiked = true;
         }
       })
         .catch(err => {
@@ -162,7 +180,7 @@ export default {
       }
     })
       .then((response) => {
-        const { posters, content, title, location, updated_time, comments, is_liked, like_count } = response.data
+        const { posters, content, title, location, updated_time, comments, is_liked, like_count, timeslots, category, payment, link_url } = response.data
         this.image = posters["0"].image;
         this.background = posters["0"].image;
         this.content = content;
@@ -172,6 +190,10 @@ export default {
         this.comments = comments;
         this.isLiked = is_liked;
         this.likeCount = like_count;
+        this.timeslots = timeslots;
+        this.category = category;
+        this.payment = payment;
+        this.link_url = link_url;
         console.log(response);
       })
       .catch((err) => {
@@ -223,6 +245,7 @@ export default {
   flex: 1;
   color: white;
   position: relative;
+  padding-right: 40px;
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -290,7 +313,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 50%;
+  width: 60%;
 }
 .column:first-child {
   padding-top: 80px;
@@ -300,7 +323,7 @@ export default {
 .column:last-child {
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 40%;
 }
 .navbar {
   display: flex;
@@ -333,5 +356,18 @@ export default {
   font-weight: 700;
   color: white;
   margin-left: 0.25em;
+}
+.timeSlotWrapper {
+  width: 100%;
+  margin-bottom: 1em;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ececec;
+  font-size: 1.5em;
+  color: rgba(0, 0, 0, 0.87);
+}
+.timeSlotTime {
+  padding-bottom: 0.25em;
 }
 </style>

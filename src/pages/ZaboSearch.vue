@@ -1,17 +1,44 @@
 <template lang=''>
 <div>
   <div class="totalWrapper">
-    <span class="header">{{$t("검색 결과")}}</span>
+    <span class="header">{{$t("자보 검색 결과")}}</span>
     <v-progress-circular
-        v-if="computedLoading"
+        v-if="zaboIsLoading"
         indeterminate
         color="primary"
-        class="zaboListWrapper"
+        class="ListWrapper"
       ></v-progress-circular>
-    <div class="zaboListWrapper" v-else>
-      <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in changedZaboList">
+    <div class="ListWrapper" v-else>
+      <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList">
         <img @click="zaboDetail(zabo.id, zabo.author.nickName)" :src="zabo.posters[0].image" class="zaboImage">
         <span class="zaboTitle">{{zabo.title}}</span>
+      </div>
+      <div class="doesNotExist" v-show="zaboList.length == 0">
+        <span>{{$t('자보가 존재하지 않습니다.')}}</span>
+      </div>
+    </div>
+    <span class="header">{{$t("유저 검색 결과")}}</span>
+    <v-progress-circular
+        v-if="userIsLoading"
+        indeterminate
+        color="primary"
+        class="ListWrapper"
+      ></v-progress-circular>
+    <div class="ListWrapper" v-else>
+      <div class="userWrapper" :key="index" v-for="(user, index) in userList">
+        <div @click="userDetail(user.nickName)" class="userInfoWrapper">
+          <img :src="user.profile_image" class="userImage">
+          <span class="userName">{{user.nickName}}</span>
+        </div>
+        <button v-show="!following" class="Follow" @click="followUser(user.nickName)">
+          팔로우
+        </button>
+        <button v-show="following" class="Follow" @click="unfollowUser(user.nickName)">
+          팔로우 취소
+        </button>
+      </div>
+      <div class="doesNotExist" v-show="userList.length == 0">
+        <span>{{$t('유저가 존재하지 않습니다.')}}</span>
       </div>
     </div>
   </div>
@@ -26,16 +53,18 @@ import ZaboDetailModal from '@/components/ZaboDetailModal';
 
 export default {
   created () {
-    console.log(this.$route.params.search)
     this.searchZaboes();
   },
   data () {
     return {
       zaboList: [],
-      isLoading: true,
+      userList: [],
+      zaboIsLoading: true,
+      userIsLoading: true,
       modalZaboId: -1,
       searchTerm: "",
       modalState: false,
+      following: false
     }
   },
   components: {
@@ -44,12 +73,6 @@ export default {
   computed: {
     searchValue () {
       return this.$route.params.search
-    },
-    changedZaboList () {
-      return this.zaboList
-    },
-    computedLoading () {
-      return this.isLoading
     },
     searchedZaboList () {
       return this.zaboList
@@ -70,13 +93,23 @@ export default {
   },
   methods: {
     searchZaboes () {
+      this.zaboIsLoading = true;
+      this.userIsLoading = true;
       axios({
         methods: 'get',
-        url: `/zaboes?search=${this.$route.params.search}`
+        url: `/zaboes/?search=${this.$route.params.search}`
       }).then(response => response.data.data)
         .then(data => {
           this.zaboList = data;
-          this.isLoading = false;
+          this.zaboIsLoading = false;
+        })
+      axios({
+        methods: 'get',
+        url: `/users/?search=${this.$route.params.search}`
+      }).then(response => response.data.data)
+        .then(data => {
+          this.userList = data;
+          this.userIsLoading = false;
         })
     },
     closeModal () {
@@ -90,7 +123,40 @@ export default {
         this.modalZaboId = id;
       }
     },
-  }
+    userDetail (nickName) {
+      this.$router.push({ name: "UserDetail", params: { nickName: nickName } })
+    },
+    followUser (nickName) {
+      axios({
+        url: 'http://localhost:8000/api/users/followOther/',
+        method: 'post',
+        headers: {
+          Authorization: localStorage.getItem('token')
+        },
+        data: {
+          nickname: nickName
+        }
+      }).then(res => {
+        this.following = true;
+        console.log(res)
+      })
+    },
+    unfollowUser (nickName) {
+      axios({
+        url: 'http://localhost:8000/api/users/unfollowOther/',
+        method: 'post',
+        headers: {
+          Authorization: localStorage.getItem('token')
+        },
+        data: {
+          nickname: nickName
+        }
+      }).then(res => {
+        console.log(res)
+        this.following = false;
+      })
+    }
+  },
 }
 </script>
 <style scoped lang=''>
@@ -110,19 +176,19 @@ export default {
 .header {
   font-size: 1.375em;
   font-weight: 900;
-  width: 75%;
+  width: 70%;
   min-width: 900px;
   text-align: left;
   margin-bottom: 20px;
-  padding-left: 9px;
 }
-.zaboListWrapper {
-  width: 75%;
+.ListWrapper {
+  width: 70%;
   min-width: 400px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
   flex-wrap: wrap;
+  margin-bottom: 2em;
 }
 .zaboWrapper {
   display: flex;
@@ -131,6 +197,41 @@ export default {
   flex-direction: column;
   align-items: center;
   margin-bottom: 2em;
+  margin-right: 10px;
+}
+.userWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  border: 1px solid #ececec;
+  border-radius: 3px;
+  padding: 15px 20px;
+  margin-right: 10px;
+}
+.userInfoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.Follow {
+  width: 100%;
+  height: 30px;
+  background-color: #12397d;
+  border-radius: 3px;
+  color: white;
+  margin-top: 1em;
+}
+.userImage {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+.userName {
+  font-size: 1.875em;
+  font-weight: 700;
+  margin-left: 10px;
 }
 .zaboImage {
   width: 183px;
@@ -152,5 +253,14 @@ export default {
   position: absolute;
   top: 78px;
   bottom: 68px;
+}
+.doesNotExist {
+  width: 100%;
+  height: 100px;
+  background-color: #ececec;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

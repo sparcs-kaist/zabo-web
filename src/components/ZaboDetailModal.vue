@@ -13,15 +13,23 @@
           </div>
           <div class="navbar">
             <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
-            <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
+            <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("일정")}}</p>
+            <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
           </div>
         </div>
 
         <div class="bodyWrapper" v-show="toDisplay === 0">
-          <info-screen :info="this.content" />
+          <info-screen :info="this.content" :payment="payment" :category="category" />
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
-          <input-field v-show="toDisplay === 1" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+          <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
+            <span class="timeSlotContent">{{timeslot.content}}</span>
+            <span class="timeSlotTime">{{timeslot.start_time}}</span>
+            <span class="timeSlotTime">{{timeslot.end_time}}</span>
+          </div>
+        </div>
+        <div class="bodyWrapper" v-show="toDisplay === 2">
+          <input-field v-show="toDisplay === 2" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
           </input-field>
           <review-screen :comments="comments" />
         </div>
@@ -57,7 +65,10 @@ export default {
       zabo_id: -1,
       updated_time: "",
       isLiked: false,
-      likeCount: -1
+      likeCount: -1,
+      timeslots: [],
+      category: "",
+      payment: ""
     };
   },
   components: {
@@ -167,7 +178,7 @@ export default {
       }
     })
       .then((response) => {
-        const { posters, content, title, location, updated_time, comments, is_liked, like_count } = response.data
+        const { posters, content, title, location, updated_time, comments, is_liked, like_count, timeslots, category, payment } = response.data
         this.image = posters["0"].image;
         this.background = posters["0"].image;
         this.content = content;
@@ -177,6 +188,9 @@ export default {
         this.comments = comments;
         this.isLiked = is_liked;
         this.likeCount = like_count;
+        this.timeslots = timeslots;
+        this.category = category;
+        this.payment = payment;
         console.log(response);
       })
       .catch((err) => {
@@ -226,6 +240,7 @@ export default {
   flex: 1;
   color: white;
   position: relative;
+  padding-right: 40px;
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -292,18 +307,16 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 50%;
+  width: 60%;
 }
 .column:first-child {
   padding-top: 80px;
   padding-left: 40px;
-  /* overflow-y: scroll;
-  overflow-x: hidden; */
 }
 .column:last-child {
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 40%;
 }
 .navbar {
   display: flex;
@@ -344,5 +357,18 @@ export default {
   font-weight: 700;
   color: white;
   margin-left: 0.25em;
+}
+.timeSlotWrapper {
+  width: 100%;
+  margin-bottom: 1em;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ececec;
+  font-size: 1.5em;
+  color: rgba(0, 0, 0, 0.87);
+}
+.timeSlotTime {
+  padding-bottom: 0.25em;
 }
 </style>

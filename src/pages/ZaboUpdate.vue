@@ -3,7 +3,7 @@
     <div class="zaboUpload">
       <div class="headingWrapper">
         <span class="heading">
-          {{$t('자보 올리기')}}
+          {{$t('자보 수정하기')}}
         </span>
         <div class="explanationWrapper">
           <div class="required"></div>
@@ -213,6 +213,7 @@ export default {
     axios.get(`http://localhost:8000/api/zaboes/${this.zabo_id}/`).then(res => {
       console.log(res.data);
       const { apply, author, category, content, deadline, link_url, location, posters, timeslots, title } = res.data;
+      console.log(posters)
       if (apply == "Z") {
         this.selectedMethod = "자보에서 신청"
       } else if (apply == "S") {
@@ -242,7 +243,21 @@ export default {
           })
         })
       }
-      // this.zaboPosters
+      let blob = [];
+      let posterNames = [];
+      for (let w = 0; w < posters.length; w++) {
+        blob.push("")
+        posterNames.push(posters[w].image.split("/")[posters[w].image.split("/").length - 1].split(".")[0])
+      }
+      for (let p = 0; p < posters.length; p++) {
+        fetch(posters[p].image + '/').then(res => {
+          var c = res.blob();
+          c.then(b => {
+            this.zaboPosters[p] = new File([b], posterNames[p], { type: b.type, lastModified: Date.now() })
+            this.imagePreviewUrls[p] = URL.createObjectURL(this.zaboPosters[p])
+          })
+        })
+      }
       this.name = title;
       this.location = location;
       this.introduction = content;
@@ -307,15 +322,15 @@ export default {
         }
 
         axios({
-          method: 'put',
-          url: `http://localhost:8000/api/zaboes/${this.zabo_id}`,
+          method: 'PUT',
+          url: `http://localhost:8000/api/zaboes/${this.zabo_id}/`,
           headers: {
             'Content-Type': "multipart/form-data",
             Authorization: localStorage.getItem('token'),
           },
           data: formData
         }).then(res => {
-          if (res.status === 201) {
+          if (res.status === 200) {
             this.postState = false
           }
         })

@@ -1,5 +1,6 @@
 <template>
-  <v-app style="background-color: white">
+  <div>
+    <v-app style="background-color: white">
       <div id="whole">
         <div style="width:100%; height:90px;"></div>
         <div class="user-profile">
@@ -17,20 +18,10 @@
             </div>
           </div>
           <input type="file" @change="onFileSelected" style="display: none" ref="profileImageinput">
-          <v-form v-model = "valid" style="margin-top: 10px;">
-            <v-text-field
-            label = "성"
-            v-model = "new_first_name"
-            :rules = "namerules"
-            required
-            class = "first">
+          <v-form v-model="valid" style="margin-top: 10px;">
+            <v-text-field label="성" v-model="new_first_name" :rules="namerules" required class="first">
             </v-text-field>
-            <v-text-field
-            label = "이름"
-            v-model = "new_last_name"
-            :rules = "namerules"
-            required
-            class = "last"></v-text-field>
+            <v-text-field label="이름" v-model="new_last_name" :rules="namerules" required class="last"></v-text-field>
           </v-form>
         </div>
         <v-tabs fixed-tabs v-model="tab" style="margin-top: 20px; margin-bottom: 20px;">
@@ -38,38 +29,48 @@
             내 정보
           </v-tab>
           <v-tab :disabled="edit" :key="2" style="font-size: 17pt; font-weight: 800;">
-            참여한 자보
+            업로드한 자보
           </v-tab>
           <v-tab :disabled="edit" :key="3" style="font-size: 17pt; font-weight: 800;">
-            좋아한 자보
+            팔로우
           </v-tab>
         </v-tabs>
-        <v-tabs-items v-model="tab" style="height: 500px;">
+        <v-tabs-items v-model="tab" class="tabsWrapper">
           <v-tab-item :key="1">
-            <profile @cancel = "cancel" @editmode = "edit_toggle" :valid = "valid" :first = "new_first_name" :last = "new_last_name" :image = "new_profile_image"></profile>
+            <profile @cancel="cancel" @editmode="edit_toggle" :valid="valid" :first="new_first_name" :last="new_last_name" :image="new_profile_image"></profile>
           </v-tab-item>
           <v-tab-item :key="2">
-            <div>
-              참여한 자보
+            <div v-if="!zaboLoading" class="zaboListWrapper">
+              <div class="zaboWrapper" v-for="(zabo,index) in computedCreatedZaboes" :key="index">
+                <img @click="zaboDetail(zabo.id, zabo.author.nickName)" :src="zabo.posters[0].image" class="zaboImage">
+                <span class="zaboTitle">{{zabo.title}}</span>
+              </div>
             </div>
           </v-tab-item>
           <v-tab-item :key="3">
             <div>
-              좋아한 자보
+              팔로우
             </div>
           </v-tab-item>
         </v-tabs-items>
       </div>
-  </v-app>
+    </v-app>
+    <div v-if="modalState" class="zaboModalWrapper">
+      <zabo-detail-modal @closeModal="closeModal" :zaboId="this.modalZaboId" v-if="modalState"></zabo-detail-modal>
+    </div>
+  </div>
 </template>
 
 <script>
 import Participated from "./Userprofile/Participated";
 import Profile from "./Userprofile/Profile";
+import ZaboDetailModal from '@/components/ZaboDetailModal';
+import axios from '@/axios-auth';
+import * as types from "@/store/mutation-types";
 
 export default {
   name: "userprofile",
-  data() {
+  data () {
     return {
       valid: true,
       edit: false,
@@ -82,24 +83,29 @@ export default {
         v => !!v || "이름을 입력해주세요.",
         v => (v && v.length <= 100) || "이름이 너무 길어요."
       ],
-      profilePreview: null
+      profilePreview: null,
+      modalState: false,
+      modalZaboId: -1,
+      zaboLoading: true,
+      createdZaboes: []
     };
   },
   components: {
     participated: Participated,
-    profile: Profile
+    profile: Profile,
+    ZaboDetailModal
   },
   methods: {
-    tab1() {
+    tab1 () {
       this.tab = "tab1";
     },
-    tab2() {
+    tab2 () {
       this.tab = "tab2";
     },
-    tab3() {
+    tab3 () {
       this.tab = "tab3";
     },
-    edit_toggle() {
+    edit_toggle () {
       if (this.edit === false) {
         this.profilePreview = this.imagesrc;
         this.edit = true;
@@ -107,18 +113,28 @@ export default {
         this.edit = false;
       }
     },
-    cancel() {
+    cancel () {
       this.new_first_name = this.first_name;
       this.new_last_name = this.last_name;
       this.valid = true;
       this.edit = false;
     },
-    onFileSelected(event) {
+    onFileSelected (event) {
       this.new_profile_image = event.target.files[0];
       this.profilePreview = URL.createObjectURL(this.new_profile_image);
+    },
+    zaboDetail (id, nickname) {
+      if (nickname !== "None") {
+        this.modalState = true;
+        window.history.pushState(null, null, [`/zabo/${id}`]);
+        this.modalZaboId = id;
+      }
+    },
+    closeModal () {
+      this.modalState = false;
     }
   },
-  mounted() {
+  mounted () {
     setTimeout(() => {
       this.new_first_name = this.$store.getters.getFirstName;
       this.new_last_name = this.$store.getters.getLastName;
@@ -126,18 +142,39 @@ export default {
     }, 3000);
   },
   computed: {
-    first_name() {
+    first_name () {
       return this.$store.getters.getFirstName;
     },
-    last_name() {
+    last_name () {
       return this.$store.getters.getLastName;
     },
-    imagesrc() {
+    imagesrc () {
       return this.$store.getters.getProfileImagesource;
     },
-    currentUser() {
+    currentUser () {
       return this.$store.getters.currentUser;
-    }
+    },
+    computedCreatedZaboes () {
+      let finalZaboes = [];
+      for (let i = 0; i < this.createdZaboes.length; i++) {
+        if (this.createdZaboes[i].posters.length > 0) {
+          finalZaboes.push(this.createdZaboes[i])
+        }
+      }
+      return finalZaboes
+    },
+  },
+  created () {
+    axios
+      .get("http://localhost:8000/api/zaboes/created/", {
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
+      })
+      .then(res => {
+        this.createdZaboes = res.data.data;
+        this.zaboLoading = false;
+      });
   }
 };
 </script>
@@ -145,7 +182,7 @@ export default {
 <style scoped>
 #whole {
   width: 70%;
-  height: 2000px;
+  /* height: 2000px; */
   margin-left: 15%;
   /* margin-top: 90px; */
   text-align: center;
@@ -244,5 +281,51 @@ export default {
 
 .imageChange:hover {
   background-color: rgba(223, 223, 223, 0.171);
+}
+
+.zaboListWrapper {
+  width: 100%;
+  min-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.zaboWrapper {
+  display: flex;
+  min-width: 201px;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2em;
+}
+
+.zaboTitle {
+  font-size: 1.25em;
+  font-weight: 700;
+}
+
+.zaboImage {
+  width: 183px;
+  height: 286px;
+  margin-bottom: 0.75em;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.zaboImage:hover {
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.zaboModalWrapper {
+  width: 100%;
+  position: absolute;
+  top: 78px;
+  bottom: 68px;
+}
+
+.tabsWrapper {
+  margin-bottom: 68px;
 }
 </style>

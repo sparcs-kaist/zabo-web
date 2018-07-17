@@ -83,7 +83,7 @@ const actions = {
       method = "popular/";
       return new Promise(resolve => {
         axios
-          .get(`/zaboes/${method}?page_size=${payload.pageSize}`)
+          .get(`/zaboes/${method}?page_size=${payload.pageSize}/`)
           .then(res => {
             let result = res.data.page_count;
             commit(types.ZABOES_PAGECOUNT, {
@@ -131,26 +131,6 @@ const actions = {
       });
     });
   },
-  getMyInfo({ commit, state }) {
-    axios
-      .get("/users/myInfo", {
-        headers: {
-          Authorization: localStorage.getItem("token")
-        }
-      })
-      .then(response => {
-        if (response.status !== 401) {
-          commit(types.SET_CURRENT_USER, response.data);
-        } else {
-          console.log("response stauts 401!");
-        }
-      })
-      .then(() => {
-        commit(types.GOT_RESPONSE);
-        return true;
-      })
-      .catch(err => console.log(err));
-  },
   setMyInfo({ commit, dispatch, state }, payload) {
     const {
       currentUser: { id }
@@ -192,6 +172,17 @@ const actions = {
           commit(types.GOT_RESPONSE);
         });
     });
+  },
+  getNotifications({ commit }, payload) {
+    axios
+      .get("http://localhost:8000/api/notifications/", {
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
+      })
+      .then(res => {
+        commit(types.SET_NOTIFICATIONS, res.data.data);
+      });
   }
 };
 
