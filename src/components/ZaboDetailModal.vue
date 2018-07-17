@@ -358,9 +358,17 @@ export default {
   color: white;
   margin-left: 0.25em;
 }
-
 .timeSlotWrapper {
+  width: 100%;
+  margin-bottom: 1em;
+  padding: 10px;
   display: flex;
+  flex-direction: column;
   background-color: #ececec;
+  font-size: 1.5em;
+  color: rgba(0, 0, 0, 0.87);
+}
+.timeSlotTime {
+  padding-bottom: 0.25em;
 }
 </style>

@@ -22,10 +22,10 @@
           <info-screen :info="this.content" :category="category" :payment="payment" />
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
-          <div v-for="(timeslot, index) in timeslots" :key="index">
-            <span>{{timeslot.content}}</span>
-            <span>{{timeslot.start_time}}</span>
-            <span>{{timeslot.end_time}}</span>
+          <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
+            <span class="timeSlotTime">{{$t('시작 : ')}}{{timeslot.start_time}}</span>
+            <span class="timeSlotTime">{{$t('종료 : ')}}{{timeslot.end_time}}</span>
+            <span class="timeSlotContent">{{$t('내용 : ')}}{{timeslot.content}}</span>
           </div>
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 2">
@@ -243,6 +243,7 @@ export default {
   flex: 1;
   color: white;
   position: relative;
+  padding-right: 40px;
   width: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -310,7 +311,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 50%;
+  width: 60%;
 }
 .column:first-child {
   padding-top: 80px;
@@ -320,7 +321,7 @@ export default {
 .column:last-child {
   justify-content: center;
   align-items: center;
-  width: 50%;
+  width: 40%;
 }
 .navbar {
   display: flex;
@@ -353,5 +354,18 @@ export default {
   font-weight: 700;
   color: white;
   margin-left: 0.25em;
+}
+.timeSlotWrapper {
+  width: 100%;
+  margin-bottom: 1em;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #ececec;
+  font-size: 1.5em;
+  color: rgba(0, 0, 0, 0.87);
+}
+.timeSlotTime {
+  padding-bottom: 0.25em;
 }
 </style>
