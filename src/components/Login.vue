@@ -55,7 +55,7 @@
 import axios from "@/axios-auth";
 
 export default {
-  data () {
+  data() {
     return {
       email: "",
       password: "",
@@ -70,10 +70,10 @@ export default {
     };
   },
   methods: {
-    zabologin () {
+    zabologin() {
       this.isZabologin = !this.isZabologin;
     },
-    login () {
+    login() {
       this.$store.commit("START_AJAX");
       axios
         .post("http://localhost:8000/api-token-auth/", {
@@ -108,7 +108,7 @@ export default {
     }
   },
   computed: {
-    loading () {
+    loading() {
       return !this.$store.getters.isAjaxfinished;
     }
   }
@@ -125,7 +125,7 @@ export default {
   bottom: 0;
   right: 0;
   position: fixed;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4)),
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
     url("../assets/ozan-safak-484829-unsplash.jpg");
   background-size: cover;
 }

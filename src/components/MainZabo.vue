@@ -25,7 +25,7 @@
 import axios from "@/axios-auth";
 
 export default {
-  data () {
+  data() {
     return {
       id: 1,
       image: "",
@@ -37,7 +37,7 @@ export default {
       transition: ""
     };
   },
-  created () {
+  created() {
     axios.get("http://localhost:8000/api/zaboes/45").then(response => {
       const { posters, content, title, location } = response.data;
       this.image = posters[0].image;
@@ -45,12 +45,11 @@ export default {
       this.content = content;
       this.title = title;
       this.location = location;
-      console.log(this.image, this.content, this.title, this.location);
       this.loading = false;
     });
   },
   methods: {
-    closeMain: function (req) {
+    closeMain: function(req) {
       if (req === "redirect") {
         this.$router.push({ path: "/zabo/45" });
       }
@@ -63,7 +62,8 @@ export default {
 <style scoped lang=''>
 .totWrapper {
   width: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
+  /* background-colo?: rgba(0, 0, 0, 0.5); */
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("../assets/alexander-popov-522100-unsplash.jpg");
   background-size: cover;
   left: 0;
@@ -73,6 +73,10 @@ export default {
   position: fixed;
   z-index: 900;
 }
+
+.totWrapper:after {
+}
+
 .mainZaboWrapper {
   position: absolute;
   left: 0;
