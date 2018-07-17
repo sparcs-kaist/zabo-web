@@ -55,7 +55,7 @@
 import axios from "@/axios-auth";
 
 export default {
-  data() {
+  data () {
     return {
       email: "",
       password: "",
@@ -70,10 +70,10 @@ export default {
     };
   },
   methods: {
-    zabologin() {
+    zabologin () {
       this.isZabologin = !this.isZabologin;
     },
-    login() {
+    login () {
       this.$store.commit("START_AJAX");
       axios
         .post("http://localhost:8000/api-token-auth/", {
@@ -102,12 +102,13 @@ export default {
             })
             .then(() => {
               this.$emit("logged-in");
+              this.$store.dispatch("getNotifications");
             });
         });
     }
   },
   computed: {
-    loading() {
+    loading () {
       return !this.$store.getters.isAjaxfinished;
     }
   }
