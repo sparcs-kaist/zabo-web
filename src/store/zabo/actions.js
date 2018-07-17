@@ -83,7 +83,7 @@ const actions = {
       method = "popular/";
       return new Promise(resolve => {
         axios
-          .get(`/zaboes/${method}?page_size=${payload.pageSize}/`)
+          .get(`/zaboes/${method}?page_size=${payload.pageSize}`)
           .then(res => {
             let result = res.data.page_count;
             commit(types.ZABOES_PAGECOUNT, {
