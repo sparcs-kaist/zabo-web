@@ -130,6 +130,7 @@ export default {
     logout: function () {
       this.$store.commit("LOGOUT");
       this.profileModalState = false;
+      location.reload()
     },
     setLang: function () {
       if (this.lang === "kr") {
@@ -360,6 +361,7 @@ export default {
   border-bottom: 1px solid #ececec;
   align-items: center;
   justify-content: flex-start;
+  z-index: 1000;
 }
 .triangle {
   position: absolute;
@@ -399,20 +401,24 @@ export default {
 .notiContent {
   margin-left: 0.5em;
   font-size: 1em;
+  z-index: 1000;
 }
 
 .notiProfileImage {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+  z-index: 900;
 }
 .notiFrom {
   font-weight: 700;
+  z-index: 900;
 }
 .notiInfoWrapper {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  z-index: 900;
 }
 
 .profile-image {
@@ -434,7 +440,7 @@ export default {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  z-index: 1000;
+  z-index: 900;
   padding: 0px 5px;
 }
 .singleTapWrapper {

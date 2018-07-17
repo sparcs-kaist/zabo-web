@@ -23,9 +23,9 @@
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
           <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
-            <span class="timeSlotContent">{{timeslot.content}}</span>
-            <span class="timeSlotTime">{{timeslot.start_time}}</span>
-            <span class="timeSlotTime">{{timeslot.end_time}}</span>
+            <span class="timeSlotTime">{{$t('시작 : ')}}{{timeslot.start_time}}</span>
+            <span class="timeSlotTime">{{$t('종료 : ')}}{{timeslot.end_time}}</span>
+            <span class="timeSlotContent">{{$t('내용 : ')}}{{timeslot.content}}</span>
           </div>
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 2">
@@ -53,11 +53,11 @@ import ReviewScreen from '@/components/ReviewScreen';
 export default {
   data () {
     return {
-      image: "",
+      image: "https://avatars2.githubusercontent.com/u/2281088?s=88&v=4",
       background: "",
-      content: "",
-      title: "",
-      location: "",
+      content: "Content",
+      title: "Title",
+      location: "Location",
       comments: [],
       newComment: '',
       // 0 displays Info, 1 displays Review

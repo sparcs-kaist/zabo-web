@@ -6,7 +6,8 @@
           <p class="heading">{{title}}</p>
           <p class="subheading">{{updated_time}}</p>
           <div class="buttonWrapper">
-            <a :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
+            <a v-show="link_url != ''" :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
+            <a v-show="link_url == ''" class="buttonTap">{{$t("")}}</a>
             <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
             <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
             <span class="likeCount">{{this.likeCount}}</span>
@@ -52,11 +53,11 @@ import ReviewScreen from '@/components/ReviewScreen';
 export default {
   data () {
     return {
-      image: "",
+      image: "https://avatars2.githubusercontent.com/u/2281088?s=88&v=4",
       background: "",
-      content: "",
-      title: "",
-      location: "",
+      content: "Content",
+      title: "Title",
+      location: "Location",
       comments: [],
       newComment: '',
       // 0 displays Info, 1 displays Review

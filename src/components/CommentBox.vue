@@ -7,7 +7,7 @@
           {{ author.nickName }}
         </span>
         <span v-if="!editing" class="commentBoxContent">
-          {{ content }}
+          {{ newComment }}
         </span>
         <input-field :small="true" v-if="editing" class="commentInputField" :content.sync="newComment" :on-click="editComment">
         </input-field>
@@ -34,7 +34,7 @@
         <v-icon v-show="recommentBoxOpen">arrow_drop_up</v-icon>
       </div>
     </div>
-    <re-comment-box v-if="recommentBoxOpen" class="recomment-box" v-for="r in replies" :author="r.author" :comment_id="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
+    <re-comment-box @delete="deleteReply" v-if="recommentBoxOpen" class="recomment-box" v-for="r in computedReplies" :author="r.author" :commentId="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
     </re-comment-box>
     <input-field v-show="recommentInputState" class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
     </input-field>
@@ -61,7 +61,8 @@ export default {
       recommentBoxOpen: false,
       commentEditHandlerModalState: false,
       newComment: "",
-      editing: false
+      editing: false,
+      deletedId: []
     };
   },
   methods: {
@@ -82,8 +83,6 @@ export default {
         }
       })
         .then((response) => {
-          console.log('what!')
-          console.log(response);
           this.replies.push(response.data);
         })
         .catch((error) => {
@@ -98,7 +97,11 @@ export default {
         headers: {
           Authorization: localStorage.getItem('token')
         }
-      }).then(res => console.log(res))
+      }).then(res => {
+        if (res.status == 204) {
+          this.$emit('delete', { id: this.id })
+        }
+      })
     },
     editComment () {
       this.editing = false;
@@ -115,20 +118,25 @@ export default {
           "is_deleted": true,
           "is_blocked": true
         }
-      }).then(res => console.log(res));
+      })
     },
     editModal () {
-      this.newComment = this.content;
       this.commentEditHandlerModalState = false;
       this.editing = true;
+    },
+    deleteReply (payload) {
+      this.deletedId.push(payload.id)
     }
+  },
+  created () {
+    this.newComment = this.content;
   },
   computed: {
     shortenedComment () {
       return `${this.content.substring(0, 200)}...`;
     },
     recommentBoxLength () {
-      return this.replies.length
+      return this.computedReplies.length
     },
     recommentBoxState () {
       return this.recommentBoxLength > 0;
@@ -141,6 +149,19 @@ export default {
         return this.$store.getters.getMyId;
       }
     },
+    computedReplies () {
+      if (this.deletedId.length == 0) {
+        return this.replies
+      } else {
+        let finalReplies = [];
+        this.replies.map(reply => {
+          if (this.deletedId.indexOf(reply.id) == -1) {
+            finalReplies.push(reply)
+          }
+        })
+        return finalReplies
+      }
+    }
   },
 };
 </script>
@@ -232,6 +253,7 @@ export default {
   border-radius: 0.125em;
   background-color: white;
   padding: 0.125em 0.25em;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
 }
 .commentEditHandlerModal::after {
   content: "";
