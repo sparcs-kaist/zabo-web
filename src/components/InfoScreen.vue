@@ -2,9 +2,9 @@
   <div class="infoScreen">
     <div class="description">
       <h1 class="header">카테고리</h1>
-      <p class="content">{{this.category}}</p>
+      <p class="content">{{this.computedCategory}}</p>
       <h1 class="header">결제 여부</h1>
-      <p class="content">{{this.payment}}</p>
+      <p class="content">{{this.computedPayment}}</p>
       <h1 class="header">자보 설명</h1>
       <p class="content" v-if="!isLong">
         {{ shortenedInfo }}
@@ -27,6 +27,26 @@ export default {
     shortenedInfo () {
       return `${this.info.substring(0, 1000)}...`;
     },
+    computedCategory () {
+      if (this.category == "R") {
+        return "리크루팅"
+      } else if (this.category == "P") {
+        return "공연"
+      } else if (this.category == "C") {
+        return "대회"
+      } else if (this.category == "F") {
+        return "설명회"
+      } else if (this.category == "L") {
+        return "세미나"
+      } else if (this.category == "E") {
+        return "전람회"
+      }
+    },
+    computedPayment () {
+      if (this.payment == "F") {
+        return "무료"
+      }
+    }
   },
   methods: {
     isLong () {
@@ -43,15 +63,20 @@ export default {
 <style scoped>
 .description {
   color: #fff;
-  font-size: 1em;
+  font-size: 1.125em;
   text-align: left;
 }
 .infoScreen {
   height: 100%;
   width: 100%;
 }
+.header {
+  font-size: 1.5em;
+  margin-bottom: 0.125em;
+}
 .content {
-  font-size: 1em;
+  font-size: 1.125em;
+  margin-bottom: 1em;
 }
 
 .more {

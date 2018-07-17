@@ -21,10 +21,8 @@ export default {
 <style scoped>
 .reviewScreen {
   width: 100%;
-  position: absolute;
   display: flex;
   flex-direction: column;
   padding-bottom: 30px;
-  /* overflow: scroll; */
 }
 </style>

@@ -148,7 +148,7 @@ export default {
 <style scoped>
 .body {
   font-size: 1.125em;
-  margin-top: 15px;
+  margin-top: 10px;
   text-align: left;
   width: 100%;
   display: flex;
@@ -160,6 +160,7 @@ export default {
   justify-content: flex-start;
 }
 .input {
+  margin-left: 15px;
   padding-left: 15px;
   margin-top: 1em;
 }
