@@ -6,7 +6,7 @@
           <p class="heading">{{title}}</p>
           <p class="subheading">{{updated_time}}</p>
           <div class="buttonWrapper">
-            <button class="buttonTap">{{$t("참여하기")}}</button>
+            <a :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
             <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
             <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
             <span class="likeCount">{{this.likeCount}}</span>
@@ -67,7 +67,8 @@ export default {
       likeCount: 0,
       timeslots: [],
       category: "",
-      payment: ""
+      payment: "",
+      link_url: ""
     };
   },
   components: {
@@ -179,7 +180,7 @@ export default {
       }
     })
       .then((response) => {
-        const { posters, content, title, location, updated_time, comments, is_liked, like_count, timeslots, category, payment } = response.data
+        const { posters, content, title, location, updated_time, comments, is_liked, like_count, timeslots, category, payment, link_url } = response.data
         this.image = posters["0"].image;
         this.background = posters["0"].image;
         this.content = content;
@@ -192,6 +193,7 @@ export default {
         this.timeslots = timeslots;
         this.category = category;
         this.payment = payment;
+        this.link_url = link_url;
         console.log(response);
       })
       .catch((err) => {

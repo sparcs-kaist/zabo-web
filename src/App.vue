@@ -1,15 +1,15 @@
 <template>
-  <div v-if="loading" id="app">
+  <div id="app">
     <transition name="component-slide-fade">
       <component :is="voided" @closeintro="closeintro"></component>
     </transition>
     <div>
-      <div v-show="!loggingIn">
-        <Header @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
+      <div v-if="loading">
+        <Header v-show="!loggingIn" @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
         <router-view :key="$route.name + ($route.params.id || '')"></router-view>
       </div>
       <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
-      <Footer />
+      <Footer v-show="!loggingIn" />
     </div>
   </div>
 </template>

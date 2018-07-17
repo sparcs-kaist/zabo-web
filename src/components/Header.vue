@@ -11,11 +11,6 @@
             {{ $t('자보 올리기') }}
           </div>
         </router-link>
-        <router-link to="/user/profile">
-          <div class="button left">
-            {{ $t('프로필 관리') }}
-          </div>
-        </router-link>
       </div>
       <div class="column">
         <div class="right">
@@ -51,11 +46,21 @@
           <div v-if="notificationsModal" class="triangle triangleBorder"></div>
         </div>
         <template v-if="loggedInState">
-          <a href="http://localhost:8080/">
-            <div @click="logout" class="button right">
-              <img :src="imagesrc" class="profile-image">
+          <div @click="profileModalState = !profileModalState" class="right">
+            <img :src="imagesrc" class="profile-image">
+          </div>
+          <div class="profileModalWrapper" v-show="profileModalState">
+            <div @click="logout" class="singleTapWrapper">
+              <v-icon medium class="profileIcons">power_settings_new</v-icon>
+              <span class="profileSpan">{{$t('로그아웃')}}</span>
             </div>
-          </a>
+            <div @click="profilePush" class="singleTapWrapper">
+              <v-icon medium class="profileIcons">person</v-icon>
+              <span class="profileSpan">{{$t('프로필 관리')}}</span>
+            </div>
+          </div>
+          <div v-show="profileModalState" class="profileTriangle"></div>
+          <div v-show="profileModalState" class="profileTriangle profileTriangleBorder"></div>
         </template>
         <template v-else>
           <div @click="login" class="button right">
@@ -77,7 +82,7 @@
         </div>
         <div v-else @click="dropdownClose">
           <div style="width: 15px; height: 15px; margin-right: 15px; cursor: pointer;">
-            <img src="../assets/dropdownClose.svg" />
+            <img src="@/assets/dropdownClose.svg" />
           </div>
         </div>
       </div>
@@ -111,7 +116,8 @@ export default {
       lang: "kr",
       searchValue: "",
       notificationsModal: false,
-      isDropdownOpened: false
+      isDropdownOpened: false,
+      profileModalState: false
     };
   },
   props: {
@@ -123,6 +129,7 @@ export default {
     },
     logout: function () {
       this.$store.commit("LOGOUT");
+      this.profileModalState = false;
     },
     setLang: function () {
       if (this.lang === "kr") {
@@ -142,6 +149,10 @@ export default {
     },
     dropdownClose () {
       this.isDropdownOpened = false;
+    },
+    profilePush () {
+      this.profileModalState = false;
+      this.$router.push({ name: "Zabouserprofile" })
     }
   },
   computed: {
@@ -366,7 +377,25 @@ export default {
   border-bottom: 10px solid #e0e0e0;
   z-index: 2;
 }
-
+.profileTriangle {
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 68px;
+  right: 80px;
+  border-left: 11px solid transparent;
+  border-right: 11px solid transparent;
+  border-bottom: 10px solid white;
+  z-index: 1001;
+}
+.profileTriangleBorder {
+  top: 67px;
+  border-bottom: 10px solid #e0e0e0;
+  z-index: 2;
+}
+.profileIcons {
+  margin-right: 0.25em;
+}
 .notiContent {
   margin-left: 0.5em;
   font-size: 1em;
@@ -390,5 +419,38 @@ export default {
   width: 25px;
   height: 25px;
   border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.profile-image:hover {
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.profileModalWrapper {
+  position: absolute;
+  top: 78px;
+  right: 60px;
+  background-color: white;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  padding: 0px 5px;
+}
+.singleTapWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  font-size: 1em;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.87);
+}
+.profileSpan {
+  font-size: 1.125em;
+}
+
+.singleTapWrapper:first-child {
+  border-bottom: 1px solid #ececec;
 }
 </style>
