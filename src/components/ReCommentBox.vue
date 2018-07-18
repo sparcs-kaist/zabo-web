@@ -55,7 +55,7 @@ export default {
       this.editing = false;
       axios({
         method: 'PUT',
-        url: `http://localhost:8000/api/comments/${this.commentId}/`,
+        url: `api/comments/${this.commentId}/`,
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem('token')
@@ -76,7 +76,7 @@ export default {
       this.commentEditHandlerModalState = false;
       axios({
         method: 'DELETE',
-        url: `http://localhost:8000/api/recomments/${this.commentId}/`,
+        url: `api/recomments/${this.commentId}/`,
         headers: {
           Authorization: localStorage.getItem('token')
         }

@@ -166,7 +166,7 @@ export default {
   },
   created () {
     axios
-      .get("http://localhost:8000/api/zaboes/created/", {
+      .get("api/zaboes/created/", {
         headers: {
           Authorization: localStorage.getItem("token")
         }

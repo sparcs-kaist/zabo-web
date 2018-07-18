@@ -45,10 +45,10 @@ import Profile from "./Userprofile/Profile";
 export default {
   name: "userDetail",
   created () {
-    axios.get(`http://localhost:8000/api/users/?search=${this.$route.params.nickName}`)
+    axios.get(`api/users/?search=${this.$route.params.nickName}`)
       .then(res => res.data.data[0])
       .then(user => {
-        axios.get(`http://localhost:8000/api/users/${user.id}/`)
+        axios.get(`api/users/${user.id}/`)
           .then(res => {
             const { first_name, last_name, gender, joined_date, profile_image, following } = res.data;
             this.imagesrc = profile_image;

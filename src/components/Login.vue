@@ -55,7 +55,7 @@
 import axios from "@/axios-auth";
 
 export default {
-  data() {
+  data () {
     return {
       email: "",
       password: "",
@@ -70,13 +70,13 @@ export default {
     };
   },
   methods: {
-    zabologin() {
+    zabologin () {
       this.isZabologin = !this.isZabologin;
     },
-    login() {
+    login () {
       this.$store.commit("START_AJAX");
       axios
-        .post("http://localhost:8000/api-token-auth/", {
+        .post("api-token-auth/", {
           email: this.email,
           password: this.password
         })
@@ -88,7 +88,7 @@ export default {
           this.$store.commit("GOT_RESPONSE");
         })
         .then(() => {
-          axios("/users/myInfo", {
+          axios("api/users/myInfo", {
             method: "GET",
             headers: {
               Authorization: localStorage.getItem("token")
@@ -108,7 +108,7 @@ export default {
     }
   },
   computed: {
-    loading() {
+    loading () {
       return !this.$store.getters.isAjaxfinished;
     }
   }

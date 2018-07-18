@@ -128,7 +128,7 @@ export default {
     },
     followUser (nickName) {
       axios({
-        url: 'http://localhost:8000/api/users/followOther/',
+        url: 'api/users/followOther/',
         method: 'post',
         headers: {
           Authorization: localStorage.getItem('token')
@@ -143,7 +143,7 @@ export default {
     },
     unfollowUser (nickName) {
       axios({
-        url: 'http://localhost:8000/api/users/unfollowOther/',
+        url: 'api/users/unfollowOther/',
         method: 'post',
         headers: {
           Authorization: localStorage.getItem('token')

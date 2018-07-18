@@ -25,7 +25,7 @@
 import axios from "@/axios-auth";
 
 export default {
-  data() {
+  data () {
     return {
       id: 1,
       image: "",
@@ -37,8 +37,8 @@ export default {
       transition: ""
     };
   },
-  created() {
-    axios.get("http://localhost:8000/api/zaboes/45").then(response => {
+  created () {
+    axios.get("api/zaboes/45").then(response => {
       const { posters, content, title, location } = response.data;
       this.image = posters[0].image;
       this.background = posters[0].image;
@@ -49,7 +49,7 @@ export default {
     });
   },
   methods: {
-    closeMain: function(req) {
+    closeMain: function (req) {
       if (req === "redirect") {
         this.$router.push({ path: "/zabo/45" });
       }

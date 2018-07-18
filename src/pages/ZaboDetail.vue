@@ -86,7 +86,7 @@ export default {
     onSubmitComment () {
       axios({
         method: 'post',
-        url: `http://localhost:8000/api/comments/`,
+        url: `api/comments/`,
         data: {
           content: this.newComment,
           zabo: this.zabo_id,
@@ -117,7 +117,7 @@ export default {
       this.isLiked = true;
       this.likeCount += 1;
       axios({
-        url: 'http://localhost:8000/api/likes/',
+        url: 'api/likes/',
         method: 'post',
         data: {
           zabo: this.zabo_id
@@ -146,7 +146,7 @@ export default {
       this.isLiked = false;
       this.likeCount -= 1;
       axios({
-        url: 'http://localhost:8000/api/likes/dislike/',
+        url: 'api/likes/dislike/',
         method: 'delete',
         data: {
           zabo: this.zabo_id
@@ -175,7 +175,7 @@ export default {
     this.zabo_id = this.$route.params.zabo_id;
     axios({
       method: 'get',
-      url: `http://localhost:8000/api/zaboes/${this.zabo_id}/`,
+      url: `api/zaboes/${this.zabo_id}/`,
       headers: {
         Authorization: localStorage.getItem('token')
       }

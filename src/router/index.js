@@ -7,6 +7,7 @@ import ZaboListTest from "@/pages/ZaboListTest";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
 import UserDetail from "@/pages/UserDetail.vue";
 import ZaboSearch from "@/pages/ZaboSearch.vue";
+import LoginCallback from "@/pages/LoginCallback.vue";
 
 Vue.use(Router);
 
@@ -46,6 +47,11 @@ export default new Router({
         console.log("Entering User", to.params.search);
         next();
       }
+    },
+    {
+      path: "/login/callback",
+      name: "LoginCallback",
+      component: LoginCallback
     },
     {
       path: "/",
