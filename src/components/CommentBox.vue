@@ -72,7 +72,7 @@ export default {
     onSubmitReply () {
       axios({
         method: 'post',
-        url: 'http://localhost:8000/api/recomments/',
+        url: 'api/recomments/',
         data: {
           content: this.newReply,
           comment: this.comment_id,
@@ -93,7 +93,7 @@ export default {
       this.commentEditHandlerModalState = false;
       axios({
         method: 'DELETE',
-        url: `http://localhost:8000/api/comments/${this.id}/`,
+        url: `api/comments/${this.id}/`,
         headers: {
           Authorization: localStorage.getItem('token')
         }
@@ -107,7 +107,7 @@ export default {
       this.editing = false;
       axios({
         method: 'PUT',
-        url: `http://localhost:8000/api/comments/${this.id}/`,
+        url: `api/comments/${this.id}/`,
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem('token')

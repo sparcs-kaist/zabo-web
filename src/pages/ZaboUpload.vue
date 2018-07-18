@@ -272,7 +272,7 @@ export default {
 
         axios({
           method: 'post',
-          url: 'http://localhost:8000/api/zaboes/',
+          url: 'api/zaboes/',
           headers: {
             'Content-Type': "multipart/form-data",
             Authorization: localStorage.getItem('token'),

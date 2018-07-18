@@ -210,7 +210,7 @@ export default {
   },
   created () {
     this.zabo_id = this.$route.params.zabo_id
-    axios.get(`http://localhost:8000/api/zaboes/${this.zabo_id}/`).then(res => {
+    axios.get(`api/zaboes/${this.zabo_id}/`).then(res => {
       console.log(res.data);
       const { apply, author, category, content, deadline, link_url, location, posters, timeslots, title } = res.data;
       console.log(posters)
@@ -323,7 +323,7 @@ export default {
 
         axios({
           method: 'PUT',
-          url: `http://localhost:8000/api/zaboes/${this.zabo_id}/`,
+          url: `api/zaboes/${this.zabo_id}/`,
           headers: {
             'Content-Type': "multipart/form-data",
             Authorization: localStorage.getItem('token'),
