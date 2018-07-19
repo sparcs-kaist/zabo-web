@@ -4,6 +4,7 @@
   "description": "Zabo Web Application",
   "author": "hyeongjunCho <hyeongjun@kaist.ac.kr>",
   "private": true,
+  "proxy": "http://13.76.1.24:40400/",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",

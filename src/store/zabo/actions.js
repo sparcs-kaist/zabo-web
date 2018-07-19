@@ -10,7 +10,7 @@ const actions = {
       method = "popular/";
       axios({
         method: "get",
-        url: `zaboes/${method}?page=${payload.pageNum}&page_size=${
+        url: `api/zaboes/${method}?page=${payload.pageNum}&page_size=${
           payload.pageSize
         }`
       }).then(res => {
@@ -27,7 +27,7 @@ const actions = {
       method = "soon/";
       axios({
         method: "get",
-        url: `zaboes/${method}?page=${payload.pageNum}&page_size=${
+        url: `api/zaboes/${method}?page=${payload.pageNum}&page_size=${
           payload.pageSize
         }`
       }).then(res => {
@@ -55,7 +55,7 @@ const actions = {
     }
     axios({
       method: "get",
-      url: `zaboes/${method}&page=${payload.pageNum}&page_size=${
+      url: `api/zaboes/${method}&page=${payload.pageNum}&page_size=${
         payload.pageSize
       }`
     }).then(res => {
@@ -83,7 +83,7 @@ const actions = {
       method = "popular/";
       return new Promise(resolve => {
         axios
-          .get(`zaboes/${method}?page_size=${payload.pageSize}`)
+          .get(`api/zaboes/${method}?page_size=${payload.pageSize}`)
           .then(res => {
             let result = res.data.page_count;
             commit(types.ZABOES_PAGECOUNT, {
@@ -97,7 +97,7 @@ const actions = {
       method = "soon/";
       return new Promise(resolve => {
         axios
-          .get(`zaboes/${method}?page_size=${payload.pageSize}`)
+          .get(`api/zaboes/${method}?page_size=${payload.pageSize}`)
           .then(res => {
             let result = res.data.page_count;
             commit(types.ZABOES_PAGECOUNT, {
@@ -121,14 +121,16 @@ const actions = {
       method = "&category=E";
     }
     return new Promise(resolve => {
-      axios.get(`zaboes/?page_size=${payload.pageSize}${method}`).then(res => {
-        let result = res.data.page_count;
-        commit(types.ZABOES_PAGECOUNT, {
-          result: result,
-          method: payload.method
+      axios
+        .get(`api/zaboes/?page_size=${payload.pageSize}${method}`)
+        .then(res => {
+          let result = res.data.page_count;
+          commit(types.ZABOES_PAGECOUNT, {
+            result: result,
+            method: payload.method
+          });
+          resolve(result);
         });
-        resolve(result);
-      });
     });
   },
   setMyInfo({ commit, dispatch, state }, payload) {
@@ -151,7 +153,7 @@ const actions = {
       formData.append("profile_image", payload[5]);
     }
     commit("START_AJAX");
-    axios(`users/${id}/`, {
+    axios(`api/users/${id}/`, {
       method: "PATCH",
       headers: {
         "Content-Type": "multipart/form-data",
@@ -159,7 +161,7 @@ const actions = {
       },
       data: formData
     }).then(function(response) {
-      axios("users/myInfo", {
+      axios("api/users/myInfo", {
         method: "GET",
         headers: {
           Authorization: localStorage.getItem("token")

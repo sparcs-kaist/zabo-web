@@ -19,7 +19,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Login from "@/components/Login";
 import MainZabo from "@/components/MainZabo";
-import axios from '@/axios-auth';
+import axios from "@/axios-auth";
 import * as types from "@/store/mutation-types";
 
 export default {
@@ -33,17 +33,17 @@ export default {
       template: "<div></div>"
     }
   },
-  data () {
+  data() {
     return {
       loggingIn: false,
       voided: MainZabo,
       loading: false
     };
   },
-  created () {
+  created() {
     this.$store.commit("LOGIN");
     axios
-      .get("/users/myInfo", {
+      .get("api/users/myInfo", {
         headers: {
           Authorization: localStorage.getItem("token")
         }
@@ -59,22 +59,22 @@ export default {
       })
       .catch(err => {
         this.loading = true;
-      })
+      });
     this.$store.dispatch("getNotifications");
   },
   methods: {
-    handleLogin (value) {
+    handleLogin(value) {
       this.loggingIn = !this.loggingIn;
     },
-    closeintro () {
+    closeintro() {
       this.voided = "v-a";
     }
   },
   computed: {
-    loggedInState: function () {
+    loggedInState: function() {
       return this.$store.getters.loggedInState;
     },
-    notifications () {
+    notifications() {
       return this.$store.getters.notifications;
     }
   }
