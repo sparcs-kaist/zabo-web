@@ -98,6 +98,12 @@
           {{ $t('프로필 관리') }}
         </div>
       </router-link>
+      <div @click="login" v-if="!loggedInState">
+        {{ $t('로그인') }}
+      </div>
+      <div @click="logout" v-else>
+        {{ $t('로그아웃')}}
+      </div>
     </div>
   </div>
 </template>
