@@ -17,7 +17,7 @@
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
     </carousel-3d>
-    <carousel-3d ref="bull" :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
+    <carousel-3d :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
           <div @click="zaboDetail(zabo.id, zabo.author.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
@@ -59,6 +59,7 @@ function carouselCssControler () {
   for (let f = 0; f < 3; f++) {
     document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[f].style['border'] = 'none'
     document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[f].style['border'] = 'none'
+    document.getElementsByClassName('carousel-3d-container')[f].style['position'] = "absolute"
   }
   document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[0].style['backgroundColor'] = '#f6f6f6'
   document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[0].style['backgroundColor'] = '#f6f6f6'
@@ -90,20 +91,7 @@ export default {
       };
     }).then(() => {
       this.loading = false
-      carouselCssControler();
     })
-    setTimeout(function () {
-      window.dispatchEvent(new Event('resize'));
-      carouselCssControler();
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'))
-        carouselCssControler();
-        setTimeout(() => {
-          window.dispatchEvent(new Event('resize'))
-          carouselCssControler();
-        }, 1000)
-      }, 1000)
-    }, 1000);
   },
   beforeMount () {
     window.addEventListener("resize", this.getWindowWidth);
@@ -132,16 +120,7 @@ export default {
         };
       }).then(() => {
         this.loading = false
-        carouselCssControler();
-        setTimeout(function () {
-          window.dispatchEvent(new Event('resize'));
-          carouselCssControler();
-          setTimeout(() => {
-            window.dispatchEvent(new Event('resize'))
-            carouselCssControler();
-            setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
-          }, 1000)
-        }, 1000)
+
       })
     },
     categoryright () {
@@ -158,16 +137,6 @@ export default {
         };
       }).then(() => {
         this.loading = false
-        carouselCssControler();
-        setTimeout(function () {
-          window.dispatchEvent(new Event('resize'));
-          carouselCssControler();
-          setTimeout(() => {
-            window.dispatchEvent(new Event('resize'))
-            carouselCssControler();
-            setTimeout(() => window.dispatchEvent(new Event('resize')), 1000)
-          }, 1000)
-        }, 1000)
       })
     },
     zaboDetail (id, nickname) {
@@ -265,7 +234,24 @@ export default {
   watch: {
     currentPath (val) {
       console.log(val);
-    }
+    },
+    zaboesExist (val) {
+      console.log(val, "this is working!")
+      if (val) {
+        setTimeout(function () {
+          window.dispatchEvent(new Event('resize'));
+          carouselCssControler();
+          setTimeout(() => {
+            window.dispatchEvent(new Event('resize'))
+            carouselCssControler();
+            setTimeout(() => {
+              window.dispatchEvent(new Event('resize'))
+              carouselCssControler();
+            }, 1000)
+          }, 1000)
+        }, 1000);
+      }
+    },
   },
 }
 </script>
