@@ -88,7 +88,6 @@ export default {
           this.$store.commit("GOT_RESPONSE");
         })
         .then(() => {
-          console.log("Fuckyou");
           axios("api/users/myInfo/", {
             method: "GET",
             headers: {
