@@ -45,13 +45,13 @@
 </template>
 
 <script>
-import axios from 'axios';
-import InfoScreen from '@/components/InfoScreen';
-import InputField from '@/components/InputField';
-import ReviewScreen from '@/components/ReviewScreen';
+import axios from "axios";
+import InfoScreen from "@/components/InfoScreen";
+import InputField from "@/components/InputField";
+import ReviewScreen from "@/components/ReviewScreen";
 
 export default {
-  data () {
+  data() {
     return {
       image: "https://avatars2.githubusercontent.com/u/2281088?s=88&v=4",
       background: "",
@@ -59,7 +59,7 @@ export default {
       title: "Title",
       location: "Location",
       comments: [],
-      newComment: '',
+      newComment: "",
       // 0 displays Info, 1 displays Review
       toDisplay: 0,
       zabo_id: -1,
@@ -75,119 +75,136 @@ export default {
   components: {
     InfoScreen,
     InputField,
-    ReviewScreen,
+    ReviewScreen
   },
   computed: {
-    loggedInState () {
-      return this.$store.getters.loggedInState
+    loggedInState() {
+      return this.$store.getters.loggedInState;
     }
   },
   methods: {
-    onSubmitComment () {
+    onSubmitComment() {
       axios({
-        method: 'post',
+        method: "post",
         url: `api/comments/`,
         data: {
           content: this.newComment,
           zabo: this.zabo_id,
-          "is_private": true,
-          "is_deleted": true,
-          "is_blocked": true
+          is_private: true,
+          is_deleted: true,
+          is_blocked: true
         },
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         }
       })
-        .then((response) => {
+        .then(response => {
           this.comments.push(response.data);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
-      this.newComment = '';
+      this.newComment = "";
     },
-    selectTab (selected) {
+    selectTab(selected) {
       this.toDisplay = selected;
     },
-    editZabo () {
-      this.$router.push({ name: "ZaboUpdate", params: { zabo_id: this.zabo_id } })
+    editZabo() {
+      this.$router.push({
+        name: "ZaboUpdate",
+        params: { zabo_id: this.zabo_id }
+      });
     },
-    likeZabo () {
+    likeZabo() {
       this.isLiked = true;
       this.likeCount += 1;
       axios({
-        url: 'api/likes/',
-        method: 'post',
+        url: "api/likes/",
+        method: "post",
         data: {
           zabo: this.zabo_id
         },
         headers: {
-          Authorization: localStorage.getItem('token'),
-          'Content-Type': 'application/json',
-        },
-      }).then(res => {
-        console.log(res)
-        if (res.status == 201) {
-          this.isLiked = true;
-        } else {
-          this.likeCount -= 1;
-          this.isLiked = false;
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json"
         }
       })
-        .catch(err => {
-          alert('You are not logged In!')
-          console.log(err)
-          this.likeCount -= 1;
+        .then(res => {
+          console.log(res);
+          if (res.status == 201) {
+            this.isLiked = true;
+          } else {
+            this.likeCount -= 1;
+            this.isLiked = false;
+          }
         })
-        ;
+        .catch(err => {
+          alert("You are not logged In!");
+          console.log(err);
+          this.likeCount -= 1;
+        });
     },
-    dislikeZabo () {
+    dislikeZabo() {
       this.isLiked = false;
       this.likeCount -= 1;
       axios({
-        url: 'api/likes/dislike/',
-        method: 'delete',
+        url: "api/likes/dislike/",
+        method: "delete",
         data: {
           zabo: this.zabo_id
         },
         headers: {
-          Authorization: localStorage.getItem('token'),
-          'Content-Type': 'application/json',
-        },
-      }).then(res => {
-        console.log(res)
-        if (res.status == 204) {
-          this.isLiked = false;
-        } else {
-          this.likeCount += 1;
-          this.isLiked = true;
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json"
         }
       })
+        .then(res => {
+          console.log(res);
+          if (res.status == 204) {
+            this.isLiked = false;
+          } else {
+            this.likeCount += 1;
+            this.isLiked = true;
+          }
+        })
         .catch(err => {
-          alert('You are not logged In!')
-          console.log(err)
+          alert("You are not logged In!");
+          console.log(err);
           this.likeCount += 1;
         });
     }
   },
-  mounted () {
+  mounted() {
     this.zabo_id = this.$route.params.zabo_id;
     axios({
-      method: 'get',
+      method: "get",
       url: `api/zaboes/${this.zabo_id}/`,
       headers: {
-        Authorization: localStorage.getItem('token')
+        Authorization: localStorage.getItem("token")
       }
     })
-      .then((response) => {
-        const { posters, content, title, location, updated_time, comments, is_liked, like_count, timeslots, category, payment, link_url } = response.data
+      .then(response => {
+        const {
+          posters,
+          content,
+          title,
+          location,
+          updated_time,
+          comments,
+          is_liked,
+          like_count,
+          timeslots,
+          category,
+          payment,
+          link_url
+        } = response.data;
         this.image = posters["0"].image;
         this.background = posters["0"].image;
         this.content = content;
         this.title = title;
         this.location = location;
-        this.updated_time = updated_time
+        this.updated_time = updated_time;
         this.comments = comments;
         this.isLiked = is_liked;
         this.likeCount = like_count;
@@ -197,10 +214,10 @@ export default {
         this.link_url = link_url;
         console.log(response);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
-  },
+  }
 };
 </script>
 
@@ -218,7 +235,7 @@ export default {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 .coverImage {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
+  background: linear-gradient(rgba(0, 0, 0, 0.7)),
     url("../assets/alexander-popov-522100-unsplash.jpg");
   background-size: cover;
   /* display: flex; */
