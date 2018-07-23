@@ -134,7 +134,7 @@ export default {
 
 @media screen and (max-width: 899px) {
   .mobile-image {
-    width: 80%;
+    width: 70%;
     margin-top: 20%;
   }
 }
