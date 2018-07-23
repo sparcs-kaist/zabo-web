@@ -5,9 +5,9 @@
         <img src="@/sparcslogo.png" class="image"/>
       </div>
       <div class="tapWrapper">
-        <a href="http://www.sparcs.org/" class="tap">Credit</a>
-        <a href="http://www.sparcs.org/" class="tap" >License</a>
-        <a href="http://www.sparcs.org/" class="tap" >Code of Conduct</a>
+        <router-link to="/credit"><span class="tap">Credit</span></router-link>
+        <router-link to="/license"><span class="tap">License</span></router-link>
+        <router-link to="/codeofconduct"><span class="tap">Code of Conduct</span></router-link>
       </div>
     </div>
     <div class="column">
