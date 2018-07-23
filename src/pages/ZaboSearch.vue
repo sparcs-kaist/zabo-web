@@ -97,20 +97,33 @@ export default {
       this.userIsLoading = true;
       axios({
         methods: 'get',
-        url: `/zaboes/?search=${this.$route.params.search}`
-      }).then(response => response.data.data)
-        .then(data => {
-          this.zaboList = data;
+        url: `api/zaboes/?search=${this.$route.params.search}`
+      }).then(response => {
+        if (response.status == 200) {
+          this.zaboList = response.data.data;
+          this.userIsLoading = false;
+          return response.data.data
+        } else if (response.status == 404) {
           this.zaboIsLoading = false;
-        })
+        }
+      }).then(err => {
+        console.log(err)
+        this.zaboIsLoading = false;
+      })
       axios({
         methods: 'get',
-        url: `/users/?search=${this.$route.params.search}`
-      }).then(response => response.data.data)
-        .then(data => {
-          this.userList = data;
+        url: `api/users/?search=${this.$route.params.search}`
+      }).then(response => {
+        if (response.status == 200) {
+          this.userList = response.data.data;
           this.userIsLoading = false;
-        })
+        } else if (response.status == 404) {
+          this.userIsLoading = false;
+        }
+      }).catch(err => {
+        console.log(err)
+        this.userIsLoading = false;
+      })
     },
     closeModal () {
       this.modalState = false;
@@ -177,7 +190,7 @@ export default {
   font-size: 1.375em;
   font-weight: 900;
   width: 70%;
-  min-width: 900px;
+  /* min-width: 900px; */
   text-align: left;
   margin-bottom: 20px;
 }

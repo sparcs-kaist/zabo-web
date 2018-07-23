@@ -45,13 +45,13 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/axios-auth";
 import InfoScreen from "@/components/InfoScreen";
 import InputField from "@/components/InputField";
 import ReviewScreen from "@/components/ReviewScreen";
 
 export default {
-  data() {
+  data () {
     return {
       image: "https://avatars2.githubusercontent.com/u/2281088?s=88&v=4",
       background: "",
@@ -78,12 +78,12 @@ export default {
     ReviewScreen
   },
   computed: {
-    loggedInState() {
+    loggedInState () {
       return this.$store.getters.loggedInState;
     }
   },
   methods: {
-    onSubmitComment() {
+    onSubmitComment () {
       axios({
         method: "post",
         url: `api/comments/`,
@@ -107,16 +107,16 @@ export default {
         });
       this.newComment = "";
     },
-    selectTab(selected) {
+    selectTab (selected) {
       this.toDisplay = selected;
     },
-    editZabo() {
+    editZabo () {
       this.$router.push({
         name: "ZaboUpdate",
         params: { zabo_id: this.zabo_id }
       });
     },
-    likeZabo() {
+    likeZabo () {
       this.isLiked = true;
       this.likeCount += 1;
       axios({
@@ -145,7 +145,7 @@ export default {
           this.likeCount -= 1;
         });
     },
-    dislikeZabo() {
+    dislikeZabo () {
       this.isLiked = false;
       this.likeCount -= 1;
       axios({
@@ -175,7 +175,7 @@ export default {
         });
     }
   },
-  mounted() {
+  mounted () {
     this.zabo_id = this.$route.params.zabo_id;
     axios({
       method: "get",
