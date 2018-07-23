@@ -420,13 +420,55 @@ export default {
   margin-right: 10px;
 }
 
-@media screen and (max-width: 1599px) {
-  .mainWrapper {
-    display: relative;
-  }
+@media screen and (max-width: 899px) {
   .column {
-    margin-bottom: 40px;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .column:last-child {
     height: 100%;
+  }
+  .totalFormWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .zaboUpload {
+    width: 90%;
+  }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1599px) {
+  .column {
+    flex: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .column:first-child {
+    height: 100%;
+    margin-right: 89px;
+  }
+  .column:last-child {
+    flex: 1;
+    height: 100%;
+  }
+  .totalFormWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
   }
 }
 
@@ -442,20 +484,18 @@ export default {
   .column:first-child {
     height: 100%;
     margin-right: 89px;
-    padding-right: 20px;
   }
   .column:last-child {
     flex: 1;
     height: 100%;
   }
-}
-
-.totalFormWrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  /* justify-content: center; */
-  align-items: flex-start;
+  .totalFormWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
 }
 
 .formWrapper {
