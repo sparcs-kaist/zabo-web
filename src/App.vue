@@ -33,14 +33,14 @@ export default {
       template: "<div></div>"
     }
   },
-  data() {
+  data () {
     return {
       loggingIn: false,
       voided: MainZabo,
       loading: false
     };
   },
-  created() {
+  created () {
     this.$store.commit("LOGIN");
     axios
       .get("api/users/myInfo", {
@@ -63,18 +63,18 @@ export default {
     this.$store.dispatch("getNotifications");
   },
   methods: {
-    handleLogin(value) {
+    handleLogin (value) {
       this.loggingIn = !this.loggingIn;
     },
-    closeintro() {
+    closeintro () {
       this.voided = "v-a";
     }
   },
   computed: {
-    loggedInState: function() {
+    loggedInState: function () {
       return this.$store.getters.loggedInState;
     },
-    notifications() {
+    notifications () {
       return this.$store.getters.notifications;
     }
   }
