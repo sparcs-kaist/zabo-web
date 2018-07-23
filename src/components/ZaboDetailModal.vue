@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "@/axios-auth";
 import InfoScreen from '@/components/InfoScreen';
 import InputField from '@/components/InputField';
 import ReviewScreen from '@/components/ReviewScreen';

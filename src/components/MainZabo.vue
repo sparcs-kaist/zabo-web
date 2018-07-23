@@ -1,6 +1,8 @@
 <template lang=''>
-  <div class='totWrapper'>
+  <div class="totWrapper">
+    <img src="@/assets/logo-white.svg" class="logo">
     <div class="mainZaboWrapper">
+      <v-progress-circular v-if="loading" indeterminate color="white" style="margin-top: 300px;"></v-progress-circular>
       <div v-if="!loading" class="row">
         <div class="column">
           <span @click="closeMain('redirect')" class="participateLink">{{$t("참여하기")}}</span>
@@ -11,12 +13,18 @@
           </p>
         </div>
         <div class="column">
-          <img :src="image" height="600" width="500" class="image"/>
+          <img :src="image" class="main-image"/>
         </div>
       </div>
-      <div @click="closeMain" class="row">
+      <div v-if="!loading" @click="closeMain" class="row">
         <v-icon class="icon">keyboard_arrow_up</v-icon>
-        더 많은 자보 확인하기
+        <span class="morebutton">더 많은 자보 확인하기</span>
+      </div>
+    </div>
+    <div v-if="!loading" class="row">
+      <img :src="image" class="mobile-image">
+      <div @click="closeMain('redirect')" class="participateLink-mobile">
+        {{$t("참여하기")}}
       </div>
     </div>
   </div>
@@ -38,7 +46,7 @@ export default {
     };
   },
   created() {
-    axios.get("api/zaboes/1").then(response => {
+    axios.get("api/zaboes/6").then(response => {
       const { posters, content, title, location } = response.data;
       this.image = posters[0].image;
       this.background = posters[0].image;
@@ -74,7 +82,12 @@ export default {
   z-index: 900;
 }
 
-.totWrapper:after {
+.logo {
+  width: 80px;
+  position: absolute;
+  left: 50%;
+  margin-left: -40px;
+  margin-top: 22px;
 }
 
 .mainZaboWrapper {
@@ -88,15 +101,44 @@ export default {
   justify-content: flex-start;
   align-items: center;
 }
-.column {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  z-index: 999;
-  height: 100vh;
-  width: 50%;
+
+@media screen and (max-width: 899px) {
+  .column {
+    display: none;
+  }
 }
+
+@media screen and (min-width: 900px) {
+  .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 999;
+    height: 100vh;
+    width: 50%;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .main-image {
+    width: 55%;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .mobile-image {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 899px) {
+  .mobile-image {
+    width: 80%;
+    margin-top: 20%;
+  }
+}
+
 .row {
   z-index: 999;
 }
@@ -110,7 +152,6 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  font-size: 1.25em;
   color: white;
   cursor: pointer;
 }
@@ -123,10 +164,13 @@ export default {
   width: 50%;
   align-items: flex-start;
 }
-.icon {
-  font-size: 2em;
-  margin-bottom: 0.2em;
+
+@media screen and (min-width: 900px) {
+  .icon {
+    font-size: 30pt;
+  }
 }
+
 .participateLink {
   padding: 11px 38px 10px 38px;
   background-color: #12397d;
@@ -137,6 +181,26 @@ export default {
   color: white;
   cursor: pointer;
 }
+
+@media screen and (max-width: 899px) {
+  .participateLink-mobile {
+    position: relative;
+    text-align: center;
+    font-size: 13pt;
+    background-color: #12397d;
+    width: 150px;
+    height: 100%;
+    padding: 10px;
+    margin-top: -15px;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .participateLink-mobile {
+    display: none;
+  }
+}
+
 .heading {
   font-size: 6.25em;
   font-weight: 900;
@@ -165,5 +229,16 @@ export default {
   height: auto;
   z-index: 800;
   filter: blur(8px);
+}
+@media screen and (max-width: 899px) {
+  .morebutton {
+    font-size: 12pt;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .morebutton {
+    font-size: 18pt;
+  }
 }
 </style>
