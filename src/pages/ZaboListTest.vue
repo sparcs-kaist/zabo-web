@@ -9,7 +9,7 @@
       <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
       <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
   </nav>
-  <div v-if="zaboesExist && !loading" class="currentZaboesWrapper">
+  <div class="currentZaboesWrapper">
     <nav class="horizontalNavButton">
       <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
     </nav>
@@ -17,7 +17,7 @@
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
     </carousel-3d>
-    <carousel-3d id="mainCarousel" :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
+    <carousel-3d v-if="zaboesExist" id="mainCarousel" :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
           <div @click="zaboDetail(zabo.id, zabo.author.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
@@ -31,6 +31,11 @@
         </div>
       </slide>
     </carousel-3d>
+    <v-progress-circular
+      indeterminate
+      color="primary"
+      v-else
+    ></v-progress-circular>
     <carousel-3d id="fakeCarousel2" :inverseScaling="-50" :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
@@ -39,11 +44,6 @@
       <img @click="categoryright" src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
   </div>
-  <v-progress-circular
-    indeterminate
-    color="primary"
-    v-else
-  ></v-progress-circular>
   <zabo-detail-modal @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
 </div>
 </template>
@@ -57,7 +57,6 @@ export default {
       windowWidth: 0,
       currentCategoryIndex: 0,
       categoryList: ["최신순", "인기있는 자보", "마감임박 자보", "리크루팅", "공연", "대회", "설명회", "세미나", "전람회"],
-      loading: true,
       defaultImage: "@/assets/logo.png",
       posterWrapperHeight: 0,
       modalZaboId: -1,
@@ -71,8 +70,23 @@ export default {
       for (var i = 1; i <= totalPage; i++) {
         this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
       };
+      return res
     }).then(() => {
-      this.loading = false
+      let selectedCategories = []
+      this.categoryList.map(category => {
+        if (category != this.calculatedCategoryList[1]) {
+          selectedCategories.push(category)
+        }
+      })
+      console.log(selectedCategories)
+      selectedCategories.map(category => {
+        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: category }).then(res => {
+          const totalPage = res;
+          for (var i = 1; i <= totalPage; i++) {
+            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: category });
+          };
+        })
+      })
     })
   },
   beforeMount () {
@@ -95,15 +109,14 @@ export default {
         this.currentCategoryIndex -= 1;
       }
       this.getWindowWidth();
-      this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
-        const totalPage = res;
-        for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
-        };
-      }).then(() => {
-        this.loading = false
-
-      })
+      if (!this.zaboesExist) {
+        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
+          const totalPage = res;
+          for (var i = 1; i <= totalPage; i++) {
+            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
+          };
+        })
+      }
     },
     categoryright () {
       if (this.currentCategoryIndex === 8) {
@@ -112,14 +125,14 @@ export default {
         this.currentCategoryIndex += 1;
       }
       this.getWindowWidth();
-      this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
-        const totalPage = res;
-        for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
-        };
-      }).then(() => {
-        this.loading = false
-      })
+      if (!this.zaboesExist) {
+        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
+          const totalPage = res;
+          for (var i = 1; i <= totalPage; i++) {
+            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
+          };
+        })
+      }
     },
     zaboDetail (id, nickname) {
       if (nickname !== "None") {
@@ -133,11 +146,10 @@ export default {
       window.history.pushState(null, null, [`/`]);
     },
     mouseUp () {
-      // let carousel = document.getElementsByClassName('carouselWrapper')
-      document.getElementsByClassName('left-1')[1].click()
+      document.getElementById('mainCarousel').getElementsByClassName('left-1')[0].click()
     },
     mouseDown () {
-      document.getElementsByClassName('right-1')[1].click()
+      document.getElementById('mainCarousel').getElementsByClassName('right-1')[0].click()
     },
   },
   components: {
