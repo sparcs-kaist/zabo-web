@@ -10,7 +10,7 @@
       ></v-progress-circular>
     <div class="ListWrapper" v-else>
       <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList">
-        <img @click="zaboDetail(zabo.id, zabo.author.nickName)" :src="zabo.posters[0].image" class="zaboImage">
+        <img @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :src="zabo.posters[0].image" class="zaboImage">
         <span class="zaboTitle">{{zabo.title}}</span>
       </div>
       <div class="doesNotExist" v-show="zaboList.length == 0">
@@ -43,7 +43,7 @@
     </div>
   </div>
   <div v-if="computedModalState" class="zaboModalWrapper">
-    <zabo-detail-modal @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
+    <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
   </div>
 </div>
 </template>
@@ -64,7 +64,8 @@ export default {
       modalZaboId: -1,
       searchTerm: "",
       modalState: false,
-      following: false
+      following: false,
+      modalZaboData: {}
     }
   },
   components: {
@@ -129,9 +130,10 @@ export default {
       this.modalState = false;
       window.history.pushState(null, null, [`/search/${this.searchTerm}`]);
     },
-    zaboDetail (id, nickname) {
+    zaboDetail (id, nickname, zaboData) {
       if (nickname !== "None") {
         this.modalState = true;
+        this.modalZaboData = zaboData
         window.history.pushState(null, null, [`/zabo/${id}`]);
         this.modalZaboId = id;
       }
