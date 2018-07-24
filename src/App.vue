@@ -4,12 +4,10 @@
       <component :is="voided" @closeintro="closeintro"></component>
     </transition>
     <div>
-      <div v-if="loading">
-        <Header v-show="!loggingIn" @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
-        <router-view :key="$route.name + ($route.params.id || '')"></router-view>
-      </div>
-      <Login v-if="loggingIn" @logged-in="handleLogin"></Login>
+      <Header :profileImageLoading="loading" v-show="!loggingIn" @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
+      <router-view :key="$route.name + ($route.params.id || '')"></router-view>
       <Footer v-show="!loggingIn" />
+      <Login v-show="loggingIn" @logged-in="handleLogin"></Login>
     </div>
   </div>
 </template>
@@ -33,14 +31,14 @@ export default {
       template: "<div></div>"
     }
   },
-  data() {
+  data () {
     return {
       loggingIn: false,
       voided: MainZabo,
       loading: false
     };
   },
-  created() {
+  created () {
     this.$store.commit("LOGIN");
     axios
       .get("api/users/myInfo", {
@@ -63,18 +61,18 @@ export default {
     this.$store.dispatch("getNotifications");
   },
   methods: {
-    handleLogin(value) {
+    handleLogin (value) {
       this.loggingIn = !this.loggingIn;
     },
-    closeintro() {
+    closeintro () {
       this.voided = "v-a";
     }
   },
   computed: {
-    loggedInState: function() {
+    loggedInState: function () {
       return this.$store.getters.loggedInState;
     },
-    notifications() {
+    notifications () {
       return this.$store.getters.notifications;
     }
   }

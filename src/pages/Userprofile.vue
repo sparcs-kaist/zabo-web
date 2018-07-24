@@ -48,8 +48,22 @@
             </div>
           </v-tab-item>
           <v-tab-item :key="3">
-            <div>
-              팔로우
+            <div class="followWrapper">
+              <div class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
+                <div @click="userDetail(user.nickName)" class="userInfoWrapper">
+                  <img :src="user.profile_image" class="userImage">
+                  <span class="userName">{{user.nickName}}</span>
+                </div>
+                <button v-show="!following" class="Follow" @click="followUser(user.nickName)">
+                  팔로우
+                </button>
+                <button v-show="following" class="Follow" @click="unfollowUser(user.nickName)">
+                  팔로우 취소
+                </button>
+              </div>
+              <div class="doesNotExist" v-show="currentUser.following.length == 0">
+                <span>{{$t('유저가 존재하지 않습니다.')}}</span>
+              </div>
             </div>
           </v-tab-item>
         </v-tabs-items>
@@ -62,7 +76,6 @@
 </template>
 
 <script>
-import Participated from "./Userprofile/Participated";
 import Profile from "./Userprofile/Profile";
 import ZaboDetailModal from '@/components/ZaboDetailModal';
 import axios from '@/axios-auth';
@@ -91,7 +104,6 @@ export default {
     };
   },
   components: {
-    participated: Participated,
     profile: Profile,
     ZaboDetailModal
   },
@@ -327,5 +339,43 @@ export default {
 
 .tabsWrapper {
   margin-bottom: 68px;
+}
+.followWrapper {
+  width: 100%;
+}
+
+.userWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  border: 1px solid #ececec;
+  border-radius: 3px;
+  padding: 15px 20px;
+  margin-right: 10px;
+}
+.userInfoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.Follow {
+  width: 100%;
+  height: 30px;
+  background-color: #12397d;
+  border-radius: 3px;
+  color: white;
+  margin-top: 1em;
+}
+.userImage {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+.userName {
+  font-size: 1.875em;
+  font-weight: 700;
+  margin-left: 10px;
 }
 </style>

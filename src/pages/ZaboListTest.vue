@@ -9,18 +9,18 @@
       <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
       <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
   </nav>
-  <div v-if="zaboesExist && !loading" class="currentZaboesWrapper">
+  <div class="currentZaboesWrapper">
     <nav class="horizontalNavButton">
       <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
     </nav>
-    <carousel-3d :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
+    <carousel-3d id="fakeCarousel1" :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
     </carousel-3d>
-    <carousel-3d :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
+    <carousel-3d v-if="zaboesExist" id="mainCarousel" :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
-          <div @click="zaboDetail(zabo.id, zabo.author.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
+          <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
             <img class="poster" :src="zabo.posters[0].image_thumbnail">
             <div class="posterDescriptionWrapper">
               <span class="posterDescription">{{$t('제목 : ')}}{{zabo.title}}</span>
@@ -31,7 +31,12 @@
         </div>
       </slide>
     </carousel-3d>
-    <carousel-3d :inverseScaling="-50" :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
+    <v-progress-circular
+      indeterminate
+      color="primary"
+      v-else
+    ></v-progress-circular>
+    <carousel-3d id="fakeCarousel2" :inverseScaling="-50" :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
     </carousel-3d>
@@ -39,35 +44,12 @@
       <img @click="categoryright" src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
   </div>
-  <v-progress-circular
-    indeterminate
-    color="primary"
-    v-else
-  ></v-progress-circular>
-  <zabo-detail-modal @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
+  <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
 </div>
 </template>
 <script>
 import { Carousel3d, Slide } from 'vue-carousel-3d';
 import ZaboDetailModal from '@/components/ZaboDetailModal';
-
-function carouselCssControler () {
-  for (let c = 0; c < document.getElementsByClassName('carousel-3d-container')[1].childNodes[0].childNodes.length; c++) {
-    document.getElementsByClassName('carousel-3d-container')[1].childNodes[0].childNodes[c].style['backgroundColor'] = 'transparent'
-    document.getElementsByClassName('carousel-3d-container')[1].childNodes[0].childNodes[c].style['border'] = 'none'
-  }
-  for (let f = 0; f < 3; f++) {
-    document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[f].style['border'] = 'none'
-    document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[f].style['border'] = 'none'
-    document.getElementsByClassName('carousel-3d-container')[f].style['position'] = "absolute"
-  }
-  document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[0].style['backgroundColor'] = '#f6f6f6'
-  document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[0].style['backgroundColor'] = '#f6f6f6'
-  document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[1].style['backgroundColor'] = '#ececec'
-  document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[1].style['backgroundColor'] = '#ececec'
-  document.getElementsByClassName('carousel-3d-container')[0].childNodes[0].childNodes[2].style['backgroundColor'] = '#ececec'
-  document.getElementsByClassName('carousel-3d-container')[2].childNodes[0].childNodes[2].style['backgroundColor'] = '#ececec'
-}
 
 export default {
   data () {
@@ -75,11 +57,11 @@ export default {
       windowWidth: 0,
       currentCategoryIndex: 0,
       categoryList: ["최신순", "인기있는 자보", "마감임박 자보", "리크루팅", "공연", "대회", "설명회", "세미나", "전람회"],
-      loading: true,
       defaultImage: "@/assets/logo.png",
       posterWrapperHeight: 0,
       modalZaboId: -1,
       currentPath: window.location.pathname,
+      modalZaboData: {}
     }
   },
   mounted () {
@@ -89,8 +71,23 @@ export default {
       for (var i = 1; i <= totalPage; i++) {
         this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
       };
+      return res
     }).then(() => {
-      this.loading = false
+      let selectedCategories = []
+      this.categoryList.map(category => {
+        if (category != this.calculatedCategoryList[1]) {
+          selectedCategories.push(category)
+        }
+      })
+      console.log(selectedCategories)
+      selectedCategories.map(category => {
+        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: category }).then(res => {
+          const totalPage = res;
+          for (var i = 1; i <= totalPage; i++) {
+            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: category });
+          };
+        })
+      })
     })
   },
   beforeMount () {
@@ -113,15 +110,14 @@ export default {
         this.currentCategoryIndex -= 1;
       }
       this.getWindowWidth();
-      this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
-        const totalPage = res;
-        for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
-        };
-      }).then(() => {
-        this.loading = false
-
-      })
+      if (!this.zaboesExist) {
+        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
+          const totalPage = res;
+          for (var i = 1; i <= totalPage; i++) {
+            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
+          };
+        })
+      }
     },
     categoryright () {
       if (this.currentCategoryIndex === 8) {
@@ -130,20 +126,21 @@ export default {
         this.currentCategoryIndex += 1;
       }
       this.getWindowWidth();
-      this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
-        const totalPage = res;
-        for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
-        };
-      }).then(() => {
-        this.loading = false
-      })
+      if (!this.zaboesExist) {
+        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
+          const totalPage = res;
+          for (var i = 1; i <= totalPage; i++) {
+            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
+          };
+        })
+      }
     },
-    zaboDetail (id, nickname) {
+    zaboDetail (id, nickname, zaboData) {
       if (nickname !== "None") {
+        this.modalZaboId = id;
+        this.modalZaboData = zaboData;
         window.history.pushState(null, null, [`/zabo/${id}`]);
         this.currentPath = window.location.pathname
-        this.modalZaboId = id;
       }
     },
     closeModal () {
@@ -151,11 +148,10 @@ export default {
       window.history.pushState(null, null, [`/`]);
     },
     mouseUp () {
-      // let carousel = document.getElementsByClassName('carouselWrapper')
-      document.getElementsByClassName('left-1')[1].click()
+      document.getElementById('mainCarousel').getElementsByClassName('left-1')[0].click()
     },
     mouseDown () {
-      document.getElementsByClassName('right-1')[1].click()
+      document.getElementById('mainCarousel').getElementsByClassName('right-1')[0].click()
     },
   },
   components: {
@@ -232,22 +228,13 @@ export default {
     }
   },
   watch: {
-    currentPath (val) {
-      console.log(val);
-    },
     zaboesExist (val) {
-      console.log(val, "this is working!")
       if (val) {
+        window.dispatchEvent(new Event('resize'));
         setTimeout(function () {
           window.dispatchEvent(new Event('resize'));
-          carouselCssControler();
           setTimeout(() => {
             window.dispatchEvent(new Event('resize'))
-            carouselCssControler();
-            setTimeout(() => {
-              window.dispatchEvent(new Event('resize'))
-              carouselCssControler();
-            }, 1000)
           }, 1000)
         }, 1000);
       }
@@ -402,5 +389,44 @@ export default {
 }
 .horizontalNavButton {
   z-index: 200;
+}
+
+/* Carousel-css */
+#mainCarousel {
+  position: absolute;
+}
+#fakeCarousel1 {
+  position: absolute;
+}
+#fakeCarousel2 {
+  position: absolute;
+}
+#mainCarousel .carousel-3d-slider .carousel-3d-slide {
+  background-color: transparent;
+  border: none;
+}
+#fakeCarousel1 .carousel-3d-slider .right-1 {
+  background-color: #ececec;
+  border: none;
+}
+#fakeCarousel2 .carousel-3d-slider .right-1 {
+  background-color: #ececec;
+  border: none;
+}
+#fakeCarousel1 .carousel-3d-slider .left-1 {
+  background-color: #ececec;
+  border: none;
+}
+#fakeCarousel2 .carousel-3d-slider .left-1 {
+  background-color: #ececec;
+  border: none;
+}
+#fakeCarousel1 .carousel-3d-slider .current {
+  background-color: #fcfcfc;
+  border: none;
+}
+#fakeCarousel2 .carousel-3d-slider .current {
+  background-color: #fcfcfc;
+  border: none;
 }
 </style>

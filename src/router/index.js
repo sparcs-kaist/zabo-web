@@ -8,6 +8,9 @@ import ZaboUserprofile from "@/pages/Userprofile.vue";
 import UserDetail from "@/pages/UserDetail.vue";
 import ZaboSearch from "@/pages/ZaboSearch.vue";
 import LoginCallback from "@/pages/LoginCallback.vue";
+import CodeOfConduct from "@/pages/CodeOfConduct.vue";
+import Credit from "@/pages/Credit.vue";
+import License from "@/pages/License.vue";
 
 Vue.use(Router);
 
@@ -52,6 +55,21 @@ export default new Router({
       path: "/login/callback",
       name: "LoginCallback",
       component: LoginCallback
+    },
+    {
+      path: "/credit",
+      name: "Credit",
+      component: Credit
+    },
+    {
+      path: "/codeofconduct",
+      name: "CodeOfConduct",
+      component: CodeOfConduct
+    },
+    {
+      path: "/license",
+      name: "License",
+      component: License
     },
     {
       path: "/",

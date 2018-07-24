@@ -10,7 +10,7 @@
       ></v-progress-circular>
     <div class="ListWrapper" v-else>
       <div class="zaboWrapper" v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList">
-        <img @click="zaboDetail(zabo.id, zabo.author.nickName)" :src="zabo.posters[0].image" class="zaboImage">
+        <img @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :src="zabo.posters[0].image" class="zaboImage">
         <span class="zaboTitle">{{zabo.title}}</span>
       </div>
       <div class="doesNotExist" v-show="zaboList.length == 0">
@@ -43,7 +43,7 @@
     </div>
   </div>
   <div v-if="computedModalState" class="zaboModalWrapper">
-    <zabo-detail-modal @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
+    <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
   </div>
 </div>
 </template>
@@ -64,7 +64,8 @@ export default {
       modalZaboId: -1,
       searchTerm: "",
       modalState: false,
-      following: false
+      following: false,
+      modalZaboData: {}
     }
   },
   components: {
@@ -97,28 +98,42 @@ export default {
       this.userIsLoading = true;
       axios({
         methods: 'get',
-        url: `/zaboes/?search=${this.$route.params.search}`
-      }).then(response => response.data.data)
-        .then(data => {
-          this.zaboList = data;
+        url: `api/zaboes/?search=${this.$route.params.search}`
+      }).then(response => {
+        if (response.status == 200) {
+          this.zaboList = response.data.data;
+          this.userIsLoading = false;
+          return response.data.data
+        } else if (response.status == 404) {
           this.zaboIsLoading = false;
-        })
+        }
+      }).then(err => {
+        console.log(err)
+        this.zaboIsLoading = false;
+      })
       axios({
         methods: 'get',
-        url: `/users/?search=${this.$route.params.search}`
-      }).then(response => response.data.data)
-        .then(data => {
-          this.userList = data;
+        url: `api/users/?search=${this.$route.params.search}`
+      }).then(response => {
+        if (response.status == 200) {
+          this.userList = response.data.data;
           this.userIsLoading = false;
-        })
+        } else if (response.status == 404) {
+          this.userIsLoading = false;
+        }
+      }).catch(err => {
+        console.log(err)
+        this.userIsLoading = false;
+      })
     },
     closeModal () {
       this.modalState = false;
       window.history.pushState(null, null, [`/search/${this.searchTerm}`]);
     },
-    zaboDetail (id, nickname) {
+    zaboDetail (id, nickname, zaboData) {
       if (nickname !== "None") {
         this.modalState = true;
+        this.modalZaboData = zaboData
         window.history.pushState(null, null, [`/zabo/${id}`]);
         this.modalZaboId = id;
       }
@@ -177,7 +192,7 @@ export default {
   font-size: 1.375em;
   font-weight: 900;
   width: 70%;
-  min-width: 900px;
+  /* min-width: 900px; */
   text-align: left;
   margin-bottom: 20px;
 }
