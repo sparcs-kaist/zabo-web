@@ -7,7 +7,7 @@ yarn-error.log*
 /test/e2e/reports/
 selenium-debug.log
 package-lock.json
-
+src/axios-auth.js
 # Editor directories and files
 .idea
 .vscode
