@@ -16,7 +16,7 @@
           <img :src="image" class="main-image"/>
         </div>
       </div>
-      <div v-if="!loading" @click="closeMain" class="row">
+      <div @click="closeMain" class="row">
         <v-icon class="icon">keyboard_arrow_up</v-icon>
         <span class="morebutton">더 많은 자보 확인하기</span>
       </div>

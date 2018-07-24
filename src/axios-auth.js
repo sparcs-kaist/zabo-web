@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://zaboapi.sparcs.org"
+  baseURL: "http://ssal.sparcs.org:16133"
 });
 
 instance.interceptors.request.use(
