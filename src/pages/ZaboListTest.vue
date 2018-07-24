@@ -20,7 +20,7 @@
     <carousel-3d v-if="zaboesExist" id="mainCarousel" :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
-          <div @click="zaboDetail(zabo.id, zabo.author.nickName)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
+          <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
             <img class="poster" :src="zabo.posters[0].image_thumbnail">
             <div class="posterDescriptionWrapper">
               <span class="posterDescription">{{$t('제목 : ')}}{{zabo.title}}</span>
@@ -44,7 +44,7 @@
       <img @click="categoryright" src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
   </div>
-  <zabo-detail-modal @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
+  <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
 </div>
 </template>
 <script>
@@ -61,6 +61,7 @@ export default {
       posterWrapperHeight: 0,
       modalZaboId: -1,
       currentPath: window.location.pathname,
+      modalZaboData: {}
     }
   },
   mounted () {
@@ -134,11 +135,12 @@ export default {
         })
       }
     },
-    zaboDetail (id, nickname) {
+    zaboDetail (id, nickname, zaboData) {
       if (nickname !== "None") {
+        this.modalZaboId = id;
+        this.modalZaboData = zaboData;
         window.history.pushState(null, null, [`/zabo/${id}`]);
         this.currentPath = window.location.pathname
-        this.modalZaboId = id;
       }
     },
     closeModal () {
@@ -226,11 +228,7 @@ export default {
     }
   },
   watch: {
-    currentPath (val) {
-      console.log(val);
-    },
     zaboesExist (val) {
-      console.log(val, "this is working!")
       if (val) {
         window.dispatchEvent(new Event('resize'));
         setTimeout(function () {
