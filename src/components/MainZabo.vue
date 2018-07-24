@@ -33,7 +33,7 @@
 import axios from "@/axios-auth";
 
 export default {
-  data() {
+  data () {
     return {
       id: 1,
       image: "",
@@ -45,7 +45,7 @@ export default {
       transition: ""
     };
   },
-  created() {
+  created () {
     axios.get("api/zaboes/6").then(response => {
       const { posters, content, title, location } = response.data;
       this.image = posters[0].image;
@@ -57,9 +57,9 @@ export default {
     });
   },
   methods: {
-    closeMain: function(req) {
+    closeMain: function (req) {
       if (req === "redirect") {
-        this.$router.push({ path: "/zabo/45" });
+        this.$router.push({ path: "/zabo/6" });
       }
       this.$emit("closeintro");
     }

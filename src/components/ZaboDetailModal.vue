@@ -53,8 +53,7 @@ import ReviewScreen from '@/components/ReviewScreen';
 export default {
   data () {
     return {
-      image: "https://avatars2.githubusercontent.com/u/2281088?s=88&v=4",
-      background: "",
+      image: "",
       content: "Content",
       title: "Title",
       location: "Location",
@@ -76,7 +75,7 @@ export default {
     InputField,
     ReviewScreen,
   },
-  props: ['zaboId'],
+  props: ['zaboId', 'modalZaboData'],
   computed: {
     zabodetailId () {
       return this.zabo_id;
@@ -170,6 +169,13 @@ export default {
   },
   mounted () {
     this.zabo_id = this.zaboId;
+    console.log(this.modalZaboData);
+    const { posters, content, title, location, like_count } = this.modalZaboData;
+    this.image = posters["0"].image;
+    this.title = title;
+    this.location = location;
+    this.likeCount = like_count;
+    this.content = content;
     axios({
       method: 'get',
       url: `api/zaboes/${this.zabodetailId}/`,
@@ -178,16 +184,10 @@ export default {
       }
     })
       .then((response) => {
-        const { posters, content, title, location, updated_time, comments, is_liked, like_count, timeslots, category, payment } = response.data
-        this.image = posters["0"].image;
-        this.background = posters["0"].image;
-        this.content = content;
-        this.title = title;
-        this.location = location;
+        const { updated_time, comments, is_liked, timeslots, category, payment } = response.data
         this.updated_time = updated_time
         this.comments = comments;
         this.isLiked = is_liked;
-        this.likeCount = like_count;
         this.timeslots = timeslots;
         this.category = category;
         this.payment = payment;
@@ -213,7 +213,7 @@ export default {
   border-radius: 3px;
 }
 .coverImage {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.7)),
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("../assets/alexander-popov-522100-unsplash.jpg");
   background-size: cover;
   /* display: flex; */
