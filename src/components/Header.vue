@@ -22,7 +22,8 @@
         </div>
         <template v-if="loggedInState">
           <div @click="profileModalState = !profileModalState" class="right">
-            <img :src="imagesrc" class="profile-image">
+            <div v-if="!profileLoading" class="profile-image">?</div>
+            <img v-else :src="imagesrc" class="profile-image">
           </div>
           <div class="profileModalWrapper" v-show="profileModalState">
             <div @click="logout" class="singleTapWrapper">
@@ -104,7 +105,8 @@ export default {
     };
   },
   props: {
-    loggedInState: Boolean
+    loggedInState: Boolean,
+    profileImageLoading: Boolean
   },
   methods: {
     login: function () {
@@ -153,6 +155,9 @@ export default {
     imagesrc () {
       return this.$store.getters.getProfileImagesource;
     },
+    profileLoading () {
+      return this.profileImageLoading
+    }
   }
 };
 </script>
