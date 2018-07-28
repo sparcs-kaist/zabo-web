@@ -46,7 +46,7 @@ export default {
     };
   },
   created() {
-    axios.get("api/zaboes/6").then(response => {
+    axios.get("api/zaboes/100").then(response => {
       const { posters, content, title, location } = response.data;
       this.image = posters[0].image;
       this.background = posters[0].image;
