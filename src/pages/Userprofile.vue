@@ -77,13 +77,13 @@
 
 <script>
 import Profile from "./Userprofile/Profile";
-import ZaboDetailModal from '@/components/ZaboDetailModal';
-import axios from '@/axios-auth';
+import ZaboDetailModal from "@/components/ZaboDetailModal";
+import axios from "@/axios-auth";
 import * as types from "@/store/mutation-types";
 
 export default {
   name: "userprofile",
-  data () {
+  data() {
     return {
       valid: true,
       edit: false,
@@ -108,16 +108,16 @@ export default {
     ZaboDetailModal
   },
   methods: {
-    tab1 () {
+    tab1() {
       this.tab = "tab1";
     },
-    tab2 () {
+    tab2() {
       this.tab = "tab2";
     },
-    tab3 () {
+    tab3() {
       this.tab = "tab3";
     },
-    edit_toggle () {
+    edit_toggle() {
       if (this.edit === false) {
         this.profilePreview = this.imagesrc;
         this.edit = true;
@@ -125,28 +125,28 @@ export default {
         this.edit = false;
       }
     },
-    cancel () {
+    cancel() {
       this.new_first_name = this.first_name;
       this.new_last_name = this.last_name;
       this.valid = true;
       this.edit = false;
     },
-    onFileSelected (event) {
+    onFileSelected(event) {
       this.new_profile_image = event.target.files[0];
       this.profilePreview = URL.createObjectURL(this.new_profile_image);
     },
-    zaboDetail (id, nickname) {
+    zaboDetail(id, nickname) {
       if (nickname !== "None") {
         this.modalState = true;
         window.history.pushState(null, null, [`/zabo/${id}`]);
         this.modalZaboId = id;
       }
     },
-    closeModal () {
+    closeModal() {
       this.modalState = false;
     }
   },
-  mounted () {
+  mounted() {
     setTimeout(() => {
       this.new_first_name = this.$store.getters.getFirstName;
       this.new_last_name = this.$store.getters.getLastName;
@@ -154,29 +154,29 @@ export default {
     }, 3000);
   },
   computed: {
-    first_name () {
+    first_name() {
       return this.$store.getters.getFirstName;
     },
-    last_name () {
+    last_name() {
       return this.$store.getters.getLastName;
     },
-    imagesrc () {
+    imagesrc() {
       return this.$store.getters.getProfileImagesource;
     },
-    currentUser () {
+    currentUser() {
       return this.$store.getters.currentUser;
     },
-    computedCreatedZaboes () {
+    computedCreatedZaboes() {
       let finalZaboes = [];
       for (let i = 0; i < this.createdZaboes.length; i++) {
         if (this.createdZaboes[i].posters.length > 0) {
-          finalZaboes.push(this.createdZaboes[i])
+          finalZaboes.push(this.createdZaboes[i]);
         }
       }
-      return finalZaboes
-    },
+      return finalZaboes;
+    }
   },
-  created () {
+  created() {
     axios
       .get("api/zaboes/created/", {
         headers: {

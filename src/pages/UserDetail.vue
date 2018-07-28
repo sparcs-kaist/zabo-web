@@ -39,31 +39,38 @@
 </template>
 
 <script>
-import axios from '@/axios-auth';
+import axios from "@/axios-auth";
 import Profile from "./Userprofile/Profile";
 
 export default {
   name: "userDetail",
-  created () {
-    axios.get(`api/users/?search=${this.$route.params.nickName}`)
+  created() {
+    axios
+      .get(`api/users/?search=${this.$route.params.nickName}`)
       .then(res => res.data.data[0])
       .then(user => {
-        axios.get(`api/users/${user.id}/`)
-          .then(res => {
-            const { first_name, last_name, gender, joined_date, profile_image, following } = res.data;
-            this.imagesrc = profile_image;
-            this.first_name = first_name;
-            this.last_name = last_name;
-            this.gender = gender;
-            this.joined_date = joined_date;
-            this.following = following
-          })
-      })
+        axios.get(`api/users/${user.id}/`).then(res => {
+          const {
+            first_name,
+            last_name,
+            gender,
+            joined_date,
+            profile_image,
+            following
+          } = res.data;
+          this.imagesrc = profile_image;
+          this.first_name = first_name;
+          this.last_name = last_name;
+          this.gender = gender;
+          this.joined_date = joined_date;
+          this.following = following;
+        });
+      });
   },
   components: {
-    profile: Profile,
+    profile: Profile
   },
-  data () {
+  data() {
     return {
       valid: false,
       tab: "tab1",
@@ -78,16 +85,16 @@ export default {
     };
   },
   methods: {
-    tab1 () {
+    tab1() {
       this.tab = "tab1";
     },
-    tab2 () {
+    tab2() {
       this.tab = "tab2";
     },
-    tab3 () {
+    tab3() {
       this.tab = "tab3";
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -6,37 +6,37 @@
 </template>
 
 <script>
-import EditableText from './EditableText';
-import CommentBox from './CommentBox';
+import EditableText from "./EditableText";
+import CommentBox from "./CommentBox";
 
 export default {
-  props: ['comments'],
-  data () {
+  props: ["comments"],
+  data() {
     return {
       deletedId: []
-    }
+    };
   },
   components: {
     CommentBox,
-    EditableText,
+    EditableText
   },
   methods: {
-    deleteComment (payload) {
-      this.deletedId.push(payload.id)
-    },
+    deleteComment(payload) {
+      this.deletedId.push(payload.id);
+    }
   },
   computed: {
-    computedComments () {
+    computedComments() {
       if (this.deletedId.length == 0) {
-        return this.comments
+        return this.comments;
       } else {
         let finalComments = [];
         this.comments.map(comment => {
           if (this.deletedId.indexOf(comment.id) == -1) {
-            finalComments.push(comment)
+            finalComments.push(comment);
           }
-        })
-        return finalComments
+        });
+        return finalComments;
       }
     }
   }

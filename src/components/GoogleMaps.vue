@@ -8,27 +8,27 @@
 </template>
 
 <script>
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import VueGoogleAutocomplete from "vue-google-autocomplete";
 
 export default {
   components: { VueGoogleAutocomplete },
 
-  data: function () {
+  data: function() {
     return {
-      address: ''
-    }
+      address: ""
+    };
   },
 
-  mounted () {
+  mounted() {
     // To demonstrate functionality of exposed component functions
     // Here we make focus on the user input
     // this.$refs.address.focus();
   },
 
   methods: {
-    getAddressData: function (addressData, placeResultData, id) {
+    getAddressData: function(addressData, placeResultData, id) {
       this.address = addressData;
     }
   }
-}
+};
 </script>

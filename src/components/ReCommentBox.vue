@@ -30,68 +30,68 @@
 </template>
 
 <script>
-import axios from 'axios';
-import InputField from './InputField';
+import axios from "axios";
+import InputField from "./InputField";
 
 export default {
   components: {
-    InputField,
+    InputField
   },
-  props: ['author', 'commentId', 'content', 'depth', 'replies'],
-  name: 're-comment-box',
-  data () {
+  props: ["author", "commentId", "content", "depth", "replies"],
+  name: "re-comment-box",
+  data() {
     return {
-      newReply: '',
+      newReply: "",
       seeMore: false,
       commentEditHandlerModalState: false,
       editing: false
     };
   },
   methods: {
-    isLong () {
+    isLong() {
       return this.content.length > 200;
     },
-    onSubmitReply () {
+    onSubmitReply() {
       this.editing = false;
       axios({
-        method: 'PUT',
+        method: "PUT",
         url: `api/comments/${this.commentId}/`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         },
         data: {
-          "content": this.newReply,
-          "is_private": true,
-          "is_deleted": true,
-          "is_blocked": true
+          content: this.newReply,
+          is_private: true,
+          is_deleted: true,
+          is_blocked: true
         }
-      })
+      });
     },
-    editModal () {
+    editModal() {
       this.commentEditHandlerModalState = false;
       this.editing = true;
     },
-    deleteReply () {
+    deleteReply() {
       this.commentEditHandlerModalState = false;
       axios({
-        method: 'DELETE',
+        method: "DELETE",
         url: `api/recomments/${this.commentId}/`,
         headers: {
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         }
       }).then(res => {
         if (res.status == 204) {
-          this.$emit('delete', { id: this.commentId })
+          this.$emit("delete", { id: this.commentId });
         }
-      })
+      });
     }
   },
   computed: {
-    shortenedComment () {
+    shortenedComment() {
       return `${this.content.substring(0, 200)}...`;
-    },
-  },
+    }
+  }
 };
 </script>
 

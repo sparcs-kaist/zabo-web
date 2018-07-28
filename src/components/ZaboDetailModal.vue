@@ -46,19 +46,19 @@
 
 <script>
 import axios from "@/axios-auth";
-import InfoScreen from '@/components/InfoScreen';
-import InputField from '@/components/InputField';
-import ReviewScreen from '@/components/ReviewScreen';
+import InfoScreen from "@/components/InfoScreen";
+import InputField from "@/components/InputField";
+import ReviewScreen from "@/components/ReviewScreen";
 
 export default {
-  data () {
+  data() {
     return {
       image: "",
       content: "Content",
       title: "Title",
       location: "Location",
       comments: [],
-      newComment: '',
+      newComment: "",
       // 0 displays Info, 1 displays Review
       toDisplay: 0,
       zabo_id: -1,
@@ -73,119 +73,136 @@ export default {
   components: {
     InfoScreen,
     InputField,
-    ReviewScreen,
+    ReviewScreen
   },
-  props: ['zaboId', 'modalZaboData'],
+  props: ["zaboId", "modalZaboData"],
   computed: {
-    zabodetailId () {
+    zabodetailId() {
       return this.zabo_id;
     },
-    loggedInState () {
-      return this.$store.getters.loggedInState
+    loggedInState() {
+      return this.$store.getters.loggedInState;
     }
   },
   methods: {
-    onSubmitComment () {
+    onSubmitComment() {
       axios({
-        method: 'post',
+        method: "post",
         url: `api/comments/`,
         data: {
           content: this.newComment,
-          zabo: this.zabodetailId,
+          zabo: this.zabodetailId
         },
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         }
       })
-        .then((response) => {
+        .then(response => {
           this.comments.push(response.data);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
-      this.newComment = '';
+      this.newComment = "";
     },
-    selectTab (selected) {
+    selectTab(selected) {
       this.toDisplay = selected;
     },
-    closeModal () {
-      this.$emit('closeModal');
+    closeModal() {
+      this.$emit("closeModal");
     },
-    editZabo () {
-      this.$router.push({ name: "ZaboUpdate", params: { zabo_id: this.zabo_id } })
+    editZabo() {
+      this.$router.push({
+        name: "ZaboUpdate",
+        params: { zabo_id: this.zabo_id }
+      });
     },
-    likeZabo () {
+    likeZabo() {
       this.isLiked = true;
       this.likeCount += 1;
       axios({
-        url: 'api/likes/',
-        method: 'post',
+        url: "api/likes/",
+        method: "post",
         data: {
           zabo: this.zabo_id
         },
         headers: {
-          Authorization: localStorage.getItem('token'),
-          'Content-Type': 'application/json',
-        },
-      }).then(res => {
-        console.log(res)
-        if (res.status == 201) {
-          this.isLiked = true;
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json"
         }
       })
-        .catch(err => {
-          alert('You are not logged In!')
-          console.log(err)
-          this.likeCount -= 1;
+        .then(res => {
+          console.log(res);
+          if (res.status == 201) {
+            this.isLiked = true;
+          }
         })
-        ;
+        .catch(err => {
+          alert("You are not logged In!");
+          console.log(err);
+          this.likeCount -= 1;
+        });
     },
-    dislikeZabo () {
+    dislikeZabo() {
       this.isLiked = false;
       this.likeCount -= 1;
       axios({
-        url: 'api/likes/dislike/',
-        method: 'delete',
+        url: "api/likes/dislike/",
+        method: "delete",
         data: {
           zabo: this.zabo_id
         },
         headers: {
-          Authorization: localStorage.getItem('token'),
-          'Content-Type': 'application/json',
-        },
-      }).then(res => {
-        console.log(res)
-        if (res.status == 201) {
-          this.isLiked = false;
+          Authorization: localStorage.getItem("token"),
+          "Content-Type": "application/json"
         }
       })
+        .then(res => {
+          console.log(res);
+          if (res.status == 201) {
+            this.isLiked = false;
+          }
+        })
         .catch(err => {
-          alert('You are not logged In!')
-          console.log(err)
+          alert("You are not logged In!");
+          console.log(err);
           this.likeCount += 1;
         });
     }
   },
-  mounted () {
+  mounted() {
     this.zabo_id = this.zaboId;
     console.log(this.modalZaboData);
-    const { posters, content, title, location, like_count } = this.modalZaboData;
+    const {
+      posters,
+      content,
+      title,
+      location,
+      like_count
+    } = this.modalZaboData;
     this.image = posters["0"].image;
     this.title = title;
     this.location = location;
     this.likeCount = like_count;
     this.content = content;
     axios({
-      method: 'get',
+      method: "get",
       url: `api/zaboes/${this.zabodetailId}/`,
       headers: {
-        Authorization: localStorage.getItem('token')
+        Authorization: localStorage.getItem("token")
       }
     })
-      .then((response) => {
-        const { updated_time, comments, is_liked, timeslots, category, payment } = response.data
-        this.updated_time = updated_time
+      .then(response => {
+        const {
+          updated_time,
+          comments,
+          is_liked,
+          timeslots,
+          category,
+          payment
+        } = response.data;
+        this.updated_time = updated_time;
         this.comments = comments;
         this.isLiked = is_liked;
         this.timeslots = timeslots;
@@ -193,10 +210,10 @@ export default {
         this.payment = payment;
         console.log(response);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(err);
       });
-  },
+  }
 };
 </script>
 
