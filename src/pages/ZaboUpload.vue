@@ -173,10 +173,10 @@
 </template>
 
 <script>
-import axios from '@/axios-auth';
+import axios from "@/axios-auth";
 
 export default {
-  data () {
+  data() {
     return {
       name: "",
       selectedcategory: "",
@@ -197,53 +197,53 @@ export default {
         1: "none",
         2: "none",
         3: "none",
-        4: "none",
+        4: "none"
       },
       scheduleAdding: false,
       zaboPosterBool: false,
       zaboUrl: "",
       zaboUrlExist: false,
-      postState: true,
+      postState: true
     };
   },
-  created () {
+  created() {
     var map = new naver.maps.Map(document.getElementById("naverMap"));
     console.log("hell");
   },
   methods: {
-    posteradd (num, event) {
+    posteradd(num, event) {
       const url = URL.createObjectURL(event.target.files[0]);
       const file = event.target.files[0];
       this.imagePreviewUrls[num] = url;
       this.zaboPosters[num] = file;
     },
-    deletePoster () {
+    deletePoster() {
       this.imagePreviewUrls = [];
     },
-    postPoster () {
+    postPoster() {
       if (this.zaboUploadValidation) {
-        let selcat = ""
+        let selcat = "";
         if (this.selectedcategory == "리크루팅") {
-          selcat = "R"
+          selcat = "R";
         } else if (this.selectedcategory == "공연") {
-          selcat = "P"
+          selcat = "P";
         } else if (this.selectedcategory == "대회") {
-          selcat = "C"
+          selcat = "C";
         } else if (this.selectedcategory == "설명회") {
-          selcat = "F"
+          selcat = "F";
         } else if (this.selectedcategory == "세미나") {
-          selcat = "L"
+          selcat = "L";
         } else if (this.selectedcategory == "전시회") {
-          selcat = "E"
+          selcat = "E";
         }
 
-        let selapp = ""
+        let selapp = "";
         if (this.selectedMethod == "자보에서 신청") {
-          selapp = "Z"
+          selapp = "Z";
         } else if (this.selectedMethod == "현장 접수") {
-          selapp = "S"
+          selapp = "S";
         } else if (this.selectedMethod == "외부 링크를 통한 신청") {
-          selapp = "E"
+          selapp = "E";
         }
         let formData = new FormData();
 
@@ -259,51 +259,55 @@ export default {
         console.log(this.scheduleDates);
         console.log(this.computedScheduleDates);
         console.log(selcat);
-        formData.append('title', this.name);
-        formData.append('location', this.location);
-        formData.append('content', this.introduction);
-        formData.append('apply', selapp);
-        formData.append('payment', "F");
-        formData.append('category', selcat);
-        formData.append('timeslots', JSON.stringify(this.computedScheduleDates));
+        formData.append("title", this.name);
+        formData.append("location", this.location);
+        formData.append("content", this.introduction);
+        formData.append("apply", selapp);
+        formData.append("payment", "F");
+        formData.append("category", selcat);
+        formData.append(
+          "timeslots",
+          JSON.stringify(this.computedScheduleDates)
+        );
         if (this.zaboUrlExist) {
-          formData.append('link_url', this.zaboUrl);
+          formData.append("link_url", this.zaboUrl);
         }
 
         axios({
-          method: 'post',
-          url: 'api/zaboes/',
+          method: "post",
+          url: "api/zaboes/",
           headers: {
-            'Content-Type': "multipart/form-data",
-            Authorization: localStorage.getItem('token'),
+            "Content-Type": "multipart/form-data",
+            Authorization: localStorage.getItem("token")
           },
           data: formData
-        }).then(res => {
-          if (res.status === 201) {
-            this.postState = false
-          }
         })
+          .then(res => {
+            if (res.status === 201) {
+              this.postState = false;
+            }
+          })
           .catch(err => {
-            console.log(err)
+            console.log(err);
           });
       } else {
-        alert('You should fill out every form!')
+        alert("You should fill out every form!");
       }
     },
-    zaboScheduleAdd () {
+    zaboScheduleAdd() {
       this.scheduleAdding = !this.scheduleAdding;
       this.scheduleDates.push({
-        "content": "",
-        "start_time": "",
-        "end_time": ""
-      })
+        content: "",
+        start_time: "",
+        end_time: ""
+      });
     }
   },
   computed: {
-    loggedIn () {
+    loggedIn() {
       return this.$store.getters.loggedInState;
     },
-    today () {
+    today() {
       var day = new Date();
       var dd = day.getDate() + "";
       if (dd.length < 2) {
@@ -316,77 +320,83 @@ export default {
       var yyyy = day.getFullYear();
       return yyyy + "-" + mm + "-" + dd;
     },
-    posterBool () {
+    posterBool() {
       let bull = {
         0: false,
         1: false,
         2: false,
         3: false,
-        4: false,
+        4: false
       };
       for (let p = 0; p < 5; p++) {
-        bull[p] = this.imagePreviewUrls[p] != "none"
+        bull[p] = this.imagePreviewUrls[p] != "none";
       }
       return bull;
     },
-    single () {
-      return (this.scheduleDates.length < 1)
+    single() {
+      return this.scheduleDates.length < 1;
     },
-    computedScheduleDates () {
+    computedScheduleDates() {
       let scheduleArray = [];
       this.scheduleDates.map(schedule => {
-        scheduleArray.push(
-          {
-            ...schedule,
-            "end_time": schedule.end_time.split("T")[0] + ' ' + schedule.end_time.split("T")[1] + ":00",
-            "start_time": schedule.start_time.split("T")[0] + ' ' + schedule.start_time.split("T")[1] + ":00"          }
-        )
-      })
+        scheduleArray.push({
+          ...schedule,
+          end_time:
+            schedule.end_time.split("T")[0] +
+            " " +
+            schedule.end_time.split("T")[1] +
+            ":00",
+          start_time:
+            schedule.start_time.split("T")[0] +
+            " " +
+            schedule.start_time.split("T")[1] +
+            ":00"
+        });
+      });
       return scheduleArray;
     },
-    zaboUploadValidation () {
+    zaboUploadValidation() {
       if (this.name == "") {
-        return false
+        return false;
       }
       if (!this.posterBool[0]) {
-        return false
+        return false;
       }
       if (this.selectedcategory == "") {
-        return false
+        return false;
       }
       if (this.selectedMethod == "") {
-        return false
+        return false;
       }
       if (this.location == "") {
-        return false
+        return false;
       }
       if (this.introduction == "") {
-        return false
+        return false;
       }
       if (this.scheduleDates.length == 0) {
-        return false
+        return false;
       } else {
         for (let s = 0; s < this.scheduleDates.length; s++) {
           if (this.scheduleDates[s].content == "") {
-            return false
+            return false;
           }
           if (this.scheduleDates[s].end_time == "") {
-            return false
+            return false;
           }
           if (this.scheduleDates[s].start_time == "") {
-            return false
+            return false;
           }
         }
       }
       if (this.zaboUrlExist) {
         if (this.zaboUrl == "") {
-          return false
+          return false;
         }
       }
-      return true
+      return true;
     }
-  },
-
+  }
 };
 </script>
 

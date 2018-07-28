@@ -7,20 +7,20 @@
 <script>
 export default {
   props: {
-    'searchValue': String
+    searchValue: String
   },
-  data () {
+  data() {
     return {
       computedSearchValue: this.searchValue
-    }
+    };
   },
   methods: {
-    onEnter () {
-      this.$emit('submitValue', this.computedSearchValue)
-      this.computedSearchValue = ""
+    onEnter() {
+      this.$emit("submitValue", this.computedSearchValue);
+      this.computedSearchValue = "";
     }
   }
-}
+};
 </script>
 <style lang=''>
 #searchBar {

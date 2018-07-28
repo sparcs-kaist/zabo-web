@@ -8,24 +8,23 @@
 </template>
 
 <script>
-
 export default {
-  props: ['small', 'content', 'onClick', 'placeholderText'],
-  data () {
+  props: ["small", "content", "onClick", "placeholderText"],
+  data() {
     return {
-      input: '',
+      input: ""
     };
   },
-  created () {
+  created() {
     this.input = this.content;
   },
   methods: {
-    reviewSubmit () {
-      this.$emit('update:content', this.input);
-      this.input = '';
+    reviewSubmit() {
+      this.$emit("update:content", this.input);
+      this.input = "";
       this.onClick();
-    },
-  },
+    }
+  }
 };
 </script>
 

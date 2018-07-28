@@ -15,16 +15,16 @@ export default {
   props: {
     zaboDetail: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     number: {
       type: Number,
-      default: 0,
+      default: 0
     },
     row: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
   data() {
     return {};
@@ -36,20 +36,20 @@ export default {
   computed: {
     style() {
       let style;
-      if (typeof this.zaboDetail.posters[0] !== 'undefined') {
+      if (typeof this.zaboDetail.posters[0] !== "undefined") {
         style = `background-image: url(${this.zaboDetail.posters[0].image});`;
       }
       return style;
-    },
+    }
   },
   methods: {
     zaboThumbnailDetailShow() {
-      document.getElementsByClassName('thumbnailDetail')[
+      document.getElementsByClassName("thumbnailDetail")[
         this.number
       ].style.display =
-        'block';
-    },
-  },
+        "block";
+    }
+  }
 };
 </script>
 

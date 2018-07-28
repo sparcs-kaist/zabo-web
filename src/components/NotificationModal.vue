@@ -33,8 +33,8 @@
 </template>
 <script>
 export default {
-  props: ['notifications', 'notificationsModal'],
-}
+  props: ["notifications", "notificationsModal"]
+};
 </script>
 <style lang=''>
 .notificationWrapper {

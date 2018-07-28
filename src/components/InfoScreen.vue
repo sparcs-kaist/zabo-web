@@ -17,46 +17,46 @@
 
 <script>
 export default {
-  props: ['info', 'category', 'payment'],
-  data () {
+  props: ["info", "category", "payment"],
+  data() {
     return {
-      seeMore: false,
+      seeMore: false
     };
   },
   computed: {
-    shortenedInfo () {
+    shortenedInfo() {
       return `${this.info.substring(0, 1000)}...`;
     },
-    computedCategory () {
+    computedCategory() {
       if (this.category == "R") {
-        return "리크루팅"
+        return "리크루팅";
       } else if (this.category == "P") {
-        return "공연"
+        return "공연";
       } else if (this.category == "C") {
-        return "대회"
+        return "대회";
       } else if (this.category == "F") {
-        return "설명회"
+        return "설명회";
       } else if (this.category == "L") {
-        return "세미나"
+        return "세미나";
       } else if (this.category == "E") {
-        return "전람회"
+        return "전람회";
       }
     },
-    computedPayment () {
+    computedPayment() {
       if (this.payment == "F") {
-        return "무료"
+        return "무료";
       }
     }
   },
   methods: {
-    isLong () {
+    isLong() {
       if (this.info.length > 1000) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

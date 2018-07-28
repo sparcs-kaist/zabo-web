@@ -48,14 +48,14 @@
 </div>
 </template>
 <script>
-import axios from '@/axios-auth';
-import ZaboDetailModal from '@/components/ZaboDetailModal';
+import axios from "@/axios-auth";
+import ZaboDetailModal from "@/components/ZaboDetailModal";
 
 export default {
-  created () {
+  created() {
     this.searchZaboes();
   },
-  data () {
+  data() {
     return {
       zaboList: [],
       userList: [],
@@ -66,113 +66,117 @@ export default {
       modalState: false,
       following: false,
       modalZaboData: {}
-    }
+    };
   },
   components: {
     ZaboDetailModal
   },
   computed: {
-    searchValue () {
-      return this.$route.params.search
+    searchValue() {
+      return this.$route.params.search;
     },
-    searchedZaboList () {
-      return this.zaboList
+    searchedZaboList() {
+      return this.zaboList;
     },
-    computedZaboId () {
-      return this.modalZaboId
+    computedZaboId() {
+      return this.modalZaboId;
     },
-    computedModalState () {
-      return this.modalState
+    computedModalState() {
+      return this.modalState;
     }
   },
   watch: {
-    '$route.params.search': function (search) {
+    "$route.params.search": function(search) {
       this.isLoading = true;
-      this.searchTerm = search
+      this.searchTerm = search;
       this.searchZaboes();
     }
   },
   methods: {
-    searchZaboes () {
+    searchZaboes() {
       this.zaboIsLoading = true;
       this.userIsLoading = true;
       axios({
-        methods: 'get',
+        methods: "get",
         url: `api/zaboes/?search=${this.$route.params.search}`
-      }).then(response => {
-        if (response.status == 200) {
-          this.zaboList = response.data.data;
-          this.userIsLoading = false;
-          return response.data.data
-        } else if (response.status == 404) {
+      })
+        .then(response => {
+          if (response.status == 200) {
+            this.zaboList = response.data.data;
+            this.userIsLoading = false;
+            return response.data.data;
+          } else if (response.status == 404) {
+            this.zaboIsLoading = false;
+          }
+        })
+        .then(err => {
+          console.log(err);
           this.zaboIsLoading = false;
-        }
-      }).then(err => {
-        console.log(err)
-        this.zaboIsLoading = false;
-      })
+        });
       axios({
-        methods: 'get',
+        methods: "get",
         url: `api/users/?search=${this.$route.params.search}`
-      }).then(response => {
-        if (response.status == 200) {
-          this.userList = response.data.data;
-          this.userIsLoading = false;
-        } else if (response.status == 404) {
-          this.userIsLoading = false;
-        }
-      }).catch(err => {
-        console.log(err)
-        this.userIsLoading = false;
       })
+        .then(response => {
+          if (response.status == 200) {
+            this.userList = response.data.data;
+            this.userIsLoading = false;
+          } else if (response.status == 404) {
+            this.userIsLoading = false;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.userIsLoading = false;
+        });
     },
-    closeModal () {
+    closeModal() {
       this.modalState = false;
       window.history.pushState(null, null, [`/search/${this.searchTerm}`]);
     },
-    zaboDetail (id, nickname, zaboData) {
+    zaboDetail(id, nickname, zaboData) {
       if (nickname !== "None") {
         this.modalState = true;
-        this.modalZaboData = zaboData
+        this.modalZaboData = zaboData;
         window.history.pushState(null, null, [`/zabo/${id}`]);
         this.modalZaboId = id;
       }
     },
-    userDetail (nickName) {
-      this.$router.push({ name: "UserDetail", params: { nickName: nickName } })
+    userDetail(nickName) {
+      this.$router.push({ name: "UserDetail", params: { nickName: nickName } });
     },
-    followUser (nickName) {
+    followUser(nickName) {
       axios({
-        url: 'api/users/followOther/',
-        method: 'post',
+        url: "api/users/followOther/",
+        method: "post",
         headers: {
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         },
         data: {
           nickname: nickName
         }
       }).then(res => {
         this.following = true;
-        console.log(res)
-      })
+        console.log(res);
+      });
     },
-    unfollowUser (nickName) {
+    unfollowUser(nickName) {
       axios({
-        url: 'api/users/unfollowOther/',
-        method: 'post',
+        url: "api/users/unfollowOther/",
+        method: "post",
         headers: {
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         },
         data: {
           nickname: nickName
         }
       }).then(res => {
-        console.log(res)
+        console.log(res);
         this.following = false;
-      })
+      });
     }
-  },
-}
+  }
+};
 </script>
 <style scoped lang=''>
 .totalWrapper {

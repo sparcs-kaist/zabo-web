@@ -48,62 +48,88 @@
 </div>
 </template>
 <script>
-import { Carousel3d, Slide } from 'vue-carousel-3d';
-import ZaboDetailModal from '@/components/ZaboDetailModal';
+import { Carousel3d, Slide } from "vue-carousel-3d";
+import ZaboDetailModal from "@/components/ZaboDetailModal";
 
 export default {
-  data () {
+  data() {
     return {
       windowWidth: 0,
       currentCategoryIndex: 0,
-      categoryList: ["최신순", "인기있는 자보", "마감임박 자보", "리크루팅", "공연", "대회", "설명회", "세미나", "전람회"],
+      categoryList: [
+        "최신순",
+        "인기있는 자보",
+        "마감임박 자보",
+        "리크루팅",
+        "공연",
+        "대회",
+        "설명회",
+        "세미나",
+        "전람회"
+      ],
       defaultImage: "@/assets/logo.png",
       posterWrapperHeight: 0,
       modalZaboId: -1,
       currentPath: window.location.pathname,
       modalZaboData: {}
-    }
+    };
   },
-  mounted () {
+  mounted() {
     this.getWindowWidth();
-    this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
-      const totalPage = res;
-      for (var i = 1; i <= totalPage; i++) {
-        this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
-      };
-      return res
-    }).then(() => {
-      let selectedCategories = []
-      this.categoryList.map(category => {
-        if (category != this.calculatedCategoryList[1]) {
-          selectedCategories.push(category)
+    this.$store
+      .dispatch("zaboesGetPageCount", {
+        pageSize: 20,
+        method: this.calculatedCategoryList[1]
+      })
+      .then(res => {
+        const totalPage = res;
+        for (var i = 1; i <= totalPage; i++) {
+          this.$store.dispatch("zaboesList", {
+            pageNum: i,
+            pageSize: 20,
+            method: this.calculatedCategoryList[1]
+          });
         }
+        return res;
       })
-      console.log(selectedCategories)
-      selectedCategories.map(category => {
-        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: category }).then(res => {
-          const totalPage = res;
-          for (var i = 1; i <= totalPage; i++) {
-            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: category });
-          };
-        })
-      })
-    })
+      .then(() => {
+        let selectedCategories = [];
+        this.categoryList.map(category => {
+          if (category != this.calculatedCategoryList[1]) {
+            selectedCategories.push(category);
+          }
+        });
+        console.log(selectedCategories);
+        selectedCategories.map(category => {
+          this.$store
+            .dispatch("zaboesGetPageCount", { pageSize: 20, method: category })
+            .then(res => {
+              const totalPage = res;
+              for (var i = 1; i <= totalPage; i++) {
+                this.$store.dispatch("zaboesList", {
+                  pageNum: i,
+                  pageSize: 20,
+                  method: category
+                });
+              }
+            });
+        });
+      });
   },
-  beforeMount () {
+  beforeMount() {
     window.addEventListener("resize", this.getWindowWidth);
   },
   methods: {
-    getCurrentZaboNumber: function (i, j) {
-      return this.columnNumber * i + j
+    getCurrentZaboNumber: function(i, j) {
+      return this.columnNumber * i + j;
     },
-    getWindowWidth () {
+    getWindowWidth() {
       this.windowWidth =
         document.body.clientWidth ||
         document.documentElement.clientWidth ||
         window.innerWidth;
     },
-    categoryleft () {
+    categoryleft() {
       if (this.currentCategoryIndex === 0) {
         this.currentCategoryIndex = 8;
       } else {
@@ -111,15 +137,24 @@ export default {
       }
       this.getWindowWidth();
       if (!this.zaboesExist) {
-        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
-          const totalPage = res;
-          for (var i = 1; i <= totalPage; i++) {
-            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
-          };
-        })
+        this.$store
+          .dispatch("zaboesGetPageCount", {
+            pageSize: 20,
+            method: this.calculatedCategoryList[1]
+          })
+          .then(res => {
+            const totalPage = res;
+            for (var i = 1; i <= totalPage; i++) {
+              this.$store.dispatch("zaboesList", {
+                pageNum: i,
+                pageSize: 20,
+                method: this.calculatedCategoryList[1]
+              });
+            }
+          });
       }
     },
-    categoryright () {
+    categoryright() {
       if (this.currentCategoryIndex === 8) {
         this.currentCategoryIndex = 0;
       } else {
@@ -127,120 +162,141 @@ export default {
       }
       this.getWindowWidth();
       if (!this.zaboesExist) {
-        this.$store.dispatch("zaboesGetPageCount", { pageSize: 20, method: this.calculatedCategoryList[1] }).then(res => {
-          const totalPage = res;
-          for (var i = 1; i <= totalPage; i++) {
-            this.$store.dispatch("zaboesList", { pageNum: i, pageSize: 20, method: this.calculatedCategoryList[1] });
-          };
-        })
+        this.$store
+          .dispatch("zaboesGetPageCount", {
+            pageSize: 20,
+            method: this.calculatedCategoryList[1]
+          })
+          .then(res => {
+            const totalPage = res;
+            for (var i = 1; i <= totalPage; i++) {
+              this.$store.dispatch("zaboesList", {
+                pageNum: i,
+                pageSize: 20,
+                method: this.calculatedCategoryList[1]
+              });
+            }
+          });
       }
     },
-    zaboDetail (id, nickname, zaboData) {
+    zaboDetail(id, nickname, zaboData) {
       if (nickname !== "None") {
         this.modalZaboId = id;
         this.modalZaboData = zaboData;
         window.history.pushState(null, null, [`/zabo/${id}`]);
-        this.currentPath = window.location.pathname
+        this.currentPath = window.location.pathname;
       }
     },
-    closeModal () {
-      this.currentPath = "/"
+    closeModal() {
+      this.currentPath = "/";
       window.history.pushState(null, null, [`/`]);
     },
-    mouseUp () {
-      document.getElementById('mainCarousel').getElementsByClassName('left-1')[0].click()
+    mouseUp() {
+      document
+        .getElementById("mainCarousel")
+        .getElementsByClassName("left-1")[0]
+        .click();
     },
-    mouseDown () {
-      document.getElementById('mainCarousel').getElementsByClassName('right-1')[0].click()
-    },
+    mouseDown() {
+      document
+        .getElementById("mainCarousel")
+        .getElementsByClassName("right-1")[0]
+        .click();
+    }
   },
   components: {
-    'carousel-3d': Carousel3d,
-    'slide': Slide,
+    "carousel-3d": Carousel3d,
+    slide: Slide,
     ZaboDetailModal
   },
   computed: {
-    zaboes () {
+    zaboes() {
       return this.$store.getters.zaboes[this.calculatedCategoryList[1]];
     },
-    zaboesPageCount () {
+    zaboesPageCount() {
       return this.$store.getters.zaboesPageCount;
     },
-    zaboesRow () {
+    zaboesRow() {
       return Math.ceil(this.zaboes.length / this.columnNumber);
     },
-    columnNumber () {
+    columnNumber() {
       if (this.windowWidth > 1700) {
-        this.posterWrapperHeight = 1225
+        this.posterWrapperHeight = 1225;
         return 4;
       }
       if (this.windowWidth > 1400) {
-        this.posterWrapperHeight = 916
+        this.posterWrapperHeight = 916;
         return 3;
       }
       if (this.windowWidth > 1100) {
-        this.posterWrapperHeight = 607
+        this.posterWrapperHeight = 607;
         return 2;
       } else {
-        this.posterWrapperHeight = 298
+        this.posterWrapperHeight = 298;
         return 1;
       }
     },
-    zaboesExist () {
+    zaboesExist() {
       if (this.zaboes.length >= 1) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     },
-    renderedList () {
+    renderedList() {
       let renderedList = [];
       for (let i = 0; i < this.zaboesRow; i++) {
-        renderedList.push(this.zaboes.slice(i * this.columnNumber, (i + 1) * this.columnNumber))
+        renderedList.push(
+          this.zaboes.slice(i * this.columnNumber, (i + 1) * this.columnNumber)
+        );
       }
-      console.log(renderedList, this.zaboesRow)
-      return renderedList
+      console.log(renderedList, this.zaboesRow);
+      return renderedList;
     },
-    calculatedCategoryList () {
+    calculatedCategoryList() {
       let calculatedCategories = [];
       if (this.currentCategoryIndex === 0) {
         calculatedCategories.push(this.categoryList[8]);
       } else {
-        calculatedCategories.push(this.categoryList[this.currentCategoryIndex - 1])
+        calculatedCategories.push(
+          this.categoryList[this.currentCategoryIndex - 1]
+        );
       }
-      calculatedCategories.push(this.categoryList[this.currentCategoryIndex])
+      calculatedCategories.push(this.categoryList[this.currentCategoryIndex]);
       if (this.currentCategoryIndex === 8) {
         calculatedCategories.push(this.categoryList[0]);
       } else {
-        calculatedCategories.push(this.categoryList[this.currentCategoryIndex + 1])
+        calculatedCategories.push(
+          this.categoryList[this.currentCategoryIndex + 1]
+        );
       }
       return calculatedCategories;
     },
-    computedZaboId () {
-      return this.modalZaboId
+    computedZaboId() {
+      return this.modalZaboId;
     },
-    computedModalState () {
+    computedModalState() {
       if (this.currentPath === "/") {
-        return false
+        return false;
       } else {
-        return true
+        return true;
       }
     }
   },
   watch: {
-    zaboesExist (val) {
+    zaboesExist(val) {
       if (val) {
-        window.dispatchEvent(new Event('resize'));
-        setTimeout(function () {
-          window.dispatchEvent(new Event('resize'));
+        window.dispatchEvent(new Event("resize"));
+        setTimeout(function() {
+          window.dispatchEvent(new Event("resize"));
           setTimeout(() => {
-            window.dispatchEvent(new Event('resize'))
-          }, 1000)
+            window.dispatchEvent(new Event("resize"));
+          }, 1000);
         }, 1000);
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 <style scoped lang=''>
 .mainWrapper {

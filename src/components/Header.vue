@@ -87,7 +87,7 @@
 <script>
 import app from "@/main";
 import Search from "@/components/Search";
-import NotificationModal from '@/components/NotificationModal';
+import NotificationModal from "@/components/NotificationModal";
 
 export default {
   name: "Header",
@@ -95,7 +95,7 @@ export default {
     Search,
     NotificationModal
   },
-  data () {
+  data() {
     return {
       lang: "kr",
       searchValue: "",
@@ -109,15 +109,15 @@ export default {
     profileImageLoading: Boolean
   },
   methods: {
-    login: function () {
+    login: function() {
       this.$emit("logged-in");
     },
-    logout: function () {
+    logout: function() {
       this.$store.commit("LOGOUT");
       this.profileModalState = false;
-      location.reload()
+      location.reload();
     },
-    setLang: function () {
+    setLang: function() {
       if (this.lang === "kr") {
         this.$i18n.set("en");
         this.lang = "en";
@@ -126,37 +126,37 @@ export default {
         this.lang = "kr";
       }
     },
-    onSearch (searchTerm) {
+    onSearch(searchTerm) {
       this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
       this.searchTerm = "";
     },
-    dropdownOpen () {
+    dropdownOpen() {
       this.isDropdownOpened = true;
     },
-    dropdownClose () {
+    dropdownClose() {
       this.isDropdownOpened = false;
     },
-    profilePush () {
+    profilePush() {
       this.profileModalState = false;
-      this.$router.push({ name: "Zabouserprofile" })
+      this.$router.push({ name: "Zabouserprofile" });
     }
   },
   computed: {
-    computedLang: function () {
+    computedLang: function() {
       if (this.lang === "kr") {
         return "en";
       } else {
         return "kr";
       }
     },
-    notifications () {
+    notifications() {
       return this.$store.getters.getNotifications;
     },
-    imagesrc () {
+    imagesrc() {
       return this.$store.getters.getProfileImagesource;
     },
-    profileLoading () {
-      return this.profileImageLoading
+    profileLoading() {
+      return this.profileImageLoading;
     }
   }
 };

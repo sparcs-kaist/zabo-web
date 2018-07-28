@@ -16,7 +16,7 @@
           <img :src="image" class="main-image"/>
         </div>
       </div>
-      <div v-if="!loading" @click="closeMain" class="row">
+      <div @click="closeMain" class="row">
         <v-icon class="icon">keyboard_arrow_up</v-icon>
         <span class="morebutton">더 많은 자보 확인하기</span>
       </div>
@@ -33,7 +33,7 @@
 import axios from "@/axios-auth";
 
 export default {
-  data () {
+  data() {
     return {
       id: 1,
       image: "",
@@ -45,7 +45,7 @@ export default {
       transition: ""
     };
   },
-  created () {
+  created() {
     axios.get("api/zaboes/6").then(response => {
       const { posters, content, title, location } = response.data;
       this.image = posters[0].image;
@@ -57,7 +57,7 @@ export default {
     });
   },
   methods: {
-    closeMain: function (req) {
+    closeMain: function(req) {
       if (req === "redirect") {
         this.$router.push({ path: "/zabo/6" });
       }

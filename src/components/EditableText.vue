@@ -6,20 +6,20 @@
 
 <script>
 export default {
-  props: ['content'],
+  props: ["content"],
   methods: {
-    emitChange (e) {
-      this.$emit('update', e.target.innerText);
-    },
+    emitChange(e) {
+      this.$emit("update", e.target.innerText);
+    }
   },
-  mounted () {
+  mounted() {
     this.$el.innerText = this.content;
   },
   watch: {
-    content () {
+    content() {
       this.$el.innerText = this.content;
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -42,20 +42,20 @@
 </template>
 
 <script>
-import axios from 'axios';
-import InputField from './InputField';
-import ReCommentBox from './ReCommentBox';
+import axios from "axios";
+import InputField from "./InputField";
+import ReCommentBox from "./ReCommentBox";
 
 export default {
   components: {
     InputField,
     ReCommentBox
   },
-  props: ['id', 'author', 'comment_id', 'content', 'depth', 'replies'],
-  name: 'comment-box',
-  data () {
+  props: ["id", "author", "comment_id", "content", "depth", "replies"],
+  name: "comment-box",
+  data() {
     return {
-      newReply: '',
+      newReply: "",
       seeMore: false,
       recommentInputState: false,
       recommentBoxOpen: false,
@@ -66,103 +66,103 @@ export default {
     };
   },
   methods: {
-    isLong () {
+    isLong() {
       return this.content.length > 200;
     },
-    onSubmitReply () {
+    onSubmitReply() {
       axios({
-        method: 'post',
-        url: 'api/recomments/',
+        method: "post",
+        url: "api/recomments/",
         data: {
           content: this.newReply,
-          comment: this.comment_id,
+          comment: this.comment_id
         },
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         }
       })
-        .then((response) => {
+        .then(response => {
           this.replies.push(response.data);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
-    deleteComment () {
+    deleteComment() {
       this.commentEditHandlerModalState = false;
       axios({
-        method: 'DELETE',
+        method: "DELETE",
         url: `api/comments/${this.id}/`,
         headers: {
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         }
       }).then(res => {
         if (res.status == 204) {
-          this.$emit('delete', { id: this.id })
+          this.$emit("delete", { id: this.id });
         }
-      })
+      });
     },
-    editComment () {
+    editComment() {
       this.editing = false;
       axios({
-        method: 'PUT',
+        method: "PUT",
         url: `api/comments/${this.id}/`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem('token')
+          Authorization: localStorage.getItem("token")
         },
         data: {
-          "content": this.newComment,
-          "is_private": true,
-          "is_deleted": true,
-          "is_blocked": true
+          content: this.newComment,
+          is_private: true,
+          is_deleted: true,
+          is_blocked: true
         }
-      })
+      });
     },
-    editModal () {
+    editModal() {
       this.commentEditHandlerModalState = false;
       this.editing = true;
     },
-    deleteReply (payload) {
-      this.deletedId.push(payload.id)
+    deleteReply(payload) {
+      this.deletedId.push(payload.id);
     }
   },
-  created () {
+  created() {
     this.newComment = this.content;
   },
   computed: {
-    shortenedComment () {
+    shortenedComment() {
       return `${this.content.substring(0, 200)}...`;
     },
-    recommentBoxLength () {
-      return this.computedReplies.length
+    recommentBoxLength() {
+      return this.computedReplies.length;
     },
-    recommentBoxState () {
+    recommentBoxState() {
       return this.recommentBoxLength > 0;
     },
-    loggedInState () {
+    loggedInState() {
       return this.$store.getters.loggedInState;
     },
-    getMyId () {
+    getMyId() {
       if (this.loggedInState) {
         return this.$store.getters.getMyId;
       }
     },
-    computedReplies () {
+    computedReplies() {
       if (this.deletedId.length == 0) {
-        return this.replies
+        return this.replies;
       } else {
         let finalReplies = [];
         this.replies.map(reply => {
           if (this.deletedId.indexOf(reply.id) == -1) {
-            finalReplies.push(reply)
+            finalReplies.push(reply);
           }
-        })
-        return finalReplies
+        });
+        return finalReplies;
       }
     }
-  },
+  }
 };
 </script>
 
