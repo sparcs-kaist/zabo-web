@@ -143,9 +143,7 @@ export default {
       })
         .then(res => {
           console.log(res);
-          if (res.status == 201) {
-            this.isLiked = true;
-          } else {
+          if (res.status != 201) {
             this.likeCount -= 1;
             this.isLiked = false;
           }
@@ -172,16 +170,15 @@ export default {
       })
         .then(res => {
           console.log(res);
-          if (res.status == 204) {
-            this.isLiked = false;
-          } else {
-            this.likeCount += 1;
+          if (res.status != 204) {
             this.isLiked = true;
+            this.likeCount += 1;
           }
         })
         .catch(err => {
           alert("You are not logged In!");
           console.log(err);
+          this.isLiked = true;
           this.likeCount += 1;
         });
     }
