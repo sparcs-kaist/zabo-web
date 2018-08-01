@@ -37,7 +37,7 @@
       </div>
       <div class="column">
         <img :src="this.image" height="600" width="500" />
-        <v-icon v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
+        <v-icon v-if="myZabo" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
     </div>
     <div class="coverImage"></div>
@@ -69,7 +69,8 @@ export default {
       timeslots: [],
       category: "",
       payment: "",
-      link_url: ""
+      link_url: "",
+      authorId: null
     };
   },
   components: {
@@ -80,6 +81,16 @@ export default {
   computed: {
     loggedInState() {
       return this.$store.getters.loggedInState;
+    },
+    myId () {
+      return this.$store.getters.getMyID;
+    },
+    myZabo () {
+      if (this.loggedInState) {
+        return this.myId == this.authorId
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -197,7 +208,8 @@ export default {
           timeslots,
           category,
           payment,
-          link_url
+          link_url,
+          author
         } = response.data;
         this.image = posters["0"].image;
         this.background = posters["0"].image;
@@ -212,6 +224,7 @@ export default {
         this.category = category;
         this.payment = payment;
         this.link_url = link_url;
+        this.authorId = author.id;
         console.log(response);
       })
       .catch(err => {
