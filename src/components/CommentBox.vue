@@ -166,14 +166,52 @@ export default {
 };
 </script>
 
-<style scoped>
-.body {
-  font-size: 1.125em;
-  margin-top: 10px;
-  text-align: left;
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
+<style lang='scss' scoped>
+.main {
+  .body {
+    font-size: 1.125em;
+    margin-top: 10px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    .pic {
+      border-radius: 50%;
+      min-height: 30px;
+      max-height: 30px;
+      margin-right: 10px;
+      min-width: 30px;
+      max-width: 30px;
+    }
+    .contentWrapper {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      margin-top: 6px;
+      position: relative;
+      .name {
+        color: white;
+        font-weight: bold;
+        letter-spacing: 0.01em;
+        margin-right: 0.5em;
+      }
+    }
+  }
+  // .contentWrapper
+  // .name
+  //   .commentBoxContent
+  //   .commentInputField
+  //   .commentEditHandler
+  //     .moreHorizIcon
+  //       &:hover
+  //     .commentEditHandlerModal
+  //       &::after
+  //       .modalIconWrapper
+  // .handlerWrapper
+  //   .replyHandler
+  //   .recommentBoxHandler
+  //   .recomment-box
+  //   .input
 }
 .header {
   align-items: center;
@@ -185,13 +223,6 @@ export default {
   padding-left: 15px;
   margin-top: 1em;
 }
-.contentWrapper {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  margin-top: 6px;
-  position: relative;
-}
 .main {
   margin: 20px 0 0 0;
   display: flex;
@@ -200,20 +231,6 @@ export default {
 .more {
   color: rgb(140, 140, 140);
   cursor: pointer;
-}
-.name {
-  color: white;
-  font-weight: bold;
-  letter-spacing: 0.01em;
-  margin-right: 0.5em;
-}
-.pic {
-  border-radius: 50%;
-  min-height: 30px;
-  max-height: 30px;
-  margin-right: 10px;
-  min-width: 30px;
-  max-width: 30px;
 }
 .replyHandler {
   cursor: pointer;

@@ -39,26 +39,28 @@ export default {
     };
   },
   created() {
-    this.$store.commit("LOGIN");
-    axios
-      .get("api/users/myInfo", {
-        headers: {
-          Authorization: localStorage.getItem("token")
-        }
-      })
-      .then(response => {
-        if (response.status === 401) {
+    if (localStorage.getItem('token')) {
+      this.$store.dispatch("login", localStorage.getItem('token').slice(5,));
+      axios
+        .get("api/users/myInfo", {
+          headers: {
+            Authorization: localStorage.getItem("token")
+          }
+        })
+        .then(response => {
+          if (response.status === 401) {
+            this.loading = true;
+            console.log("response stauts 401!");
+          } else {
+            this.$store.commit(types.SET_CURRENT_USER, response.data);
+            this.loading = true;
+          }
+        })
+        .catch(err => {
           this.loading = true;
-          console.log("response stauts 401!");
-        } else {
-          this.$store.commit(types.SET_CURRENT_USER, response.data);
-          this.loading = true;
-        }
-      })
-      .catch(err => {
-        this.loading = true;
-      });
-    this.$store.dispatch("getNotifications");
+        });
+      this.$store.dispatch("getNotifications");
+    }
   },
   methods: {
     handleLogin(value) {

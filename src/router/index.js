@@ -52,7 +52,7 @@ export default new Router({
       }
     },
     {
-      path: "/login/callback",
+      path: "/login/callback/:email",
       name: "LoginCallback",
       component: LoginCallback
     },
