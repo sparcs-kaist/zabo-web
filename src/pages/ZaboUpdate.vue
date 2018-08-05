@@ -115,29 +115,29 @@
                 <div v-if="posterBool[1]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[1]})`"></div>
                 <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputA.click()">
                   <v-icon class="plusIcon icon-big">add_circle</v-icon>
-                  <input style="display:none" type="file" @change="posteradd(1, $event)" ref="posterInputA">
+                  <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(1, $event)" ref="posterInputA">
                 </div>
                 <div v-if="posterBool[2]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[2]})`"></div>
                 <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputB.click()">
                   <v-icon class="plusIcon icon-big">add_circle</v-icon>
-                  <input style="display:none" type="file" @change="posteradd(2, $event)" ref="posterInputB">
+                  <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(2, $event)" ref="posterInputB">
                 </div>
                 <div v-if="posterBool[3]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[3]})`"></div>
                 <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputC.click()">
                   <v-icon class="plusIcon icon-big">add_circle</v-icon>
-                  <input style="display:none" type="file" @change="posteradd(3, $event)" ref="posterInputC">
+                  <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(3, $event)" ref="posterInputC">
                 </div>
                 <div v-if="posterBool[4]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[4]})`"></div>
                 <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputD.click()">
                   <v-icon class="plusIcon icon-big">add_circle</v-icon>
-                  <input style="display:none" type="file" @change="posteradd(4, $event)" ref="posterInputD">
+                  <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(4, $event)" ref="posterInputD">
                 </div>
               </div>
             </div>
             <div v-else class="zaboAddWrapper" @click="$refs.posterInput.click()">
               <span>{{$t('자보 추가')}}</span>
               <v-icon class="plusIcon icon-big">add_circle</v-icon>
-              <input style="display:none" type="file" @change="posteradd(0, $event)" ref="posterInput">
+              <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(0, $event)" ref="posterInput">
             </div>
           </div>
           <div class="buttonWrapper">
@@ -271,7 +271,7 @@ export default {
         );
       }
       for (let p = 0; p < posters.length; p++) {
-        fetch(posters[p].image + "/").then(res => {
+        fetch(posters[p].image).then(res => {
           var c = res.blob();
           c.then(b => {
             this.zaboPosters[p] = new File([b], posterNames[p], {

@@ -37,7 +37,7 @@
       <div class="column">
         <img :src="this.image" height="600" width="500" />
         <v-icon @click="closeModal" class="closeIcon">close</v-icon>
-        <v-icon v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
+        <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
     </div>
     <div class="coverImage"></div>
@@ -67,7 +67,8 @@ export default {
       likeCount: -1,
       timeslots: [],
       category: "",
-      payment: ""
+      payment: "",
+      authorId: null
     };
   },
   components: {
@@ -82,6 +83,16 @@ export default {
     },
     loggedInState() {
       return this.$store.getters.loggedInState;
+    },
+    myId () {
+      return this.$store.getters.getMyID;
+    },
+    myZabo () {
+      if (this.loggedInState) {
+        return this.myId == this.authorId
+      } else {
+        return false
+      }
     }
   },
   methods: {
@@ -134,8 +145,9 @@ export default {
       })
         .then(res => {
           console.log(res);
-          if (res.status == 201) {
-            this.isLiked = true;
+          if (res.status != 201) {
+            this.likeCount -= 1;
+            this.isLiked = false;
           }
         })
         .catch(err => {
@@ -160,13 +172,15 @@ export default {
       })
         .then(res => {
           console.log(res);
-          if (res.status == 201) {
-            this.isLiked = false;
+          if (res.status != 204) {
+            this.isLiked = true;
+            this.likeCount += 1;
           }
         })
         .catch(err => {
           alert("You are not logged In!");
           console.log(err);
+          this.isLiked = true;
           this.likeCount += 1;
         });
     }
@@ -179,13 +193,16 @@ export default {
       content,
       title,
       location,
-      like_count
+      like_count,
+      author
     } = this.modalZaboData;
     this.image = posters["0"].image;
     this.title = title;
     this.location = location;
     this.likeCount = like_count;
     this.content = content;
+    this.authorId = author.id;
+    console.log(this.authorId);
     axios({
       method: "get",
       url: `api/zaboes/${this.zabodetailId}/`,

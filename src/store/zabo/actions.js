@@ -2,6 +2,19 @@ import axios from "@/axios-auth";
 import * as types from "@/store/mutation-types";
 
 const actions = {
+  login({commit, dispatch, state}, payload) {
+    axios({
+      url: '/api-token-verify/',
+      method: 'post',
+      data: {
+        token: payload
+      }
+    }).then(res => {
+      if (res.status == 200) {
+        commit("LOGIN")
+      }
+    })
+  },
   zaboesList({ commit, state }, payload) {
     let method = "";
     if (payload.method == "최신순") {

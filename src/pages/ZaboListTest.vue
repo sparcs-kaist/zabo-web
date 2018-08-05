@@ -23,9 +23,9 @@
           <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
             <img class="poster" :src="zabo.posters[0].image_thumbnail">
             <div class="posterDescriptionWrapper">
-              <span class="posterDescription">{{$t('제목 : ')}}{{zabo.title}}</span>
-              <span class="posterDescription">{{$t('위치 : ')}}{{zabo.location}}</span>
-              <span class="posterDescription">{{$t('올린이 : ')}}{{zabo.author.nickName}}</span>
+              <span class="posterDescription"><img class="profileImage" :src="zabo.author.profile_image">{{zabo.author.nickName}}</span>
+              <span class="posterDescription"><span>{{$t('제목')}}</span><span>{{zabo.title}}</span></span>
+              <span class="posterDescription"><span>{{$t('위치')}}</span><span>{{zabo.location}}</span></span>
             </div>
           </div>
         </div>
@@ -298,7 +298,7 @@ export default {
   }
 };
 </script>
-<style scoped lang=''>
+<style scoped>
 .mainWrapper {
   width: 100%;
   position: absolute;
@@ -369,8 +369,7 @@ export default {
 .posterDescriptionWrapper {
   width: 298px;
   height: 464px;
-  padding-top: 20px;
-  padding-left: 10px;
+  padding: 15px;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   position: absolute;
@@ -387,7 +386,23 @@ export default {
   opacity: 1;
 }
 .posterDescription {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   font-size: 1.5rem;
+  margin-top: 12px;
+}
+.posterDescription:first-child {
+  flex-direction: row;
+  align-items: center;
+  margin-top: 5px;
+}
+.profileImage {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-right: 8px;
 }
 .individualPosterWrapper {
   width: 464px;

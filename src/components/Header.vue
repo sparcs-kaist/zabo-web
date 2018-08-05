@@ -21,11 +21,11 @@
           <notification-modal :notifications="notifications" :notificationsModal="notificationsModal"></notification-modal>
         </div>
         <template v-if="loggedInState">
-          <div @click="profileModalState = !profileModalState" class="right">
-            <div v-if="!profileLoading" class="profile-image">?</div>
+          <div @click="modalStateChange" class="right">
+            <img src="assets/logo.png" v-if="!profileLoading" class="profile-image" >
             <img v-else :src="imagesrc" class="profile-image">
           </div>
-          <div class="profileModalWrapper" v-show="profileModalState">
+          <div v-show="profileModalState" class="profileModalWrapper" >
             <div @click="logout" class="singleTapWrapper">
               <v-icon medium class="profileIcons">power_settings_new</v-icon>
               <span class="profileSpan">{{$t('로그아웃')}}</span>
@@ -109,13 +109,16 @@ export default {
     profileImageLoading: Boolean
   },
   methods: {
+    modalStateChange() {
+      console.log("why?!");
+      this.profileModalState = !this.profileModalState;
+    },
     login: function() {
       this.$emit("logged-in");
     },
     logout: function() {
       this.$store.commit("LOGOUT");
       this.profileModalState = false;
-      location.reload();
     },
     setLang: function() {
       if (this.lang === "kr") {

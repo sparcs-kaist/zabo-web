@@ -42,7 +42,7 @@
           <v-tab-item :key="2">
             <div v-if="!zaboLoading" class="zaboListWrapper">
               <div class="zaboWrapper" v-for="(zabo,index) in computedCreatedZaboes" :key="index">
-                <img @click="zaboDetail(zabo.id, zabo.author.nickName)" :src="zabo.posters[0].image" class="zaboImage">
+                <img @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :src="zabo.posters[0].image" class="zaboImage">
                 <span class="zaboTitle">{{zabo.title}}</span>
               </div>
             </div>
@@ -70,7 +70,7 @@
       </div>
     </v-app>
     <div v-if="modalState" class="zaboModalWrapper">
-      <zabo-detail-modal @closeModal="closeModal" :zaboId="this.modalZaboId" v-if="modalState"></zabo-detail-modal>
+      <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.modalZaboId" v-if="modalState"></zabo-detail-modal>
     </div>
   </div>
 </template>
@@ -100,7 +100,8 @@ export default {
       modalState: false,
       modalZaboId: -1,
       zaboLoading: true,
-      createdZaboes: []
+      createdZaboes: [],
+      modalZaboData: null
     };
   },
   components: {
@@ -135,9 +136,10 @@ export default {
       this.new_profile_image = event.target.files[0];
       this.profilePreview = URL.createObjectURL(this.new_profile_image);
     },
-    zaboDetail(id, nickname) {
+    zaboDetail(id, nickname, zaboData) {
       if (nickname !== "None") {
         this.modalState = true;
+        this.modalZaboData = zaboData;
         window.history.pushState(null, null, [`/zabo/${id}`]);
         this.modalZaboId = id;
       }

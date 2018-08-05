@@ -4,9 +4,22 @@
 </div>
 </template>
 <script>
+import axios from "@/axios-auth";
+
 export default {
-  mounted() {
-    window.location.href = "http://localhost:8000/api/login/callback/";
+  created() {
+    console.log("hey!!");
+    axios({
+      url: "/api-token-auth/",
+      method: "post",
+      data: {
+        email: this.$route.params.email,
+        password: this.$route.params.email
+      }
+    }).then(res => {
+      localStorage.setItem("token", res.data.token);
+      window.location = "http://localhost:8080/";
+    });
   }
 };
 </script>

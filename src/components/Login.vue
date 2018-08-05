@@ -2,12 +2,12 @@
   <div id="background_div">
     <div id="loginbox">
       <v-app id="vform">
-        <a href="http://localhost:8080">
+        <router-link to="/">
           <img src="../assets/logo.svg" id="logo">
-        </a>
+        </router-link>
           <transition name="slide-fade" mode="out-in">
             <div key="option" v-if="isZabologin === false" style="padding-left: 0px;">
-              <v-btn depressed color="indigo darken-3" class="sso-login">
+              <v-btn @click="redirectToBack" depressed color="indigo darken-3" class="sso-login">
                 sparcs sso로 로그인
               </v-btn>
               <v-btn depressed color="grey lighten-3" class="zabo-login" @click="zabologin">
@@ -82,6 +82,7 @@ export default {
         })
         .then(response => {
           localStorage.setItem("token", `ZABO ${response.data.token}`);
+          this.$store.dispatch("login", response.data.token);
         })
         .catch(err => {
           this.loginfailed = true;
@@ -95,7 +96,7 @@ export default {
             }
           })
             .then(response => {
-              this.$store.commit("LOGIN", response.data);
+              this.$store.commit("SET_CURRENT_USER", response.data);
             })
             .then(() => {
               this.$store.commit("GOT_RESPONSE");
@@ -105,6 +106,9 @@ export default {
               this.$store.dispatch("getNotifications");
             });
         });
+    },
+    redirectToBack() {
+      window.location = "http://ssal.sparcs.org:16135/api/login/";
     }
   },
   computed: {
