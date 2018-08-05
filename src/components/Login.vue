@@ -2,9 +2,9 @@
   <div id="background_div">
     <div id="loginbox">
       <v-app id="vform">
-        <a href="http://localhost:8080">
+        <router-link to="/">
           <img src="../assets/logo.svg" id="logo">
-        </a>
+        </router-link>
           <transition name="slide-fade" mode="out-in">
             <div key="option" v-if="isZabologin === false" style="padding-left: 0px;">
               <v-btn @click="redirectToBack" depressed color="indigo darken-3" class="sso-login">
@@ -82,7 +82,7 @@ export default {
         })
         .then(response => {
           localStorage.setItem("token", `ZABO ${response.data.token}`);
-          this.$store.dispatch('login', response.data.token);
+          this.$store.dispatch("login", response.data.token);
         })
         .catch(err => {
           this.loginfailed = true;
