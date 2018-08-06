@@ -7,7 +7,7 @@
           <p class="subheading">{{updated_time}}</p>
           <div class="buttonWrapper">
             <a v-show="link_url != ''" :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
-            <a v-show="link_url == ''" class="buttonTap">{{$t("")}}</a>
+            <a v-show="link_url == ''" class="buttonTap">{{$t("링크가 없습니다.")}}</a>
             <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
             <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
             <span class="likeCount">{{this.likeCount}}</span>
@@ -24,9 +24,9 @@
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
           <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
-            <span class="timeSlotTime">{{$t('시작 : ')}}{{timeslot.start_time}}</span>
-            <span class="timeSlotTime">{{$t('종료 : ')}}{{timeslot.end_time}}</span>
-            <span class="timeSlotContent">{{$t('내용 : ')}}{{timeslot.content}}</span>
+            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('시작 ')}}</span><span class="timeSlotContent">{{timeslot.start_time}}</span></div>
+            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('종료 ')}}</span><span class="timeSlotContent">{{timeslot.end_time}}</span></div>
+            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('내용 ')}}</span><span class="timeSlotContent">{{timeslot.content}}</span></div>
           </div>
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 2">
@@ -241,7 +241,7 @@ export default {
   right: 0;
   /* margin-top: 78px; */
   overflow: hidden;
-  z-index: 502;
+  z-index: 301;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 .coverImage {
@@ -255,7 +255,7 @@ export default {
   left: -5px;
   right: -5px;
   overflow: hidden;
-  z-index: 500;
+  z-index: 300;
   filter: blur(5px);
 }
 .hide {
@@ -389,13 +389,30 @@ export default {
   width: 100%;
   margin-bottom: 1em;
   padding: 10px;
+  min-height: 80px;
   display: flex;
-  flex-direction: column;
+  align-items: space-between;
+  flex-wrap: wrap;
   background-color: #ececec;
   font-size: 1.5em;
   color: rgba(0, 0, 0, 0.87);
 }
-.timeSlotTime {
-  padding-bottom: 0.25em;
+.singleTimeSlotWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 50%;
+}
+.singleTimeSlotWrapper:last-child {
+  width: 100%;
+}
+.timeSlotTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 8px;
+}
+.timeSlotContent {
+  font-size: 20px;
+  font-weight: 500;
 }
 </style>
