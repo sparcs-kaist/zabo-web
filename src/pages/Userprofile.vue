@@ -54,10 +54,10 @@
                   <img :src="user.profile_image" class="userImage">
                   <span class="userName">{{user.nickName}}</span>
                 </div>
-                <button v-show="!followingState[index]" class="Follow" @click="followUser(user.nickName)">
+                <button v-show="!followingState[index]" class="Follow" @click="followUser(user.nickName, index)">
                   팔로우
                 </button>
-                <button v-show="followingState[index]" class="Follow" @click="unfollowUser(user.nickName)">
+                <button v-show="followingState[index]" class="Follow" @click="unfollowUser(user.nickName, index)">
                   팔로우 취소
                 </button>
               </div>
@@ -148,7 +148,7 @@ export default {
     closeModal() {
       this.modalState = false;
     },
-    followUser(nickName) {
+    followUser(nickName, index) {
       axios({
         url: "/api/users/followOther/",
         method: "post",
@@ -159,11 +159,11 @@ export default {
           nickname: nickName
         }
       }).then(res => {
-        this.following = true;
+        this.followingState[index] = true;
         console.log(res);
       });
     },
-    unfollowUser(nickName) {
+    unfollowUser(nickName, index) {
       console.log(nickName);
       axios({
         url: "/api/users/unfollowOther/",
@@ -176,7 +176,7 @@ export default {
         }
       }).then(res => {
         console.log(res);
-        this.following = false;
+        this.followingState[index] = false;
       });
     },
     userDetail(nickName) {

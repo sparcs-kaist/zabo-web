@@ -30,10 +30,10 @@
           <img :src="user.profile_image" class="userImage">
           <span class="userName">{{user.nickName}}</span>
         </div>
-        <button v-show="!following" class="Follow" @click="followUser(user.nickName)">
+        <button v-show="!following[index]" class="Follow" @click="followUser(user.nickName, index)">
           팔로우
         </button>
-        <button v-show="following" class="Follow" @click="unfollowUser(user.nickName)">
+        <button v-show="following[index]" class="Follow" @click="unfollowUser(user.nickName, index)">
           팔로우 취소
         </button>
       </div>
@@ -64,7 +64,7 @@ export default {
       modalZaboId: -1,
       searchTerm: "",
       modalState: false,
-      following: false,
+      following: [],
       modalZaboData: {}
     };
   },
@@ -103,7 +103,7 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.zaboList = response.data.data;
-            this.userIsLoading = false;
+            this.zaboIsLoading = false;
             return response.data.data;
           } else if (response.status == 404) {
             this.zaboIsLoading = false;
@@ -115,11 +115,19 @@ export default {
         });
       axios({
         methods: "get",
-        url: `/api/users/?search=${this.$route.params.search}`
+        url: `/api/users/?search=${this.$route.params.search}`,
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
       })
         .then(response => {
           if (response.status == 200) {
             this.userList = response.data.data;
+            this.userList.map(user => {
+              this.following.push(user.is_following);
+            });
+            console.log(this.following);
+            console.log(this.userList);
             this.userIsLoading = false;
           } else if (response.status == 404) {
             this.userIsLoading = false;
@@ -145,7 +153,7 @@ export default {
     userDetail(nickName) {
       this.$router.push({ name: "UserDetail", params: { nickName: nickName } });
     },
-    followUser(nickName) {
+    followUser(nickName, index) {
       axios({
         url: "/api/users/followOther/",
         method: "post",
@@ -156,11 +164,12 @@ export default {
           nickname: nickName
         }
       }).then(res => {
-        this.following = true;
+        this.following[index] = true;
+        console.log(this.following);
         console.log(res);
       });
     },
-    unfollowUser(nickName) {
+    unfollowUser(nickName, index) {
       axios({
         url: "/api/users/unfollowOther/",
         method: "post",
@@ -172,7 +181,7 @@ export default {
         }
       }).then(res => {
         console.log(res);
-        this.following = false;
+        this.following[index] = false;
       });
     }
   }
@@ -184,9 +193,9 @@ export default {
   position: absolute;
   top: 78px;
   left: 0;
-  bottom: 0;
   right: 0;
   padding-top: 27px;
+  padding-bottom: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
