@@ -87,11 +87,11 @@
                   <div class="scheduleTimeWrapper">
                     <div class="scheduleSingleTime">
                       <span class="scheduleSpan">{{$t('시작 :')}}</span>
-                      <input type="datetime-local" class="scheduleStart" v-model="schedule.start_time" />
+                      <input type="datetime-local" class="scheduleStart" v-model="schedule.start_time" required/>
                     </div>
                     <div class="scheduleSingleTime">
                       <span class="scheduleSpan">{{$t('종료 :')}}</span>
-                      <input type="datetime-local" class="scheduleEnd" v-model="schedule.end_time" />
+                      <input type="datetime-local" class="scheduleEnd" v-model="schedule.end_time" required/>
                     </div>
                   </div>
                   <input type="text" placeholder="제목을 입력해주세요." class="scheduleContent" v-model="schedule.content" />
@@ -110,24 +110,35 @@
         <div class="column">
           <div class="formWrapper">
             <div v-if="posterBool[0]" class="zaboAdded">
-              <img class="zaboPoster" :src="imagePreviewUrls[0]">
+              <div class="bigZaboPosterWrappper">
+                <img class="zaboPoster" :src="imagePreviewUrls[0]">
+                <v-icon @click="posterPop(0)" large color="grey lighten-3" class="clearIcon">clear</v-icon>
+              </div>
               <div class="zaboSmallPosterWrapper">
-                <div v-if="posterBool[1]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[1]})`"></div>
+                <div v-if="posterBool[1]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[1]})`">
+                  <v-icon @click="posterPop(1)" color="white" class="clearIcon">clear</v-icon>
+                </div>
                 <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputA.click()">
                   <v-icon class="plusIcon icon-big">add_circle</v-icon>
                   <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(1, $event)" ref="posterInputA">
                 </div>
-                <div v-if="posterBool[2]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[2]})`"></div>
+                <div v-if="posterBool[2]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[2]})`">
+                  <v-icon @click="posterPop(2)" color="white" class="clearIcon">clear</v-icon>
+                </div>
                 <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputB.click()">
                   <v-icon class="plusIcon icon-big">add_circle</v-icon>
                   <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(2, $event)" ref="posterInputB">
                 </div>
-                <div v-if="posterBool[3]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[3]})`"></div>
+                <div v-if="posterBool[3]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[3]})`">
+                  <v-icon @click="posterPop(3)" color="white" class="clearIcon">clear</v-icon>
+                </div>
                 <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputC.click()">
                   <v-icon class="plusIcon icon-big">add_circle</v-icon>
                   <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(3, $event)" ref="posterInputC">
                 </div>
-                <div v-if="posterBool[4]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[4]})`"></div>
+                <div v-if="posterBool[4]" class="zaboSmallPoster" :style="`backgroundImage: url(${imagePreviewUrls[4]})`">
+                  <v-icon @click="posterPop(4)" color="white" class="clearIcon">clear</v-icon>
+                </div>
                 <div v-else class="smallZaboAddWrapper" @click="$refs.posterInputD.click()">
                   <v-icon class="plusIcon icon-big">add_circle</v-icon>
                   <input style="display:none" type="file" accept=".jpg, .png, image/jpeg, image/png" @change="posteradd(4, $event)" ref="posterInputD">
@@ -295,6 +306,21 @@ export default {
       const file = event.target.files[0];
       this.imagePreviewUrls[num] = url;
       this.zaboPosters[num] = file;
+    },
+    posterPop(num) {
+      if (num == 0) {
+        this.imagePreviewUrls = {
+          0: "none",
+          1: "none",
+          2: "none",
+          3: "none",
+          4: "none"
+        };
+        this.zaboPosters = ["none", "none", "none", "none", "none"];
+      } else {
+        this.imagePreviewUrls[num] = "none";
+        this.zaboPosters[num] = "none";
+      }
     },
     deletePoster() {
       this.imagePreviewUrls = [];
@@ -622,23 +648,27 @@ export default {
 }
 .scheduleSpan {
   margin-right: 0.5em;
+  font-size: 16px;
+  font-weight: 700;
 }
 .scheduleStart {
   flex: 1;
   color: black;
   height: 23px;
+  font-size: 16px;
 }
 .scheduleEnd {
   flex: 1;
   color: #848484;
   height: 23px;
+  font-size: 16px;
 }
 .scheduleContent {
   flex: 1;
   word-wrap: break-word;
   word-break: break-all;
   height: 37px;
-  font-size: 1.125em;
+  font-size: 16px;
   font-weight: 400;
   color: black;
   text-align: right;
@@ -749,8 +779,26 @@ export default {
 .textbox:hover {
   background-color: #e9e9e9;
 }
+.bigZaboPosterWrappper {
+  width: 100%;
+  height: auto;
+  position: relative;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+  margin-bottom: 11px;
+}
+.bigZaboPosterWrapper:hover {
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+.zaboPoster {
+  width: 100%;
+  height: auto;
+}
 .zaboAddWrapper {
   width: 100%;
+  min-width: 300px;
   height: 0;
   padding-top: 75%;
   padding-bottom: 75%;
@@ -769,22 +817,11 @@ export default {
 .zaboAdded {
   width: 100%;
   height: 100%;
+  min-width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-}
-
-.zaboPoster {
-  width: 100%;
-  height: auto;
-  margin-bottom: 11px;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
-  cursor: pointer;
-  transition: all 0.2s ease-in;
-}
-.zaboPoster:hover {
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .zaboSmallPosterWrapper {
@@ -801,6 +838,7 @@ export default {
 .zaboSmallPoster {
   width: 22%;
   height: 0;
+  position: relative;
   background-size: cover;
   padding-top: 11%;
   padding-bottom: 11%;
@@ -831,7 +869,11 @@ export default {
 .smallZaboAddWrapper:hover {
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
 }
-
+.clearIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 .selectTag {
   width: 100%;
   height: 100%;
