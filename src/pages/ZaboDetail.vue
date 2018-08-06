@@ -4,10 +4,11 @@
       <div class="column">
         <div class="headerStyle">
           <p class="heading">{{title}}</p>
-          <p class="subheading">{{updated_time}}</p>
+          <p class="subheading">{{$t('지원 기간  || ')}}{{deadline}}{{$t(' 까지')}}</p>
           <div class="buttonWrapper">
-            <a v-show="link_url != ''" :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
-            <a v-show="link_url == ''" class="buttonTap">{{$t("링크가 없습니다.")}}</a>
+            <a v-show="link_url != '' && participateValidation" :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
+            <a v-show="link_url == '' && participateValidation" class="buttonTap unvalidButtonTap">{{$t("링크가 없습니다.")}}</a>
+            <a v-show="!participateValidation" class="buttonTap unvalidButtonTap">{{$t("지원 기간이 만료되었습니다.")}}</a>
             <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
             <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
             <span class="likeCount">{{this.likeCount}}</span>
@@ -70,7 +71,8 @@ export default {
       category: "",
       payment: "",
       link_url: "",
-      authorId: null
+      authorId: null,
+      deadline: ""
     };
   },
   components: {
@@ -91,7 +93,62 @@ export default {
       } else {
         return false
       }
+    },
+    participateValidation () {
+      var today = new Date();
+      if (this.deadline.split(" ")[0]+"T"+this.deadline.split(" ")[1] > today.toISOString().substring(0, 16)) {
+        return true
+      } else {
+        return false
+      }
     }
+  },
+  mounted() {
+    this.zabo_id = this.$route.params.zabo_id;
+    axios({
+      method: "get",
+      url: `api/zaboes/${this.zabo_id}/`,
+      headers: {
+        Authorization: localStorage.getItem("token")
+      }
+    })
+      .then(response => {
+        const {
+          posters,
+          content,
+          title,
+          location,
+          updated_time,
+          comments,
+          is_liked,
+          like_count,
+          timeslots,
+          category,
+          payment,
+          link_url,
+          author,
+          deadline
+        } = response.data;
+        this.image = posters["0"].image;
+        this.background = posters["0"].image;
+        this.content = content;
+        this.title = title;
+        this.location = location;
+        this.updated_time = updated_time;
+        this.comments = comments;
+        this.isLiked = is_liked;
+        this.likeCount = like_count;
+        this.timeslots = timeslots;
+        this.category = category;
+        this.payment = payment;
+        this.link_url = link_url;
+        this.authorId = author.id;
+        this.deadline = deadline;
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   methods: {
     onSubmitComment() {
@@ -182,51 +239,6 @@ export default {
           this.likeCount += 1;
         });
     }
-  },
-  mounted() {
-    this.zabo_id = this.$route.params.zabo_id;
-    axios({
-      method: "get",
-      url: `api/zaboes/${this.zabo_id}/`,
-      headers: {
-        Authorization: localStorage.getItem("token")
-      }
-    })
-      .then(response => {
-        const {
-          posters,
-          content,
-          title,
-          location,
-          updated_time,
-          comments,
-          is_liked,
-          like_count,
-          timeslots,
-          category,
-          payment,
-          link_url,
-          author
-        } = response.data;
-        this.image = posters["0"].image;
-        this.background = posters["0"].image;
-        this.content = content;
-        this.title = title;
-        this.location = location;
-        this.updated_time = updated_time;
-        this.comments = comments;
-        this.isLiked = is_liked;
-        this.likeCount = like_count;
-        this.timeslots = timeslots;
-        this.category = category;
-        this.payment = payment;
-        this.link_url = link_url;
-        this.authorId = author.id;
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
   }
 };
 </script>
@@ -311,7 +323,7 @@ export default {
 .subheading {
   color: rgb(220, 220, 220);
   font-weight: bold;
-  font-size: 1.25em;
+  font-size: 16px;
   margin-top: 17px;
   margin-bottom: 20px;
   text-align: left;
@@ -333,9 +345,8 @@ export default {
   background-color: rgb(18, 57, 125);
   color: white;
 }
-.buttonTap:last-child {
-  background-color: #e6e6e6;
-  color: #606060;
+.unvalidButtonTap {
+  background-color: #ea4335;
 }
 .column {
   display: flex;
@@ -344,9 +355,9 @@ export default {
   width: 60%;
 }
 .column:first-child {
-  padding-top: 80px;
+  padding-top: 60px;
   padding-left: 40px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 }
 .column:last-child {
   justify-content: center;

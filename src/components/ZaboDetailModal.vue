@@ -4,9 +4,11 @@
       <div class="column">
         <div class="headerStyle">
           <p class="heading">{{title}}</p>
-          <p class="subheading">{{updated_time}}</p>
+          <p class="subheading">{{$t('지원 기간  || ')}}{{deadline}}{{$t(' 까지')}}</p>
           <div class="buttonWrapper">
-            <button class="buttonTap">{{$t("참여하기")}}</button>
+            <a v-show="link_url != '' && participateValidation" :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
+            <a v-show="link_url == '' && participateValidation" class="buttonTap unvalidButtonTap">{{$t("링크가 없습니다.")}}</a>
+            <a v-show="!participateValidation" class="buttonTap unvalidButtonTap">{{$t("지원 기간이 만료되었습니다.")}}</a>
             <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
             <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
             <span class="likeCount">{{this.likeCount}}</span>
@@ -68,7 +70,8 @@ export default {
       timeslots: [],
       category: "",
       payment: "",
-      authorId: null
+      authorId: null,
+      deadline: ""
     };
   },
   components: {
@@ -90,6 +93,14 @@ export default {
     myZabo () {
       if (this.loggedInState) {
         return this.myId == this.authorId
+      } else {
+        return false
+      }
+    },
+    participateValidation () {
+      var today = new Date();
+      if (this.deadline.split(" ")[0]+"T"+this.deadline.split(" ")[1] > today.toISOString().substring(0, 16)) {
+        return true
       } else {
         return false
       }
@@ -194,7 +205,8 @@ export default {
       title,
       location,
       like_count,
-      author
+      author,
+      deadline
     } = this.modalZaboData;
     this.image = posters["0"].image;
     this.title = title;
@@ -202,6 +214,7 @@ export default {
     this.likeCount = like_count;
     this.content = content;
     this.authorId = author.id;
+    this.deadline = deadline;
     console.log(this.authorId);
     axios({
       method: "get",
@@ -333,9 +346,8 @@ export default {
   background-color: rgb(18, 57, 125);
   color: white;
 }
-.buttonTap:last-child {
-  background-color: #e6e6e6;
-  color: #606060;
+.unvalidButtonTap {
+  background-color: #ea4335;
 }
 .column {
   display: flex;
@@ -344,8 +356,9 @@ export default {
   width: 60%;
 }
 .column:first-child {
-  padding-top: 80px;
+  padding-top: 60px;
   padding-left: 40px;
+  padding-bottom: 40px;
 }
 .column:last-child {
   justify-content: center;
