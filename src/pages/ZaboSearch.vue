@@ -98,7 +98,7 @@ export default {
       this.userIsLoading = true;
       axios({
         methods: "get",
-        url: `api/zaboes/?search=${this.$route.params.search}`
+        url: `/api/zaboes/?search=${this.$route.params.search}`
       })
         .then(response => {
           if (response.status == 200) {
@@ -115,7 +115,7 @@ export default {
         });
       axios({
         methods: "get",
-        url: `api/users/?search=${this.$route.params.search}`
+        url: `/api/users/?search=${this.$route.params.search}`
       })
         .then(response => {
           if (response.status == 200) {
@@ -147,7 +147,7 @@ export default {
     },
     followUser(nickName) {
       axios({
-        url: "api/users/followOther/",
+        url: "/api/users/followOther/",
         method: "post",
         headers: {
           Authorization: localStorage.getItem("token")
@@ -162,7 +162,7 @@ export default {
     },
     unfollowUser(nickName) {
       axios({
-        url: "api/users/unfollowOther/",
+        url: "/api/users/unfollowOther/",
         method: "post",
         headers: {
           Authorization: localStorage.getItem("token")

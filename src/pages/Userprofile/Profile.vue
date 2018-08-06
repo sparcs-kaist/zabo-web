@@ -2,7 +2,7 @@
 <v-app id="template">
   <div class = "whole">
     <div style="display: flex">
-      <v-btn :disabled="!valid" @click = "edittoggle" depressed :loading = "loading" :color = "color" class="submit_button">
+      <v-btn v-if="valid" :disabled="!valid" @click = "edittoggle" depressed :loading = "loading" :color = "color" class="submit_button">
         {{ edit }}
       </v-btn>
       <v-btn v-if = "edit === '저장'" depressed @click = "cancelation" color="red" class="cancel_button">
