@@ -32,7 +32,7 @@
             업로드한 자보
           </v-tab>
           <v-tab :disabled="edit" :key="3" style="font-size: 17pt; font-weight: 800;">
-            팔로우
+            팔로우중인 유저
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab" class="tabsWrapper">
@@ -164,7 +164,7 @@ export default {
       });
     },
     unfollowUser(nickName) {
-      console.log(nickName)
+      console.log(nickName);
       axios({
         url: "/api/users/unfollowOther/",
         method: "post",
@@ -181,7 +181,7 @@ export default {
     },
     userDetail(nickName) {
       this.$router.push({ name: "UserDetail", params: { nickName: nickName } });
-    },
+    }
   },
   mounted() {
     setTimeout(() => {
@@ -216,7 +216,7 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem('token').split(" ")[0] == "ZABO") {
+    if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
       axios
         .get("/api/users/myInfo", {
           headers: {
@@ -229,8 +229,8 @@ export default {
             console.log("response stauts 401!");
           } else {
             this.$store.commit(types.SET_CURRENT_USER, response.data);
-            for (let i=0; i < response.data.following.length; i++) {
-              this.followingState.push(true)
+            for (let i = 0; i < response.data.following.length; i++) {
+              this.followingState.push(true);
             }
             this.loading = true;
           }
