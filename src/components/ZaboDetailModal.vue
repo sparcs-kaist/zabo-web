@@ -71,7 +71,8 @@ export default {
       category: "",
       payment: "",
       authorId: null,
-      deadline: ""
+      deadline: "",
+      link_url: ""
     };
   },
   components: {
@@ -230,7 +231,8 @@ export default {
           is_liked,
           timeslots,
           category,
-          payment
+          payment,
+          link_url
         } = response.data;
         this.updated_time = updated_time;
         this.comments = comments;
@@ -238,6 +240,7 @@ export default {
         this.timeslots = timeslots;
         this.category = category;
         this.payment = payment;
+        this.link_url = link_url;
         console.log(response);
       })
       .catch(err => {
