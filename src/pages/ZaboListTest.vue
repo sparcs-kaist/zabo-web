@@ -13,16 +13,17 @@
     <nav class="horizontalNavButton">
       <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
     </nav>
-    <carousel-3d id="fakeCarousel1" :inverseScaling="-50"  :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-left']">
+    <carousel-3d v-if="windowWidth > 700" id="fakeCarousel1" :inverseScaling="50"  :display="displayNumber" :space="60" :animationSpeed="200" :perspective="0" :width="carouselPosterHeight" :height="basePosterWrapperHeight" :class="['fakeCarouselWrapper', 'fake-left']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
     </carousel-3d>
-    <carousel-3d v-if="zaboesExist" id="mainCarousel" :inverseScaling="50"  :display="5" :space="60" :animationSpeed="200" :perspective="0" :width="464" :height="posterWrapperHeight" class="carouselWrapper">
+    <carousel-3d v-if="zaboesExist" id="mainCarousel" :inverseScaling="50"  :display="displayNumber" :space="60" :animationSpeed="200" :perspective="0" :width="carouselPosterHeight" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
-          <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper">
-            <img class="poster" :src="zabo.posters[0].image_thumbnail">
-            <div class="posterDescriptionWrapper">
+          <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper" :style="`width: ${baseCarouselPosterHeight}px; height: ${basePosterWrapperHeight}px;`">
+            <img class="poster" :style="`width: ${baseCarouselPosterHeight}px; height: ${basePosterWrapperHeight}px;`" :src="zabo.posters[0].image_thumbnail">
+            <div class="posterDescriptionWrapper" :style="`height: ${baseCarouselPosterHeight}px; width: ${basePosterWrapperHeight}px; transform: rotate(90deg) translateY(-${basePosterWrapperHeight/2+17}px);
+  transform-origin: ${basePosterWrapperHeight/2}px ${basePosterWrapperHeight/2}px;`">
               <span class="posterDescription"><img class="profileImage" :src="zabo.author.profile_image">{{zabo.author.nickName}}</span>
               <span class="posterDescription"><span>{{$t('제목')}}</span><span>{{zabo.title}}</span></span>
               <span class="posterDescription"><span>{{$t('위치')}}</span><span>{{zabo.location}}</span></span>
@@ -36,7 +37,7 @@
       color="primary"
       v-else
     ></v-progress-circular>
-    <carousel-3d id="fakeCarousel2" :inverseScaling="-50" :display="5" :space="50" :animationSpeed="200" :perspective="0" :width="464" :height="256" :class="['fakeCarouselWrapper', 'fake-right']">
+    <carousel-3d v-if="windowWidth > 700" id="fakeCarousel2" :inverseScaling="50" :display="displayNumber" :space="60" :animationSpeed="200" :perspective="0" :width="carouselPosterHeight" :height="basePosterWrapperHeight" :class="['fakeCarouselWrapper', 'fake-right']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
     </carousel-3d>
@@ -55,6 +56,7 @@ export default {
   data() {
     return {
       windowWidth: 0,
+      windowHeight: 0,
       currentCategoryIndex: 0,
       categoryList: [
         "최신순",
@@ -69,9 +71,12 @@ export default {
       ],
       defaultImage: "@/assets/logo.png",
       posterWrapperHeight: 0,
+      basePosterWrapperHeight: 0,
+      baseCarouselPosterHeight: 0,
       modalZaboId: -1,
       currentPath: window.location.pathname,
-      modalZaboData: {}
+      modalZaboData: {},
+      displayNumber: 3
     };
   },
   mounted() {
@@ -128,6 +133,8 @@ export default {
         document.body.clientWidth ||
         document.documentElement.clientWidth ||
         window.innerWidth;
+      this.windowHeight = window.innerHeight;
+      console.log(861, 720);
     },
     categoryleft() {
       if (this.currentCategoryIndex === 0) {
@@ -220,20 +227,88 @@ export default {
       return Math.ceil(this.zaboes.length / this.columnNumber);
     },
     columnNumber() {
-      if (this.windowWidth > 1700) {
-        this.posterWrapperHeight = 1225;
-        return 4;
-      }
-      if (this.windowWidth > 1400) {
-        this.posterWrapperHeight = 916;
-        return 3;
-      }
-      if (this.windowWidth > 1100) {
-        this.posterWrapperHeight = 607;
-        return 2;
+      if (this.windowHeight > 1200) {
+        this.basePosterWrapperHeight = 350;
+        this.baseCarouselPosterHeight = 520;
+        this.displayNumber = 5;
+        if (this.windowWidth > 2000) {
+          this.posterWrapperHeight = 1744;
+          return 5;
+        } else if (this.windowWidth > 1700) {
+          this.posterWrapperHeight = 1433;
+          return 4;
+        } else if (this.windowWidth > 1400) {
+          this.posterWrapperHeight = 1072;
+          return 3;
+        } else if (this.windowWidth > 1000) {
+          this.posterWrapperHeight = 711;
+          return 2;
+        } else {
+          this.posterWrapperHeight = 350;
+          return 1;
+        }
+      } else if (this.windowHeight > 800) {
+        this.basePosterWrapperHeight = 320;
+        this.baseCarouselPosterHeight = 464;
+        this.displayNumber = 3;
+        if (this.windowWidth > 2000) {
+          this.posterWrapperHeight = 1644;
+          return 5;
+        } else if (this.windowWidth > 1700) {
+          this.posterWrapperHeight = 1313;
+          return 4;
+        } else if (this.windowWidth > 1400) {
+          this.posterWrapperHeight = 982;
+          return 3;
+        } else if (this.windowWidth > 1000) {
+          this.posterWrapperHeight = 651;
+          return 2;
+        } else {
+          this.posterWrapperHeight = 320;
+          return 1;
+        }
+      } else if (this.windowHeight > 600) {
+        this.basePosterWrapperHeight = 260;
+        this.baseCarouselPosterHeight = 400;
+        this.displayNumber = 3;
+        if (this.windowWidth > 2000) {
+          this.posterWrapperHeight = 1322;
+          return 5;
+        } else if (this.windowWidth > 1700) {
+          this.posterWrapperHeight = 1051;
+          return 4;
+        } else if (this.windowWidth > 1400) {
+          this.posterWrapperHeight = 811;
+          this.basePosterWrapperHeight = 260;
+          this.baseCarouselPosterHeight = 400;
+          return 3;
+        } else if (this.windowWidth > 1000) {
+          this.posterWrapperHeight = 531;
+          return 2;
+        } else {
+          this.posterWrapperHeight = 260;
+          return 1;
+        }
       } else {
-        this.posterWrapperHeight = 298;
-        return 1;
+        this.basePosterWrapperHeight = 220;
+        this.baseCarouselPosterHeight = 340;
+        this.displayNumber = 3;
+        if (this.windowWidth > 2000) {
+          this.posterWrapperHeight = 1144;
+          return 5;
+        } else if (this.windowWidth > 1700) {
+          this.posterWrapperHeight = 911;
+          return 4;
+        } else if (this.windowWidth > 1400) {
+          this.posterWrapperHeight = 682;
+          return 3;
+        } else if (this.windowWidth > 1000) {
+          this.posterWrapperHeight = 451;
+          return 2;
+        } else {
+          this.posterWrapperHeight = 220;
+          return 1;
+        }
       }
     },
     zaboesExist() {
@@ -280,6 +355,17 @@ export default {
         return false;
       } else {
         return true;
+      }
+    },
+    carouselPosterHeight() {
+      if (this.windowHeight > 1200) {
+        return 520;
+      } else if (this.windowHeight > 800) {
+        return 464;
+      } else if (this.windowHeight > 600) {
+        return 400;
+      } else {
+        return 340;
       }
     }
   },
@@ -367,15 +453,11 @@ export default {
   height: 100%;
 }
 .posterDescriptionWrapper {
-  width: 298px;
-  height: 464px;
   padding: 15px;
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   position: absolute;
   z-index: 100;
-  transform: rotate(90deg) translateY(-166px);
-  transform-origin: 149px 149px;
   display: flex;
   flex-direction: column;
   opacity: 0;
@@ -405,8 +487,6 @@ export default {
   margin-right: 8px;
 }
 .individualPosterWrapper {
-  width: 464px;
-  height: 298px;
   margin-bottom: 11px;
   position: relative;
 }
@@ -415,8 +495,6 @@ export default {
 }
 .poster {
   position: absolute;
-  width: 464px;
-  height: 298px;
   box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.3);
   cursor: pointer;
 }
@@ -435,11 +513,11 @@ export default {
 }
 .fake-left {
   left: 0%;
-  transform: translate(-50%, -149px) rotate(-90deg);
+  transform: translate(-50%, -50%) rotate(-90deg);
 }
 .fake-right {
   left: 100%;
-  transform: translate(-50%, -149px) rotate(-90deg);
+  transform: translate(-50%, -50%) rotate(-90deg);
 }
 .keyboard_arrow_updown {
   width: 40px;
@@ -460,6 +538,8 @@ export default {
 }
 .horizontalNavButton {
   z-index: 200;
+}
+@media (max-width: 899px) {
 }
 
 /* Carousel-css */
