@@ -8,6 +8,7 @@ import axios from "@/axios-auth";
 
 export default {
   created() {
+    console.log(this.$route.params.email);
     if (localStorage.getItem("token")) {
       this.$router.push({ name: "ZaboListDetailAdded" });
     } else {
@@ -19,7 +20,8 @@ export default {
           password: this.$route.params.email
         }
       }).then(res => {
-        localStorage.setItem("token", res.data.token);
+        console.log(res);
+        localStorage.setItem("token", "ZABO " + res.data.token);
         window.location.reload();
       });
     }

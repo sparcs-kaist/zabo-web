@@ -128,11 +128,13 @@ const mutations = {
     state.loggedInState = true;
   },
   [types.LOGOUT](state, payload) {
-    const {currentUser: {email}} = state;
+    const {
+      currentUser: { email }
+    } = state;
     state.loggedInState = false;
     state.currentUser = {};
     localStorage.removeItem("token");
-    window.location = `http://ssal.sparcs.org:16135/api/logout/?email=${email}`
+    window.location = `http://ssal.sparcs.org:16135/api/logout/?email=${email}`;
   }
 };
 
