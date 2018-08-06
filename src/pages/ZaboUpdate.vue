@@ -66,17 +66,6 @@
           <div class="formWrapper">
             <span class="topic">
               <div class="topicWrapper">
-                {{$t('결제 필요 여부')}}
-              </div>
-              <span class="font-light">필요하지 않음</span>
-              <div>
-                <v-switch v-model="paymentRequired" color="green" :value="false" disabled></v-switch>
-              </div>
-            </span>
-          </div>
-          <div class="formWrapper">
-            <span class="topic">
-              <div class="topicWrapper">
                 {{$t('일정')}}
                 <div class="required"></div>
               </div>
@@ -101,6 +90,12 @@
               <span v-else v-show="!scheduleAdding" class="smallSpan">{{$t('일정이 없습니다. 아래 버튼으로 추가하세요.')}}</span>
               <v-icon @click="zaboScheduleAdd" class="plusIcon icon-small">add_circle</v-icon>
             </div>
+          </div>
+          <div class="formWrapper">
+            <span class="topic">{{$t('참여 기한(데드라인)')}}
+              <div class="required"></div>
+            </span>
+            <input type="datetime-local" class="deadline" v-model="deadline" required/>
           </div>
           <div class="formWrapper">
             <span class="topic">{{$t('자보 설명')}}</span>
@@ -164,7 +159,7 @@
     </div>
   </v-app>
   <div class="postFinished" v-else>
-    <span class="postFinishedTitle">You posted successfully!</span>
+    <span class="postFinishedTitle">자보를 성공적으로 업데이트하셨습니다.</span>
     <a href="http://sparcs.org/">
       <div class="routerLinks">
         {{ $t('자보 신청 링크 만들기') }}
@@ -297,7 +292,8 @@ export default {
       this.location = location;
       this.introduction = content;
       this.zaboUrl = link_url;
-      this.deadline = deadline;
+      this.deadline = deadline.split(' ')[0] + "T" + deadline.split(' ')[1];
+      console.log(this.deadline);
     });
   },
   methods: {
@@ -362,6 +358,7 @@ export default {
         formData.append("title", this.name);
         formData.append("location", this.location);
         formData.append("content", this.introduction);
+        formData.append("deadline", this.deadline.split("T")[0]+' '+this.deadline.split("T")[1]+":00");
         formData.append("apply", selapp);
         formData.append("payment", "F");
         formData.append("category", selcat);
@@ -662,6 +659,11 @@ export default {
   color: #848484;
   height: 23px;
   font-size: 16px;
+}
+.deadline {
+  color: rgba(0,0,0,0.87);
+  font-size: 18px;
+  font-weight: 700;
 }
 .scheduleContent {
   flex: 1;
@@ -968,17 +970,18 @@ option {
   right: 15%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 }
-.posterFinishedTitle {
-  font-size: 4em;
+.postFinishedTitle {
+  font-size: 50px;
   font-weight: 700;
+  margin-bottom: 20px;
 }
 .routerLinks {
   width: 100%;
   padding: 10px;
   text-align: center;
-  font-size: 3em;
+  font-size: 25px;
 }
 </style>
