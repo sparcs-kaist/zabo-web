@@ -1,5 +1,6 @@
 #! /bin/bash
 cd /home/zabo/zabo-web
+yarn
 yarn build
 cd /home/zabo/zabo-web/nginx_conf
 cp nginx.conf /etc/nginx/sites-available/nginx.conf
