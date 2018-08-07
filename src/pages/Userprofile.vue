@@ -32,7 +32,7 @@
             업로드한 자보
           </v-tab>
           <v-tab :disabled="edit" :key="3" style="font-size: 17pt; font-weight: 800;">
-            팔로우
+            팔로우중인 유저
           </v-tab>
         </v-tabs>
         <v-tabs-items v-model="tab" class="tabsWrapper">
@@ -49,15 +49,15 @@
           </v-tab-item>
           <v-tab-item :key="3">
             <div class="followWrapper">
-              <div class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
+              <div v-if="followingState != []" class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
                 <div @click="userDetail(user.nickName)" class="userInfoWrapper">
                   <img :src="user.profile_image" class="userImage">
                   <span class="userName">{{user.nickName}}</span>
                 </div>
-                <button v-show="!following" class="Follow" @click="followUser(user.nickName)">
+                <button v-show="!followingState[index]" class="Follow" @click="followUser(user.nickName, index)">
                   팔로우
                 </button>
-                <button v-show="following" class="Follow" @click="unfollowUser(user.nickName)">
+                <button v-show="followingState[index]" class="Follow" @click="unfollowUser(user.nickName, index)">
                   팔로우 취소
                 </button>
               </div>
@@ -101,7 +101,8 @@ export default {
       modalZaboId: -1,
       zaboLoading: true,
       createdZaboes: [],
-      modalZaboData: null
+      modalZaboData: null,
+      followingState: []
     };
   },
   components: {
@@ -146,6 +147,40 @@ export default {
     },
     closeModal() {
       this.modalState = false;
+    },
+    followUser(nickName, index) {
+      axios({
+        url: "/api/users/followOther/",
+        method: "post",
+        headers: {
+          Authorization: localStorage.getItem("token")
+        },
+        data: {
+          nickname: nickName
+        }
+      }).then(res => {
+        this.followingState[index] = true;
+        console.log(res);
+      });
+    },
+    unfollowUser(nickName, index) {
+      console.log(nickName);
+      axios({
+        url: "/api/users/unfollowOther/",
+        method: "post",
+        headers: {
+          Authorization: localStorage.getItem("token")
+        },
+        data: {
+          nickname: nickName
+        }
+      }).then(res => {
+        console.log(res);
+        this.followingState[index] = false;
+      });
+    },
+    userDetail(nickName) {
+      this.$router.push({ name: "UserDetail", params: { nickName: nickName } });
     }
   },
   mounted() {
@@ -170,23 +205,49 @@ export default {
     },
     computedCreatedZaboes() {
       let finalZaboes = [];
-      for (let i = 0; i < this.createdZaboes.length; i++) {
-        if (this.createdZaboes[i].posters.length > 0) {
-          finalZaboes.push(this.createdZaboes[i]);
+      if (this.createdzaboes != []) {
+        for (let i = 0; i < this.createdZaboes.length; i++) {
+          if (this.createdZaboes[i].posters.length > 0) {
+            finalZaboes.push(this.createdZaboes[i]);
+          }
         }
       }
       return finalZaboes;
     }
   },
   created() {
+    if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
+      axios
+        .get("/api/users/myInfo", {
+          headers: {
+            Authorization: localStorage.getItem("token")
+          }
+        })
+        .then(response => {
+          if (response.status === 401) {
+            this.loading = true;
+            console.log("response stauts 401!");
+          } else {
+            this.$store.commit(types.SET_CURRENT_USER, response.data);
+            for (let i = 0; i < response.data.following.length; i++) {
+              this.followingState.push(true);
+            }
+            this.loading = true;
+          }
+        })
+        .catch(err => {
+          this.loading = true;
+        });
+    }
     axios
-      .get("api/zaboes/created/", {
+      .get("/api/zaboes/created/", {
         headers: {
           Authorization: localStorage.getItem("token")
         }
       })
       .then(res => {
         this.createdZaboes = res.data.data;
+        console.log(this.createdZaboes);
         this.zaboLoading = false;
       });
   }
@@ -344,9 +405,14 @@ export default {
 }
 .followWrapper {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .userWrapper {
+  width: 30%;
   display: flex;
   flex-direction: column;
   align-items: center;

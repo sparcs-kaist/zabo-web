@@ -4,9 +4,11 @@
       <div class="column">
         <div class="headerStyle">
           <p class="heading">{{title}}</p>
-          <p class="subheading">{{updated_time}}</p>
+          <p class="subheading">{{$t('지원 기간  || ')}}{{deadline}}{{$t(' 까지')}}</p>
           <div class="buttonWrapper">
-            <button class="buttonTap">{{$t("참여하기")}}</button>
+            <a v-show="link_url != '' && participateValidation" :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
+            <a v-show="link_url == '' && participateValidation" class="buttonTap unvalidButtonTap">{{$t("링크가 없습니다.")}}</a>
+            <a v-show="!participateValidation" class="buttonTap unvalidButtonTap">{{$t("지원 기간이 만료되었습니다.")}}</a>
             <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
             <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
             <span class="likeCount">{{this.likeCount}}</span>
@@ -23,9 +25,9 @@
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 1">
           <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
-            <span class="timeSlotTime">{{$t('시작 : ')}}{{timeslot.start_time}}</span>
-            <span class="timeSlotTime">{{$t('종료 : ')}}{{timeslot.end_time}}</span>
-            <span class="timeSlotContent">{{$t('내용 : ')}}{{timeslot.content}}</span>
+            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('시작 ')}}</span><span class="timeSlotContent">{{timeslot.start_time}}</span></div>
+            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('종료 ')}}</span><span class="timeSlotContent">{{timeslot.end_time}}</span></div>
+            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('내용 ')}}</span><span class="timeSlotContent">{{timeslot.content}}</span></div>
           </div>
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 2">
@@ -68,7 +70,9 @@ export default {
       timeslots: [],
       category: "",
       payment: "",
-      authorId: null
+      authorId: null,
+      deadline: "",
+      link_url: ""
     };
   },
   components: {
@@ -90,6 +94,14 @@ export default {
     myZabo () {
       if (this.loggedInState) {
         return this.myId == this.authorId
+      } else {
+        return false
+      }
+    },
+    participateValidation () {
+      var today = new Date();
+      if (this.deadline.split(" ")[0]+"T"+this.deadline.split(" ")[1] > today.toISOString().substring(0, 16)) {
+        return true
       } else {
         return false
       }
@@ -194,7 +206,8 @@ export default {
       title,
       location,
       like_count,
-      author
+      author,
+      deadline
     } = this.modalZaboData;
     this.image = posters["0"].image;
     this.title = title;
@@ -202,6 +215,7 @@ export default {
     this.likeCount = like_count;
     this.content = content;
     this.authorId = author.id;
+    this.deadline = deadline;
     console.log(this.authorId);
     axios({
       method: "get",
@@ -217,7 +231,8 @@ export default {
           is_liked,
           timeslots,
           category,
-          payment
+          payment,
+          link_url
         } = response.data;
         this.updated_time = updated_time;
         this.comments = comments;
@@ -225,6 +240,7 @@ export default {
         this.timeslots = timeslots;
         this.category = category;
         this.payment = payment;
+        this.link_url = link_url;
         console.log(response);
       })
       .catch(err => {
@@ -243,7 +259,7 @@ export default {
   left: 0%;
   right: 0%;
   overflow: hidden;
-  z-index: 502;
+  z-index: 301;
   border-radius: 3px;
 }
 .coverImage {
@@ -257,7 +273,7 @@ export default {
   left: -5px;
   right: -5px;
   overflow: hidden;
-  z-index: 500;
+  z-index: 300;
   filter: blur(5px);
 }
 .hide {
@@ -333,9 +349,8 @@ export default {
   background-color: rgb(18, 57, 125);
   color: white;
 }
-.buttonTap:last-child {
-  background-color: #e6e6e6;
-  color: #606060;
+.unvalidButtonTap {
+  background-color: #ea4335;
 }
 .column {
   display: flex;
@@ -344,8 +359,9 @@ export default {
   width: 60%;
 }
 .column:first-child {
-  padding-top: 80px;
+  padding-top: 60px;
   padding-left: 40px;
+  padding-bottom: 40px;
 }
 .column:last-child {
   justify-content: center;
@@ -396,13 +412,30 @@ export default {
   width: 100%;
   margin-bottom: 1em;
   padding: 10px;
+  min-height: 80px;
   display: flex;
-  flex-direction: column;
+  align-items: space-between;
+  flex-wrap: wrap;
   background-color: #ececec;
   font-size: 1.5em;
   color: rgba(0, 0, 0, 0.87);
 }
-.timeSlotTime {
-  padding-bottom: 0.25em;
+.singleTimeSlotWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 50%;
+}
+.singleTimeSlotWrapper:last-child {
+  width: 100%;
+}
+.timeSlotTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-right: 8px;
+}
+.timeSlotContent {
+  font-size: 20px;
+  font-weight: 500;
 }
 </style>

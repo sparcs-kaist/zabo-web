@@ -12,12 +12,12 @@
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 답글을 달았습니다. {{noti.content}}</span>
         </div>
-        <div class="notiInfoWrapper" v-if="noti.type == 'ZaboReaction'">
+        <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'ZaboReaction'">
           <img :src="'https://zaboapi.sparcs.org'+noti.from_profile" class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 자보에 댓글을 남겼습니다. {{noti.content}}</span>
         </div>
-        <div class="notiInfoWrapper" v-if="noti.type == 'ZaboFollowing'">
+        <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'ZaboFollowing'">
           <img :src="'https://zaboapi.sparcs.org'+noti.from_profile" class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 새로운 자보를 올렸습니다. {{noti.content}}</span>
@@ -33,7 +33,12 @@
 </template>
 <script>
 export default {
-  props: ["notifications", "notificationsModal"]
+  props: ["notifications", "notificationsModal"],
+  methods: {
+    goToZabo(id) {
+      this.$router.push({name: "ZaboDetail", params: {zabo_id: id}})
+    }
+  }
 };
 </script>
 <style lang=''>
@@ -55,7 +60,7 @@ export default {
   max-height: 250px;
   overflow-y: scroll;
   overflow-x: hidden;
-  z-index: 1000;
+  z-index: 500;
 }
 .notificationWrapper::-webkit-scrollbar {
   width: 10px;
@@ -76,6 +81,7 @@ export default {
   margin-left: 0.5em;
   font-size: 1em;
   z-index: 1000;
+  z-index: inherit;
 }
 
 .notiProfileImage {
@@ -83,16 +89,20 @@ export default {
   height: 30px;
   border-radius: 50%;
   z-index: 900;
+  z-index: inherit;
 }
 .notiFrom {
   font-weight: 700;
   z-index: 900;
+  z-index: inherit;
 }
 .notiInfoWrapper {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   z-index: 900;
+  cursor: pointer;
+  z-index: inherit;
 }
 .singleNotiWrapper {
   width: 100%;
@@ -103,7 +113,7 @@ export default {
   border-bottom: 1px solid #ececec;
   align-items: center;
   justify-content: flex-start;
-  z-index: 1000;
+  z-index: inherit;
 }
 .emptyNotification {
   width: 100%;
@@ -113,6 +123,7 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 1.25em;
+  z-index: inherit;
 }
 .triangle {
   position: absolute;
@@ -123,11 +134,12 @@ export default {
   border-left: 11px solid transparent;
   border-right: 11px solid transparent;
   border-bottom: 10px solid white;
-  z-index: 1001;
+  z-index: 500;
 }
 .triangleBorder {
   top: 29px;
   border-bottom: 10px solid #e0e0e0;
   z-index: 2;
+  z-index: 400;
 }
 </style>
