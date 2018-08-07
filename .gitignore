@@ -15,3 +15,5 @@ src/axios-auth.js
 *.ntvs*
 *.njsproj
 *.sln
+dist/*
+dist/
