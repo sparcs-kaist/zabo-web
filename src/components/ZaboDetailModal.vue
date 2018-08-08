@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="column">
-        <img :src="this.image" height="600" width="500" />
+        <img :src="this.image" class="zaboImage"/>
         <v-icon @click="closeModal" class="closeIcon">close</v-icon>
         <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
@@ -88,22 +88,25 @@ export default {
     loggedInState() {
       return this.$store.getters.loggedInState;
     },
-    myId () {
+    myId() {
       return this.$store.getters.getMyID;
     },
-    myZabo () {
+    myZabo() {
       if (this.loggedInState) {
-        return this.myId == this.authorId
+        return this.myId == this.authorId;
       } else {
-        return false
+        return false;
       }
     },
-    participateValidation () {
+    participateValidation() {
       var today = new Date();
-      if (this.deadline.split(" ")[0]+"T"+this.deadline.split(" ")[1] > today.toISOString().substring(0, 16)) {
-        return true
+      if (
+        this.deadline.split(" ")[0] + "T" + this.deadline.split(" ")[1] >
+        today.toISOString().substring(0, 16)
+      ) {
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   },
@@ -263,8 +266,9 @@ export default {
   border-radius: 3px;
 }
 .coverImage {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../assets/alexander-popov-522100-unsplash.jpg");
+  background: linear-gradient(rgba(0, 0, 0, 0.7)),
+    url("../assets/alexander-popov-522100-unsplash.jpg") no-repeat center center
+      fixed;
   background-size: cover;
   /* display: flex; */
   position: absolute;
@@ -334,6 +338,12 @@ export default {
   margin-bottom: 20px;
   text-align: left;
 }
+.zaboImage {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  max-width: 600px;
+}
 .buttonWrapper {
   width: 100%;
   display: flex;
@@ -367,6 +377,7 @@ export default {
   justify-content: center;
   align-items: center;
   width: 40%;
+  padding: 20px 20px;
 }
 .navbar {
   display: flex;

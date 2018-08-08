@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/axios-auth";
 import InputField from "./InputField";
 import ReCommentBox from "./ReCommentBox";
 
@@ -72,7 +72,7 @@ export default {
     onSubmitReply() {
       axios({
         method: "post",
-        url: "api/recomments/",
+        url: "/api/recomments/",
         data: {
           content: this.newReply,
           comment: this.comment_id
@@ -93,7 +93,7 @@ export default {
       this.commentEditHandlerModalState = false;
       axios({
         method: "DELETE",
-        url: `api/comments/${this.id}/`,
+        url: `/api/comments/${this.id}/`,
         headers: {
           Authorization: localStorage.getItem("token")
         }
@@ -107,7 +107,7 @@ export default {
       this.editing = false;
       axios({
         method: "PUT",
-        url: `api/comments/${this.id}/`,
+        url: `/api/comments/${this.id}/`,
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token")
