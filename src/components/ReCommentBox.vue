@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/axios-auth";
 import InputField from "./InputField";
 
 export default {
@@ -55,7 +55,7 @@ export default {
       this.editing = false;
       axios({
         method: "PUT",
-        url: `api/comments/${this.commentId}/`,
+        url: `/api/comments/${this.commentId}/`,
         headers: {
           "Content-Type": "application/json",
           Authorization: localStorage.getItem("token")
@@ -76,7 +76,7 @@ export default {
       this.commentEditHandlerModalState = false;
       axios({
         method: "DELETE",
-        url: `api/recomments/${this.commentId}/`,
+        url: `/api/recomments/${this.commentId}/`,
         headers: {
           Authorization: localStorage.getItem("token")
         }
