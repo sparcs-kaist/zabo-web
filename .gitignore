@@ -3,11 +3,13 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+/dist/
 /test/unit/coverage/
 /test/e2e/reports/
 selenium-debug.log
 package-lock.json
 src/axios-auth.js
+
 # Editor directories and files
 .idea
 .vscode
