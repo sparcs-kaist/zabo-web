@@ -42,25 +42,27 @@ export default {
       title: "",
       location: "",
       loading: true,
-      transition: ""
+      transition: "",
+      zaboId: undefined
     };
   },
   created() {
     axios.get("api/zaboes/random/").then(response => {
       console.log(response.data);
-      const { posters, content, title, location } = response.data;
+      const { posters, content, title, location, id } = response.data;
       this.image = posters[0].image;
       this.background = posters[0].image;
       this.content = content;
       this.title = title;
       this.location = location;
+      this.zaboId = id;
       this.loading = false;
     });
   },
   methods: {
     closeMain: function(req) {
       if (req === "redirect") {
-        this.$router.push({ path: "/zabo/6" });
+        this.$router.push({ path: `/zabo/${this.zaboId}` });
       }
       this.$emit("closeintro");
     }
