@@ -5,7 +5,7 @@
       <v-progress-circular v-if="loading" indeterminate color="white" style="margin-top: 300px;"></v-progress-circular>
       <div v-if="!loading" class="row">
         <div class="column">
-          <span @click="closeMain('redirect')" class="participateLink">{{$t("참여하기")}}</span>
+          <button @click="closeMain('redirect')" class="participateLink">{{$t("자보 보러가기")}}</button>
           <span class="heading">{{title}}</span>
           <span id="subheading">{{location}}</span>
           <p class="description">
@@ -23,9 +23,9 @@
     </div>
     <div v-if="!loading" class="mobileRow">
       <img :src="image" class="mobile-image">
-      <div @click="closeMain('redirect')" class="participateLink-mobile">
+      <button @click="closeMain('redirect')" class="participateLink-mobile">
         {{$t("참여하기")}}
-      </div>
+      </button>
     </div>
   </div>
 </template>
@@ -47,6 +47,7 @@ export default {
   },
   created() {
     axios.get("api/zaboes/random/").then(response => {
+      console.log(response.data);
       const { posters, content, title, location } = response.data;
       this.image = posters[0].image;
       this.background = posters[0].image;
@@ -134,7 +135,7 @@ export default {
     right: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     @media screen and (max-width: 899px) {
       .column {

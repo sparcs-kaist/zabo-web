@@ -22,12 +22,6 @@
         <div class="posterWrapper" :class="'slide'+i">
           <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper" :style="`width: ${baseCarouselPosterHeight}px; height: ${basePosterWrapperHeight}px;`">
             <img class="poster" :style="`width: ${baseCarouselPosterHeight}px; height: ${basePosterWrapperHeight}px;`" :src="zabo.posters[0].image_thumbnail">
-            <!-- <div class="posterDescriptionWrapper" :style="`height: ${baseCarouselPosterHeight}px; width: ${basePosterWrapperHeight}px; transform: rotate(90deg) translateY(-${basePosterWrapperHeight/2}px);
-  transform-origin: ${basePosterWrapperHeight/2}px ${basePosterWrapperHeight/2}px;`">
-              <span class="posterDescription"><img class="profileImage" :src="zabo.author.profile_image">{{zabo.author.nickName}}</span>
-              <span class="posterDescription"><span>{{$t('제목')}}</span><span>{{zabo.title}}</span></span>
-              <span class="posterDescription"><span>{{$t('위치')}}</span><span>{{zabo.location}}</span></span>
-            </div> -->
           </div>
         </div>
       </slide>
