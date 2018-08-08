@@ -9,7 +9,7 @@
       <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
       <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
   </nav>
-  <div class="currentZaboesWrapper">
+  <div class="currentZaboesWrapper" :style="`padding: 0 ${windowWidth > 700 ? (basePosterWrapperHeight/2)-31: 0}px`">
     <nav class="horizontalNavButton">
       <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
     </nav>
@@ -442,7 +442,6 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 95px;
 }
 .posterWrapper {
   display: flex;
@@ -491,8 +490,8 @@ export default {
 .individualPosterWrapper {
   margin-bottom: 11px;
   position: relative;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), 0px -2px 4px rgba(0,0,0,0.3);
-  transition: all .2s ease-in-out;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), 0px -2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease-in-out;
 }
 .individualPosterWrapper:hover {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35), 0px -4px 8px rgba(0, 0, 0, 0.35);
@@ -546,8 +545,6 @@ export default {
 }
 .horizontalNavButton {
   z-index: 200;
-}
-@media (max-width: 899px) {
 }
 
 /* Carousel-css */
