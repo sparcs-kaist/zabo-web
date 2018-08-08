@@ -22,12 +22,12 @@
         <div class="posterWrapper" :class="'slide'+i">
           <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper" :style="`width: ${baseCarouselPosterHeight}px; height: ${basePosterWrapperHeight}px;`">
             <img class="poster" :style="`width: ${baseCarouselPosterHeight}px; height: ${basePosterWrapperHeight}px;`" :src="zabo.posters[0].image_thumbnail">
-            <div class="posterDescriptionWrapper" :style="`height: ${baseCarouselPosterHeight}px; width: ${basePosterWrapperHeight}px; transform: rotate(90deg) translateY(-${basePosterWrapperHeight/2+17}px);
+            <!-- <div class="posterDescriptionWrapper" :style="`height: ${baseCarouselPosterHeight}px; width: ${basePosterWrapperHeight}px; transform: rotate(90deg) translateY(-${basePosterWrapperHeight/2}px);
   transform-origin: ${basePosterWrapperHeight/2}px ${basePosterWrapperHeight/2}px;`">
               <span class="posterDescription"><img class="profileImage" :src="zabo.author.profile_image">{{zabo.author.nickName}}</span>
               <span class="posterDescription"><span>{{$t('제목')}}</span><span>{{zabo.title}}</span></span>
               <span class="posterDescription"><span>{{$t('위치')}}</span><span>{{zabo.location}}</span></span>
-            </div>
+            </div> -->
           </div>
         </div>
       </slide>
@@ -457,6 +457,8 @@ export default {
   background-color: rgba(0, 0, 0, 0.6);
   color: white;
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: 100;
   display: flex;
   flex-direction: column;
@@ -489,13 +491,19 @@ export default {
 .individualPosterWrapper {
   margin-bottom: 11px;
   position: relative;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), 0px -2px 4px rgba(0,0,0,0.3);
+  transition: all .2s ease-in-out;
+}
+.individualPosterWrapper:hover {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35), 0px -4px 8px rgba(0, 0, 0, 0.35);
 }
 .individualPosterWrapper:last-child {
   margin-bottom: 0;
 }
 .poster {
   position: absolute;
-  box-shadow: 0px 5px 11px rgba(0, 0, 0, 0.3);
+  top: 0;
+  left: 0;
   cursor: pointer;
 }
 
