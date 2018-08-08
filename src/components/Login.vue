@@ -141,30 +141,39 @@ export default {
           password: this.password
         })
         .then(response => {
-          localStorage.setItem("token", `ZABO ${response.data.token}`);
-          this.$store.dispatch("login", response.data.token);
+          console.log(response.status);
+          if (response.status == 200) {
+            localStorage.setItem("token", `ZABO ${response.data.token}`);
+            this.$store.dispatch("login", response.data.token);
+            return response.status;
+          } else if (response.status == 401) {
+            this.loginfailed = true;
+            this.$store.commit("GOT_RESPONSE");
+          }
+        })
+        .then(status => {
+          if (status == 200) {
+            axios("api/users/myInfo/", {
+              method: "GET",
+              headers: {
+                Authorization: localStorage.getItem("token")
+              }
+            })
+              .then(response => {
+                this.$store.commit("SET_CURRENT_USER", response.data);
+              })
+              .then(() => {
+                this.$store.commit("GOT_RESPONSE");
+              })
+              .then(() => {
+                this.$emit("logged-in");
+                this.$store.dispatch("getNotifications");
+              });
+          }
         })
         .catch(err => {
           this.loginfailed = true;
           this.$store.commit("GOT_RESPONSE");
-        })
-        .then(() => {
-          axios("api/users/myInfo/", {
-            method: "GET",
-            headers: {
-              Authorization: localStorage.getItem("token")
-            }
-          })
-            .then(response => {
-              this.$store.commit("SET_CURRENT_USER", response.data);
-            })
-            .then(() => {
-              this.$store.commit("GOT_RESPONSE");
-            })
-            .then(() => {
-              this.$emit("logged-in");
-              this.$store.dispatch("getNotifications");
-            });
         });
     },
     redirectToBack() {
