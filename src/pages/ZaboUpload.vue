@@ -454,7 +454,7 @@ export default {
   margin-right: 10px;
 }
 
-@media screen and (max-width: 899px) {
+@media screen and (max-width: 1200px) {
   .column {
     width: 100%;
     position: relative;
@@ -480,7 +480,7 @@ export default {
   }
 }
 
-@media screen and (min-width: 900px) and (max-width: 1599px) {
+@media screen and (min-width: 1200px) and (max-width: 1599px) {
   .column {
     flex: 2;
     position: relative;
