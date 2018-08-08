@@ -149,7 +149,7 @@
           <div class="buttonWrapper">
             <div @click="editPoster" :class="zaboUploadValidation ? 'finalButton': 'buttonDisabled' ">
             </div>
-            <div class="cancelButton">
+            <div @click="$router.go(-1)" class="cancelButton">
               {{$t('취소')}}
             </div>
           </div>
