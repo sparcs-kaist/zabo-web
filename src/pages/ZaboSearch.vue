@@ -30,10 +30,10 @@
           <img :src="user.profile_image" class="userImage">
           <span class="userName">{{user.nickName}}</span>
         </div>
-        <button v-show="!following[index]" class="Follow" @click="followUser(user.nickName, index)">
+        <button v-if="!following[`${index}follow`]" class="Follow" @click="followUser(user.nickName, index)">
           팔로우
         </button>
-        <button v-show="following[index]" class="Follow" @click="unfollowUser(user.nickName, index)">
+        <button v-if="following[`${index}follow`]" class="Follow" @click="unfollowUser(user.nickName, index)">
           팔로우 취소
         </button>
       </div>
@@ -64,7 +64,7 @@ export default {
       modalZaboId: -1,
       searchTerm: "",
       modalState: false,
-      following: [],
+      following: {},
       modalZaboData: {}
     };
   },
@@ -96,11 +96,14 @@ export default {
     searchZaboes() {
       this.zaboIsLoading = true;
       this.userIsLoading = true;
+      this.userList = [];
+      this.following = {};
       axios({
         methods: "get",
         url: `/api/zaboes/?search=${this.$route.params.search}`
       })
         .then(response => {
+          console.log(response);
           if (response.status == 200) {
             this.zaboList = response.data.data;
             this.zaboIsLoading = false;
@@ -123,9 +126,11 @@ export default {
         .then(response => {
           if (response.status == 200) {
             this.userList = response.data.data;
-            this.userList.map(user => {
-              this.following.push(user.is_following);
-            });
+            if (this.userList.length > 0) {
+              for (let i = 0; i < this.userList.length; i++) {
+                this.following[`${i}follow`] = this.userList[i].is_following;
+              }
+            }
             console.log(this.following);
             console.log(this.userList);
             this.userIsLoading = false;
@@ -164,7 +169,9 @@ export default {
           nickname: nickName
         }
       }).then(res => {
-        this.following[index] = true;
+        if (res.status == 201) {
+          this.following[`${index}follow`] = true;
+        }
         console.log(this.following);
         console.log(res);
       });
@@ -181,7 +188,9 @@ export default {
         }
       }).then(res => {
         console.log(res);
-        this.following[index] = false;
+        if (res.status == 201) {
+          this.following[`${index}follow`] = false;
+        }
       });
     }
   }
