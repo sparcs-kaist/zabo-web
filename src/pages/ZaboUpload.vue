@@ -170,9 +170,9 @@
   </v-app>
   <div class="postFinished" v-else>
     <span class="postFinishedTitle">자보를 성공적으로 업로드하셨습니다.</span>
-    <a href="http://sparcs.org/">
+    <a href="http://ssal.sparcs.org:16140/">
       <div class="routerLinks">
-        {{ $t('자보 신청 링크 만들기') }}
+        {{ $t('페이퍼 생성하러 가기') }}
       </div>
     </a>
     <router-link to="/">
@@ -285,7 +285,13 @@ export default {
         formData.append("title", this.name);
         formData.append("location", this.location);
         formData.append("content", this.introduction);
-        formData.append("deadline", this.deadline.split("T")[0]+' '+this.deadline.split("T")[1]+":00");
+        formData.append(
+          "deadline",
+          this.deadline.split("T")[0] +
+            " " +
+            this.deadline.split("T")[1] +
+            ":00"
+        );
         formData.append("apply", selapp);
         formData.append("payment", "F");
         formData.append("category", selcat);
@@ -627,7 +633,7 @@ export default {
   font-size: 16px;
 }
 .deadline {
-  color: rgba(0,0,0,0.87);
+  color: rgba(0, 0, 0, 0.87);
   font-size: 18px;
   font-weight: 700;
 }

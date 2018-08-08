@@ -1,5 +1,6 @@
 <template>
-  <v-app v-if="postState" class="appWrapper">
+  <div>
+  <v-app v-if="postState == 'EDITING'" class="appWrapper">
     <div class="zaboUpload">
       <div class="headingWrapper">
         <span class="heading">
@@ -152,17 +153,19 @@
             <div @click="$router.go(-1)" class="cancelButton">
               {{$t('취소')}}
             </div>
+            <div @click="deleteZabo" class="deleteButton">
+              {{$t('자보 삭제하기')}}
+            </div>
           </div>
         </div>
-
       </v-form>
     </div>
   </v-app>
-  <div class="postFinished" v-else>
+  <div class="postFinished" v-if="postState == 'EDITED'">
     <span class="postFinishedTitle">자보를 성공적으로 업데이트하셨습니다.</span>
-    <a href="http://sparcs.org/">
+    <a href="http://ssal.sparcs.org:16135/">
       <div class="routerLinks">
-        {{ $t('자보 신청 링크 만들기') }}
+        {{ $t('페이퍼 만들러 가기') }}
       </div>
     </a>
     <router-link to="/">
@@ -175,6 +178,25 @@
         {{ $t('마이페이지') }}
       </div>
     </router-link>
+  </div>
+  <div class="postFinished" v-if="postState == 'DELETED'">
+    <span class="postFinishedTitle">자보를 성공적으로 삭제하셨습니다.</span>
+    <router-link to="/upload">
+      <div class="routerLinks">
+        {{ $t('새로운 자보 만들기') }}
+      </div>
+    </router-link>
+    <router-link to="/">
+      <div class="routerLinks">
+        {{ $t('메인 화면으로 돌아가기') }}
+      </div>
+    </router-link>
+    <router-link to="/user/profile">
+      <div class="routerLinks">
+        {{ $t('마이페이지') }}
+      </div>
+    </router-link>
+  </div>
   </div>
 </template>
 
@@ -209,7 +231,7 @@ export default {
       zaboPosterBool: false,
       zaboUrl: "",
       zaboUrlExist: false,
-      postState: true,
+      postState: "EDITING",
       zabo_id: -1,
       deadline: ""
     };
@@ -217,7 +239,6 @@ export default {
   created() {
     this.zabo_id = this.$route.params.zabo_id;
     axios.get(`api/zaboes/${this.zabo_id}/`).then(res => {
-      console.log(res.data);
       const {
         apply,
         author,
@@ -230,7 +251,6 @@ export default {
         timeslots,
         title
       } = res.data;
-      console.log(posters);
       if (apply == "Z") {
         this.selectedMethod = "자보에서 신청";
       } else if (apply == "S") {
@@ -292,7 +312,7 @@ export default {
       this.location = location;
       this.introduction = content;
       this.zaboUrl = link_url;
-      this.deadline = deadline.split(' ')[0] + "T" + deadline.split(' ')[1];
+      this.deadline = deadline.split(" ")[0] + "T" + deadline.split(" ")[1];
       console.log(this.deadline);
     });
   },
@@ -358,7 +378,13 @@ export default {
         formData.append("title", this.name);
         formData.append("location", this.location);
         formData.append("content", this.introduction);
-        formData.append("deadline", this.deadline.split("T")[0]+' '+this.deadline.split("T")[1]+":00");
+        formData.append(
+          "deadline",
+          this.deadline.split("T")[0] +
+            " " +
+            this.deadline.split("T")[1] +
+            ":00"
+        );
         formData.append("apply", selapp);
         formData.append("payment", "F");
         formData.append("category", selcat);
@@ -373,7 +399,7 @@ export default {
 
         axios({
           method: "PUT",
-          url: `api/zaboes/${this.zabo_id}/`,
+          url: `/api/zaboes/${this.zabo_id}/`,
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: localStorage.getItem("token")
@@ -382,7 +408,7 @@ export default {
         })
           .then(res => {
             if (res.status === 200) {
-              this.postState = false;
+              this.postState = "EDITED";
             }
           })
           .catch(err => {
@@ -391,6 +417,20 @@ export default {
       } else {
         alert("You should fill out every form!");
       }
+    },
+    deleteZabo() {
+      console.log(this.zabo_id);
+      axios({
+        method: "DELETE",
+        url: `/api/zaboes/${this.zabo_id}/`,
+        headers: {
+          Authorization: localStorage.getItem("token")
+        }
+      }).then(res => {
+        if (res.status == 204) {
+          this.postState = "DELETED";
+        }
+      });
     },
     zaboScheduleAdd() {
       this.scheduleAdding = !this.scheduleAdding;
@@ -701,7 +741,7 @@ export default {
   font-size: 16px;
 }
 .deadline {
-  color: rgba(0,0,0,0.87);
+  color: rgba(0, 0, 0, 0.87);
   font-size: 18px;
   font-weight: 700;
 }
@@ -1001,6 +1041,25 @@ option {
   color: #777777;
   border: 1px solid #777777;
   cursor: pointer;
+}
+.deleteButton {
+  width: 100%;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  font-weight: 700;
+  background-color: white;
+  color: #777777;
+  border: 1px solid #777777;
+  cursor: pointer;
+  margin-top: 0.5em;
+  transition: all 0.3s ease;
+}
+.deleteButton:hover {
+  color: rgba(255, 0, 0, 0.9);
+  border-color: rgba(255, 0, 0, 0.9);
 }
 .postFinished {
   position: absolute;
