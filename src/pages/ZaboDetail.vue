@@ -37,8 +37,18 @@
         </div>
       </div>
       <div class="column">
-        <img :src="this.image" class="zaboImage" />
-        <v-icon v-if="myZabo" @click="editZabo" class="editIcon">edit</v-icon>
+        <div v-if="posters != []" class="zaboImageWrapper">
+          <img :src="currentPoster" class="zaboImage"/>
+          <div class="arrowIconWrapper">
+            <div class="leftIconWrapper">
+              <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+            </div>
+            <div class="rightIconWrapper">
+              <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+            </div>
+          </div>
+        </div>
+        <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
     </div>
     <div class="coverImage"></div>
@@ -54,8 +64,6 @@ import ReviewScreen from "@/components/ReviewScreen";
 export default {
   data() {
     return {
-      image: "https://avatars2.githubusercontent.com/u/2281088?s=88&v=4",
-      background: "",
       content: "Content",
       title: "Title",
       location: "Location",
@@ -72,7 +80,9 @@ export default {
       payment: "",
       link_url: "",
       authorId: null,
-      deadline: ""
+      deadline: "",
+      posters: [],
+      currentPosterNumber: 0,
     };
   },
   components: {
@@ -104,6 +114,9 @@ export default {
       } else {
         return false;
       }
+    },
+    currentPoster () {
+      return this.posters[`${this.currentPosterNumber}`].image;
     }
   },
   mounted() {
@@ -132,8 +145,7 @@ export default {
           author,
           deadline
         } = response.data;
-        this.image = posters["0"].image;
-        this.background = posters["0"].image;
+        this.posters = posters;
         this.content = content;
         this.title = title;
         this.location = location;
@@ -154,6 +166,13 @@ export default {
       });
   },
   methods: {
+    changePosterNumber(direction)  {
+      if (direction == "left" && this.currentPosterNumber != 0) {
+        this.currentPosterNumber -= 1;
+      } else if (direction == "right" && this.currentPosterNumber != this.posters.length-1) {
+        this.currentPosterNumber += 1;
+      }
+    },
     onSubmitComment() {
       axios({
         method: "post",
@@ -342,8 +361,31 @@ export default {
 .zaboImage {
   width: 100%;
   height: auto;
+}
+.zaboImageWrapper {
+  width: 100%;
   max-height: 500px;
   max-width: 600px;
+}
+.arrowIconWrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: 30px;
+}
+.leftIconWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: left;
+}
+.righttIconWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: right;
 }
 .buttonTap {
   cursor: pointer;
@@ -370,6 +412,7 @@ export default {
   padding-bottom: 40px;
 }
 .column:last-child {
+  position: relative;
   justify-content: center;
   align-items: center;
   width: 40%;

@@ -37,7 +37,17 @@
         </div>
       </div>
       <div class="column">
-        <img :src="this.image" class="zaboImage"/>
+        <div v-if="posters != []" class="zaboImageWrapper">
+          <img :src="currentPoster" class="zaboImage"/>
+          <div class="arrowIconWrapper">
+            <div class="leftIconWrapper">
+              <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+            </div>
+            <div class="rightIconWrapper">
+              <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+            </div>
+          </div>
+        </div>
         <v-icon @click="closeModal" class="closeIcon">close</v-icon>
         <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
@@ -55,7 +65,6 @@ import ReviewScreen from "@/components/ReviewScreen";
 export default {
   data() {
     return {
-      image: "",
       content: "Content",
       title: "Title",
       location: "Location",
@@ -72,7 +81,9 @@ export default {
       payment: "",
       authorId: null,
       deadline: "",
-      link_url: ""
+      link_url: "",
+      posters: [],
+      currentPosterNumber: 0
     };
   },
   components: {
@@ -108,9 +119,19 @@ export default {
       } else {
         return false;
       }
+    },
+    currentPoster () {
+      return this.posters[`${this.currentPosterNumber}`].image;
     }
   },
   methods: {
+    changePosterNumber(direction)  {
+      if (direction == "left" && this.currentPosterNumber != 0) {
+        this.currentPosterNumber -= 1;
+      } else if (direction == "right" && this.currentPosterNumber != this.posters.length-1) {
+        this.currentPosterNumber += 1;
+      }
+    },
     onSubmitComment() {
       axios({
         method: "post",
@@ -212,7 +233,7 @@ export default {
       author,
       deadline
     } = this.modalZaboData;
-    this.image = posters["0"].image;
+    this.posters = posters;
     this.title = title;
     this.location = location;
     this.likeCount = like_count;
@@ -341,9 +362,33 @@ export default {
 .zaboImage {
   width: 100%;
   height: auto;
+}
+.zaboImageWrapper {
+  width: 100%;
   max-height: 500px;
   max-width: 600px;
 }
+.arrowIconWrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  padding: 30px;
+}
+.leftIconWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: left;
+}
+.righttIconWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: right;
+}
+
 .buttonWrapper {
   width: 100%;
   display: flex;
@@ -378,6 +423,7 @@ export default {
   align-items: center;
   width: 40%;
   padding: 20px 20px;
+  position: relative;
 }
 .navbar {
   display: flex;
