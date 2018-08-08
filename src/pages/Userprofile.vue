@@ -370,6 +370,7 @@ export default {
 .zaboWrapper {
   display: flex;
   min-width: 201px;
+  max-width: 201px;
   height: 100%;
   flex-direction: column;
   align-items: center;
@@ -377,8 +378,10 @@ export default {
 }
 
 .zaboTitle {
+  width: 100%;
   font-size: 1.25em;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 .zaboImage {
