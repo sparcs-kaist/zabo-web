@@ -72,7 +72,8 @@ export default {
   width: 100%;
   /* background-colo?: rgba(0, 0, 0, 0.5); */
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../assets/alexander-popov-522100-unsplash.jpg");
+    url("../assets/alexander-popov-522100-unsplash.jpg") no-repeat center center
+      fixed;
   background-size: cover;
   left: 0;
   bottom: 0;
