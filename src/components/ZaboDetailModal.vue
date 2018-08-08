@@ -266,7 +266,7 @@ export default {
   border-radius: 3px;
 }
 .coverImage {
-  background: linear-gradient(rgba(0, 0, 0, 0.7)),
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("../assets/alexander-popov-522100-unsplash.jpg") no-repeat center center
       fixed;
   background-size: cover;

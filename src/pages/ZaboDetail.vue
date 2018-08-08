@@ -260,7 +260,7 @@ export default {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
 .coverImage {
-  background: linear-gradient(rgba(0, 0, 0, 0.7)),
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
     url("../assets/alexander-popov-522100-unsplash.jpg") no-repeat center center
       fixed;
   background-size: cover;
