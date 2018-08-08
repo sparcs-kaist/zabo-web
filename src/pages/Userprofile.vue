@@ -147,6 +147,7 @@ export default {
     },
     closeModal() {
       this.modalState = false;
+      window.history.pushState(null, null, [`/`]);
     },
     followUser(nickName, index) {
       axios({
