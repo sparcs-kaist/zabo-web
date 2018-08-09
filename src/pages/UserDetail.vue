@@ -20,7 +20,7 @@
           팔로우 하는 유저
         </v-tab>
       </v-tabs>
-      <v-tabs-items v-model="tab" style="height: 500px;">
+      <v-tabs-items v-if="!loading" v-model="tab" style="height: 500px;">
         <v-tab-item :key="1">
           <profile :valid="valid" :first="first_name" :last="last_name" :image="profile_image"></profile>
         </v-tab-item>
@@ -46,10 +46,10 @@ export default {
   name: "userDetail",
   created() {
     axios
-      .get(`api/users/?search=${this.$route.params.nickName}`)
+      .get(`/api/users/?search=${this.$route.params.nickName}`)
       .then(res => res.data.data[0])
       .then(user => {
-        axios.get(`api/users/${user.id}/`).then(res => {
+        axios.get(`/api/users/${user.id}/`).then(res => {
           const {
             first_name,
             last_name,
@@ -64,6 +64,7 @@ export default {
           this.gender = gender;
           this.joined_date = joined_date;
           this.following = following;
+          this.loading = false;
         });
       });
   },
@@ -81,7 +82,8 @@ export default {
       joined_date: "",
       following: [],
       profile_image: null,
-      profilePreview: null
+      profilePreview: null,
+      loading: true
     };
   },
   methods: {

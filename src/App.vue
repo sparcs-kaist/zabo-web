@@ -39,8 +39,8 @@ export default {
     };
   },
   created() {
-    if (localStorage.getItem('token')) {
-      this.$store.dispatch("login", localStorage.getItem('token').slice(5,));
+    if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
+      this.$store.dispatch("login", localStorage.getItem("token").slice(5));
       axios
         .get("api/users/myInfo", {
           headers: {

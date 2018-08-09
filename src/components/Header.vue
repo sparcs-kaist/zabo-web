@@ -22,7 +22,7 @@
         </div>
         <template v-if="loggedInState">
           <div @click="modalStateChange" class="right">
-            <img src="assets/logo.png" v-if="!profileLoading" class="profile-image" >
+            <img src="assets/logo.png" v-if="imagesrc == undefined" class="profile-image" >
             <img v-else :src="imagesrc" class="profile-image">
           </div>
           <div v-show="profileModalState" class="profileModalWrapper" >
@@ -161,6 +161,12 @@ export default {
     profileLoading() {
       return this.profileImageLoading;
     }
+  },
+  created() {
+    console.log(this.imagesrc == undefined);
+    setTimeout(() => {
+      console.log(this.imagesrc == undefined);
+    }, 20000);
   }
 };
 </script>

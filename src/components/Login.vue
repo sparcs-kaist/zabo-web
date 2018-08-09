@@ -91,10 +91,10 @@
                 로그인 하러가기
               </div>
               <div class="registerFormWrapper">
-                <span class="registerDoneSpan">회원가입이 완료되었습니다. blablabla blablabla blablabla blablablabla</span>
-                <span class="registerDoneSpan">회원가입이 완료되었습니다. blablabla blablabla blablabla blablablabla</span>
-                <span class="registerDoneSpan">회원가입이 완료되었습니다. blablabla blablabla blablabla blablablabla</span>
-                <span class="registerDoneSpan">회원가입이 완료되었습니다. blablabla blablabla blablabla blablablabla</span>
+                <span class="registerDoneSpan">회원가입이 완료되었습니다.</span>
+                <span class="registerDoneSpan">자보 단체계정을 이용하기 위해선 인증이 필요합니다. 현재</span>
+                <span class="registerDoneSpan">회원님의 계정이 승인 심사중에 있으니 연락을 받으신 후</span>
+                <span class="registerDoneSpan">이용해주시면 감사하겠습니다.</span>
               </div>
             </div>
           </transition>
@@ -272,7 +272,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 80%;
   height: 400px;
   margin-top: 30px;
