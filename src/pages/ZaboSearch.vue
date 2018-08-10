@@ -160,47 +160,65 @@ export default {
       this.$router.push({ name: "UserDetail", params: { nickName: nickName } });
     },
     followUser(nickName, index) {
-      axios({
-        url: "/api/users/followOther/",
-        method: "post",
-        headers: {
-          Authorization: localStorage.getItem("token")
-        },
-        data: {
-          nickname: nickName
+      if (localStorage.getItem("token")) {
+        if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
+          axios({
+            url: "/api/users/followOther/",
+            method: "post",
+            headers: {
+              Authorization: localStorage.getItem("token")
+            },
+            data: {
+              nickname: nickName
+            }
+          })
+            .then(res => {
+              if (res.status == 201) {
+                this.following[index] = true;
+                this.reRender = true;
+                this.$nextTick(() => {
+                  this.reRender = false;
+                });
+              }
+              console.log(this.following);
+              console.log(res);
+            })
+            .catch(err => {
+              console.log("this is error start", err, "this is error end!");
+            });
         }
-      }).then(res => {
-        if (res.status == 201) {
-          this.following[index] = true;
-          this.reRender = true;
-          this.$nextTick(() => {
-            this.reRender = false;
-          });
-        }
-        console.log(this.following);
-        console.log(res);
-      });
+      } else {
+        alert("로그인을 해주세요!");
+      }
     },
     unfollowUser(nickName, index) {
-      axios({
-        url: "/api/users/unfollowOther/",
-        method: "post",
-        headers: {
-          Authorization: localStorage.getItem("token")
-        },
-        data: {
-          nickname: nickName
+      if (localStorage.getItem("token")) {
+        if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
+          axios({
+            url: "/api/users/unfollowOther/",
+            method: "post",
+            headers: {
+              Authorization: localStorage.getItem("token")
+            },
+            data: {
+              nickname: nickName
+            }
+          })
+            .then(res => {
+              console.log(res);
+              if (res.status == 201) {
+                this.following[index] = false;
+                this.reRender = true;
+                this.$nextTick(() => {
+                  this.reRender = false;
+                });
+              }
+            })
+            .catch(err => {
+              console.log("this is error start", err, "this is error end!");
+            });
         }
-      }).then(res => {
-        console.log(res);
-        if (res.status == 201) {
-          this.following[index] = false;
-          this.reRender = true;
-          this.$nextTick(() => {
-            this.reRender = false;
-          });
-        }
-      });
+      }
     }
   }
 };

@@ -49,7 +49,7 @@
           </v-tab-item>
           <v-tab-item :key="3">
             <div class="followWrapper">
-              <div v-if="followingState != []" class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
+              <div v-if="followingState != [] && reRender == false" class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
                 <div @click="userDetail(user.nickName)" class="userInfoWrapper">
                   <img :src="user.profile_image" class="userImage">
                   <span class="userName">{{user.nickName}}</span>
@@ -102,7 +102,8 @@ export default {
       zaboLoading: true,
       createdZaboes: [],
       modalZaboData: null,
-      followingState: []
+      followingState: [],
+      reRender: false
     };
   },
   components: {
@@ -160,8 +161,15 @@ export default {
           nickname: nickName
         }
       }).then(res => {
-        this.followingState[index] = true;
-        console.log(res);
+        if (res.status == 201) {
+          this.followingState[index] = true;
+          this.reRender = true;
+          this.$nextTick(() => {
+            this.reRender = false;
+          });
+        } else {
+          alert("로그인을 해주세요.");
+        }
       });
     },
     unfollowUser(nickName, index) {
@@ -177,7 +185,13 @@ export default {
         }
       }).then(res => {
         console.log(res);
-        this.followingState[index] = false;
+        if (res.status == 201) {
+          this.followingState[index] = false;
+          this.reRender = true;
+          this.$nextTick(() => {
+            this.reRender = false;
+          });
+        }
       });
     },
     userDetail(nickName) {
