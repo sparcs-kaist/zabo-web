@@ -1,58 +1,61 @@
 <template>
-  <div class="hide">
-    <div class="main">
-      <div class="column">
-        <div class="headerStyle">
-          <p class="heading">{{title}}</p>
-          <p class="subheading">{{$t('지원 기간  || ')}}{{deadline}}{{$t(' 까지')}}</p>
-          <div class="buttonWrapper">
-            <a v-show="link_url != '' && participateValidation" :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
-            <a v-show="link_url == '' && participateValidation" class="buttonTap unvalidButtonTap">{{$t("링크가 없습니다.")}}</a>
-            <a v-show="!participateValidation" class="buttonTap unvalidButtonTap">{{$t("지원 기간이 만료되었습니다.")}}</a>
-            <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
-            <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
-            <span class="likeCount">{{this.likeCount}}</span>
+  <div>
+    <div @click="closeModal" class="closeModal"></div>
+    <div class="hide">
+      <div class="main">
+        <div class="column">
+          <div class="headerStyle">
+            <p class="heading">{{title}}</p>
+            <p class="subheading">{{$t('지원 기간  || ')}}{{deadline}}{{$t(' 까지')}}</p>
+            <div class="buttonWrapper">
+              <a v-show="link_url != '' && participateValidation" :href="link_url" class="buttonTap">{{$t("참여하기")}}</a>
+              <a v-show="link_url == '' && participateValidation" class="buttonTap unvalidButtonTap">{{$t("링크가 없습니다.")}}</a>
+              <a v-show="!participateValidation" class="buttonTap unvalidButtonTap">{{$t("지원 기간이 만료되었습니다.")}}</a>
+              <v-icon color="pink" v-show="isLiked" @click="dislikeZabo" class="favoriteIcon">favorite</v-icon>
+              <v-icon color="white" v-show="!isLiked" @click="likeZabo" class="favoriteIcon">favorite_border</v-icon>
+              <span class="likeCount">{{this.likeCount}}</span>
+            </div>
+            <div class="navbar">
+              <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
+              <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("일정")}}</p>
+              <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
+            </div>
           </div>
-          <div class="navbar">
-            <p @click="selectTab(0)" :class="toDisplay === 0 ? 'selected tab' : 'tab' ">{{$t("정보")}}</p>
-            <p @click="selectTab(1)" :class="toDisplay === 1 ? 'selected tab' : 'tab' ">{{$t("일정")}}</p>
-            <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
-          </div>
-        </div>
 
-        <div class="bodyWrapper" v-show="toDisplay === 0">
-          <info-screen :info="this.content" :payment="payment" :category="category" />
-        </div>
-        <div class="bodyWrapper" v-show="toDisplay === 1">
-          <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
-            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('시작 ')}}</span><span class="timeSlotContent">{{timeslot.start_time}}</span></div>
-            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('종료 ')}}</span><span class="timeSlotContent">{{timeslot.end_time}}</span></div>
-            <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('내용 ')}}</span><span class="timeSlotContent">{{timeslot.content}}</span></div>
+          <div class="bodyWrapper" v-show="toDisplay === 0">
+            <info-screen :info="this.content" :payment="payment" :category="category" />
           </div>
-        </div>
-        <div class="bodyWrapper" v-show="toDisplay === 2">
-          <input-field v-show="toDisplay === 2" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
-          </input-field>
-          <review-screen :comments="comments" />
-        </div>
-      </div>
-      <div class="column">
-        <div v-if="posters != []" class="zaboImageWrapper">
-          <img :src="currentPoster" class="zaboImage"/>
-          <div class="arrowIconWrapper">
-            <div class="leftIconWrapper">
-              <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
-            </div>
-            <div class="rightIconWrapper">
-              <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+          <div class="bodyWrapper" v-show="toDisplay === 1">
+            <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
+              <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('시작 ')}}</span><span class="timeSlotContent">{{timeslot.start_time}}</span></div>
+              <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('종료 ')}}</span><span class="timeSlotContent">{{timeslot.end_time}}</span></div>
+              <div class="singleTimeSlotWrapper"><span class="timeSlotTitle">{{$t('내용 ')}}</span><span class="timeSlotContent">{{timeslot.content}}</span></div>
             </div>
           </div>
+          <div class="bodyWrapper" v-show="toDisplay === 2">
+            <input-field v-show="toDisplay === 2" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+            </input-field>
+            <review-screen :comments="comments" />
+          </div>
         </div>
-        <v-icon @click="closeModal" class="closeIcon">close</v-icon>
-        <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
+        <div class="column">
+          <div v-if="posters != []" class="zaboImageWrapper">
+            <img :src="currentPoster" class="zaboImage"/>
+            <div class="arrowIconWrapper">
+              <div class="leftIconWrapper">
+                <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+              </div>
+              <div class="rightIconWrapper">
+                <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+              </div>
+            </div>
+          </div>
+          <v-icon @click="closeModal" class="closeIcon">close</v-icon>
+          <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
+        </div>
       </div>
+      <div class="coverImage"></div>
     </div>
-    <div class="coverImage"></div>
   </div>
 </template>
 
@@ -286,8 +289,17 @@ export default {
   left: 0%;
   right: 0%;
   overflow: hidden;
-  z-index: 301;
+  z-index: 500;
   border-radius: 3px;
+}
+.closeModal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 498;
 }
 .coverImage {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
@@ -301,7 +313,7 @@ export default {
   left: -5px;
   right: -5px;
   overflow: hidden;
-  z-index: 300;
+  z-index: 499;
   filter: blur(5px);
 }
 .hide {
@@ -312,6 +324,7 @@ export default {
   right: 12.5%;
   overflow: hidden;
   border-radius: 3px;
+  z-index: 499;
 }
 
 .bodyWrapper {
