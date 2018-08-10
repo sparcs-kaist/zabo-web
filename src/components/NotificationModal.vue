@@ -3,22 +3,22 @@
     <div class="notificationWrapper" v-if="notificationsModal">
       <div class="singleNotiWrapper" v-if="notifications.length > 0" v-for="(noti, index) in notifications" :key="index">
         <div class="notiInfoWrapper" v-if="noti.type == 'SomeoneFollowing'">
-          <img :src="'https://zaboapi.sparcs.org'+noti.from_profile" class="notiProfileImage">
+          <img :src="'http://ssal.sparcs.org:16135'+noti.from_profile" class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 팔로우를 시작했습니다.</span>
         </div>
-        <div class="notiInfoWrapper" v-if="noti.type == 'CommentReaction'">
-          <img :src="'https://zaboapi.sparcs.org'+noti.from_profile" class="notiProfileImage">
+        <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'CommentReaction'">
+          <img :src="'http://ssal.sparcs.org:16135'+noti.from_profile" class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 답글을 달았습니다. {{noti.content}}</span>
         </div>
         <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'ZaboReaction'">
-          <img :src="'https://zaboapi.sparcs.org'+noti.from_profile" class="notiProfileImage">
+          <img :src="'http://ssal.sparcs.org:16135'+noti.from_profile" class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 자보에 댓글을 남겼습니다. {{noti.content}}</span>
         </div>
         <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'ZaboFollowing'">
-          <img :src="'https://zaboapi.sparcs.org'+noti.from_profile" class="notiProfileImage">
+          <img :src="'http://ssal.sparcs.org:16135'+noti.from_profile" class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 새로운 자보를 올렸습니다. {{noti.content}}</span>
         </div>
@@ -36,7 +36,7 @@ export default {
   props: ["notifications", "notificationsModal"],
   methods: {
     goToZabo(id) {
-      this.$router.push({name: "ZaboDetail", params: {zabo_id: id}})
+      this.$router.push({ name: "ZaboDetail", params: { zabo_id: id } });
     }
   }
 };
