@@ -17,7 +17,7 @@
           <Search @submitValue="onSearch" :searchValue="searchValue" />
         </div>
         <div style="position: relative;" v-if="loggedInState">
-          <v-icon @click="notificationsModal = !notificationsModal" class="right">notifications</v-icon>
+          <v-icon @click="notificationModalStateChange" class="right">notifications</v-icon>
           <notification-modal :notifications="notifications" :notificationsModal="notificationsModal"></notification-modal>
         </div>
         <template v-if="loggedInState">
@@ -110,8 +110,12 @@ export default {
   },
   methods: {
     modalStateChange() {
-      console.log("why?!");
       this.profileModalState = !this.profileModalState;
+      this.notificationsModal = false;
+    },
+    notificationModalStateChange() {
+      this.notificationsModal = !this.notificationsModal;
+      this.profileModalState = false;
     },
     login: function() {
       this.$emit("logged-in");
