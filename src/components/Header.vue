@@ -182,7 +182,7 @@ export default {
     min-height: 78px;
     position: fixed;
     background-color: rgba(255, 255, 255);
-    z-index: 500;
+    z-index: 400;
     display: flex;
     flex-direction: column;
   }
@@ -194,7 +194,7 @@ export default {
     min-height: 64px;
     position: fixed;
     background-color: rgba(255, 255, 255);
-    z-index: 500;
+    z-index: 400;
     display: flex;
     flex-direction: column;
   }
@@ -326,7 +326,7 @@ export default {
   border-left: 11px solid transparent;
   border-right: 11px solid transparent;
   border-bottom: 10px solid white;
-  z-index: 1001;
+  z-index: 450;
 }
 .profileTriangleBorder {
   top: 67px;
@@ -356,7 +356,7 @@ export default {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
-  z-index: 900;
+  z-index: 450;
   padding: 0px 5px;
 }
 .singleTapWrapper {
