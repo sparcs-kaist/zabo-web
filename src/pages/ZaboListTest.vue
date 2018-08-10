@@ -117,8 +117,24 @@ export default {
   },
   beforeMount() {
     window.addEventListener("resize", this.getWindowWidth);
+    window.addEventListener("keyup", this.keyup);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.getWindowWidth);
+    window.removeEventListener("keyup", this.keyup);
   },
   methods: {
+    keyup(event) {
+      if (event.which == 37) {
+        this.categoryleft();
+      } else if (event.which == 38) {
+        this.mouseUp();
+      } else if (event.which == 39) {
+        this.categoryright();
+      } else if (event.which == 40) {
+        this.mouseDown();
+      }
+    },
     getCurrentZaboNumber: function(i, j) {
       return this.columnNumber * i + j;
     },
@@ -369,10 +385,16 @@ export default {
         window.dispatchEvent(new Event("resize"));
         setTimeout(function() {
           window.dispatchEvent(new Event("resize"));
-          setTimeout(() => {
-            window.dispatchEvent(new Event("resize"));
-          }, 1000);
         }, 1000);
+      }
+    },
+    currentPath(val) {
+      if (val == "/") {
+        console.log(this.currentPath);
+        window.addEventListener("keyup", this.keyup);
+      } else {
+        console.log(val);
+        window.removeEventListener("keyup", this.keyup);
       }
     }
   }
