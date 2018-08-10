@@ -305,9 +305,9 @@ export default {
   filter: blur(5px);
 }
 .hide {
-  position: absolute;
-  top: 0;
-  bottom: 0;
+  position: fixed;
+  top: 78px;
+  bottom: 68px;
   left: 12.5%;
   right: 12.5%;
   overflow: hidden;
