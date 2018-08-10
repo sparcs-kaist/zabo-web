@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <v-layout style="width: 100%; max-width: 900px; background-color: cyan; text-align: left" row wrap v-if = "edit === '저장'">
+    <v-layout style="width: 100%; max-width: 900px; background-color: white; text-align: left" row wrap v-if = "edit === '저장'">
       <v-flex xs6>
         <v-form v-model = "valid">
           <span class="info-label">닉네임</span>
