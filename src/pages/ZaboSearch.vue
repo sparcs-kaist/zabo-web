@@ -25,15 +25,15 @@
         class="ListWrapper"
       ></v-progress-circular>
     <div class="ListWrapper" v-else>
-      <div class="userWrapper" :key="index" v-for="(user, index) in userList">
+      <div v-if="reRender == false" class="userWrapper" :key="index" v-for="(user, index) in userList">
         <div @click="userDetail(user.nickName)" class="userInfoWrapper">
           <img :src="user.profile_image" class="userImage">
           <span class="userName">{{user.nickName}}</span>
         </div>
-        <button v-if="!following[`${index}follow`]" class="Follow" @click="followUser(user.nickName, index)">
+        <button v-if="!following[index]" class="Follow" @click="followUser(user.nickName, index)">
           팔로우
         </button>
-        <button v-if="following[`${index}follow`]" class="Follow" @click="unfollowUser(user.nickName, index)">
+        <button v-if="following[index]" class="Follow" @click="unfollowUser(user.nickName, index)">
           팔로우 취소
         </button>
       </div>
@@ -65,7 +65,8 @@ export default {
       searchTerm: "",
       modalState: false,
       following: {},
-      modalZaboData: {}
+      modalZaboData: {},
+      reRender: false
     };
   },
   components: {
@@ -128,7 +129,7 @@ export default {
             this.userList = response.data.data;
             if (this.userList.length > 0) {
               for (let i = 0; i < this.userList.length; i++) {
-                this.following[`${i}follow`] = this.userList[i].is_following;
+                this.following[i] = this.userList[i].is_following;
               }
             }
             console.log(this.following);
@@ -170,7 +171,11 @@ export default {
         }
       }).then(res => {
         if (res.status == 201) {
-          this.following[`${index}follow`] = true;
+          this.following[index] = true;
+          this.reRender = true;
+          this.$nextTick(() => {
+            this.reRender = false;
+          });
         }
         console.log(this.following);
         console.log(res);
@@ -189,7 +194,11 @@ export default {
       }).then(res => {
         console.log(res);
         if (res.status == 201) {
-          this.following[`${index}follow`] = false;
+          this.following[index] = false;
+          this.reRender = true;
+          this.$nextTick(() => {
+            this.reRender = false;
+          });
         }
       });
     }
