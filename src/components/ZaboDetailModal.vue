@@ -120,15 +120,18 @@ export default {
         return false;
       }
     },
-    currentPoster () {
+    currentPoster() {
       return this.posters[`${this.currentPosterNumber}`].image;
     }
   },
   methods: {
-    changePosterNumber(direction)  {
+    changePosterNumber(direction) {
       if (direction == "left" && this.currentPosterNumber != 0) {
         this.currentPosterNumber -= 1;
-      } else if (direction == "right" && this.currentPosterNumber != this.posters.length-1) {
+      } else if (
+        direction == "right" &&
+        this.currentPosterNumber != this.posters.length - 1
+      ) {
         this.currentPosterNumber += 1;
       }
     },
@@ -288,7 +291,7 @@ export default {
 }
 .coverImage {
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../assets/alexander-popov-522100-unsplash.jpg") no-repeat center center
+    url("../assets/blur-wallpapers-25172-6128892.jpg") no-repeat center center
       fixed;
   background-size: cover;
   /* display: flex; */
