@@ -11,6 +11,7 @@ import LoginCallback from "@/pages/LoginCallback.vue";
 import CodeOfConduct from "@/pages/CodeOfConduct.vue";
 import Credit from "@/pages/Credit.vue";
 import License from "@/pages/License.vue";
+import NotFound from "@/pages/NotFound.vue";
 
 Vue.use(Router);
 
@@ -75,6 +76,11 @@ export default new Router({
       path: "/",
       name: "ZaboListDetailAdded",
       component: ZaboListTest
+    },
+    {
+      path: "*",
+      name: "NotFound",
+      component: NotFound
     }
   ]
 });
