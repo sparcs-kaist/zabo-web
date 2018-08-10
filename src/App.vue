@@ -223,7 +223,6 @@ a {
   font-family: "NanumSquare", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
 }
 
 .component-slide-fade-leave-active {

@@ -95,7 +95,7 @@
                     </div>
                   </div>
                   <input type="text" placeholder="제목을 입력해주세요." class="scheduleContent" v-model="schedule.content" />
-                  <v-icon class="cancelIcon">cancel</v-icon>
+                  <v-icon @click="zaboScheduleDelete(index)" class="cancelIcon">cancel</v-icon>
                 </div>
               </div>
               <span v-else v-show="!scheduleAdding" class="smallSpan">{{$t('일정이 없습니다. 아래 버튼으로 추가하세요.')}}</span>
@@ -331,6 +331,16 @@ export default {
         start_time: "",
         end_time: ""
       });
+    },
+    zaboScheduleDelete(index) {
+      let newScheduleDates = [];
+      for (let i=0; i < this.scheduleDates.length; i++) {
+        if (i != index) {
+          newScheduleDates.push(this.scheduleDates[i])
+        }
+      }
+      console.log(newScheduleDates);
+      this.scheduleDates = newScheduleDates;
     }
   },
   computed: {
@@ -433,10 +443,10 @@ export default {
 <style scoped>
 .appWrapper {
   width: 100%;
-  height: 100%;
   padding-top: 78px;
   padding-bottom: 68px;
   background-color: white;
+  overflow-x: scroll;
 }
 
 .zaboUpload {
@@ -535,6 +545,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    flex-wrap: wrap;
   }
 }
 
