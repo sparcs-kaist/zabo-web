@@ -300,23 +300,23 @@ export default {
           return 1;
         }
       } else {
-        this.basePosterWrapperHeight = 220;
-        this.baseCarouselPosterHeight = 340;
+        this.basePosterWrapperHeight = 180;
+        this.baseCarouselPosterHeight = 270;
         this.displayNumber = 3;
         if (this.windowWidth > 2000) {
-          this.posterWrapperHeight = 1144;
+          this.posterWrapperHeight = 944;
           return 5;
         } else if (this.windowWidth > 1700) {
-          this.posterWrapperHeight = 911;
+          this.posterWrapperHeight = 753;
           return 4;
         } else if (this.windowWidth > 1400) {
-          this.posterWrapperHeight = 682;
+          this.posterWrapperHeight = 562;
           return 3;
         } else if (this.windowWidth > 1000) {
-          this.posterWrapperHeight = 451;
+          this.posterWrapperHeight = 371;
           return 2;
         } else {
-          this.posterWrapperHeight = 220;
+          this.posterWrapperHeight = 180;
           return 1;
         }
       }
@@ -375,7 +375,7 @@ export default {
       } else if (this.windowHeight > 600) {
         return 400;
       } else {
-        return 340;
+        return 270;
       }
     }
   },
@@ -537,6 +537,7 @@ export default {
     top: 120px;
     padding: 30px 0;
     @include breakPoint('phone') {
+      top: 106px;
       padding: 10px 0;
     }
     display: flex;
