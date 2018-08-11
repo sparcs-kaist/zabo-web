@@ -18,7 +18,7 @@
 <script>
 export default {};
 </script>
-<style scoped lang=''>
+<style scoped lang='scss'>
 .footerWrapper {
   display: flex;
   position: fixed;
@@ -46,6 +46,11 @@ export default {};
   font-weight: 700;
   color: rgba(0, 0, 0, 0.6);
   padding-right: 27px;
+}
+.tapWrapper {
+  @include breakPoint('phone') {
+    display: none;
+  }
 }
 .tap {
   text-decoration: none;
