@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="totalWrapper">
     <v-app style="background-color: white">
       <div id="whole">
         <div style="width:100%; height:90px;"></div>
@@ -24,14 +24,14 @@
             <v-text-field label="이름" v-model="new_last_name" :rules="namerules" required class="last"></v-text-field>
           </v-form>
         </div>
-        <v-tabs fixed-tabs v-model="tab" style="margin-top: 20px; margin-bottom: 20px;">
-          <v-tab :key="1" style="font-size: 17pt; font-weight: 800;">
+        <v-tabs fixed-tabs v-model="tab" class="tabsTitleWrapper">
+          <v-tab :key="1" class="tabTitle">
             내 정보
           </v-tab>
-          <v-tab :disabled="edit" :key="2" style="font-size: 17pt; font-weight: 800;">
+          <v-tab :disabled="edit" class="tabTitle" :key="2">
             업로드한 자보
           </v-tab>
-          <v-tab :disabled="edit" :key="3" style="font-size: 17pt; font-weight: 800;">
+          <v-tab :disabled="edit" class="tabTitle" :key="3">
             팔로우중인 유저
           </v-tab>
         </v-tabs>
@@ -270,158 +270,183 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-#whole {
-  width: 70%;
-  margin-left: 15%;
-  text-align: center;
-  .user-profile {
-    width: 100px;
-    height: 20px;
-    text-align: left;
-    font-size: 22pt;
-    font-family: Nanumsquare;
-    font-weight: 900;
+.totalWrapper{
+  @include marginPage();
+  top: 0;
+  @include breakPoint('phone') {
+    left: 5%;
+    right: 5%;
   }
-  .profile-image {
-    height: 100px;
-    width: 100px;
-    border-radius: 100px;
-    margin-top: 20px;
-  }
-  #name {
-    font-family: Nanumsquare;
-    font-size: 25pt;
-    font-weight: 800;
-    padding-top: 10px;
-    height: 54px;
-  }
-  .name-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .profile-image-preview {
+  #whole {
+    width: 100%;
+    text-align: center;
+    .user-profile {
+      width: 100%;
+      height: 20px;
+      text-align: center;
+      font-size: $biggest-font-size;
+      font-family: Nanumsquare;
+      font-weight: 900;
+      margin-bottom: 20px;
+      @include breakPoint('phone') {
+        font-size: $big-font-size;
+      }
+    }
+    .profile-image {
       height: 100px;
       width: 100px;
       border-radius: 100px;
       margin-top: 20px;
     }
-    .imageChange {
-      width: 100px;
-      height: 100px;
-      border-radius: 100px;
-      background-color: rgba(255, 255, 255, 0.397);
-      position: absolute;
+    #name {
+      font-family: Nanumsquare;
+      font-size: $biggest-font-size;
+      font-weight: 800;
+      padding-top: 10px;
+      // height: 54px;
+      @include breakPoint('phone') {
+        font-size: $big-font-size;
+      }
+    }
+    .name-image {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 10px;
-      cursor: pointer;
-      &:hover {
-        background-color: rgba(223, 223, 223, 0.171);
+      .profile-image-preview {
+        height: 100px;
+        width: 100px;
+        border-radius: 100px;
+        margin-top: 20px;
+      }
+      .imageChange {
+        width: 100px;
+        height: 100px;
+        border-radius: 100px;
+        background-color: rgba(255, 255, 255, 0.397);
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(223, 223, 223, 0.171);
+        }
       }
     }
-  }
-  .first {
-    width: 120px;
-    margin-right: 35px;
-    display: inline-block;
-  }
-  .last {
-    width: 170px;
-    display: inline-block;
-  }
-  .tabsWrapper {
-    margin-bottom: 68px;
-    .zaboListWrapper {
-      width: 100%;
-      min-width: 400px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      .zaboWrapper {
-        display: flex;
-        min-width: 201px;
-        max-width: 201px;
-        height: 100%;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 2em;
-        .zaboTitle {
-          width: 100%;
-          font-size: 1.25em;
-          font-weight: 700;
-          line-height: 1.2;
+    .tabsTitleWrapper {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      .tabTitle{
+        font-size: $big-font-size;
+        font-weight: 800;
+        @include breakPoint('phone') {
+          font-size: $normal-font-size;
         }
-        .zaboImage {
-          width: 183px;
-          height: 286px;
-          margin-bottom: 0.75em;
-          box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24);
-          cursor: pointer;
-          transition: all 0.2s ease;
-          &:hover {
-            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+      }
+    }
+    .first {
+      width: 120px;
+      margin-right: 35px;
+      display: inline-block;
+    }
+    .last {
+      width: 170px;
+      display: inline-block;
+    }
+    .tabsWrapper {
+      margin-bottom: 68px;
+      .zaboListWrapper {
+        width: 100%;
+        min-width: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        .zaboWrapper {
+          display: flex;
+          min-width: 201px;
+          max-width: 201px;
+          height: 100%;
+          flex-direction: column;
+          align-items: center;
+          margin-bottom: 2em;
+          .zaboTitle {
+            width: 100%;
+            font-size: 1.25em;
+            font-weight: 700;
+            line-height: 1.2;
+          }
+          .zaboImage {
+            width: 183px;
+            height: 286px;
+            margin-bottom: 0.75em;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            &:hover {
+              box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+            }
           }
         }
       }
+      .followWrapper {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
     }
-    .followWrapper {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-  }
-  .userWrapper {
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  cursor: pointer;
-  border: 1px solid #ececec;
-  border-radius: 3px;
-  padding: 15px 20px;
-  margin-right: 10px;
-  .userInfoWrapper {
+    .userWrapper {
+    width: 30%;
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
     align-items: center;
-    .userImage {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-    }
-    .userName {
-      font-size: 1.875em;
-      font-weight: 700;
-      margin-left: 10px;
-    }
-  }
-  .Follow {
-    width: 100%;
-    height: 30px;
-    background-color: #12397d;
+    justify-content: flex-start;
+    cursor: pointer;
+    border: 1px solid #ececec;
     border-radius: 3px;
-    color: white;
-    margin-top: 1em;
+    padding: 15px 20px;
+    margin-right: 10px;
+    .userInfoWrapper {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      .userImage {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+      }
+      .userName {
+        font-size: 1.875em;
+        font-weight: 700;
+        margin-left: 10px;
+      }
+    }
+    .Follow {
+      width: 100%;
+      height: 30px;
+      background-color: #12397d;
+      border-radius: 3px;
+      color: white;
+      margin-top: 1em;
+    }
   }
-}
-}
-.zaboModalWrapper {
-  width: 100%;
-  position: absolute;
-  top: 78px;
-  bottom: 68px;
-}
+  }
+  .zaboModalWrapper {
+    width: 100%;
+    position: absolute;
+    top: 78px;
+    bottom: 68px;
+  }
 
-.button-active {
-  width: 40px;
-  height: 3px;
-  background-color: #12397d;
-  margin-top: 11px;
-  display: inline-block;
+  .button-active {
+    width: 40px;
+    height: 3px;
+    background-color: #12397d;
+    margin-top: 11px;
+    display: inline-block;
+  }
 }
 </style>
