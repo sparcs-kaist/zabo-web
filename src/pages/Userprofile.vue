@@ -358,7 +358,6 @@ export default {
       margin-bottom: 68px;
       .zaboListWrapper {
         width: 100%;
-        min-width: 400px;
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -370,10 +369,10 @@ export default {
           height: 100%;
           flex-direction: column;
           align-items: center;
-          margin-bottom: 2em;
+          margin-bottom: 20px;
           .zaboTitle {
             width: 100%;
-            font-size: 1.25em;
+            font-size: $h1-font-size;
             font-weight: 700;
             line-height: 1.2;
           }
