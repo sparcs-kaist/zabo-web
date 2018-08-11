@@ -21,9 +21,23 @@
               <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
             </div>
           </div>
-
+          <v-icon @click="closeModal" class="closeIcon">close</v-icon>
+          <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
           <div class="bodyWrapper" v-show="toDisplay === 0">
             <info-screen :info="this.content" :payment="payment" :category="category" />
+            <div class="mobileImageWrapper">
+              <div v-if="posters != []" class="zaboImageWrapper">
+                <img :src="currentPoster" class="zaboImage"/>
+                <div class="arrowIconWrapper">
+                  <div class="leftIconWrapper">
+                    <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+                  </div>
+                  <div class="rightIconWrapper">
+                    <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="bodyWrapper" v-show="toDisplay === 1">
             <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
@@ -291,13 +305,21 @@ export default {
   z-index: 498;
 }
 .hide {
-  position: absolute;
+  position: fixed;
+  z-index: 499;
   top: 78px;
   bottom: 68px;
   left: 12.5%;
   right: 12.5%;
-  overflow: hidden;
   border-radius: 3px;
+  @include breakPoint('phone') {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+  }
+  overflow: hidden;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
   .main {
     display: flex;
@@ -314,18 +336,43 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      width: 60%;
       &:first-child {
+        flex: 1;
         padding-top: 60px;
         padding-left: 40px;
         padding-bottom: 40px;
+        @include breakPoint('phone') {
+          padding-top: 40px;
+          padding-left: 30px;
+          padding-bottom: 30px;
+          padding-right: 30px;
+          .editIcon {
+            font-size: 38px;
+            color: white;
+            position: fixed;
+            top: 30px;
+            right: 65px;
+            cursor: pointer;
+          }
+          .closeIcon {
+            font-size: 40px;
+            color: white;
+            position: fixed;
+            top: 30px;
+            right: 20px;
+            cursor: pointer;
+          }
+        }
         .headerStyle {
           width: 100%;
           display: flex;
           flex-direction: column;
           .heading {
             color: rgb(255, 255, 255);
-            font-size: 3.8em;
+            font-size: $max-font-size;
+            @include breakPoint('phone') {
+              font-size: $small-max-font-size;
+            }
             font-weight: bold;
             letter-spacing: 0.01em;
             margin: 0;
@@ -347,7 +394,7 @@ export default {
             justify-content: flex-start;
             .buttonTap {
               cursor: pointer;
-              font-size: 1.25em;
+              font-size: $h1-font-size;
               font-weight: bold;
               margin-right: 16px;
               padding: 11px 38px 10px 38px;
@@ -393,6 +440,9 @@ export default {
           overflow-y: scroll;
           overflow-x: hidden;
           @include scrollBarLight(small);
+          @include breakPoint('phone') {
+            padding-right: 20px;
+          }
           .timeSlotWrapper {
             width: 100%;
             margin-bottom: 1em;
@@ -409,6 +459,9 @@ export default {
               justify-content: flex-start;
               align-items: center;
               width: 50%;
+              @include breakPoint('phone') {
+                width: 100%;
+              }
               &:last-child {
                 width: 100%;
               }
@@ -423,6 +476,48 @@ export default {
               }
             }
           }
+          .mobileImageWrapper {
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px 0;
+            position: relative;
+            @include breakPoint('tablet') {
+              display: none;
+            }
+            @include breakPoint('desktop') {
+              display: none;
+            }
+            .zaboImageWrapper {
+              width: 100%;
+              max-height: 500px;
+              max-width: 600px;
+              .zaboImage {
+                width: 100%;
+                height: auto;
+              }
+              .arrowIconWrapper {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                .leftIconWrapper {
+                  flex: 1;
+                  display: flex;
+                  justify-content: left;
+                }
+                .righttIconWrapper {
+                  flex: 1;
+                  display: flex;
+                  justify-content: right;
+                }
+              }
+            }
+          }
         }
       }
       &:last-child {
@@ -431,6 +526,9 @@ export default {
         width: 40%;
         padding: 20px 20px;
         position: relative;
+        @include breakPoint('phone') {
+          display: none;
+        }
         .zaboImageWrapper {
           width: 100%;
           max-height: 500px;
