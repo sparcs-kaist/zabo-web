@@ -9,7 +9,7 @@
         <span v-if="!editing" class="commentBoxContent">
           {{ newComment }}
         </span>
-        <input-field :small="true" v-if="editing" class="commentInputField" :content.sync="newComment" :on-click="editComment">
+        <input-field :small="true" v-if="editing" :content.sync="newComment" :on-click="editComment">
         </input-field>
         <div class="commentEditHandler">
           <v-icon class="moreHorizIcon" @click="commentEditHandlerModalState = !commentEditHandlerModalState">more_horiz</v-icon>
@@ -34,7 +34,7 @@
         <v-icon v-show="recommentBoxOpen">arrow_drop_up</v-icon>
       </div>
     </div>
-    <re-comment-box @delete="deleteReply" v-if="recommentBoxOpen" class="recomment-box" v-for="r in computedReplies" :author="r.author" :commentId="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
+    <re-comment-box @delete="deleteReply" v-if="recommentBoxOpen" v-for="r in computedReplies" :author="r.author" :commentId="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
     </re-comment-box>
     <input-field v-show="recommentInputState" class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
     </input-field>
@@ -168,8 +168,11 @@ export default {
 
 <style lang='scss' scoped>
 .main {
+  margin: 20px 0 0 0;
+  display: flex;
+  flex-direction: column;
   .body {
-    font-size: 1.125em;
+    font-size: $normal-font-size;
     margin-top: 10px;
     text-align: left;
     width: 100%;
@@ -183,6 +186,15 @@ export default {
       min-width: 30px;
       max-width: 30px;
     }
+    @include breakPoint('phone') {
+      font-size: $h2-font-size;
+      .pic{
+        min-width: 25px;
+        max-width: 25px;
+        min-height: 25px;
+        max-height: 25px;
+      }
+    }
     .contentWrapper {
       width: 100%;
       display: flex;
@@ -195,99 +207,70 @@ export default {
         letter-spacing: 0.01em;
         margin-right: 0.5em;
       }
+      .commentBoxContent {
+        width: 100%;
+        padding-right: 15px;
+      }
+      .commentEditHandler {
+        height: 100%;
+        .moreHorizIcon {
+          font-size: 1.5em;
+          color: rgba(255, 255, 255, 0.8);
+          cursor: pointer;
+          &:hover {
+            color: rgba(255, 255, 255, 1);
+          }
+        }
+        .commentEditHandlerModal {
+          position: absolute;
+          right: 0;
+          border-radius: 0.125em;
+          background-color: white;
+          padding: 0.125em 0.25em;
+          box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+          &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 85%;
+            width: 0;
+            height: 0;
+            border: 8px solid transparent;
+            border-bottom-color: white;
+            border-top: 0;
+            margin-left: -8px;
+            margin-top: -8px;
+          }
+          .modalIconWrapper {
+            color: #212121;
+            font-weight: 700;
+            cursor: pointer;
+          }
+        }
+      }
     }
   }
-  // .contentWrapper
-  // .name
-  //   .commentBoxContent
-  //   .commentInputField
-  //   .commentEditHandler
-  //     .moreHorizIcon
-  //       &:hover
-  //     .commentEditHandlerModal
-  //       &::after
-  //       .modalIconWrapper
-  // .handlerWrapper
-  //   .replyHandler
-  //   .recommentBoxHandler
-  //   .recomment-box
-  //   .input
-}
-.header {
-  align-items: center;
-  display: flex;
-  justify-content: flex-start;
-}
-.input {
-  margin-left: 15px;
-  padding-left: 15px;
-  margin-top: 1em;
-}
-.main {
-  margin: 20px 0 0 0;
-  display: flex;
-  flex-direction: column;
-}
-.more {
-  color: rgb(140, 140, 140);
-  cursor: pointer;
-}
-.replyHandler {
-  cursor: pointer;
-  margin-left: 38px;
-  margin-top: 0.25em;
-  width: 70px;
-}
-.recommentBoxHandler {
-  cursor: pointer;
-  margin-left: 0.5em;
-  width: 100px;
-  display: flex;
-  align-items: center;
-}
-.commentBoxContent {
-  width: 100%;
-  padding-right: 15px;
-}
-.handlerWrapper {
-  display: flex;
-  align-items: center;
-}
-.commentEditHandler {
-  height: 100%;
-}
-.moreHorizIcon {
-  font-size: 1.5em;
-  color: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-}
-.moreHorizIcon:hover {
-  color: rgba(255, 255, 255, 1);
-}
-.commentEditHandlerModal {
-  position: absolute;
-  right: 0;
-  border-radius: 0.125em;
-  background-color: white;
-  padding: 0.125em 0.25em;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
-}
-.commentEditHandlerModal::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 85%;
-  width: 0;
-  height: 0;
-  border: 8px solid transparent;
-  border-bottom-color: white;
-  border-top: 0;
-  margin-left: -8px;
-  margin-top: -8px;
-}
-.modalIconWrapper {
-  color: #212121;
-  font-weight: 700;
-  cursor: pointer;
+  .handlerWrapper {
+    display: flex;
+    align-items: center;
+    .replyHandler {
+      cursor: pointer;
+      margin-left: 38px;
+      margin-top: 0.25em;
+      width: 70px;
+    }
+    .recommentBoxHandler {
+      cursor: pointer;
+      margin-left: 0.5em;
+      width: 100px;
+      display: flex;
+      align-items: center;
+    }
+  }
+  .input {
+    margin-left: 15px;
+    padding-left: 15px;
+    margin-top: 1em;
+  }
 }
 </style>

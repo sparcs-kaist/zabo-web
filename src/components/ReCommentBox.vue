@@ -9,7 +9,7 @@
         {{ shortenedComment }}
         <span class="more" @click="seeMore = true">더 보기</span>
       </span>
-      <input-field :small="true" v-if="editing" class="commentInputField" :content.sync="newReply" :on-click="onSubmitReply">
+      <input-field :small="true" v-if="editing" :content.sync="newReply" :on-click="onSubmitReply">
       </input-field>
       <span class="recommentContent" v-else>{{ content }}</span>
       <div class="commentEditHandler">
@@ -95,13 +95,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.body {
-  font-size: 1em;
-  text-align: left;
-  display: flex;
-  align-items: center;
-}
+<style scoped lang='scss'>
 .header {
   align-items: center;
   display: flex;
@@ -112,69 +106,83 @@ export default {
 }
 .main {
   margin: 20px 0 0 0;
-}
-.more {
-  color: rgb(140, 140, 140);
-  cursor: pointer;
-}
-.name {
-  color: white;
-  font-size: 20px;
-  font-weight: bold;
-  letter-spacing: 0.01em;
-}
-.pic {
-  border-radius: 50%;
-  background-color: white;
-  min-height: 30px;
-  max-height: 30px;
-  margin-right: 10px;
-  min-width: 30px;
-  max-width: 30px;
-}
-.recommentContent {
-  margin-left: 0.5em;
-}
-.commentEditHandler {
-  flex: 1;
-  display: flex;
-  justify-content: flex-end;
-  height: 100%;
-  position: relative;
-}
-.moreHorizIcon {
-  font-size: 1.5em;
-  color: rgba(255, 255, 255, 0.8);
-  cursor: pointer;
-}
-.moreHorizIcon:hover {
-  color: rgba(255, 255, 255, 1);
-}
-.commentEditHandlerModal {
-  position: absolute;
-  top: 33px;
-  right: -2px;
-  border-radius: 0.125em;
-  background-color: white;
-  padding: 0.125em 0.25em;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
-}
-.commentEditHandlerModal::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 85%;
-  width: 0;
-  height: 0;
-  border: 8px solid transparent;
-  border-bottom-color: white;
-  border-top: 0;
-  margin-left: -8px;
-  margin-top: -8px;
-}
-.modalIconWrapper {
-  color: #212121;
-  font-weight: 700;
-  cursor: pointer;
+  .body {
+    font-size: $normal-font-size;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    .pic {
+      border-radius: 50%;
+      background-color: white;
+      min-height: 30px;
+      max-height: 30px;
+      margin-right: 10px;
+      min-width: 30px;
+      max-width: 30px;
+    }
+    @include breakPoint('phone') {
+      font-size: $h2-font-size;
+      .pic{
+        min-width: 25px;
+        max-width: 25px;
+        min-height: 25px;
+        max-height: 25px;
+      }
+    }
+    .name {
+      color: white;
+      font-weight: bold;
+      letter-spacing: 0.01em;
+    }
+    .recommentContent {
+      margin-left: 0.5em;
+      .more {
+        color: rgb(140, 140, 140);
+        cursor: pointer;
+      }
+    }
+    .commentEditHandler {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      height: 100%;
+      position: relative;
+      .moreHorizIcon {
+        font-size: 1.5em;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        &:hover {
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+      .commentEditHandlerModal {
+        position: absolute;
+        top: 33px;
+        right: -2px;
+        border-radius: 0.125em;
+        background-color: white;
+        padding: 0.125em 0.25em;
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 85%;
+          width: 0;
+          height: 0;
+          border: 8px solid transparent;
+          border-bottom-color: white;
+          border-top: 0;
+          margin-left: -8px;
+          margin-top: -8px;
+        }
+        .modalIconWrapper {
+          color: #212121;
+          font-weight: 700;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 </style>
