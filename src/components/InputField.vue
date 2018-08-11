@@ -28,56 +28,55 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .inputField {
   width: 100%;
-}
-.button {
-  align-items: center;
-  border: 3px solid white;
-  cursor: pointer;
-  display: flex;
-  height: 2.8em;
-  font-size: 1em;
-  justify-content: center;
-  margin-left: 10px;
-  padding: 0 1em;
-  font-size: 1em;
-  color: white;
-  font-weight: bold;
-}
-.formWrapper {
-  align-items: center;
-  display: flex;
-}
-.textbox {
-  background: white;
-  border: none;
-  color: rgba(0, 0, 0, 0.87);
-  font-size: 1em;
-  height: 2.8em;
-  outline: none;
-  padding-left: 15px;
-  resize: none;
-  text-align: left;
-  flex: 1;
-  border-radius: 1px;
-}
-.textbox[placeholder]:empty:before {
-  content: attr(placeholder);
-  color: rgb(172, 172, 172);
-}
-.textbox[placeholder]:empty:focus:before {
-  content: "";
-}
-.smallTextBox {
-  height: 2em;
-  font-size: 0.875em;
-}
-.smallButton {
-  height: 2em;
-  font-size: 0.875em;
-  border: 2px solid white;
-  padding: 0.125em 0.5em;
+  .formWrapper {
+    align-items: center;
+    display: flex;
+    .textbox {
+      background: white;
+      border: none;
+      color: rgba(0, 0, 0, 0.87);
+      font-size: $h2-font-size;
+      height: 45px;
+      outline: none;
+      padding-left: 15px;
+      resize: none;
+      text-align: left;
+      flex: 1;
+      border-radius: 1px;
+      &[placeholder]:empty:before {
+        content: attr(placeholder);
+        color: rgb(172, 172, 172);
+      }
+      &[placeholder]:empty:focus:before {
+        content: "";
+      }
+    }
+    .smallTextBox {
+      height: 35px;
+      font-size: $normal-font-size;
+    }
+    .button {
+      align-items: center;
+      border: 3px solid white;
+      cursor: pointer;
+      display: flex;
+      height: 45px;
+      font-size: $h2-font-size;
+      justify-content: center;
+      margin-left: 10px;
+      padding: 0 1em;
+      color: white;
+      font-weight: bold;
+    }
+    .smallButton {
+      height: 35px;
+      font-size: $normal-font-size;
+      border: 2px solid white;
+      padding: 0.125em 0.5em;
+    }
+  }
 }
 </style>
