@@ -420,7 +420,6 @@ export default {
     align-items: center;
     padding-top: 20px;
     .category {
-      /* padding-top: 42px; */
       font-size: 24px;
       font-weight: 700;
       flex: 1;
@@ -433,15 +432,25 @@ export default {
         text-align: right;
         padding-right: 94px;
       }
+      @include breakPoint('phone'){
+        font-size: $normal-font-size;
+        &:first-child {
+          padding-left: 20px;
+        }
+        &:last-child {
+          padding-right: 20px;
+        }
+      }
     }
   }
   .verticalNavButton {
-    position: absolute;
-    width: 100%;
-    top: 78px;
-    bottom: 40px;
-    left: 0;
-    right: 0;
+    @include pageDefault();
+    position: fixed;
+    top: 120px;
+    padding: 30px 0;
+    @include breakPoint('phone') {
+      padding: 10px 0;
+    }
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -451,6 +460,9 @@ export default {
       height: auto;
       cursor: pointer;
       z-index: 50;
+      @include breakPoint('phone') {
+        width: 30px;
+      }
     }
   }
   .currentZaboesWrapper {
@@ -496,7 +508,6 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%) rotate(-90deg);
       transform-origin: 50% 50%;
-      // 이따 다시보기
       .carousel-3d-slider .carousel-3d-slide {
         background-color: transparent;
         border: none;
@@ -526,22 +537,7 @@ export default {
         }
       }
     }
-    #fakeCarousel1 {
-      position: absolute;
-      .carousel-3d-slider .right-1 {
-        background-color: #ececec;
-        border: none;
-      }
-      .carousel-3d-slider .left-1 {
-        background-color: #ececec;
-        border: none;
-      }
-      .carousel-3d-slider .current {
-        background-color: #fcfcfc;
-        border: none;
-      }
-    }
-    #fakeCarousel2 {
+    #fakeCarousel1, #fakeCarousel2 {
       position: absolute;
       .carousel-3d-slider .right-1 {
         background-color: #ececec;
