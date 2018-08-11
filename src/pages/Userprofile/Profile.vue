@@ -9,34 +9,34 @@
         취소
       </v-btn>
     </div>
-    <div style="width: 100%; max-width: 900px; display: flex; margin-bottom: 10px">
+    <div style="width: 100%; display: flex; margin-bottom: 10px">
       <span class="sub-header">
         기본 정보
       </span>
     </div>
     <div class="small-col" style="margin-top: 10px">
-      <div style="width: 100%; dispaly: flex">
-        <div style="flex: 1; text-align: left;"v-if = "edit === '편집'">
+      <div class="small-col-wrapper">
+        <div class="singleInfo" v-if = "edit === '편집'">
           <span class="info-label">닉네임</span>
           <div class="data-slot">{{ nick_name }}</div>
-          <div style="height: 20px;" />
+        </div>
+        <div class="singleInfo" v-if = "edit === '편집'">
           <span class="info-label">전화번호</span>
           <div class="data-slot">{{ phone }}</div>
         </div>
       </div>
-      <div class="small-col">
-        <div style="width: 100%; display: flex">
-          <div style="flex: 1; text-align: left;"v-if = "edit === '편집'">
-            <span class="info-label">성별</span>
-            <div class="data-slot">{{ gender }}</div>
-            <div style="height: 20px;"/>
-            <span class="info-label">이메일</span>
-            <div class="data-slot">{{ email }}</div>
-          </div>
+      <div class="small-col-wrapper">
+        <div class="singleInfo" v-if = "edit === '편집'">
+          <span class="info-label">성별</span>
+          <div class="data-slot">{{ gender }}</div>
+        </div>
+        <div class="singleInfo" v-if = "edit === '편집'">
+          <span class="info-label">이메일</span>
+          <div class="data-slot">{{ email }}</div>
         </div>
       </div>
     </div>
-    <v-layout style="width: 100%; max-width: 900px; background-color: white; text-align: left" row wrap v-if = "edit === '저장'">
+    <v-layout style="width: 100%; background-color: white; text-align: left" row wrap v-if = "edit === '저장'">
       <v-flex xs6>
         <v-form v-model = "valid">
           <span class="info-label">닉네임</span>
@@ -164,68 +164,77 @@ export default {
   }
 };
 </script>
-<style lang='' scoped>
+<style lang='scss' scoped>
 #template {
   background-color: white;
-}
-
-.whole {
-  width: 100%;
-  height: 1000px;
-  display: flex;
-  /* justify-content: center; */
-  flex-direction: column;
-  align-items: center;
-}
-
-.submit_button {
-  font-family: Nanumsquare;
-  font-weight: 700;
-  font-size: 12pt;
-  width: 130px;
-  height: 40px;
-  color: white;
-}
-
-.cancel_button {
-  float: left;
-  font-family: Nanumsquare;
-  font-weight: 700;
-  font-size: 12pt;
-  height: 40px;
-  color: white;
-  margin-left: -3px;
-}
-
-.sub-header {
-  font-family: Nanumsquare;
-  font-weight: 900;
-  font-size: 17pt;
-  position: relative;
-  margin-top: 22px;
-  margin-right: auto;
-  margin-left: -10px;
-}
-
-.small-col {
-  width: 100%;
-  max-width: 900px;
-  display: flex;
-  /* margin-top: 30px; */
-}
-
-.info-label {
-  font-family: Nanumsquare;
-  font-size: 15pt;
-}
-
-.data-slot {
-  display: flex;
-  align-items: center;
-  padding-left: 10px;
-  width: 90%;
-  background-color: #f6f6f6;
-  height: 50px;
-  margin-top: 9px;
+  .whole {
+    width: 100%;
+    height: 1000px;
+    display: flex;
+    /* justify-content: center; */
+    flex-direction: column;
+    align-items: center;
+    .submit_button {
+      font-family: Nanumsquare;
+      font-weight: 700;
+      font-size: 12pt;
+      width: 130px;
+      height: 40px;
+      color: white;
+    }
+    .cancel_button {
+      float: left;
+      font-family: Nanumsquare;
+      font-weight: 700;
+      font-size: 12pt;
+      height: 40px;
+      color: white;
+      margin-left: -3px;
+    }
+    .sub-header {
+      font-family: Nanumsquare;
+      font-weight: 900;
+      font-size: $big-font-size;
+      position: relative;
+      margin-top: 22px;
+      margin-right: auto;
+      @include breakPoint('phone') {
+        font-size: $h1-font-size;
+      }
+    }
+    .small-col {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      .small-col-wrapper {
+        display: flex;
+        @include breakPoint('phone') {
+          flex-direction: column;
+        }
+        width: 100%;
+        .singleInfo {
+          margin-bottom: 15px;
+          flex: 1;
+          text-align: left;
+          .info-label {
+            font-family: Nanumsquare;
+            font-size: $big-font-size;
+            @include breakPoint('phone') {
+              font-size: $normal-font-size;
+            }
+          }
+          .data-slot {
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            width: 90%;
+            background-color: #f6f6f6;
+            height: 50px;
+            margin-top: 9px;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

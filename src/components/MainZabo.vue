@@ -94,7 +94,6 @@ export default {
   .mobileRow {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
     cursor: pointer;
     @media screen and (min-width: 900px) {
@@ -106,7 +105,7 @@ export default {
     @media screen and (max-width: 899px) {
       .mobile-image {
         width: 70%;
-        margin-top: 20%;
+        margin-top: 50%;
       }
     }
     @media screen and (max-width: 899px) {

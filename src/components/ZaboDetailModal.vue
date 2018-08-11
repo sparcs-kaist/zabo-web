@@ -21,9 +21,23 @@
               <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
             </div>
           </div>
-
+          <v-icon @click="closeModal" class="closeIcon">close</v-icon>
+          <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
           <div class="bodyWrapper" v-show="toDisplay === 0">
             <info-screen :info="this.content" :payment="payment" :category="category" />
+            <div class="mobileImageWrapper">
+              <div v-if="posters != []" class="zaboImageWrapper">
+                <img :src="currentPoster" class="zaboImage"/>
+                <div class="arrowIconWrapper">
+                  <div class="leftIconWrapper">
+                    <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+                  </div>
+                  <div class="rightIconWrapper">
+                    <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="bodyWrapper" v-show="toDisplay === 1">
             <div class="timeSlotWrapper" v-for="(timeslot, index) in timeslots" :key="index">
@@ -280,18 +294,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.main {
-  display: flex;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0%;
-  right: 0%;
-  overflow: hidden;
-  z-index: 500;
-  border-radius: 3px;
-}
+<style scoped lang='scss'>
 .closeModal {
   position: fixed;
   top: 0;
@@ -301,214 +304,297 @@ export default {
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 498;
 }
-.coverImage {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../assets/blur-wallpapers-25172-6128892.jpg") no-repeat center center
-      fixed;
-  background-size: cover;
-  /* display: flex; */
-  position: absolute;
-  top: -5px;
-  bottom: -5px;
-  left: -5px;
-  right: -5px;
-  overflow: hidden;
-  z-index: 499;
-  filter: blur(5px);
-}
 .hide {
   position: fixed;
+  z-index: 499;
   top: 78px;
   bottom: 68px;
   left: 12.5%;
   right: 12.5%;
-  overflow: hidden;
   border-radius: 3px;
-  z-index: 499;
-}
-
-.bodyWrapper {
-  flex: 1;
-  color: white;
-  position: relative;
-  padding-right: 40px;
-  width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-.bodyWrapper::-webkit-scrollbar {
-  width: 10px;
-  background-color: transparent;
-  border-radius: 5px;
-}
-.bodyWrapper::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
-}
-.bodyWrapper::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.6);
-}
-.bodyWrapper::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-}
-
-.headerStyle {
-  /* flex: 1; */
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.heading {
-  color: rgb(255, 255, 255);
-  font-size: 3.8em;
-  font-weight: bold;
-  letter-spacing: 0.01em;
-  margin: 0;
-  text-align: left;
-}
-.subheading {
-  color: rgb(220, 220, 220);
-  font-weight: bold;
-  font-size: 1.25em;
-  margin-top: 17px;
-  margin-bottom: 20px;
-  text-align: left;
-}
-.zaboImage {
-  width: 100%;
-  height: auto;
-}
-.zaboImageWrapper {
-  width: 100%;
-  max-height: 500px;
-  max-width: 600px;
-}
-.arrowIconWrapper {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  padding: 30px;
-}
-.leftIconWrapper {
-  flex: 1;
-  display: flex;
-  justify-content: left;
-}
-.righttIconWrapper {
-  flex: 1;
-  display: flex;
-  justify-content: right;
-}
-
-.buttonWrapper {
-  width: 100%;
-  display: flex;
-  margin-bottom: 24px;
-}
-.buttonTap {
-  cursor: pointer;
-  font-size: 1.25em;
-  font-weight: bold;
-  margin-right: 16px;
-  padding: 11px 38px 10px 38px;
-  display: flex;
-  background-color: rgb(18, 57, 125);
-  color: white;
-}
-.unvalidButtonTap {
-  background-color: #ea4335;
-}
-.column {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 60%;
-}
-.column:first-child {
-  padding-top: 60px;
-  padding-left: 40px;
-  padding-bottom: 40px;
-}
-.column:last-child {
-  justify-content: center;
-  align-items: center;
-  width: 40%;
-  padding: 20px 20px;
-  position: relative;
-}
-.navbar {
-  display: flex;
-  justify-content: flex-start;
-  margin: 0.75em 0 1em 0;
-}
-.selected {
-  color: #fff;
-  font-weight: bold;
-}
-.tab {
-  color: rgb(220, 220, 220);
-  cursor: pointer;
-  margin: 0 16px 0 0;
-  font-size: 1.6em;
-}
-.closeIcon {
-  font-size: 40px;
-  color: white;
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  cursor: pointer;
-}
-.editIcon {
-  font-size: 38px;
-  color: white;
-  position: absolute;
-  top: 30px;
-  right: 80px;
-  cursor: pointer;
-}
-.favoriteIcon {
-  font-size: 2em;
-}
-.likeCount {
-  font-size: 2em;
-  font-weight: 700;
-  color: white;
-  margin-left: 0.25em;
-}
-.timeSlotWrapper {
-  width: 100%;
-  margin-bottom: 1em;
-  padding: 10px;
-  min-height: 80px;
-  display: flex;
-  align-items: space-between;
-  flex-wrap: wrap;
-  background-color: #ececec;
-  font-size: 1.5em;
-  color: rgba(0, 0, 0, 0.87);
-}
-.singleTimeSlotWrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 50%;
-}
-.singleTimeSlotWrapper:last-child {
-  width: 100%;
-}
-.timeSlotTitle {
-  font-size: 20px;
-  font-weight: 700;
-  margin-right: 8px;
-}
-.timeSlotContent {
-  font-size: 20px;
-  font-weight: 500;
+  @include breakPoint('phone') {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+  }
+  overflow: hidden;
+  box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
+  .main {
+    display: flex;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    /* margin-top: 78px; */
+    overflow: hidden;
+    z-index: 501;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    .column {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      &:first-child {
+        flex: 1;
+        padding-top: 60px;
+        padding-left: 40px;
+        padding-bottom: 40px;
+        @include breakPoint('phone') {
+          padding-top: 40px;
+          padding-left: 30px;
+          padding-bottom: 30px;
+          padding-right: 30px;
+          .editIcon {
+            font-size: 38px;
+            color: white;
+            position: fixed;
+            top: 30px;
+            right: 65px;
+            cursor: pointer;
+          }
+          .closeIcon {
+            font-size: 40px;
+            color: white;
+            position: fixed;
+            top: 30px;
+            right: 20px;
+            cursor: pointer;
+          }
+        }
+        .headerStyle {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          .heading {
+            color: rgb(255, 255, 255);
+            font-size: $max-font-size;
+            @include breakPoint('phone') {
+              font-size: $small-max-font-size;
+            }
+            font-weight: bold;
+            letter-spacing: 0.01em;
+            margin: 0;
+            text-align: left;
+          }
+          .subheading {
+            color: rgb(220, 220, 220);
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 17px;
+            margin-bottom: 20px;
+            text-align: left;
+          }
+          .buttonWrapper {
+            width: 100%;
+            display: flex;
+            margin-bottom: 24px;
+            align-items: center;
+            justify-content: flex-start;
+            .buttonTap {
+              cursor: pointer;
+              font-size: $h1-font-size;
+              font-weight: bold;
+              margin-right: 16px;
+              padding: 11px 38px 10px 38px;
+              display: flex;
+              background-color: rgb(18, 57, 125);
+              color: white;
+              @include breakPoint('phone') {
+                font-size: $h2-font-size;
+                padding: 11px 10px 10px 10px;
+              }
+            }
+            .unvalidButtonTap {
+              background-color: #ea4335;
+            }
+            .favoriteIcon {
+              font-size: 2em;
+            }
+            .likeCount {
+              font-size: 2em;
+              font-weight: 700;
+              color: white;
+              margin-left: 0.25em;
+            }
+          }
+          .navbar {
+            display: flex;
+            justify-content: flex-start;
+            margin: 0.75em 0 1em 0;
+            .selected {
+              color: #fff;
+              font-weight: bold;
+            }
+            .tab {
+              color: rgb(220, 220, 220);
+              cursor: pointer;
+              margin: 0 16px 0 0;
+              font-size: 1.6em;
+            }
+          }
+        }
+        .bodyWrapper {
+          flex: 1;
+          color: white;
+          position: relative;
+          padding-right: 40px;
+          width: 100%;
+          overflow-y: scroll;
+          overflow-x: hidden;
+          @include scrollBarLight(small);
+          @include breakPoint('phone') {
+            padding-right: 20px;
+          }
+          .timeSlotWrapper {
+            width: 100%;
+            margin-bottom: 1em;
+            padding: 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: space-between;
+            flex-wrap: wrap;
+            background-color: #ececec;
+            font-size: 1.5em;
+            color: rgba(0, 0, 0, 0.87);
+            .singleTimeSlotWrapper {
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              width: 50%;
+              @include breakPoint('phone') {
+                width: 100%;
+              }
+              &:last-child {
+                width: 100%;
+              }
+              .timeSlotTitle {
+                font-size: 20px;
+                font-weight: 700;
+                margin-right: 8px;
+              }
+              .timeSlotContent {
+                font-size: 20px;
+                font-weight: 500;
+              }
+            }
+          }
+          .mobileImageWrapper {
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding: 20px 0;
+            position: relative;
+            @include breakPoint('tablet') {
+              display: none;
+            }
+            @include breakPoint('desktop') {
+              display: none;
+            }
+            .zaboImageWrapper {
+              width: 100%;
+              max-height: 500px;
+              max-width: 600px;
+              .zaboImage {
+                width: 100%;
+                height: auto;
+              }
+              .arrowIconWrapper {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                .leftIconWrapper {
+                  flex: 1;
+                  display: flex;
+                  justify-content: left;
+                }
+                .righttIconWrapper {
+                  flex: 1;
+                  display: flex;
+                  justify-content: right;
+                }
+              }
+            }
+          }
+        }
+      }
+      &:last-child {
+        justify-content: center;
+        align-items: center;
+        width: 40%;
+        padding: 20px 20px;
+        position: relative;
+        @include breakPoint('phone') {
+          display: none;
+        }
+        .zaboImageWrapper {
+          width: 100%;
+          max-height: 500px;
+          max-width: 600px;
+          .zaboImage {
+            width: 100%;
+            height: auto;
+          }
+          .arrowIconWrapper {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            padding: 30px;
+            .leftIconWrapper {
+              flex: 1;
+              display: flex;
+              justify-content: left;
+            }
+            .righttIconWrapper {
+              flex: 1;
+              display: flex;
+              justify-content: right;
+            }
+          }
+        }
+        .editIcon {
+          font-size: 38px;
+          color: white;
+          position: absolute;
+          top: 30px;
+          right: 65px;
+          cursor: pointer;
+        }
+        .closeIcon {
+          font-size: 40px;
+          color: white;
+          position: absolute;
+          top: 30px;
+          right: 20px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .coverImage {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("../assets/blur-wallpapers-25172-6128892.jpg") no-repeat center center
+        fixed;
+    background-size: cover;
+    /* display: flex; */
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    overflow: hidden;
+    z-index: 500;
+    filter: blur(5px);
+  }
 }
 </style>
