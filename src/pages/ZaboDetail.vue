@@ -268,34 +268,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.main {
-  display: flex;
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0;
-  right: 0;
-  /* margin-top: 78px; */
-  overflow: hidden;
-  z-index: 301;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-}
-.coverImage {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../assets/blur-wallpapers-25172-6128892.jpg") no-repeat center center
-      fixed;
-  background-size: cover;
-  /* display: flex; */
-  position: absolute;
-  top: -5px;
-  bottom: -5px;
-  left: -5px;
-  right: -5px;
-  overflow: hidden;
-  z-index: 300;
-  filter: blur(5px);
-}
+<style scoped lang='scss'>
 .hide {
   position: absolute;
   top: 78px;
@@ -305,182 +278,193 @@ export default {
   overflow: hidden;
   border-radius: 3px;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
+  .main {
+    display: flex;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    /* margin-top: 78px; */
+    overflow: hidden;
+    z-index: 301;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    .column {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 60%;
+      &:first-child {
+        padding-top: 60px;
+        padding-left: 40px;
+        padding-bottom: 40px;
+        .headerStyle {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          .heading {
+            color: rgb(255, 255, 255);
+            font-size: 3.8em;
+            font-weight: bold;
+            letter-spacing: 0.01em;
+            margin: 0;
+            text-align: left;
+          }
+          .subheading {
+            color: rgb(220, 220, 220);
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 17px;
+            margin-bottom: 20px;
+            text-align: left;
+          }
+          .buttonWrapper {
+            width: 100%;
+            display: flex;
+            margin-bottom: 24px;
+            align-items: center;
+            justify-content: flex-start;
+            .buttonTap {
+              cursor: pointer;
+              font-size: 1.25em;
+              font-weight: bold;
+              margin-right: 16px;
+              padding: 11px 38px 10px 38px;
+              display: flex;
+              background-color: rgb(18, 57, 125);
+              color: white;
+            }
+            .unvalidButtonTap {
+              background-color: #ea4335;
+            }
+            .favoriteIcon {
+              font-size: 2em;
+            }
+            .likeCount {
+              font-size: 2em;
+              font-weight: 700;
+              color: white;
+              margin-left: 0.25em;
+            }
+          }
+          .navbar {
+            display: flex;
+            justify-content: flex-start;
+            margin: 0.75em 0 1em 0;
+            .selected {
+              color: #fff;
+              font-weight: bold;
+            }
+            .tab {
+              color: rgb(220, 220, 220);
+              cursor: pointer;
+              margin: 0 16px 0 0;
+              font-size: 1.6em;
+            }
+          }
+        }
+        .bodyWrapper {
+          flex: 1;
+          color: white;
+          position: relative;
+          padding-right: 40px;
+          width: 100%;
+          overflow-y: scroll;
+          overflow-x: hidden;
+          @include scrollBarDark(small);
+          .timeSlotWrapper {
+            width: 100%;
+            margin-bottom: 1em;
+            padding: 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: space-between;
+            flex-wrap: wrap;
+            background-color: #ececec;
+            font-size: 1.5em;
+            color: rgba(0, 0, 0, 0.87);
+            .singleTimeSlotWrapper {
+              display: flex;
+              justify-content: flex-start;
+              align-items: center;
+              width: 50%;
+              &:last-child {
+                width: 100%;
+              }
+              .timeSlotTitle {
+                font-size: 20px;
+                font-weight: 700;
+                margin-right: 8px;
+              }
+              .timeSlotContent {
+                font-size: 20px;
+                font-weight: 500;
+              }
+            }
+          }
+        }
+      }
+      &:last-child {
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        width: 40%;
+        padding: 20px 20px;
+      }
+    }
+  }
+  .coverImage {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("../assets/blur-wallpapers-25172-6128892.jpg") no-repeat center center
+        fixed;
+    background-size: cover;
+    /* display: flex; */
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    overflow: hidden;
+    z-index: 300;
+    filter: blur(5px);
+  }
 }
 
-.bodyWrapper {
-  flex: 1;
-  color: white;
-  position: relative;
-  padding-right: 40px;
-  width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-.bodyWrapper::-webkit-scrollbar {
-  width: 10px;
-  background-color: transparent;
-  border-radius: 5px;
-}
-.bodyWrapper::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.3);
-  border-radius: 5px;
-}
-.bodyWrapper::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.6);
-}
-.bodyWrapper::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-}
-
-.headerStyle {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.heading {
-  color: rgb(255, 255, 255);
-  font-size: 3.8em;
-  font-weight: bold;
-  letter-spacing: 0.01em;
-  margin: 0;
-  text-align: left;
-}
-.subheading {
-  color: rgb(220, 220, 220);
-  font-weight: bold;
-  font-size: 16px;
-  margin-top: 17px;
-  margin-bottom: 20px;
-  text-align: left;
-}
-.buttonWrapper {
-  width: 100%;
-  display: flex;
-  margin-bottom: 24px;
-  align-items: center;
-  justify-content: flex-start;
-}
-.zaboImage {
-  width: 100%;
-  height: auto;
-}
 .zaboImageWrapper {
   width: 100%;
   max-height: 500px;
   max-width: 600px;
-}
-.arrowIconWrapper {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  padding: 30px;
-}
-.leftIconWrapper {
-  flex: 1;
-  display: flex;
-  justify-content: left;
-}
-.righttIconWrapper {
-  flex: 1;
-  display: flex;
-  justify-content: right;
-}
-.buttonTap {
-  cursor: pointer;
-  font-size: 1.25em;
-  font-weight: bold;
-  margin-right: 16px;
-  padding: 11px 38px 10px 38px;
-  display: flex;
-  background-color: rgb(18, 57, 125);
-  color: white;
-}
-.unvalidButtonTap {
-  background-color: #ea4335;
-}
-.column {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 60%;
-}
-.column:first-child {
-  padding-top: 60px;
-  padding-left: 40px;
-  padding-bottom: 40px;
-}
-.column:last-child {
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  width: 40%;
-  padding: 20px 20px;
-}
-.navbar {
-  display: flex;
-  justify-content: flex-start;
-  margin: 0.75em 0 1em 0;
-}
-.selected {
-  color: #fff;
-  font-weight: bold;
-}
-.tab {
-  color: rgb(220, 220, 220);
-  cursor: pointer;
-  margin: 0 16px 0 0;
-  font-size: 1.6em;
-}
-.favoriteIcon {
-  font-size: 2em;
-}
-.editIcon {
-  font-size: 38px;
-  color: white;
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  cursor: pointer;
-}
-.likeCount {
-  font-size: 2em;
-  font-weight: 700;
-  color: white;
-  margin-left: 0.25em;
-}
-.timeSlotWrapper {
-  width: 100%;
-  margin-bottom: 1em;
-  padding: 10px;
-  min-height: 80px;
-  display: flex;
-  align-items: space-between;
-  flex-wrap: wrap;
-  background-color: #ececec;
-  font-size: 1.5em;
-  color: rgba(0, 0, 0, 0.87);
-}
-.singleTimeSlotWrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  width: 50%;
-}
-.singleTimeSlotWrapper:last-child {
-  width: 100%;
-}
-.timeSlotTitle {
-  font-size: 20px;
-  font-weight: 700;
-  margin-right: 8px;
-}
-.timeSlotContent {
-  font-size: 20px;
-  font-weight: 500;
+  .zaboImage {
+    width: 100%;
+    height: auto;
+  }
+  .arrowIconWrapper {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: 30px;
+    .leftIconWrapper {
+      flex: 1;
+      display: flex;
+      justify-content: left;
+    }
+    .righttIconWrapper {
+      flex: 1;
+      display: flex;
+      justify-content: right;
+    }
+  }
+  .editIcon {
+    font-size: 38px;
+    color: white;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    cursor: pointer;
+  }
 }
 </style>
