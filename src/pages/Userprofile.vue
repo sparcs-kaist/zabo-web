@@ -392,46 +392,58 @@ export default {
       .followWrapper {
         width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: flex-start;
         flex-wrap: wrap;
+        .userWrapper {
+          width: 30%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          cursor: pointer;
+          border: 1px solid #ececec;
+          border-radius: 3px;
+          padding: 15px 20px;
+          margin-bottom: 15px;
+          .userInfoWrapper {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            .userImage {
+              width: 45px;
+              height: 45px;
+              border-radius: 50%;
+            }
+            .userName {
+              font-size: $biggest-font-size;
+              font-weight: 700;
+              margin-left: 10px;
+            }
+          }
+          .Follow {
+            width: 100%;
+            height: 30px;
+            background-color: #12397d;
+            border-radius: 3px;
+            color: white;
+            margin-top: 1em;
+          }
+          @include breakPoint('phone') {
+            width: 45%;
+            .userInfoWrapper {
+              .userImage {
+                width: 35px;
+                height: 35px;
+              }
+              .userName {
+                font-size: $normal-font-size;
+              }
+            }
+          }
+        }
       }
     }
-    .userWrapper {
-    width: 30%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    cursor: pointer;
-    border: 1px solid #ececec;
-    border-radius: 3px;
-    padding: 15px 20px;
-    margin-right: 10px;
-    .userInfoWrapper {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      .userImage {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-      }
-      .userName {
-        font-size: 1.875em;
-        font-weight: 700;
-        margin-left: 10px;
-      }
-    }
-    .Follow {
-      width: 100%;
-      height: 30px;
-      background-color: #12397d;
-      border-radius: 3px;
-      color: white;
-      margin-top: 1em;
-    }
-  }
   }
   .zaboModalWrapper {
     width: 100%;
@@ -439,7 +451,6 @@ export default {
     top: 78px;
     bottom: 68px;
   }
-
   .button-active {
     width: 40px;
     height: 3px;
