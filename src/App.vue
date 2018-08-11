@@ -5,7 +5,7 @@
     </transition>
     <div>
       <Header :profileImageLoading="loading" v-show="!loggingIn" @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
-      <router-view :key="$route.name + ($route.params.id || '')"></router-view>
+      <router-view v-show="!loggingIn" :key="$route.name + ($route.params.id || '')"></router-view>
       <Footer v-show="!loggingIn" />
       <Login v-show="loggingIn" @logged-in="handleLogin"></Login>
     </div>
