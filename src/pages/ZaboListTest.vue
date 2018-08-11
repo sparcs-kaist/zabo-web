@@ -5,10 +5,6 @@
     <span class="category">{{calculatedCategoryList[1]}}</span>
     <span class="category">{{calculatedCategoryList[2]}}</span>
   </div>
-  <nav class="verticalNavButton">
-      <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
-      <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
-  </nav>
   <div class="currentZaboesWrapper" :style="`padding: 0 ${windowWidth > 700 ? (basePosterWrapperHeight/2)-31: 0}px`">
     <nav class="horizontalNavButton">
       <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
@@ -39,6 +35,10 @@
       <img @click="categoryright" src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
   </div>
+  <nav class="verticalNavButton">
+      <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
+      <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
+  </nav>
   <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
 </div>
 </template>
@@ -443,28 +443,6 @@ export default {
       }
     }
   }
-  .verticalNavButton {
-    @include pageDefault();
-    position: fixed;
-    top: 120px;
-    padding: 30px 0;
-    @include breakPoint('phone') {
-      padding: 10px 0;
-    }
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    .keyboard_arrow_updown {
-      width: 40px;
-      height: auto;
-      cursor: pointer;
-      z-index: 50;
-      @include breakPoint('phone') {
-        width: 30px;
-      }
-    }
-  }
   .currentZaboesWrapper {
     position: absolute;
     top: 50%;
@@ -550,6 +528,28 @@ export default {
       .carousel-3d-slider .current {
         background-color: #fcfcfc;
         border: none;
+      }
+    }
+  }
+  .verticalNavButton {
+    @include pageDefault();
+    position: fixed;
+    top: 120px;
+    padding: 30px 0;
+    @include breakPoint('phone') {
+      padding: 10px 0;
+    }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    .keyboard_arrow_updown {
+      width: 40px;
+      height: auto;
+      cursor: pointer;
+      z-index: 50;
+      @include breakPoint('phone') {
+        width: 30px;
       }
     }
   }
