@@ -269,167 +269,112 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 #whole {
   width: 70%;
-  /* height: 2000px; */
   margin-left: 15%;
-  /* margin-top: 90px; */
   text-align: center;
-}
-
-.user-profile {
-  width: 100px;
-  height: 20px;
-  text-align: left;
-  font-size: 22pt;
-  font-family: Nanumsquare;
-  font-weight: 900;
-}
-
-#name {
-  font-family: Nanumsquare;
-  font-size: 25pt;
-  font-weight: 800;
-  padding-top: 10px;
-  height: 54px;
-}
-
-.profile-image {
-  height: 100px;
-  width: 100px;
-  border-radius: 100px;
-  margin-top: 20px;
-}
-
-.profile-image-preview {
-  height: 100px;
-  width: 100px;
-  border-radius: 100px;
-  margin-top: 20px;
-}
-
-.tabs {
-  position: -webkit-sticky;
-}
-
-.tab {
-  font-family: Nanumsquare;
-  font-size: 17pt;
-  font-weight: 700;
-  text-align: center;
-  width: 150px;
-  margin-left: 10px;
-  height: 50px;
-  border: 0px;
-  background-color: white;
-  cursor: pointer;
-}
-
-.button-active {
-  width: 40px;
-  height: 3px;
-  background-color: #12397d;
-  margin-top: 11px;
-  display: inline-block;
-}
-
-.tab:focus {
-  outline: none;
-  border: none;
-}
-
-.first {
-  width: 120px;
-  margin-right: 35px;
-  display: inline-block;
-}
-
-.last {
-  width: 170px;
-  display: inline-block;
-}
-
-.name-image {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.imageChange {
-  width: 100px;
-  height: 100px;
-  border-radius: 100px;
-  background-color: rgba(255, 255, 255, 0.397);
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.imageChange:hover {
-  background-color: rgba(223, 223, 223, 0.171);
-}
-
-.zaboListWrapper {
-  width: 100%;
-  min-width: 400px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.zaboWrapper {
-  display: flex;
-  min-width: 201px;
-  max-width: 201px;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2em;
-}
-
-.zaboTitle {
-  width: 100%;
-  font-size: 1.25em;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.zaboImage {
-  width: 183px;
-  height: 286px;
-  margin-bottom: 0.75em;
-  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.zaboImage:hover {
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
-}
-
-.zaboModalWrapper {
-  width: 100%;
-  position: absolute;
-  top: 78px;
-  bottom: 68px;
-}
-
-.tabsWrapper {
-  margin-bottom: 68px;
-}
-.followWrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-
-.userWrapper {
+  .user-profile {
+    width: 100px;
+    height: 20px;
+    text-align: left;
+    font-size: 22pt;
+    font-family: Nanumsquare;
+    font-weight: 900;
+  }
+  .profile-image {
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+    margin-top: 20px;
+  }
+  #name {
+    font-family: Nanumsquare;
+    font-size: 25pt;
+    font-weight: 800;
+    padding-top: 10px;
+    height: 54px;
+  }
+  .name-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .profile-image-preview {
+      height: 100px;
+      width: 100px;
+      border-radius: 100px;
+      margin-top: 20px;
+    }
+    .imageChange {
+      width: 100px;
+      height: 100px;
+      border-radius: 100px;
+      background-color: rgba(255, 255, 255, 0.397);
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgba(223, 223, 223, 0.171);
+      }
+    }
+  }
+  .first {
+    width: 120px;
+    margin-right: 35px;
+    display: inline-block;
+  }
+  .last {
+    width: 170px;
+    display: inline-block;
+  }
+  .tabsWrapper {
+    margin-bottom: 68px;
+    .zaboListWrapper {
+      width: 100%;
+      min-width: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      .zaboWrapper {
+        display: flex;
+        min-width: 201px;
+        max-width: 201px;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2em;
+        .zaboTitle {
+          width: 100%;
+          font-size: 1.25em;
+          font-weight: 700;
+          line-height: 1.2;
+        }
+        .zaboImage {
+          width: 183px;
+          height: 286px;
+          margin-bottom: 0.75em;
+          box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.24);
+          cursor: pointer;
+          transition: all 0.2s ease;
+          &:hover {
+            box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+    }
+    .followWrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+  }
+  .userWrapper {
   width: 30%;
   display: flex;
   flex-direction: column;
@@ -440,28 +385,43 @@ export default {
   border-radius: 3px;
   padding: 15px 20px;
   margin-right: 10px;
+  .userInfoWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .userImage {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+    .userName {
+      font-size: 1.875em;
+      font-weight: 700;
+      margin-left: 10px;
+    }
+  }
+  .Follow {
+    width: 100%;
+    height: 30px;
+    background-color: #12397d;
+    border-radius: 3px;
+    color: white;
+    margin-top: 1em;
+  }
 }
-.userInfoWrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
 }
-.Follow {
+.zaboModalWrapper {
   width: 100%;
-  height: 30px;
+  position: absolute;
+  top: 78px;
+  bottom: 68px;
+}
+
+.button-active {
+  width: 40px;
+  height: 3px;
   background-color: #12397d;
-  border-radius: 3px;
-  color: white;
-  margin-top: 1em;
-}
-.userImage {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-}
-.userName {
-  font-size: 1.875em;
-  font-weight: 700;
-  margin-left: 10px;
+  margin-top: 11px;
+  display: inline-block;
 }
 </style>
