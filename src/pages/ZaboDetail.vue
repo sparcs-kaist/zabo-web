@@ -371,7 +371,7 @@ export default {
           width: 100%;
           overflow-y: scroll;
           overflow-x: hidden;
-          @include scrollBarDark(small);
+          @include scrollBarLight(small);
           .timeSlotWrapper {
             width: 100%;
             margin-bottom: 1em;
@@ -410,6 +410,43 @@ export default {
         align-items: center;
         width: 40%;
         padding: 20px 20px;
+        .zaboImageWrapper {
+          width: 100%;
+          max-height: 500px;
+          max-width: 600px;
+          .zaboImage {
+            width: 100%;
+            height: auto;
+          }
+          .arrowIconWrapper {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            padding: 30px;
+            .leftIconWrapper {
+              flex: 1;
+              display: flex;
+              justify-content: left;
+            }
+            .righttIconWrapper {
+              flex: 1;
+              display: flex;
+              justify-content: right;
+            }
+          }
+        }
+        .editIcon {
+          font-size: 38px;
+          color: white;
+          position: absolute;
+          top: 30px;
+          right: 30px;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -427,44 +464,6 @@ export default {
     overflow: hidden;
     z-index: 300;
     filter: blur(5px);
-  }
-}
-
-.zaboImageWrapper {
-  width: 100%;
-  max-height: 500px;
-  max-width: 600px;
-  .zaboImage {
-    width: 100%;
-    height: auto;
-  }
-  .arrowIconWrapper {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    padding: 30px;
-    .leftIconWrapper {
-      flex: 1;
-      display: flex;
-      justify-content: left;
-    }
-    .righttIconWrapper {
-      flex: 1;
-      display: flex;
-      justify-content: right;
-    }
-  }
-  .editIcon {
-    font-size: 38px;
-    color: white;
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    cursor: pointer;
   }
 }
 </style>

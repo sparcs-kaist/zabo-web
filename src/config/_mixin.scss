@@ -133,7 +133,8 @@ $iphone6plus-width: 550px;
     background-color: rgba(0, 0, 0, 0.6);
   }
   &::-webkit-scrollbar-track {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
   }
 }
 @mixin scrollBarLight($size) {
@@ -161,7 +162,8 @@ $iphone6plus-width: 550px;
     background-color: rgba(255, 255, 255, 0.6);
   }
   &::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
   }
 }
 @mixin footerTabs() {
