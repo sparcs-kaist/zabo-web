@@ -401,6 +401,10 @@ export default {
               display: flex;
               background-color: rgb(18, 57, 125);
               color: white;
+              @include breakPoint('phone') {
+                font-size: $h2-font-size;
+                padding: 11px 10px 10px 10px;
+              }
             }
             .unvalidButtonTap {
               background-color: #ea4335;
