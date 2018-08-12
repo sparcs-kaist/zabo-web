@@ -75,6 +75,11 @@ export default {
   },
   mounted() {
     this.getWindowWidth();
+    if (sessionStorage.getItem("currentCategoryIndex")) {
+      this.currentCategoryIndex = Number(
+        sessionStorage.getItem("currentCategoryIndex")
+      );
+    }
     this.$store
       .dispatch("zaboesGetPageCount", {
         pageSize: 20,
@@ -122,6 +127,10 @@ export default {
   beforeDestroy() {
     window.removeEventListener("resize", this.getWindowWidth);
     window.removeEventListener("keyup", this.keyup);
+    sessionStorage.setItem(
+      "currentCategoryIndex",
+      Number(this.currentCategoryIndex)
+    );
   },
   methods: {
     keyup(event) {
@@ -233,13 +242,21 @@ export default {
   },
   computed: {
     zaboes() {
-      return this.$store.getters.zaboes[this.calculatedCategoryList[1]];
+      if (
+        this.$store.getters.zaboes[this.calculatedCategoryList[1]] != undefined
+      ) {
+        return this.$store.getters.zaboes[this.calculatedCategoryList[1]];
+      } else {
+        return [];
+      }
     },
     zaboesPageCount() {
       return this.$store.getters.zaboesPageCount;
     },
     zaboesRow() {
-      return Math.ceil(this.zaboes.length / this.columnNumber);
+      if (this.zaboes.length > 0) {
+        return Math.ceil(this.zaboes.length / this.columnNumber);
+      }
     },
     columnNumber() {
       if (this.windowHeight > 1200) {
