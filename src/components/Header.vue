@@ -74,10 +74,10 @@
           {{ $t('프로필 관리') }}
         </div>
       </router-link>
-      <div @click="login" v-if="!loggedInState">
+      <div class="dropdown-content" @click="login" v-if="!loggedInState">
         {{ $t('로그인') }}
       </div>
-      <div @click="logout" v-else>
+      <div class="dropdown-content" @click="logout" v-else>
         {{ $t('로그아웃')}}
       </div>
     </div>
@@ -224,6 +224,7 @@ export default {
 @media screen and (max-width: 899px) {
   .button {
     display: none;
+    cursor: pointer;
   }
 }
 
@@ -315,6 +316,7 @@ export default {
   color: black;
   font-size: 13pt;
   margin-bottom: 25px;
+  cursor: pointer;
 }
 
 .profileTriangle {
