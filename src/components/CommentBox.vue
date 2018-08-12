@@ -169,6 +169,9 @@ export default {
 <style lang='scss' scoped>
 .main {
   margin: 20px 0 0 0;
+  @include breakPoint("phone") {
+    margin: 10px 0 0 0;
+  }
   display: flex;
   flex-direction: column;
   .body {
@@ -256,20 +259,28 @@ export default {
     .replyHandler {
       cursor: pointer;
       margin-left: 38px;
-      margin-top: 0.25em;
       width: 70px;
+      @include breakPoint("phone") {
+        margin-left: 30px;
+      }
     }
     .recommentBoxHandler {
       cursor: pointer;
-      margin-left: 0.5em;
+      padding-left: 0.5em;
       width: 100px;
       display: flex;
       align-items: center;
     }
+    @include breakPoint("phone") {
+      font-size: $small-font-size;
+      font-weight: $normal-font-weight;
+      .recommentBoxHandler {
+        padding-left: 0px;
+      }
+    }
   }
   .input {
-    margin-left: 15px;
-    padding-left: 15px;
+    padding-left: 30px;
     margin-top: 1em;
   }
 }

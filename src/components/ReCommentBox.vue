@@ -103,9 +103,15 @@ export default {
 }
 .input {
   padding-left: 15px;
+  @include breakPoint("phone") {
+    padding-left: 0;
+  }
 }
 .main {
   margin: 20px 0 0 0;
+  @include breakPoint("phone") {
+    margin: 10px 0 0 -10px;
+  }
   .body {
     font-size: $normal-font-size;
     text-align: left;
