@@ -22,7 +22,7 @@
         <v-icon @click="closeModal" class="closeIcon">close</v-icon>
         <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
         <div class="bodyWrapper" v-show="toDisplay === 0">
-          <info-screen :info="this.content" :category="category" :payment="payment" />
+          <info-screen :info="this.content" :category="category" :author="author" :payment="payment" />
           <div class="mobileImageWrapper">
             <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
               <div class="arrowIconWrapper">
@@ -97,6 +97,7 @@ export default {
       payment: "",
       link_url: "",
       authorId: null,
+      author: undefined,
       deadline: "",
       posters: [],
       currentPosterNumber: 0,
@@ -178,6 +179,7 @@ export default {
         this.payment = payment;
         this.link_url = link_url;
         this.authorId = author.id;
+        this.author = author;
         this.deadline = deadline;
         console.log(response);
       })

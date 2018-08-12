@@ -1,4 +1,5 @@
 <template lang=''>
+<div>
 <div class="mainWrapper">
   <div class="categoryWrapper">
     <span class="category">{{calculatedCategoryList[0]}}</span>
@@ -39,7 +40,8 @@
   </nav> -->
   <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_up" alt="up_arrow">
   <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_down" alt="down_arrow">
-  <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
+</div>
+<zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
 </div>
 </template>
 <script>
@@ -444,7 +446,7 @@ export default {
 <style scoped lang='scss'>
 .mainWrapper {
   width: 100%;
-  position: absolute;
+  position: fixed;
   top: 78px;
   bottom: 68px;
   left: 0;
@@ -453,6 +455,9 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  @include breakPoint("phone") {
+    top: 64px;
+  }
   .categoryWrapper {
     width: 100%;
     display: flex;
@@ -461,7 +466,6 @@ export default {
     padding-top: 20px;
     @include breakPoint("phone") {
       padding-top: 0;
-      margin-top: -10px;
     }
     .category {
       font-size: 24px;

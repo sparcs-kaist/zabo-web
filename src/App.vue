@@ -5,8 +5,8 @@
     </transition>
     <div>
       <Header :profileImageLoading="loading" v-show="!loggingIn && $router.currentRoute.name != 'ZaboDetail'" @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
-      <router-view v-show="!loggingIn" :key="$route.name + ($route.params.id || '')"></router-view>
       <Footer v-show="!loggingIn  && $router.currentRoute.name != 'ZaboDetail'" />
+      <router-view v-show="!loggingIn" :key="$route.name + ($route.params.id || '')"></router-view>
       <Login v-show="loggingIn" @logged-in="handleLogin"></Login>
     </div>
   </div>

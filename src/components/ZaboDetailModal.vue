@@ -24,7 +24,7 @@
           <v-icon @click="closeModal" class="closeIcon">close</v-icon>
           <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
           <div class="bodyWrapper" v-show="toDisplay === 0">
-            <info-screen :info="this.content" :payment="payment" :category="category" />
+            <info-screen :info="this.content" :payment="payment" :category="category" :author="author" />
             <div class="mobileImageWrapper">
               <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
                 <img :src="currentPoster" class="zaboImage"/>
@@ -99,6 +99,7 @@ export default {
       category: "",
       payment: "",
       authorId: null,
+      author: undefined,
       deadline: "",
       link_url: "",
       posters: [],
@@ -267,6 +268,7 @@ export default {
     this.likeCount = like_count;
     this.content = content;
     this.authorId = author.id;
+    this.author = author;
     this.deadline = deadline;
     console.log(this.authorId);
     axios({
@@ -323,7 +325,7 @@ export default {
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
   .main {
     display: flex;
-    position: absolute;
+    position: fixed;
     top: 0px;
     bottom: 0px;
     left: 0;
