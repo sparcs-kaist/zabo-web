@@ -7,7 +7,7 @@ $iphone6plus-width: 550px;
 
 @mixin breakPoint($breakpoint) {
   @if $breakpoint == "phone" {
-    @media (min-width: #{$phone-width}) and (max-width: #{$tablet-width}) {
+    @media (max-width: #{$tablet-width}) {
       @content;
     }
   } @else if $breakpoint == "tablet" {

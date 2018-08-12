@@ -297,7 +297,7 @@ export default {
           this.posterWrapperHeight = 260;
           return 1;
         }
-      } else {
+      } else if (this.windowHeight > 650) {
         this.basePosterWrapperHeight = 190;
         this.baseCarouselPosterHeight = 300;
         this.displayNumber = 3;
@@ -315,6 +315,26 @@ export default {
           return 2;
         } else {
           this.posterWrapperHeight = 190;
+          return 1;
+        }
+      } else {
+        this.basePosterWrapperHeight = 150;
+        this.baseCarouselPosterHeight = 225;
+        this.displayNumber = 3;
+        if (this.windowWidth > 2000) {
+          this.posterWrapperHeight = 794;
+          return 5;
+        } else if (this.windowWidth > 1700) {
+          this.posterWrapperHeight = 633;
+          return 4;
+        } else if (this.windowWidth > 1400) {
+          this.posterWrapperHeight = 472;
+          return 3;
+        } else if (this.windowWidth > 1000) {
+          this.posterWrapperHeight = 311;
+          return 2;
+        } else {
+          this.posterWrapperHeight = 150;
           return 1;
         }
       }
@@ -372,8 +392,10 @@ export default {
         return 464;
       } else if (this.windowHeight > 750) {
         return 400;
-      } else {
+      } else if (this.windowHeight > 650) {
         return 300;
+      } else {
+        return 225;
       }
     }
   },
