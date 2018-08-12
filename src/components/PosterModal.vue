@@ -76,6 +76,18 @@ export default {
     right: 40px;
     font-size: 80px;
   }
+  @include breakPoint("phone") {
+    .keyboard_arrow_left,
+    .keyboard_arrow_right {
+      font-size: 60px;
+    }
+    .keyboard_arrow_left {
+      left: 10px;
+    }
+    .keyboard_arrow_right {
+      right: 10px;
+    }
+  }
   .closeIcon {
     font-size: 40px;
     color: white;
