@@ -46,6 +46,11 @@
         <div @click="setLang" class="button right">
           {{ this.computedLang }}
         </div>
+        <div>
+        <div class="mobile-right">
+          <Search @submitValue="onSearch" :searchValue="searchValue" />
+        </div>
+        </div>
         <div class="dropdown" @click="dropdownOpen" v-if="!isDropdownOpened">
           <div class="bar-container">
             <div class="minibar">
@@ -175,29 +180,38 @@ export default {
 };
 </script>
 
-<style scoped>
-@media screen and (min-width: 900px) {
-  .sandbox {
-    width: 100%;
-    min-height: 78px;
-    position: fixed;
-    background-color: rgba(255, 255, 255);
-    z-index: 400;
-    display: flex;
-    flex-direction: column;
-  }
+<style scoped lang='scss'>
+.sandbox {
+  width: 100%;
+  min-height: 78px;
+  position: fixed;
+  background-color: rgb(255, 255, 255);
+  z-index: 400;
+  display: flex;
+  flex-direction: column;
 }
-
-@media screen and (max-width: 899px) {
-  .sandbox {
-    width: 100%;
-    min-height: 64px;
-    position: fixed;
-    background-color: rgba(255, 255, 255);
-    z-index: 400;
-    display: flex;
-    flex-direction: column;
-  }
+.Buttons {
+  width: 100%;
+  height: 73px;
+  display: flex;
+}
+.button {
+  font-size: 15pt;
+  font-family: Nanumsquare;
+  font-weight: 400;
+  color: black;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.right {
+  margin-right: 27px;
+}
+.mobile-right {
+  margin-right: 10px;
+}
+.logo {
+  height: 37px;
+  margin-left: 27px;
 }
 
 .topline {
@@ -205,39 +219,7 @@ export default {
   height: 5px;
   background-color: #12397d;
 }
-@media screen and (max-width: 899px) {
-  .Buttons {
-    width: 100%;
-    height: 59px;
-    display: flex;
-  }
-}
 
-@media screen and (min-width: 900px) {
-  .Buttons {
-    width: 100%;
-    height: 73px;
-    display: flex;
-  }
-}
-
-@media screen and (max-width: 899px) {
-  .button {
-    display: none;
-    cursor: pointer;
-  }
-}
-
-@media screen and (min-width: 900px) {
-  .button {
-    font-size: 15pt;
-    font-family: Nanumsquare;
-    font-weight: 400;
-    color: black;
-    opacity: 0.7;
-    cursor: pointer;
-  }
-}
 .button:hover {
   opacity: 1;
 }
@@ -253,45 +235,6 @@ export default {
 }
 .left {
   margin-left: 27px;
-}
-
-@media screen and (min-width: 900px) {
-  .right {
-    margin-right: 27px;
-  }
-}
-
-@media screen and (max-width: 899px) {
-  .right {
-    display: none;
-  }
-}
-
-@media screen and (min-width: 900px) {
-  .logo {
-    height: 37px;
-    margin-left: 27px;
-  }
-}
-
-@media screen and (max-width: 899px) {
-  .logo {
-    height: 27px;
-    margin-left: 15px;
-  }
-}
-
-@media screen and (min-width: 900px) {
-  .dropdown {
-    display: none;
-  }
-}
-
-@media screen and (max-width: 899px) {
-  .dropdown {
-    margin-right: 15px;
-    cursor: pointer;
-  }
 }
 
 .bar-container {
@@ -376,5 +319,54 @@ export default {
 
 .singleTapWrapper:first-child {
   border-bottom: 1px solid #ececec;
+}
+@include breakPoint("tablet") {
+  .dropdown,
+  .mobile-right {
+    display: none;
+  }
+}
+@include breakPoint("desktop") {
+  .dropdown,
+  .mobile-right {
+    display: none;
+  }
+}
+
+@include breakPoint("phone") {
+  .sandbox {
+    width: 100%;
+    min-height: 64px;
+    position: fixed;
+    background-color: rgb(255, 255, 255);
+    z-index: 400;
+    display: flex;
+    flex-direction: column;
+  }
+  .Buttons {
+    width: 100%;
+    height: 59px;
+    display: flex;
+  }
+  .button {
+    display: none;
+    cursor: pointer;
+  }
+  .right {
+    display: none;
+  }
+  .logo {
+    height: 27px;
+    margin-left: 15px;
+  }
+  .dropdown {
+    margin-right: 15px;
+    cursor: pointer;
+  }
+  .column {
+    &:last-child {
+      flex: 1.8;
+    }
+  }
 }
 </style>

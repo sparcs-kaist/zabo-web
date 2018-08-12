@@ -22,15 +22,18 @@ export default {
   }
 };
 </script>
-<style lang=''>
+<style lang='scss' scoped>
 #searchBar {
-  min-width: 16em;
+  /* min-width: 16em; */
+  // max-width: 180px;
+  width: 100%;
   height: 35px;
   border: 2px solid #12397d;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   box-sizing: border-box;
+  font-size: $normal-font-size;
 }
 .searchIcon {
   margin-right: 0.25em;
@@ -41,8 +44,17 @@ export default {
   height: 31px;
   text-align: left;
   padding-left: 0.75em;
+  width: 100%;
 }
 .searchInput:focus {
   outline: none;
+}
+@include breakPoint("phone") {
+  #searchBar {
+    height: 30px;
+  }
+  .searchInput {
+    height: 28px;
+  }
 }
 </style>
