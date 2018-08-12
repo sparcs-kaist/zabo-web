@@ -40,12 +40,17 @@ export default {
   },
   created() {
     console.log(this.$router);
-    if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
-      this.$store.dispatch("login", localStorage.getItem("token").slice(5));
+    if (sessionStorage.getItem("mainZaboSeen")) {
+      this.voided = "v-a";
+    } else {
+      sessionStorage.setItem("mainZaboSeen", true);
+    }
+    if (sessionStorage.getItem("token").split(" ")[0] == "ZABO") {
+      this.$store.dispatch("login", sessionStorage.getItem("token").slice(5));
       axios
         .get("api/users/myInfo", {
           headers: {
-            Authorization: localStorage.getItem("token")
+            Authorization: sessionStorage.getItem("token")
           }
         })
         .then(response => {
