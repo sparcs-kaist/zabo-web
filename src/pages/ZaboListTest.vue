@@ -6,9 +6,6 @@
     <span class="category">{{calculatedCategoryList[2]}}</span>
   </div>
   <div class="currentZaboesWrapper" :style="`padding: 0 ${windowWidth > 700 ? (basePosterWrapperHeight/2)-31: 0}px`">
-    <nav class="horizontalNavButton">
-      <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
-    </nav>
     <carousel-3d v-if="windowWidth > 700" id="fakeCarousel1" :inverseScaling="50"  :display="displayNumber" :space="60" :animationSpeed="200" :perspective="0" :width="carouselPosterHeight" :height="basePosterWrapperHeight" :class="['fakeCarouselWrapper', 'fake-left']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
@@ -32,13 +29,16 @@
       </slide>
     </carousel-3d>
     <nav class="horizontalNavButton">
+      <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
+    </nav>
+    <nav class="horizontalNavButton">
       <img @click="categoryright" src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
   </div>
-  <nav class="verticalNavButton">
-      <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_updown" alt="up_arrow">
-      <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_updown" alt="down_arrow">
-  </nav>
+  <!-- <nav class="verticalNavButton">
+  </nav> -->
+  <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_up" alt="up_arrow">
+  <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_down" alt="down_arrow">
   <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
 </div>
 </template>
@@ -143,8 +143,8 @@ export default {
         document.body.clientWidth ||
         document.documentElement.clientWidth ||
         window.innerWidth;
-      this.windowHeight = window.innerHeight;
-      console.log(861, 720);
+      this.windowHeight =
+        document.documentElement.clientHeight || window.innerHeight;
     },
     categoryleft() {
       if (this.currentCategoryIndex === 0) {
@@ -257,7 +257,7 @@ export default {
           this.posterWrapperHeight = 350;
           return 1;
         }
-      } else if (this.windowHeight > 800) {
+      } else if (this.windowHeight > 900) {
         this.basePosterWrapperHeight = 320;
         this.baseCarouselPosterHeight = 464;
         this.displayNumber = 3;
@@ -277,7 +277,7 @@ export default {
           this.posterWrapperHeight = 320;
           return 1;
         }
-      } else if (this.windowHeight > 600) {
+      } else if (this.windowHeight > 750) {
         this.basePosterWrapperHeight = 260;
         this.baseCarouselPosterHeight = 400;
         this.displayNumber = 3;
@@ -289,8 +289,6 @@ export default {
           return 4;
         } else if (this.windowWidth > 1400) {
           this.posterWrapperHeight = 811;
-          this.basePosterWrapperHeight = 260;
-          this.baseCarouselPosterHeight = 400;
           return 3;
         } else if (this.windowWidth > 1000) {
           this.posterWrapperHeight = 531;
@@ -300,23 +298,23 @@ export default {
           return 1;
         }
       } else {
-        this.basePosterWrapperHeight = 180;
-        this.baseCarouselPosterHeight = 270;
+        this.basePosterWrapperHeight = 190;
+        this.baseCarouselPosterHeight = 300;
         this.displayNumber = 3;
         if (this.windowWidth > 2000) {
-          this.posterWrapperHeight = 944;
+          this.posterWrapperHeight = 994;
           return 5;
         } else if (this.windowWidth > 1700) {
-          this.posterWrapperHeight = 753;
+          this.posterWrapperHeight = 793;
           return 4;
         } else if (this.windowWidth > 1400) {
-          this.posterWrapperHeight = 562;
+          this.posterWrapperHeight = 591;
           return 3;
         } else if (this.windowWidth > 1000) {
-          this.posterWrapperHeight = 371;
+          this.posterWrapperHeight = 391;
           return 2;
         } else {
-          this.posterWrapperHeight = 180;
+          this.posterWrapperHeight = 190;
           return 1;
         }
       }
@@ -370,12 +368,12 @@ export default {
     carouselPosterHeight() {
       if (this.windowHeight > 1200) {
         return 520;
-      } else if (this.windowHeight > 800) {
+      } else if (this.windowHeight > 900) {
         return 464;
-      } else if (this.windowHeight > 600) {
+      } else if (this.windowHeight > 750) {
         return 400;
       } else {
-        return 270;
+        return 300;
       }
     }
   },
@@ -383,9 +381,6 @@ export default {
     zaboesExist(val) {
       if (val) {
         window.dispatchEvent(new Event("resize"));
-        setTimeout(function() {
-          window.dispatchEvent(new Event("resize"));
-        }, 1000);
       }
     },
     currentPath(val) {
@@ -412,13 +407,16 @@ export default {
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  overflow: hidden;
   .categoryWrapper {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     padding-top: 20px;
+    @include breakPoint("phone") {
+      padding-top: 0;
+      margin-top: -10px;
+    }
     .category {
       font-size: 24px;
       font-weight: 700;
@@ -432,7 +430,7 @@ export default {
         text-align: right;
         padding-right: 94px;
       }
-      @include breakPoint('phone'){
+      @include breakPoint("phone") {
         font-size: $normal-font-size;
         &:first-child {
           padding-left: 20px;
@@ -455,8 +453,11 @@ export default {
     align-items: center;
     .horizontalNavButton {
       z-index: 200;
+      @include breakPoint("phone") {
+        padding: 0 30px;
+      }
       .keyboard_arrow_leftright {
-        width: 62px;
+        width: 60px;
         height: auto;
         cursor: pointer;
         border-radius: 50%;
@@ -500,10 +501,12 @@ export default {
         .individualPosterWrapper {
           margin-bottom: 11px;
           position: relative;
-          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3), 0px -2px 4px rgba(0, 0, 0, 0.3);
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3),
+            0px -2px 4px rgba(0, 0, 0, 0.3);
           transition: all 0.2s ease-in-out;
           &:hover {
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35), 0px -4px 8px rgba(0, 0, 0, 0.35);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.35),
+              0px -4px 8px rgba(0, 0, 0, 0.35);
           }
           &:last-child {
             margin-bottom: 0;
@@ -515,8 +518,9 @@ export default {
         }
       }
     }
-    #fakeCarousel1, #fakeCarousel2 {
-      position: absolute;
+    #fakeCarousel1,
+    #fakeCarousel2 {
+      position: fixed;
       .carousel-3d-slider .right-1 {
         background-color: #ececec;
         border: none;
@@ -526,32 +530,37 @@ export default {
         border: none;
       }
       .carousel-3d-slider .current {
-        background-color: #fcfcfc;
+        background-color: #fafafa;
         border: none;
       }
     }
   }
-  .verticalNavButton {
-    @include pageDefault();
+  .keyboard_arrow_up {
     position: fixed;
-    top: 120px;
-    padding: 30px 0;
-    @include breakPoint('phone') {
-      top: 106px;
-      padding: 10px 0;
+    left: auto;
+    right: auto;
+    top: 150px;
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+    // z-index: 50;
+    @include breakPoint("phone") {
+      top: 115px;
+      width: 30px;
     }
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    .keyboard_arrow_updown {
-      width: 40px;
-      height: auto;
-      cursor: pointer;
-      z-index: 50;
-      @include breakPoint('phone') {
-        width: 30px;
-      }
+  }
+  .keyboard_arrow_down {
+    position: fixed;
+    left: auto;
+    right: auto;
+    bottom: 98px;
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+    // z-index: 50;
+    @include breakPoint("phone") {
+      bottom: 68px;
+      width: 30px;
     }
   }
 }
