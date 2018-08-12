@@ -7,6 +7,7 @@ import ZaboListTest from "@/pages/ZaboListTest";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
 import UserDetail from "@/pages/UserDetail.vue";
 import ZaboSearch from "@/pages/ZaboSearch.vue";
+import SearchEmpty from "@/pages/SearchEmpty.vue";
 import LoginCallback from "@/pages/LoginCallback.vue";
 import CodeOfConduct from "@/pages/CodeOfConduct.vue";
 import Credit from "@/pages/Credit.vue";
@@ -51,6 +52,11 @@ export default new Router({
         console.log("Entering User", to.params.search);
         next();
       }
+    },
+    {
+      path: "/search/",
+      name: "SearchEmpty",
+      component: SearchEmpty
     },
     {
       path: "/login/:email",
