@@ -353,19 +353,19 @@ export default {
           padding-bottom: 30px;
           padding-right: 30px;
           .editIcon {
-            font-size: 38px;
+            font-size: $biggest-font-size;
             color: white;
             position: fixed;
-            top: 30px;
-            right: 65px;
+            top: 45px;
+            right: 50px;
             cursor: pointer;
           }
           .closeIcon {
-            font-size: 40px;
+            font-size: $biggest-font-size;
             color: white;
             position: fixed;
-            top: 30px;
-            right: 20px;
+            top: 45px;
+            right: 15px;
             cursor: pointer;
           }
         }
@@ -375,13 +375,13 @@ export default {
           flex-direction: column;
           .heading {
             color: rgb(255, 255, 255);
-            font-size: 3.8em;
+            font-size: $max-font-size;
             font-weight: bold;
             letter-spacing: 0.01em;
             margin: 0;
             text-align: left;
             @include breakPoint("phone") {
-              font-size: $small-max-font-size;
+              font-size: $biggest-font-size;
             }
           }
           .subheading {
@@ -392,6 +392,11 @@ export default {
             margin-bottom: 20px;
             text-align: left;
           }
+          @include breakPoint("phone") {
+            .subheading {
+              font-size: $small-font-size;
+            }
+          }
           .buttonWrapper {
             width: 100%;
             display: flex;
@@ -400,7 +405,7 @@ export default {
             justify-content: flex-start;
             .buttonTap {
               cursor: pointer;
-              font-size: 1.25em;
+              font-size: $h1-font-size;
               font-weight: bold;
               margin-right: 16px;
               padding: 11px 38px 10px 38px;
@@ -408,7 +413,7 @@ export default {
               background-color: rgb(18, 57, 125);
               color: white;
               @include breakPoint("phone") {
-                font-size: $h2-font-size;
+                font-size: $small-font-size;
                 padding: 11px 10px 10px 10px;
                 font-weight: $normal-font-weight;
               }
@@ -417,13 +422,19 @@ export default {
               background-color: #ea4335;
             }
             .favoriteIcon {
-              font-size: 2em;
+              font-size: $biggest-font-size;
+              @include breakPoint("phone") {
+                font-size: $big-font-size;
+              }
             }
             .likeCount {
-              font-size: 2em;
-              font-weight: 700;
+              font-size: $biggest-font-size;
+              font-weight: $big-font-weight;
               color: white;
               margin-left: 0.25em;
+              @include breakPoint("phone") {
+                font-size: $big-font-size;
+              }
             }
           }
           .navbar {
@@ -438,7 +449,10 @@ export default {
               color: rgb(220, 220, 220);
               cursor: pointer;
               margin: 0 16px 0 0;
-              font-size: 1.6em;
+              font-size: $biggest-font-size;
+              @include breakPoint("phone") {
+                font-size: $h1-font-size;
+              }
             }
           }
         }
@@ -477,13 +491,19 @@ export default {
                 width: 100%;
               }
               .timeSlotTitle {
-                font-size: 20px;
-                font-weight: 700;
+                font-size: $h1-font-size;
+                font-weight: $big-font-weight;
                 margin-right: 8px;
               }
               .timeSlotContent {
-                font-size: 20px;
-                font-weight: 500;
+                font-size: $h1-font-size;
+                font-weight: $normal-font-weight;
+              }
+              @include breakPoint("phone") {
+                .timeSlotTitle,
+                .timeSlotContent {
+                  font-size: $normal-font-size;
+                }
               }
             }
           }
