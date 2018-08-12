@@ -13,8 +13,8 @@
     <carousel-3d v-if="zaboesExist" id="mainCarousel" :inverseScaling="50"  :display="displayNumber" :space="60" :animationSpeed="200" :perspective="0" :width="carouselPosterHeight" :height="posterWrapperHeight" class="carouselWrapper">
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
-          <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper" :style="`width: ${baseCarouselPosterHeight}px; height: ${basePosterWrapperHeight}px;`">
-            <img class="poster" :style="`top: -${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; left: ${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; width: ${basePosterWrapperHeight}px; height: ${baseCarouselPosterHeight}px; transform: rotate(90deg); transform-origin: 50% 50%;`" :src="zabo.posters[0].image_thumbnail">
+          <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper" :style="`width: ${baseCarouselPosterHeight}px; min-height: ${basePosterWrapperHeight}px;`">
+            <img class="poster" :style="`top: -${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; left: ${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; width: ${basePosterWrapperHeight}px; min-height: ${baseCarouselPosterHeight}px; transform: rotate(90deg); transform-origin: 50% 50%;`" :src="zabo.posters[0].image_thumbnail">
           </div>
         </div>
       </slide>
@@ -469,7 +469,6 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
