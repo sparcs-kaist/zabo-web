@@ -219,6 +219,11 @@ export default {
         .getElementById("mainCarousel")
         .getElementsByClassName("right-1")[0]
         .click();
+    },
+    escEvent() {
+      if (event.which == 27) {
+        this.closeModal();
+      }
     }
   },
   components: {
@@ -408,10 +413,12 @@ export default {
     currentPath(val) {
       if (val == "/") {
         console.log(this.currentPath);
+        window.removeEventListener("keyup", this.escEvent);
         window.addEventListener("keyup", this.keyup);
       } else {
         console.log(val);
         window.removeEventListener("keyup", this.keyup);
+        window.addEventListener("keyup", this.escEvent);
       }
     }
   }

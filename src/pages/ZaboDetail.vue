@@ -136,6 +136,7 @@ export default {
   },
   mounted() {
     this.zabo_id = this.$route.params.zabo_id;
+    window.addEventListener("keyup", this.escEvent);
     axios({
       method: "get",
       url: `api/zaboes/${this.zabo_id}/`,
@@ -179,6 +180,9 @@ export default {
       .catch(err => {
         console.log(err);
       });
+  },
+  beforeDestroy() {
+    window.removeEventListener("keyup", this.escEvent);
   },
   methods: {
     changePosterNumber(direction) {
@@ -281,6 +285,11 @@ export default {
           this.isLiked = true;
           this.likeCount += 1;
         });
+    },
+    escEvent() {
+      if (event.which == 27) {
+        this.closeModal();
+      }
     }
   }
 };
