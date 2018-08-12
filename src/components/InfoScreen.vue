@@ -1,6 +1,11 @@
 <template>
   <div class="infoScreen">
     <div class="description">
+      <div class="userWrapper">
+        <span class="userContent">작성자 :</span>
+        <img :src="author.profile_image" class="profile_image"/>
+        <span class="userContent">{{author.nickName}}</span>
+      </div>
       <h1 class="header">카테고리</h1>
       <p class="content">{{this.computedCategory}}</p>
       <h1 class="header">결제 여부</h1>
@@ -17,7 +22,7 @@
 
 <script>
 export default {
-  props: ["info", "category", "payment"],
+  props: ["info", "category", "payment", "author"],
   data() {
     return {
       seeMore: false
@@ -60,27 +65,66 @@ export default {
 };
 </script>
 
-<style scoped>
-.description {
-  color: #fff;
-  font-size: 1.125em;
-  text-align: left;
-}
+<style scoped lang='scss'>
 .infoScreen {
-  /* height: 100%; */
   width: 100%;
-}
-.header {
-  font-size: 1.5em;
-  margin-bottom: 0.125em;
-}
-.content {
-  font-size: 1.125em;
-  margin-bottom: 1em;
-}
-
-.more {
-  color: rgb(140, 140, 140);
-  cursor: pointer;
+  .description {
+    color: #fff;
+    font-size: $normal-font-size;
+    text-align: left;
+    font-weight: $normal-font-weight;
+    .userWrapper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      .profile_image {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+      }
+      .userContent {
+        font-size: $h1-font-size;
+        font-weight: $big-font-weight;
+        margin-left: 8px;
+        &:first-child {
+          margin-left: 0;
+          margin-right: 8px;
+          font-weight: $normal-font-weight;
+        }
+      }
+    }
+    .header {
+      font-size: $big-font-size;
+      margin-bottom: 5px;
+    }
+    .content {
+      font-size: $normal-font-size;
+      margin-bottom: 15px;
+      .more {
+        color: rgb(140, 140, 140);
+        cursor: pointer;
+      }
+    }
+  }
+  @include breakPoint("phone") {
+    .description {
+      font-size: $h2-font-size;
+      .userWrapper {
+        .profile_image {
+          width: 25px;
+          height: 25px;
+        }
+        .userContent {
+          font-size: $normal-font-size;
+        }
+      }
+      .header {
+        font-size: $normal-font-size;
+      }
+      .content {
+        font-size: $h2-font-size;
+      }
+    }
+  }
 }
 </style>
