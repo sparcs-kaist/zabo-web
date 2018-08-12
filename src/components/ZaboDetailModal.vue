@@ -26,14 +26,14 @@
           <div class="bodyWrapper" v-show="toDisplay === 0">
             <info-screen :info="this.content" :payment="payment" :category="category" />
             <div class="mobileImageWrapper">
-              <div v-if="posters != []" class="zaboImageWrapper">
+              <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
                 <img :src="currentPoster" class="zaboImage"/>
                 <div class="arrowIconWrapper">
                   <div class="leftIconWrapper">
-                    <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+                    <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
                   </div>
                   <div class="rightIconWrapper">
-                    <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+                    <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
                   </div>
                 </div>
               </div>
@@ -53,14 +53,14 @@
           </div>
         </div>
         <div class="column">
-          <div v-if="posters != []" class="zaboImageWrapper">
+          <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
             <img :src="currentPoster" class="zaboImage"/>
             <div class="arrowIconWrapper">
               <div class="leftIconWrapper">
-                <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+                <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
               </div>
               <div class="rightIconWrapper">
-                <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+                <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
               </div>
             </div>
           </div>
@@ -70,6 +70,7 @@
       </div>
       <div class="coverImage"></div>
     </div>
+    <poster-modal @modalClose="posterModalHandler" v-if="posterModalState" :posters="posters" :currentIndex="currentPosterNumber"></poster-modal>
   </div>
 </template>
 
@@ -78,6 +79,7 @@ import axios from "@/axios-auth";
 import InfoScreen from "@/components/InfoScreen";
 import InputField from "@/components/InputField";
 import ReviewScreen from "@/components/ReviewScreen";
+import PosterModal from "@/components/PosterModal";
 
 export default {
   data() {
@@ -100,13 +102,15 @@ export default {
       deadline: "",
       link_url: "",
       posters: [],
-      currentPosterNumber: 0
+      currentPosterNumber: 0,
+      posterModalState: false
     };
   },
   components: {
     InfoScreen,
     InputField,
-    ReviewScreen
+    ReviewScreen,
+    PosterModal
   },
   props: ["zaboId", "modalZaboData"],
   computed: {
@@ -239,6 +243,10 @@ export default {
           this.isLiked = true;
           this.likeCount += 1;
         });
+    },
+    posterModalHandler() {
+      this.posterModalState = !this.posterModalState;
+      console.log(this.posterModalState);
     }
   },
   mounted() {
@@ -307,18 +315,10 @@ export default {
 .hide {
   position: fixed;
   z-index: 499;
-  top: 78px;
-  bottom: 68px;
-  left: 12.5%;
-  right: 12.5%;
-  border-radius: 3px;
-  @include breakPoint("phone") {
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    border-radius: 0;
-  }
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   overflow: hidden;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
   .main {
@@ -506,8 +506,7 @@ export default {
             }
             .zaboImageWrapper {
               width: 100%;
-              max-height: 500px;
-              max-width: 600px;
+              cursor: pointer;
               .zaboImage {
                 width: 100%;
                 height: auto;
@@ -524,12 +523,14 @@ export default {
                 .leftIconWrapper {
                   flex: 1;
                   display: flex;
-                  justify-content: left;
+                  justify-content: flex-start;
+                  z-index: 800;
                 }
-                .righttIconWrapper {
+                .rightIconWrapper {
                   flex: 1;
                   display: flex;
-                  justify-content: right;
+                  justify-content: flex-end;
+                  z-index: 800;
                 }
               }
             }
@@ -547,8 +548,7 @@ export default {
         }
         .zaboImageWrapper {
           width: 100%;
-          max-height: 500px;
-          max-width: 600px;
+          cursor: pointer;
           .zaboImage {
             width: 100%;
             height: auto;
@@ -561,16 +561,18 @@ export default {
             right: 0;
             display: flex;
             align-items: center;
-            padding: 30px;
+            padding: 10px;
             .leftIconWrapper {
               flex: 1;
               display: flex;
-              justify-content: left;
+              justify-content: flex-start;
+              z-index: 800;
             }
-            .righttIconWrapper {
+            .rightIconWrapper {
               flex: 1;
               display: flex;
-              justify-content: right;
+              justify-content: flex-end;
+              z-index: 800;
             }
           }
         }

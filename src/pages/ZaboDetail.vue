@@ -24,16 +24,16 @@
         <div class="bodyWrapper" v-show="toDisplay === 0">
           <info-screen :info="this.content" :category="category" :payment="payment" />
           <div class="mobileImageWrapper">
-            <div v-if="posters != []" class="zaboImageWrapper">
-              <img :src="currentPoster" class="zaboImage"/>
+            <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
               <div class="arrowIconWrapper">
                 <div class="leftIconWrapper">
-                  <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+                  <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
                 </div>
                 <div class="rightIconWrapper">
-                  <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+                  <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
                 </div>
               </div>
+              <img :src="currentPoster" class="zaboImage"/>
             </div>
           </div>
         </div>
@@ -51,22 +51,23 @@
         </div>
       </div>
       <div class="column">
-        <div v-if="posters != []" class="zaboImageWrapper">
-          <img :src="currentPoster" class="zaboImage"/>
+        <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
           <div class="arrowIconWrapper">
             <div class="leftIconWrapper">
-              <v-icon v-show="currentPosterNumber != 0" x-large @click="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
+              <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
             </div>
             <div class="rightIconWrapper">
-              <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+              <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
             </div>
           </div>
+          <img :src="currentPoster" class="zaboImage"/>
         </div>
         <v-icon @click="closeModal" class="closeIcon">close</v-icon>
         <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
     </div>
     <div class="coverImage"></div>
+    <poster-modal @modalClose="posterModalHandler" v-if="posterModalState" :posters="posters" :currentIndex="currentPosterNumber"></poster-modal>
   </div>
 </template>
 
@@ -75,6 +76,7 @@ import axios from "@/axios-auth";
 import InfoScreen from "@/components/InfoScreen";
 import InputField from "@/components/InputField";
 import ReviewScreen from "@/components/ReviewScreen";
+import PosterModal from "@/components/PosterModal";
 
 export default {
   data() {
@@ -97,13 +99,15 @@ export default {
       authorId: null,
       deadline: "",
       posters: [],
-      currentPosterNumber: 0
+      currentPosterNumber: 0,
+      posterModalState: false
     };
   },
   components: {
     InfoScreen,
     InputField,
-    ReviewScreen
+    ReviewScreen,
+    PosterModal
   },
   computed: {
     loggedInState() {
@@ -194,6 +198,7 @@ export default {
       ) {
         this.currentPosterNumber += 1;
       }
+      this.posterModalState = false;
     },
     closeModal() {
       this.$router.push({ name: "ZaboListDetailAdded" });
@@ -290,6 +295,10 @@ export default {
       if (event.which == 27) {
         this.closeModal();
       }
+    },
+    posterModalHandler() {
+      this.posterModalState = !this.posterModalState;
+      console.log(this.posterModalState);
     }
   }
 };
@@ -304,11 +313,6 @@ export default {
   right: 0;
   overflow: hidden;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
-  @include breakPoint("phone") {
-    top: 0px;
-    left: 0;
-    right: 0;
-  }
   .main {
     display: flex;
     position: absolute;
@@ -324,11 +328,11 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      flex: 1;
       &:first-child {
         padding-top: 60px;
         padding-left: 40px;
         padding-bottom: 40px;
+        flex: 1;
         @include breakPoint("desktop") {
           .editIcon,
           .closeIcon {
@@ -495,8 +499,9 @@ export default {
             }
             .zaboImageWrapper {
               width: 100%;
-              max-height: 500px;
-              max-width: 600px;
+              height: 100%;
+              cursor: pointer;
+              position: relative;
               .zaboImage {
                 width: 100%;
                 height: auto;
@@ -513,12 +518,14 @@ export default {
                 .leftIconWrapper {
                   flex: 1;
                   display: flex;
-                  justify-content: left;
+                  justify-content: flex-start;
+                  z-index: 800;
                 }
-                .righttIconWrapper {
+                .rightIconWrapper {
                   flex: 1;
                   display: flex;
-                  justify-content: right;
+                  justify-content: flex-end;
+                  z-index: 800;
                 }
               }
             }
@@ -536,8 +543,8 @@ export default {
         }
         .zaboImageWrapper {
           width: 100%;
-          max-height: 500px;
-          max-width: 600px;
+          position: relative;
+          cursor: pointer;
           .zaboImage {
             width: 100%;
             height: auto;
@@ -550,16 +557,18 @@ export default {
             right: 0;
             display: flex;
             align-items: center;
-            padding: 30px;
+            padding: 10px;
             .leftIconWrapper {
               flex: 1;
               display: flex;
-              justify-content: left;
+              justify-content: flex-start;
+              z-index: 800;
             }
-            .righttIconWrapper {
+            .rightIconWrapper {
               flex: 1;
               display: flex;
-              justify-content: right;
+              justify-content: flex-end;
+              z-index: 800;
             }
           }
         }
