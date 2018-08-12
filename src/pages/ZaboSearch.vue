@@ -121,7 +121,7 @@ export default {
         methods: "get",
         url: `/api/users/?search=${this.$route.params.search}`,
         headers: {
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         }
       })
         .then(response => {
@@ -160,13 +160,13 @@ export default {
       this.$router.push({ name: "UserDetail", params: { nickName: nickName } });
     },
     followUser(nickName, index) {
-      if (localStorage.getItem("token")) {
-        if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
+      if (sessionStorage.getItem("token")) {
+        if (sessionStorage.getItem("token").split(" ")[0] == "ZABO") {
           axios({
             url: "/api/users/followOther/",
             method: "post",
             headers: {
-              Authorization: localStorage.getItem("token")
+              Authorization: sessionStorage.getItem("token")
             },
             data: {
               nickname: nickName
@@ -192,13 +192,13 @@ export default {
       }
     },
     unfollowUser(nickName, index) {
-      if (localStorage.getItem("token")) {
-        if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
+      if (sessionStorage.getItem("token")) {
+        if (sessionStorage.getItem("token").split(" ")[0] == "ZABO") {
           axios({
             url: "/api/users/unfollowOther/",
             method: "post",
             headers: {
-              Authorization: localStorage.getItem("token")
+              Authorization: sessionStorage.getItem("token")
             },
             data: {
               nickname: nickName

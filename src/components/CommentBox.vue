@@ -79,7 +79,7 @@ export default {
         },
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         }
       })
         .then(response => {
@@ -95,7 +95,7 @@ export default {
         method: "DELETE",
         url: `/api/comments/${this.id}/`,
         headers: {
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         }
       }).then(res => {
         if (res.status == 204) {
@@ -110,7 +110,7 @@ export default {
         url: `/api/comments/${this.id}/`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         },
         data: {
           content: this.newComment,
@@ -186,9 +186,9 @@ export default {
       min-width: 30px;
       max-width: 30px;
     }
-    @include breakPoint('phone') {
+    @include breakPoint("phone") {
       font-size: $h2-font-size;
-      .pic{
+      .pic {
         min-width: 25px;
         max-width: 25px;
         min-height: 25px;

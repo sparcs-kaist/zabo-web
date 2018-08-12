@@ -308,7 +308,7 @@ export default {
           url: "api/zaboes/",
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: localStorage.getItem("token")
+            Authorization: sessionStorage.getItem("token")
           },
           data: formData
         })
@@ -334,9 +334,9 @@ export default {
     },
     zaboScheduleDelete(index) {
       let newScheduleDates = [];
-      for (let i=0; i < this.scheduleDates.length; i++) {
+      for (let i = 0; i < this.scheduleDates.length; i++) {
         if (i != index) {
-          newScheduleDates.push(this.scheduleDates[i])
+          newScheduleDates.push(this.scheduleDates[i]);
         }
       }
       console.log(newScheduleDates);

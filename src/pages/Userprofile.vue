@@ -155,7 +155,7 @@ export default {
         url: "/api/users/followOther/",
         method: "post",
         headers: {
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         },
         data: {
           nickname: nickName
@@ -178,7 +178,7 @@ export default {
         url: "/api/users/unfollowOther/",
         method: "post",
         headers: {
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         },
         data: {
           nickname: nickName
@@ -231,11 +231,11 @@ export default {
     }
   },
   created() {
-    if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
+    if (sessionStorage.getItem("token").split(" ")[0] == "ZABO") {
       axios
         .get("/api/users/myInfo", {
           headers: {
-            Authorization: localStorage.getItem("token")
+            Authorization: sessionStorage.getItem("token")
           }
         })
         .then(response => {
@@ -257,7 +257,7 @@ export default {
     axios
       .get("/api/zaboes/created/", {
         headers: {
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         }
       })
       .then(res => {
@@ -270,10 +270,10 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.totalWrapper{
+.totalWrapper {
   @include marginPage();
   top: 0;
-  @include breakPoint('phone') {
+  @include breakPoint("phone") {
     left: 5%;
     right: 5%;
   }
@@ -288,7 +288,7 @@ export default {
       font-family: Nanumsquare;
       font-weight: 900;
       margin-bottom: 20px;
-      @include breakPoint('phone') {
+      @include breakPoint("phone") {
         font-size: $big-font-size;
       }
     }
@@ -304,7 +304,7 @@ export default {
       font-weight: 800;
       padding-top: 10px;
       // height: 54px;
-      @include breakPoint('phone') {
+      @include breakPoint("phone") {
         font-size: $big-font-size;
       }
     }
@@ -337,10 +337,10 @@ export default {
     .tabsTitleWrapper {
       margin-top: 20px;
       margin-bottom: 20px;
-      .tabTitle{
+      .tabTitle {
         font-size: $big-font-size;
         font-weight: 800;
-        @include breakPoint('phone') {
+        @include breakPoint("phone") {
           font-size: $normal-font-size;
         }
       }
@@ -429,7 +429,7 @@ export default {
             color: white;
             margin-top: 1em;
           }
-          @include breakPoint('phone') {
+          @include breakPoint("phone") {
             width: 45%;
             .userInfoWrapper {
               .userImage {

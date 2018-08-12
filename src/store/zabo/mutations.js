@@ -133,7 +133,7 @@ const mutations = {
     } = state;
     state.loggedInState = false;
     state.currentUser = {};
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     window.location = `http://ssal.sparcs.org:16135/api/logout/?email=${email}`;
   }
 };

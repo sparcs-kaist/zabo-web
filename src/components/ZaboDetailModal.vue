@@ -162,7 +162,7 @@ export default {
         },
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         }
       })
         .then(response => {
@@ -195,7 +195,7 @@ export default {
           zabo: this.zabo_id
         },
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
           "Content-Type": "application/json"
         }
       })
@@ -222,7 +222,7 @@ export default {
           zabo: this.zabo_id
         },
         headers: {
-          Authorization: localStorage.getItem("token"),
+          Authorization: sessionStorage.getItem("token"),
           "Content-Type": "application/json"
         }
       })
@@ -265,7 +265,7 @@ export default {
       method: "get",
       url: `api/zaboes/${this.zabodetailId}/`,
       headers: {
-        Authorization: localStorage.getItem("token")
+        Authorization: sessionStorage.getItem("token")
       }
     })
       .then(response => {

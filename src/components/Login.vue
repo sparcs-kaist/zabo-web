@@ -143,7 +143,7 @@ export default {
         .then(response => {
           console.log(response.status);
           if (response.status == 200) {
-            localStorage.setItem("token", `ZABO ${response.data.token}`);
+            sessionStorage.setItem("token", `ZABO ${response.data.token}`);
             this.$store.dispatch("login", response.data.token);
             return response.status;
           } else if (response.status == 401) {
@@ -156,7 +156,7 @@ export default {
             axios("api/users/myInfo/", {
               method: "GET",
               headers: {
-                Authorization: localStorage.getItem("token")
+                Authorization: sessionStorage.getItem("token")
               }
             })
               .then(response => {

@@ -2,18 +2,18 @@ import axios from "@/axios-auth";
 import * as types from "@/store/mutation-types";
 
 const actions = {
-  login({commit, dispatch, state}, payload) {
+  login({ commit, dispatch, state }, payload) {
     axios({
-      url: '/api-token-verify/',
-      method: 'post',
+      url: "/api-token-verify/",
+      method: "post",
       data: {
         token: payload
       }
     }).then(res => {
       if (res.status == 200) {
-        commit("LOGIN")
+        commit("LOGIN");
       }
-    })
+    });
   },
   zaboesList({ commit, state }, payload) {
     let method = "";
@@ -170,14 +170,14 @@ const actions = {
       method: "PATCH",
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: localStorage.getItem("token")
+        Authorization: sessionStorage.getItem("token")
       },
       data: formData
     }).then(function(response) {
       axios("api/users/myInfo", {
         method: "GET",
         headers: {
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         }
       })
         .then(function(response) {
@@ -192,7 +192,7 @@ const actions = {
     axios
       .get("api/notifications/", {
         headers: {
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         }
       })
       .then(res => {

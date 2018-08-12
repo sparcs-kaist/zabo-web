@@ -402,7 +402,7 @@ export default {
           url: `/api/zaboes/${this.zabo_id}/`,
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: localStorage.getItem("token")
+            Authorization: sessionStorage.getItem("token")
           },
           data: formData
         })
@@ -424,7 +424,7 @@ export default {
         method: "DELETE",
         url: `/api/zaboes/${this.zabo_id}/`,
         headers: {
-          Authorization: localStorage.getItem("token")
+          Authorization: sessionStorage.getItem("token")
         }
       }).then(res => {
         if (res.status == 204) {

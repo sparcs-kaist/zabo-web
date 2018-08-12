@@ -9,7 +9,7 @@ import axios from "@/axios-auth";
 export default {
   created() {
     console.log(this.$route.params.email);
-    if (localStorage.getItem("token")) {
+    if (sessionStorage.getItem("token")) {
       this.$router.push({ name: "ZaboListDetailAdded" });
     } else {
       axios({
@@ -21,7 +21,7 @@ export default {
         }
       }).then(res => {
         console.log(res);
-        localStorage.setItem("token", "ZABO " + res.data.token);
+        sessionStorage.setItem("token", "ZABO " + res.data.token);
         window.location.reload();
       });
     }
