@@ -169,7 +169,7 @@ export default {
   background-color: white;
   .whole {
     width: 100%;
-    height: 1000px;
+    // height: 1000px;
     display: flex;
     /* justify-content: center; */
     flex-direction: column;
@@ -198,7 +198,7 @@ export default {
       position: relative;
       margin-top: 22px;
       margin-right: auto;
-      @include breakPoint('phone') {
+      @include breakPoint("phone") {
         font-size: $h1-font-size;
       }
     }
@@ -208,7 +208,7 @@ export default {
       flex-direction: column;
       .small-col-wrapper {
         display: flex;
-        @include breakPoint('phone') {
+        @include breakPoint("phone") {
           flex-direction: column;
         }
         width: 100%;
@@ -219,7 +219,7 @@ export default {
           .info-label {
             font-family: Nanumsquare;
             font-size: $big-font-size;
-            @include breakPoint('phone') {
+            @include breakPoint("phone") {
               font-size: $normal-font-size;
             }
           }

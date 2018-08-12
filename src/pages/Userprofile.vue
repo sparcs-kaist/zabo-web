@@ -199,6 +199,7 @@ export default {
     }
   },
   mounted() {
+    window.scrollTo(0, 0);
     setTimeout(() => {
       this.new_first_name = this.$store.getters.getFirstName;
       this.new_last_name = this.$store.getters.getLastName;
