@@ -53,6 +53,11 @@ export default {
       &[placeholder]:empty:focus:before {
         content: "";
       }
+      @include breakPoint("phone") {
+        height: 30px;
+        font-size: $small-font-size;
+        padding-left: 10px;
+      }
     }
     .smallTextBox {
       height: 35px;
@@ -70,6 +75,13 @@ export default {
       padding: 0 1em;
       color: white;
       font-weight: bold;
+      @include breakPoint("phone") {
+        height: 30px;
+        font-size: $small-font-size;
+        font-weight: $normal-font-weight;
+        padding: 0 4px;
+        border: 2px solid white;
+      }
     }
     .smallButton {
       height: 35px;
