@@ -312,7 +312,7 @@ export default {
   left: 12.5%;
   right: 12.5%;
   border-radius: 3px;
-  @include breakPoint('phone') {
+  @include breakPoint("phone") {
     top: 0;
     bottom: 0;
     left: 0;
@@ -341,7 +341,19 @@ export default {
         padding-top: 60px;
         padding-left: 40px;
         padding-bottom: 40px;
-        @include breakPoint('phone') {
+        @include breakPoint("desktop") {
+          .editIcon,
+          .closeIcon {
+            display: none;
+          }
+        }
+        @include breakPoint("tablet") {
+          .editIcon,
+          .closeIcon {
+            display: none;
+          }
+        }
+        @include breakPoint("phone") {
           padding-top: 40px;
           padding-left: 30px;
           padding-bottom: 30px;
@@ -370,7 +382,7 @@ export default {
           .heading {
             color: rgb(255, 255, 255);
             font-size: $max-font-size;
-            @include breakPoint('phone') {
+            @include breakPoint("phone") {
               font-size: $small-max-font-size;
             }
             font-weight: bold;
@@ -401,7 +413,7 @@ export default {
               display: flex;
               background-color: rgb(18, 57, 125);
               color: white;
-              @include breakPoint('phone') {
+              @include breakPoint("phone") {
                 font-size: $h2-font-size;
                 padding: 11px 10px 10px 10px;
               }
@@ -444,7 +456,7 @@ export default {
           overflow-y: scroll;
           overflow-x: hidden;
           @include scrollBarLight(small);
-          @include breakPoint('phone') {
+          @include breakPoint("phone") {
             padding-right: 20px;
           }
           .timeSlotWrapper {
@@ -463,7 +475,7 @@ export default {
               justify-content: flex-start;
               align-items: center;
               width: 50%;
-              @include breakPoint('phone') {
+              @include breakPoint("phone") {
                 width: 100%;
               }
               &:last-child {
@@ -486,10 +498,10 @@ export default {
             width: 100%;
             padding: 20px 0;
             position: relative;
-            @include breakPoint('tablet') {
+            @include breakPoint("tablet") {
               display: none;
             }
-            @include breakPoint('desktop') {
+            @include breakPoint("desktop") {
               display: none;
             }
             .zaboImageWrapper {
@@ -530,7 +542,7 @@ export default {
         width: 40%;
         padding: 20px 20px;
         position: relative;
-        @include breakPoint('phone') {
+        @include breakPoint("phone") {
           display: none;
         }
         .zaboImageWrapper {

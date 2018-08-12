@@ -4,9 +4,9 @@
       <component :is="voided" @closeintro="closeintro"></component>
     </transition>
     <div>
-      <Header :profileImageLoading="loading" v-show="!loggingIn" @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
+      <Header :profileImageLoading="loading" v-show="!loggingIn && $router.currentRoute.name != 'ZaboDetail'" @logged-in="handleLogin" :loggedInState="loggedInState"></Header>
       <router-view v-show="!loggingIn" :key="$route.name + ($route.params.id || '')"></router-view>
-      <Footer v-show="!loggingIn" />
+      <Footer v-show="!loggingIn  && $router.currentRoute.name != 'ZaboDetail'" />
       <Login v-show="loggingIn" @logged-in="handleLogin"></Login>
     </div>
   </div>
@@ -39,6 +39,7 @@ export default {
     };
   },
   created() {
+    console.log(this.$router);
     if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
       this.$store.dispatch("login", localStorage.getItem("token").slice(5));
       axios

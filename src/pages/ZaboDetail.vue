@@ -19,6 +19,7 @@
             <p @click="selectTab(2)" :class="toDisplay === 2 ? 'selected tab' : 'tab' ">{{$t("리뷰")}}</p>
           </div>
         </div>
+        <v-icon @click="closeModal" class="closeIcon">close</v-icon>
         <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
         <div class="bodyWrapper" v-show="toDisplay === 0">
           <info-screen :info="this.content" :category="category" :payment="payment" />
@@ -61,6 +62,7 @@
             </div>
           </div>
         </div>
+        <v-icon @click="closeModal" class="closeIcon">close</v-icon>
         <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
       </div>
     </div>
@@ -189,6 +191,9 @@ export default {
         this.currentPosterNumber += 1;
       }
     },
+    closeModal() {
+      this.$router.push({ name: "ZaboListDetailAdded" });
+    },
     onSubmitComment() {
       axios({
         method: "post",
@@ -284,18 +289,16 @@ export default {
 <style scoped lang='scss'>
 .hide {
   position: absolute;
-  top: 78px;
-  bottom: 68px;
-  left: 12.5%;
-  right: 12.5%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   overflow: hidden;
-  border-radius: 3px;
   box-shadow: 0px 4px 9px rgba(0, 0, 0, 0.5);
-  @include breakPoint('phone') {
-    top: 64px;
+  @include breakPoint("phone") {
+    top: 0px;
     left: 0;
     right: 0;
-    border-radius: 0;
   }
   .main {
     display: flex;
@@ -317,7 +320,19 @@ export default {
         padding-top: 60px;
         padding-left: 40px;
         padding-bottom: 40px;
-        @include breakPoint('phone') {
+        @include breakPoint("desktop") {
+          .editIcon,
+          .closeIcon {
+            display: none;
+          }
+        }
+        @include breakPoint("tablet") {
+          .editIcon,
+          .closeIcon {
+            display: none;
+          }
+        }
+        @include breakPoint("phone") {
           padding-top: 40px;
           padding-left: 30px;
           padding-bottom: 30px;
@@ -350,7 +365,7 @@ export default {
             letter-spacing: 0.01em;
             margin: 0;
             text-align: left;
-            @include breakPoint('phone') {
+            @include breakPoint("phone") {
               font-size: $small-max-font-size;
             }
           }
@@ -377,7 +392,7 @@ export default {
               display: flex;
               background-color: rgb(18, 57, 125);
               color: white;
-              @include breakPoint('phone') {
+              @include breakPoint("phone") {
                 font-size: $h2-font-size;
                 padding: 11px 10px 10px 10px;
                 font-weight: $normal-font-weight;
@@ -421,7 +436,7 @@ export default {
           overflow-y: scroll;
           overflow-x: hidden;
           @include scrollBarLight(small);
-          @include breakPoint('phone') {
+          @include breakPoint("phone") {
             padding-right: 20px;
           }
           .timeSlotWrapper {
@@ -440,7 +455,7 @@ export default {
               justify-content: flex-start;
               align-items: center;
               width: 50%;
-              @include breakPoint('phone') {
+              @include breakPoint("phone") {
                 width: 100%;
               }
               &:last-child {
@@ -463,10 +478,10 @@ export default {
             width: 100%;
             padding: 20px 0;
             position: relative;
-            @include breakPoint('tablet') {
+            @include breakPoint("tablet") {
               display: none;
             }
-            @include breakPoint('desktop') {
+            @include breakPoint("desktop") {
               display: none;
             }
             .zaboImageWrapper {
@@ -507,7 +522,7 @@ export default {
         align-items: center;
         width: 40%;
         padding: 20px 20px;
-        @include breakPoint('phone') {
+        @include breakPoint("phone") {
           display: none;
         }
         .zaboImageWrapper {
@@ -544,7 +559,15 @@ export default {
           color: white;
           position: absolute;
           top: 30px;
-          right: 30px;
+          right: 65px;
+          cursor: pointer;
+        }
+        .closeIcon {
+          font-size: 40px;
+          color: white;
+          position: absolute;
+          top: 30px;
+          right: 20px;
           cursor: pointer;
         }
       }
