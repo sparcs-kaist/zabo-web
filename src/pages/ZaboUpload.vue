@@ -313,6 +313,7 @@ export default {
           data: formData
         })
           .then(res => {
+            console.log(res)
             if (res.status === 201) {
               this.postState = false;
             }
