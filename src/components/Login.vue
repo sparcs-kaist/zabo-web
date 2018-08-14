@@ -227,7 +227,7 @@ export default {
   right: 0;
   position: fixed;
   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("../assets/ozan-safak-484829-unsplash.jpg");
+    url("../assets/login.jpg");
   background-size: cover;
   z-index: 300;
 }
