@@ -75,7 +75,7 @@ export default {
   width: 100%;
   /* background-colo?: rgba(0, 0, 0, 0.5); */
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../assets/background.jpg") no-repeat center center
+    url("../assets/blurred-background-4.jpg") no-repeat center center
       fixed;
   background-size: cover;
   left: 0;
