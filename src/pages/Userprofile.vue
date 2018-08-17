@@ -50,7 +50,7 @@
           <v-tab-item :key="3">
             <div class="followWrapper">
               <div v-if="followingState != [] && reRender == false" class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
-                <div @click="userDetail(user.nickName)" class="userInfoWrapper">
+                <div @click="userDetail(user.id)" class="userInfoWrapper">
                   <img :src="user.profile_image" class="userImage">
                   <span class="userName">{{user.nickName}}</span>
                 </div>
@@ -194,8 +194,8 @@ export default {
         }
       });
     },
-    userDetail(nickName) {
-      this.$router.push({ name: "UserDetail", params: { nickName: nickName } });
+    userDetail(id) {
+      this.$router.push({ name: "UserDetail", params: { userId: id } });
     }
   },
   mounted() {

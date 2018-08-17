@@ -44,5 +44,9 @@
   "지원 기간이 만료되었습니다.": "Participate Deadline is Expired.",
   "시작": "Start",
   "종료": "End",
-  "내용": "Content"
+  "내용": "Content",
+  "URL": "URL",
+  "URL 포함하기": "Include URL",
+  "참여 기한(데드라인)": "Deadline",
+  "취소": "Cancel"
 }
