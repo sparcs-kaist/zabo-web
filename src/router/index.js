@@ -40,7 +40,7 @@ export default new Router({
       component: ZaboUserprofile
     },
     {
-      path: "/user/detail/:nickName",
+      path: "/user/detail/:userId",
       name: "UserDetail",
       component: UserDetail
     },

@@ -36,8 +36,6 @@
       <img @click="categoryright" src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
   </div>
-  <!-- <nav class="verticalNavButton">
-  </nav> -->
   <img @click="mouseUp" src="@/assets/up_arrow.svg" class="keyboard_arrow_up" alt="up_arrow">
   <img @click="mouseDown" src="@/assets/down_arrow.svg" class="keyboard_arrow_down" alt="down_arrow">
 </div>
@@ -178,9 +176,26 @@ export default {
                 pageSize: 20,
                 method: this.calculatedCategoryList[1]
               });
+              if (
+                document
+                  .getElementById("mainCarousel")
+                  .getElementsByClassName("left-1")[0] == undefined
+              ) {
+                if (
+                  document
+                    .getElementById("mainCarousel")
+                    .getElementsByClassName("right-1")[0] == undefined
+                ) {
+                  document
+                    .getElementById("mainCarousel")
+                    .getElementsByClassName("carousel-3d-slide")[0]
+                    .click();
+                }
+              }
             }
           });
       }
+      this.getWindowWidth();
     },
     categoryright() {
       if (this.currentCategoryIndex === 8) {
@@ -204,8 +219,25 @@ export default {
                 method: this.calculatedCategoryList[1]
               });
             }
+            if (
+              document
+                .getElementById("mainCarousel")
+                .getElementsByClassName("right-1")[0] == undefined
+            ) {
+              if (
+                document
+                  .getElementById("mainCarousel")
+                  .getElementsByClassName("left-1")[0] == undefined
+              ) {
+                document
+                  .getElementById("mainCarousel")
+                  .getElementsByClassName("carousel-3d-slide")[0]
+                  .click();
+              }
+            }
           });
       }
+      this.getWindowWidth();
     },
     zaboDetail(id, nickname, zaboData) {
       if (nickname !== "None") {
@@ -220,16 +252,56 @@ export default {
       window.history.pushState(null, null, [`/`]);
     },
     mouseUp() {
-      document
-        .getElementById("mainCarousel")
-        .getElementsByClassName("left-1")[0]
-        .click();
+      if (
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("left-1")[0]
+      ) {
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("left-1")[0]
+          .click();
+      } else if (
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("right-1")[0]
+      ) {
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("right-1")[0]
+          .click();
+      } else {
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("carousel-3d-slide")[0]
+          .click();
+      }
     },
     mouseDown() {
-      document
-        .getElementById("mainCarousel")
-        .getElementsByClassName("right-1")[0]
-        .click();
+      if (
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("right-1")[0]
+      ) {
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("right-1")[0]
+          .click();
+      } else if (
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("left-1")[0]
+      ) {
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("left-1")[0]
+          .click();
+      } else {
+        document
+          .getElementById("mainCarousel")
+          .getElementsByClassName("carousel-3d-slide")[0]
+          .click();
+      }
     },
     escEvent() {
       if (event.which == 27) {
@@ -251,9 +323,6 @@ export default {
       } else {
         return [];
       }
-    },
-    zaboesPageCount() {
-      return this.$store.getters.zaboesPageCount;
     },
     zaboesRow() {
       if (this.zaboes.length > 0) {

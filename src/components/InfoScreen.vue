@@ -1,7 +1,7 @@
 <template>
   <div class="infoScreen">
     <div class="description">
-      <div class="userWrapper">
+      <div @click="userDetail(author.id)" class="userWrapper">
         <span class="userContent">작성자 :</span>
         <img :src="author.profile_image" class="profile_image"/>
         <span class="userContent">{{author.nickName}}</span>
@@ -60,7 +60,10 @@ export default {
       } else {
         return false;
       }
-    }
+    },
+    userDetail(id) {
+      this.$router.push({ name: "UserDetail", params: { userId: id } });
+    },
   }
 };
 </script>
@@ -77,6 +80,12 @@ export default {
       display: flex;
       align-items: center;
       margin-bottom: 15px;
+      cursor: pointer;
+      &:hover {
+        .profile_image {
+          @include smallBoxShadow();
+        }
+      }
       .profile_image {
         width: 30px;
         height: 30px;

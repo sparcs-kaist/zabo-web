@@ -36,5 +36,17 @@
   "작성": "Write",
   "자보 검색 결과": "Zabo Searched Result",
   "유저 검색 결과": "User Searched Result",
-  "자보가 존재하지 않습니다.": "Zabo Does not Exist"
+  "자보가 존재하지 않습니다.": "Zabo Does not Exist",
+  "유저가 존재하지 않습니다.": "User Does not Exist.",
+  "지원 기간  || ": "Participate Deadline || ",
+  " 까지": "",
+  "링크가 없습니다.": "No Link.",
+  "지원 기간이 만료되었습니다.": "Participate Deadline is Expired.",
+  "시작": "Start",
+  "종료": "End",
+  "내용": "Content",
+  "URL": "URL",
+  "URL 포함하기": "Include URL",
+  "참여 기한(데드라인)": "Deadline",
+  "취소": "Cancel"
 }
