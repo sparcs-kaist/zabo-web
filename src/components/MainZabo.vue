@@ -92,23 +92,29 @@ export default {
     margin-top: 22px;
   }
   .mobileRow {
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
-    @media screen and (min-width: 900px) {
-      .mobile-image {
+    top: 50%;
+    transform: translateY(-50%);
+    @include breakPoint('desktop') {
+      .mobile-image, .participateLink-mobile {
+        display: none;
+      }
+    }
+    @include breakPoint('tablet') {
+      .mobile-image, .participateLink-mobile {
         display: none;
       }
     }
 
-    @media screen and (max-width: 899px) {
+    @include breakPoint('phone') {
       .mobile-image {
         width: 70%;
-        margin-top: 50%;
+        // margin-top: 50%;
       }
-    }
-    @media screen and (max-width: 899px) {
       .participateLink-mobile {
         position: relative;
         text-align: center;
@@ -119,12 +125,6 @@ export default {
         height: 100%;
         padding: 10px;
         margin-top: -15px;
-      }
-    }
-
-    @media screen and (min-width: 900px) {
-      .participateLink-mobile {
-        display: none;
       }
     }
   }
@@ -138,21 +138,18 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    @media screen and (max-width: 899px) {
+    .column {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 999;
+      height: 100vh;
+      width: 50%;
+    }
+    @include breakPoint('phone') {
       .column {
         display: none;
-      }
-    }
-
-    @media screen and (min-width: 900px) {
-      .column {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-end;
-        z-index: 999;
-        height: 100vh;
-        width: 50%;
       }
     }
     .row {
@@ -176,23 +173,29 @@ export default {
               cursor: pointer;
             }
             .heading {
-              font-size: 5em;
+              font-size: $max-font-size;
               font-weight: 900;
             }
             #subheading {
               margin-top: 20px;
-              font-size: 2.4em;
+              font-size: $small-max-font-size;
               margin-bottom: 0.5em;
             }
             .description {
               width: 60%;
-              font-size: 1.25em;
+              font-size: $normal-font-size;
             }
           }
           &:last-child {
             width: 50%;
             align-items: flex-start;
-            @media screen and (min-width: 900px) {
+            @include breakPoint('desktop') {
+              .main-image {
+                min-width: 400px;
+                width: 55%;
+              }
+            }
+            @include breakPoint('tablet') {
               .main-image {
                 min-width: 400px;
                 width: 55%;
@@ -200,7 +203,12 @@ export default {
             }
           }
         }
-        @media screen and (min-width: 900px) {
+        @include breakPoint('tablet') {
+          .icon {
+            font-size: 30pt;
+          }
+        }
+        @include breakPoint('desktop') {
           .icon {
             font-size: 30pt;
           }
@@ -214,15 +222,12 @@ export default {
         align-items: center;
         color: white;
         cursor: pointer;
-        @media screen and (max-width: 899px) {
+        .morebutton {
+          font-size: 18pt;
+        }
+        @include breakPoint('phone') {
           .morebutton {
             font-size: 12pt;
-          }
-        }
-
-        @media screen and (min-width: 900px) {
-          .morebutton {
-            font-size: 18pt;
           }
         }
       }
