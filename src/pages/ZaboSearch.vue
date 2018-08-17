@@ -26,7 +26,7 @@
       ></v-progress-circular>
     <div class="ListWrapper" v-else>
       <div v-if="reRender == false" class="userWrapper" :key="index" v-for="(user, index) in userList">
-        <div @click="userDetail(user.nickName)" class="userInfoWrapper">
+        <div @click="userDetail(user.id)" class="userInfoWrapper">
           <img :src="user.profile_image" class="userImage">
           <span class="userName">{{user.nickName}}</span>
         </div>
@@ -156,8 +156,8 @@ export default {
         this.modalZaboId = id;
       }
     },
-    userDetail(nickName) {
-      this.$router.push({ name: "UserDetail", params: { nickName: nickName } });
+    userDetail(id) {
+      this.$router.push({ name: "UserDetail", params: { userId: id } });
     },
     followUser(nickName, index) {
       if (sessionStorage.getItem("token")) {
