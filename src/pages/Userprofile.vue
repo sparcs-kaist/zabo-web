@@ -412,12 +412,12 @@ export default {
             justify-content: flex-start;
             align-items: center;
             .userImage {
-              width: 45px;
-              height: 45px;
+              width: 40px;
+              height: 40px;
               border-radius: 50%;
             }
             .userName {
-              font-size: $biggest-font-size;
+              font-size: $big-font-size;
               font-weight: 700;
               margin-left: 10px;
             }
