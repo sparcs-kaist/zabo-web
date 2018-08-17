@@ -440,7 +440,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .appWrapper {
   width: 100%;
   padding-top: 78px;
@@ -468,85 +468,6 @@ export default {
   border-radius: 50%;
   margin-left: 10px;
   margin-right: 10px;
-}
-
-@media screen and (max-width: 1200px) {
-  .column {
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  .column:last-child {
-    height: 100%;
-  }
-  .totalFormWrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-  }
-}
-@media screen and (max-width: 1200px) {
-  .zaboUpload {
-    width: 90%;
-  }
-}
-
-@media screen and (min-width: 1200px) and (max-width: 1599px) {
-  .column {
-    flex: 2;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  .column:first-child {
-    height: 100%;
-    margin-right: 89px;
-  }
-  .column:last-child {
-    flex: 1;
-    height: 100%;
-  }
-  .totalFormWrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-}
-
-@media screen and (min-width: 1600px) {
-  .column {
-    flex: 2;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  .column:first-child {
-    height: 100%;
-    margin-right: 89px;
-  }
-  .column:last-child {
-    flex: 1;
-    height: 100%;
-  }
-  .totalFormWrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
 }
 
 .formWrapper {
@@ -594,7 +515,6 @@ export default {
 }
 .singleScheduleWrapper {
   width: 100%;
-  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -606,21 +526,18 @@ export default {
   margin-bottom: 0;
 }
 .cancelIcon {
-  font-size: 2em;
+  font-size: $big-font-size;
   color: black;
 }
 .scheduleTimeWrapper {
   display: flex;
-  /* flex-direction: column; */
   justify-content: flex-start;
   align-items: center;
   flex: 2;
-  height: 37px;
   font-size: 1em;
 }
 .scheduleSingleTime {
   flex: 1;
-  height: 23px;
   font-size: 1.125em;
   display: flex;
   justify-content: flex-start;
@@ -649,7 +566,6 @@ export default {
   font-weight: 700;
 }
 .scheduleContent {
-  flex: 1;
   word-wrap: break-word;
   word-break: break-all;
   height: 37px;
@@ -969,5 +885,149 @@ option {
   padding: 10px;
   text-align: center;
   font-size: 25px;
+}
+@include breakPoint('phone') {
+  .column {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .column:last-child {
+    height: 100%;
+  }
+  .totalFormWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .zaboUpload {
+    width: 90%;
+  }
+  .scheduleTimeWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 1em;
+  }
+  .singleScheduleWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding: 0.5em;
+    margin-bottom: 10px;
+  }
+  .scheduleSingleTime {
+    width: 100%;
+    font-size: 1.125em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .scheduleContent {
+    width: 100%;
+    text-align: center;
+  }
+  .cancelIcon {
+    font-size: $big-font-size;
+  }
+}
+
+@include breakPoint('tablet') {
+  .column {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .column:last-child {
+    height: 100%;
+  }
+  .zaboUpload {
+    width: 90%;
+  }
+  .totalFormWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  .scheduleTimeWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 2;
+    height: 37px;
+    font-size: 1em;
+  }
+  .scheduleSingleTime {
+    flex: 1;
+    height: 23px;
+    font-size: 1.125em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .scheduleContent {
+    flex: 1
+  }
+}
+
+@include breakPoint('desktop') {
+  .column {
+    flex: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .column:first-child {
+    height: 100%;
+    margin-right: 89px;
+  }
+  .column:last-child {
+    flex: 1;
+    height: 100%;
+  }
+  .totalFormWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .scheduleTimeWrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 2;
+    height: 37px;
+    font-size: 1em;
+  }
+  .scheduleSingleTime {
+    flex: 1;
+    height: 23px;
+    font-size: 1.125em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .scheduleContent {
+    flex: 1
+  }
 }
 </style>
