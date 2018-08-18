@@ -21,12 +21,19 @@
             팔로우 하는 유저
           </v-tab>
         </v-tabs>
-        <v-tabs-items class="tabsWrapper" v-if="!loading" v-model="tab">
+        <v-tabs-items class="tabsWrapper" v-if="!loading && !reRender" v-model="tab">
           <v-tab-item :key="1">
-            <profile :valid="valid" :first="first_name" :last="last_name" :image="profile_image"></profile>
+            <other-user-profile :valid="true" :email="email" :nickName="nickName" :gender="gender" :first="first_name" :last="last_name" :image="profile_image"></other-user-profile>
           </v-tab-item>
           <v-tab-item :key="2">
-            <div class="zaboListWrapper">
+            <div v-if="!zaboLoading" class="zaboListWrapper">
+              <div v-if="zaboes.length == 0">업로드한 자보가 존재하지 않습니다.</div>
+              <template v-else>
+                <div class="zaboWrapper" v-for="(zabo,index) in computedZaboes" :key="index">
+                  <img @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :src="zabo.posters[0].image" class="zaboImage">
+                  <span class="zaboTitle">{{zabo.title}}</span>
+                </div>
+              </template>
             </div>
           </v-tab-item>
           <v-tab-item :key="3">
@@ -46,41 +53,25 @@
       </div>
     </v-app>
     <div v-if="modalState" class="zaboModalWrapper">
-      <!-- <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.modalZaboId" v-if="modalState"></zabo-detail-modal> -->
+      <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.modalZaboId" v-if="modalState"></zabo-detail-modal>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "@/axios-auth";
-import Profile from "./Userprofile/Profile";
+import OtherUserProfile from "./Userprofile/OtherUserProfile";
 import ZaboDetailModal from "@/components/ZaboDetailModal";
 import * as types from "@/store/mutation-types";
 
 export default {
   name: "userDetail",
   created() {
-    axios.get(`/api/users/${this.$route.params.userId}/`).then(res => {
-      const {
-        first_name,
-        last_name,
-        gender,
-        joined_date,
-        profile_image,
-        following
-      } = res.data;
-      console.log(res);
-      this.imagesrc = profile_image;
-      this.first_name = first_name;
-      this.last_name = last_name;
-      this.gender = gender;
-      this.joined_date = joined_date;
-      this.following = following;
-      this.loading = false;
-    });
+    this.fetchData();
   },
   components: {
-    profile: Profile
+    OtherUserProfile,
+    ZaboDetailModal
   },
   data() {
     return {
@@ -92,10 +83,15 @@ export default {
       gender: "",
       joined_date: "",
       following: [],
+      zaboes: [],
+      email: "",
+      nickName: "",
       profile_image: null,
       profilePreview: null,
       loading: true,
       modalState: false,
+      zaboLoading: false,
+      reRender: false
     };
   },
   methods: {
@@ -121,8 +117,74 @@ export default {
     },
     closeModal() {
       this.modalState = false;
-      window.history.pushState(null, null, [`/user/detail/${this.$route.params.userId}`]);
+      window.history.pushState(null, null, [
+        `/user/detail/${this.$route.params.userId}`
+      ]);
     },
+    zaboDetail(id, nickname, zaboData) {
+      if (nickname !== "None") {
+        this.modalState = true;
+        this.modalZaboData = zaboData;
+        window.history.pushState(null, null, [`/zabo/${id}`]);
+        this.modalZaboId = id;
+      }
+    },
+    closeModal() {
+      this.modalState = false;
+      window.history.pushState(null, null, [`/`]);
+    },
+    fetchData() {
+      let userId = this.$route.params.userId;
+      this.reRender = true;
+      axios.get(`/api/users/${userId}/`).then(res => {
+        const {
+          first_name,
+          last_name,
+          gender,
+          joined_date,
+          profile_image,
+          following,
+          nickName,
+          email
+        } = res.data;
+        console.log(res);
+        this.imagesrc = profile_image;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.gender = gender;
+        this.joined_date = joined_date;
+        this.following = following;
+        this.nickName = nickName;
+        this.email = email;
+        this.loading = false;
+        this.reRender = false;
+      });
+      axios.get(`/api/zaboes/?author=${userId}`).then(res => {
+        this.zaboes = res.data.data;
+        console.log(this.zaboes, this.zaboes.length);
+        this.zaboLoading = false;
+      });
+    }
+  },
+  computed: {
+    computedZaboes() {
+      let finalZaboes = [];
+      if (this.zaboes != []) {
+        for (let i = 0; i < this.zaboes.length; i++) {
+          if (this.zaboes[i].posters.length > 0) {
+            finalZaboes.push(this.zaboes[i]);
+          }
+        }
+      }
+      return finalZaboes;
+    }
+  },
+  watch: {
+    "$route.params.userId": function(val) {
+      this.loading = true;
+      this.zaboLoading = true;
+      this.fetchData();
+    }
   }
 };
 </script>
