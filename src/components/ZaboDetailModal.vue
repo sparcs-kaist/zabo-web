@@ -53,16 +53,16 @@
           </div>
         </div>
         <div class="column">
-          <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
-            <img :src="currentPoster" class="zaboImage"/>
-            <div class="arrowIconWrapper">
-              <div class="leftIconWrapper">
-                <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
-              </div>
-              <div class="rightIconWrapper">
-                <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
-              </div>
+          <div class="arrowIconWrapper">
+            <div class="leftIconWrapper">
+              <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
             </div>
+            <div class="rightIconWrapper">
+              <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+            </div>
+          </div>
+          <div v-if="posters != []" class="zaboImageWrapper">
+            <img @click="posterModalHandler" :src="currentPoster" class="zaboImage"/>
           </div>
           <v-icon @click="closeModal" class="closeIcon">close</v-icon>
           <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
@@ -573,33 +573,41 @@ export default {
           display: none;
         }
         .zaboImageWrapper {
-          width: 100%;
-          cursor: pointer;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
           .zaboImage {
             width: 100%;
             height: auto;
+            cursor: pointer;
           }
-          .arrowIconWrapper {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+        }
+        .arrowIconWrapper {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          padding: 10px;
+          .leftIconWrapper {
+            flex: 1;
             display: flex;
-            align-items: center;
-            padding: 10px;
-            .leftIconWrapper {
-              flex: 1;
-              display: flex;
-              justify-content: flex-start;
-              z-index: 800;
-            }
-            .rightIconWrapper {
-              flex: 1;
-              display: flex;
-              justify-content: flex-end;
-              z-index: 800;
-            }
+            justify-content: flex-start;
+            z-index: 800;
+          }
+          .rightIconWrapper {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            z-index: 800;
           }
         }
         .editIcon {
