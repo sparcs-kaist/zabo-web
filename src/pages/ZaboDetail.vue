@@ -313,6 +313,7 @@ export default {
           alert("You are not logged In!");
           console.log(err);
           this.likeCount -= 1;
+          this.isLiked = false;
         });
     },
     dislikeZabo() {
