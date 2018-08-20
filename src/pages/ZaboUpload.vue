@@ -170,7 +170,7 @@
   </v-app>
   <div class="postFinished" v-else>
     <span class="postFinishedTitle">자보를 성공적으로 업로드하셨습니다.</span>
-    <a href="http://ssal.sparcs.org:16140/">
+    <a href="http://tong.sparcs.org:16140/">
       <div class="routerLinks">
         {{ $t('페이퍼 생성하러 가기') }}
       </div>
@@ -313,7 +313,7 @@ export default {
           data: formData
         })
           .then(res => {
-            console.log(res)
+            console.log(res);
             if (res.status === 201) {
               this.postState = false;
             }
@@ -887,7 +887,7 @@ option {
   text-align: center;
   font-size: 25px;
 }
-@include breakPoint('phone') {
+@include breakPoint("phone") {
   .column {
     width: 100%;
     position: relative;
@@ -942,7 +942,7 @@ option {
   }
 }
 
-@include breakPoint('tablet') {
+@include breakPoint("tablet") {
   .column {
     width: 100%;
     position: relative;
@@ -982,11 +982,11 @@ option {
     align-items: center;
   }
   .scheduleContent {
-    flex: 1
+    flex: 1;
   }
 }
 
-@include breakPoint('desktop') {
+@include breakPoint("desktop") {
   .column {
     flex: 2;
     position: relative;
@@ -1028,7 +1028,7 @@ option {
     align-items: center;
   }
   .scheduleContent {
-    flex: 1
+    flex: 1;
   }
 }
 </style>

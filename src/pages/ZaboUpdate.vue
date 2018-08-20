@@ -163,7 +163,7 @@
   </v-app>
   <div class="postFinished" v-if="postState == 'EDITED'">
     <span class="postFinishedTitle">자보를 성공적으로 업데이트하셨습니다.</span>
-    <a href="http://ssal.sparcs.org:16135/">
+    <a href="http://tong.sparcs.org:16135/">
       <div class="routerLinks">
         {{ $t('페이퍼 만들러 가기') }}
       </div>

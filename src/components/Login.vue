@@ -177,7 +177,7 @@ export default {
         });
     },
     redirectToBack() {
-      window.location = "http://ssal.sparcs.org:16135/api/login/";
+      window.location = "http://tong.sparcs.org:16135/api/login/";
     },
     register() {
       console.log(
