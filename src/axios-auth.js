@@ -2,7 +2,7 @@ import axios from "axios";
 
 const instance = axios.create({
   // baseURL: "http://ssal.sparcs.org:16133"
-  baseURL: "http://tong.sparcs.org:16135"
+  baseURL: "http://ssal.sparcs.org:16135"
 });
 
 instance.interceptors.request.use(
