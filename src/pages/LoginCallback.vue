@@ -10,7 +10,6 @@ export default {
   created() {
     sessionStorage.setItem("token", "ZABO " + this.$route.params.token);
     window.location.reload();
-    }
   }
 };
 </script>
