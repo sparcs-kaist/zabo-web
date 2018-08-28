@@ -3,7 +3,8 @@
     <div class="description">
       <div @click="userDetail(author.id)" class="userWrapper">
         <span class="userContent">작성자 :</span>
-        <img :src="author.profile_image" class="profile_image"/>
+        <img :src="author.profile_image" v-if="author.profile_image != null" class="profile_image"/>
+        <img src="../assets/default_person.png" v-else class="profile_image"/>
         <span class="userContent">{{author.nickName}}</span>
       </div>
       <h1 class="header">카테고리</h1>
@@ -63,7 +64,7 @@ export default {
     },
     userDetail(id) {
       this.$router.push({ name: "UserDetail", params: { userId: id } });
-    },
+    }
   }
 };
 </script>

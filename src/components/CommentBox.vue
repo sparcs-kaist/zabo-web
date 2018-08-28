@@ -1,7 +1,8 @@
 <template>
   <div class="main">
     <div class="body">
-      <img class="pic" :src="author.profile_image">
+      <img class="pic" :src="author.profile_image" v-if="author.profile_image != null">
+      <img class="pic" src="../assets/default_person.png" v-else/>
       <div class="contentWrapper">
         <span class="name">
           {{ author.nickName }}

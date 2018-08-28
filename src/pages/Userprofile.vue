@@ -7,7 +7,8 @@
           프로필
         </div>
         <div v-if="!edit">
-          <img :src="imagesrc" class="profile-image">
+          <img src="../assets/default_person.png" v-if="imagesrc == null" class="profile-image">
+          <img :src="imagesrc" v-else class="profile-image">
           <p id="name"> {{ first_name + " " + last_name }} </p>
         </div>
         <div v-else style="margin-bottom: -17px;">
@@ -298,6 +299,7 @@ export default {
       width: 100px;
       border-radius: 100px;
       margin-top: 20px;
+      @include smallBoxShadow();
     }
     #name {
       font-family: Nanumsquare;

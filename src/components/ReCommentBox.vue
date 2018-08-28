@@ -1,7 +1,8 @@
 <template>
   <div class="main">
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
-      <img :src="author.profile_image" class="pic">
+      <img class="pic" :src="author.profile_image" v-if="author.profile_image != null">
+      <img class="pic" src="../assets/default_person.png" v-else/>
       <span class="name">
         {{ author.nickName }}
       </span>
