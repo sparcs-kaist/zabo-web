@@ -295,10 +295,12 @@ export default {
         formData.append("apply", selapp);
         formData.append("payment", "F");
         formData.append("category", selcat);
-        formData.append(
-          "timeslots",
-          JSON.stringify(this.computedScheduleDates)
-        );
+        if (this.scheduleDates.length != 0) {
+          formData.append(
+            "timeslots",
+            JSON.stringify(this.computedScheduleDates)
+          );
+        }
         if (this.zaboUrlExist) {
           formData.append("link_url", this.zaboUrl);
         }
@@ -316,6 +318,25 @@ export default {
             console.log(res);
             if (res.status === 201) {
               this.postState = false;
+              this.$store.commit(
+                "CATEGORY_ZABOES_RESET",
+                this.selectedcategory
+              );
+              this.$store
+                .dispatch("zaboesGetPageCount", {
+                  pageSize: 20,
+                  method: this.selectedcategory
+                })
+                .then(res => {
+                  const totalPage = res;
+                  for (var i = 1; i <= totalPage; i++) {
+                    this.$store.dispatch("zaboesList", {
+                      pageNum: i,
+                      pageSize: 20,
+                      method: category
+                    });
+                  }
+                });
             }
           })
           .catch(err => {
@@ -414,21 +435,6 @@ export default {
       }
       if (this.introduction == "") {
         return false;
-      }
-      if (this.scheduleDates.length == 0) {
-        return false;
-      } else {
-        for (let s = 0; s < this.scheduleDates.length; s++) {
-          if (this.scheduleDates[s].content == "") {
-            return false;
-          }
-          if (this.scheduleDates[s].end_time == "") {
-            return false;
-          }
-          if (this.scheduleDates[s].start_time == "") {
-            return false;
-          }
-        }
       }
       if (this.zaboUrlExist) {
         if (this.zaboUrl == "") {
