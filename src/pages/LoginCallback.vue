@@ -8,11 +8,12 @@ import axios from "@/axios-auth";
 
 export default {
   created() {
-    if (sessionStorage.getItem('token').split(' ')[0] == "ZABO")  {
-      this.$router.push({name: "ZaboListDetailAdded"})
+    if (sessionStorage.getItem("token")) {
+      this.$router.push({ name: "ZaboListDetailAdded" });
+    } else {
+      sessionStorage.setItem("token", "ZABO " + this.$route.params.token);
+      window.location.reload();
     }
-    sessionStorage.setItem("token", "ZABO " + this.$route.params.token);
-    window.location.reload();
   }
 };
 </script>
