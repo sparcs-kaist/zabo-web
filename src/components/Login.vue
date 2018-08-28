@@ -107,6 +107,7 @@
 </template>
 <script>
 import axios from "@/axios-auth";
+import { baseURL } from "@/variables.js";
 
 export default {
   data() {
@@ -177,7 +178,7 @@ export default {
         });
     },
     redirectToBack() {
-      window.location = "http://ssal.sparcs.org:16135/api/login/";
+      window.location = baseURL + "/api/login/";
     },
     register() {
       console.log(

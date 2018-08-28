@@ -170,7 +170,7 @@
   </v-app>
   <div class="postFinished" v-else>
     <span class="postFinishedTitle">자보를 성공적으로 업로드하셨습니다.</span>
-    <a href="http://ssal.sparcs.org:16140/">
+    <a href="https://paper.sparcs.org/">
       <div class="routerLinks">
         {{ $t('페이퍼 생성하러 가기') }}
       </div>
