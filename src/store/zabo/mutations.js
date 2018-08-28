@@ -1,4 +1,5 @@
 import * as types from "@/store/mutation-types";
+import { baseURL } from "@/variables.js";
 
 const mutations = {
   [types.ZABOES_LIST](state, payload) {
@@ -134,7 +135,7 @@ const mutations = {
     state.loggedInState = false;
     state.currentUser = {};
     sessionStorage.removeItem("token");
-    window.location = `http://ssal.sparcs.org:16135/api/logout/?email=${email}`;
+    window.location = baseURL + `/api/logout/?email=${email}`;
   }
 };
 
