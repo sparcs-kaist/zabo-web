@@ -17,8 +17,7 @@
   "전시": "Exhibition",
   "일정": "Schedule",
   "여러 날": "Multiple Days",
-  "일정이 없습니다. 아래 버튼으로 추가하세요.":
-    "There's no schedule. Add it by clicking the button below.",
+  "일정이 없습니다. 아래 버튼으로 추가하세요.": "There's no schedule. Add it by clicking the button below.",
   "참여 방법": "Participation Method",
   "결제 필요 여부": "Necessarity of Payment",
   "필요하지 않음": "Not Neccesary",
@@ -46,6 +45,7 @@
   "종료": "End",
   "내용": "Content",
   "URL": "URL",
+  "URL(리크루팅 링크)": "URL(Recruiting Link)",
   "URL 포함하기": "Include URL",
   "참여 기한(데드라인)": "Deadline",
   "취소": "Cancel"

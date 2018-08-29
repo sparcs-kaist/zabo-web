@@ -53,7 +53,7 @@
           <div class="formWrapper">
             <span class="topic">
               <div class="topicWrapper">
-                {{$t('URL')}}
+                {{$t('URL(리크루팅 링크)')}}
               </div>
               <span :class="zaboUrlExist ? 'font-heavy' : 'font-light'">{{$t('URL 포함하기')}}</span>
               <div>
@@ -63,17 +63,6 @@
             <v-text-field v-if="zaboUrlExist" v-model="zaboUrl" solo label="입력..." style="width: 100%" clearable>
             </v-text-field>
           </div>
-          <!-- <div class="formWrapper">
-            <span class="topic">
-              <div class="topicWrapper">
-                {{$t('결제 필요 여부')}}
-              </div>
-              <span class="font-light">필요하지 않음</span>
-              <div>
-                <v-switch v-model="paymentRequired" color="green" :value="false" disabled></v-switch>
-              </div>
-            </span>
-          </div> -->
           <div class="formWrapper">
             <span class="topic">
               <div class="topicWrapper">
@@ -198,11 +187,7 @@ export default {
       selectedcategory: "",
       location: "",
       multipleDays: false,
-      participateMethods: [
-        "자보에서 신청",
-        "현장 접수",
-        "외부 링크를 통한 신청"
-      ],
+      participateMethods: ["현장 접수", "외부 링크를 통한 신청"],
       selectedMethod: "",
       scheduleDates: [],
       paymentRequired: false,
@@ -266,9 +251,7 @@ export default {
         }
 
         let selapp = "";
-        if (this.selectedMethod == "자보에서 신청") {
-          selapp = "Z";
-        } else if (this.selectedMethod == "현장 접수") {
+        if (this.selectedMethod == "현장 접수") {
           selapp = "S";
         } else if (this.selectedMethod == "외부 링크를 통한 신청") {
           selapp = "E";
@@ -337,6 +320,25 @@ export default {
                     });
                   }
                 });
+              let newCategories = ["최신순", "마감임박 자보", "인기있는 자보"];
+              for (let i = 0; i < 3; i++) {
+                this.$store.commit("CATEGORY_ZABOES_RESET", newCategories[i]);
+                this.$store
+                  .dispatch("zaboesGetPageCount", {
+                    pageSize: 20,
+                    method: newCategories[i]
+                  })
+                  .then(res => {
+                    const totalPage = res;
+                    for (var i = 1; i <= totalPage; i++) {
+                      this.$store.dispatch("zaboesList", {
+                        pageNum: i,
+                        pageSize: 20,
+                        method: category
+                      });
+                    }
+                  });
+              }
             }
           })
           .catch(err => {
