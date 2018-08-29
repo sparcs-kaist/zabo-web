@@ -40,7 +40,8 @@
             <div class="followWrapper">
                 <div class="userWrapper" @click="userDetail(user.id)" v-for="(user, index) in following" :key="index">
                   <div class="userInfoWrapper">
-                    <img :src="user.profile_image" class="userImage">
+                    <img :src="user.profile_image" v-if="user.profile_image != null" class="userImage">
+                    <img src="../assets/default_person.png" v-else class="userImage">
                     <span class="userName">{{user.nickName}}</span>
                   </div>
                 </div>

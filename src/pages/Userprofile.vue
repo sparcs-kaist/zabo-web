@@ -52,7 +52,8 @@
             <div class="followWrapper">
               <div v-if="followingState != [] && reRender == false" class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
                 <div @click="userDetail(user.id)" class="userInfoWrapper">
-                  <img :src="user.profile_image" class="userImage">
+                  <img :src="user.profile_image" v-if="user.profile_image != null" class="userImage">
+                  <img src="../assets/default_person.png" v-else class="userImage">
                   <span class="userName">{{user.nickName}}</span>
                 </div>
                 <button v-show="!followingState[index]" class="Follow" @click="followUser(user.nickName, index)">
