@@ -3,22 +3,26 @@
     <div class="notificationWrapper" v-if="notificationsModal">
       <div class="singleNotiWrapper" v-if="notifications.length > 0" v-for="(noti, index) in notifications" :key="index">
         <div class="notiInfoWrapper" v-if="noti.type == 'SomeoneFollowing'">
-          <img :src="baseURL+noti.from_profile" class="notiProfileImage">
+          <img :src="baseURL+noti.from_profile" v-if="noti.from_profile != null" class="notiProfileImage">
+          <img src="../assets/default_person.png" v-else class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 팔로우를 시작했습니다.</span>
         </div>
         <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'CommentReaction'">
-          <img :src="baseURL+noti.from_profile" class="notiProfileImage">
+          <img :src="baseURL+noti.from_profile" v-if="noti.from_profile != null" class="notiProfileImage">
+          <img src="../assets/default_person.png" v-else class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 답글을 달았습니다. {{noti.content}}</span>
         </div>
         <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'ZaboReaction'">
-          <img :src="baseURL+noti.from_profile" class="notiProfileImage">
+          <img :src="baseURL+noti.from_profile" v-if="noti.from_profile != null" class="notiProfileImage">
+          <img src="../assets/default_person.png" v-else class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 자보에 댓글을 남겼습니다. {{noti.content}}</span>
         </div>
         <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'ZaboFollowing'">
-          <img :src="baseURL+noti.from_profile" class="notiProfileImage">
+          <img :src="baseURL+noti.from_profile" v-if="noti.from_profile != null" class="notiProfileImage">
+          <img src="../assets/default_person.png" v-else class="notiProfileImage">
           <span class="notiContent">
             <span class="notiFrom">{{noti.from}}</span>님이 새로운 자보를 올렸습니다. {{noti.content}}</span>
         </div>
