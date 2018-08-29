@@ -12,7 +12,7 @@
         </span>
         <input-field :small="true" v-if="editing" :content.sync="newComment" @on-submit="editComment">
         </input-field>
-        <div v-if="loggedInState" class="commentEditHandler">
+        <div v-if="loggedInState && currentUser.id == author.id" class="commentEditHandler">
           <v-icon class="moreHorizIcon" @click="commentEditHandlerModalState = !commentEditHandlerModalState">more_horiz</v-icon>
           <div class="commentEditHandlerModal" v-show="commentEditHandlerModalState">
             <div @click="deleteComment" class="modalIconWrapper">
@@ -140,6 +140,9 @@ export default {
     this.newComment = this.content;
   },
   computed: {
+    currentUser() {
+      return this.$store.getters.currentUser;
+    },
     shortenedComment() {
       return `${this.content.substring(0, 200)}...`;
     },

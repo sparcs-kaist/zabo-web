@@ -13,7 +13,7 @@
       <input-field :small="true" v-if="editing" :content.sync="newReply" @on-submit="onSubmitReply">
       </input-field>
       <span class="recommentContent" v-else>{{ recomment }}</span>
-      <div v-if="loggedInState" class="commentEditHandler">
+      <div v-if="loggedInState && currentUser.id == author.id" class="commentEditHandler">
         <v-icon class="moreHorizIcon" @click="commentEditHandlerModalState = !commentEditHandlerModalState">more_horiz</v-icon>
         <div class="commentEditHandlerModal" v-show="commentEditHandlerModalState">
           <div @click="deleteReply" class="modalIconWrapper">
@@ -102,6 +102,9 @@ export default {
     }
   },
   computed: {
+    currentUser() {
+      return this.$store.getters.currentUser;
+    },
     shortenedComment() {
       return `${this.recomment.substring(0, 200)}...`;
     },
