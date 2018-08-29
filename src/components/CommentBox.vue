@@ -10,7 +10,7 @@
         <span v-if="!editing" class="commentBoxContent">
           {{ newComment }}
         </span>
-        <input-field :small="true" v-if="editing" :content.sync="newComment" :on-click="editComment">
+        <input-field :small="true" v-if="editing" :content.sync="newComment" @on-submit="editComment">
         </input-field>
         <div v-if="loggedInState" class="commentEditHandler">
           <v-icon class="moreHorizIcon" @click="commentEditHandlerModalState = !commentEditHandlerModalState">more_horiz</v-icon>
@@ -35,9 +35,9 @@
         <v-icon v-show="recommentBoxOpen">arrow_drop_up</v-icon>
       </div>
     </div>
-    <re-comment-box @delete="deleteReply" v-if="recommentBoxOpen" v-for="r in computedReplies" :author="r.author" :commentId="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
+    <re-comment-box @delete="deleteReply" v-if="recommentBoxOpen" v-for="r in computedReplies" :author="r.author" :recommentId="r.id" :commentId="comment_id" :content="r.content" :depth="depth + 1" :key="r.id">
     </re-comment-box>
-    <input-field v-show="recommentInputState" class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
+    <input-field v-show="recommentInputState" class="input" :content.sync="newReply" @on-submit="onSubmitComment" placeholder-text="댓글을 작성하세요...">
     </input-field>
   </div>
 </template>
@@ -66,11 +66,16 @@ export default {
       deletedId: []
     };
   },
+  created() {
+    console.log(this.comment_id);
+  },
   methods: {
     isLong() {
       return this.content.length > 200;
     },
-    onSubmitReply() {
+    onSubmitComment() {
+      console.log(this.newReply);
+      console.log("why the fick!");
       axios({
         method: "post",
         url: "/api/recomments/",
@@ -102,7 +107,7 @@ export default {
         })
         .catch(err => {
           if (err) {
-            this.$emit("delete", { id: this.commentId });
+            this.$emit("delete", { id: this.comment_id });
           }
         });
     },

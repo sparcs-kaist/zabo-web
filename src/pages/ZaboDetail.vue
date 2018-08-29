@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 2">
-          <input-field v-show="toDisplay === 2 && loggedInState" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+          <input-field v-show="toDisplay === 2 && loggedInState" :content.sync="newComment" @on-submit="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
           </input-field>
           <review-screen :comments="comments" />
         </div>

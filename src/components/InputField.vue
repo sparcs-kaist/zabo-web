@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  props: ["small", "content", "onClick", "placeholderText"],
+  props: ["small", "content", "placeholderText"],
   data() {
     return {
       input: ""
@@ -20,9 +20,11 @@ export default {
   },
   methods: {
     reviewSubmit() {
+      console.log("why!!");
       this.$emit("update:content", this.input);
+      console.log(this.input);
       this.input = "";
-      this.onClick();
+      this.$emit("on-submit");
     }
   }
 };
