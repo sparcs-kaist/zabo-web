@@ -82,13 +82,9 @@ export default {
           "Content-Type": "application/json",
           Authorization: sessionStorage.getItem("token")
         }
-      })
-        .then(response => {
-          this.replies.push(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      }).then(response => {
+        this.replies.push(response.data);
+      });
     },
     deleteComment() {
       this.commentEditHandlerModalState = false;

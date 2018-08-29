@@ -104,7 +104,6 @@ export default {
             selectedCategories.push(category);
           }
         });
-        console.log(selectedCategories);
         selectedCategories.map(category => {
           this.$store
             .dispatch("zaboesGetPageCount", { pageSize: 20, method: category })
@@ -447,7 +446,6 @@ export default {
           this.zaboes.slice(i * this.columnNumber, (i + 1) * this.columnNumber)
         );
       }
-      console.log(renderedList, this.zaboesRow);
       return renderedList;
     },
     calculatedCategoryList() {
@@ -501,11 +499,9 @@ export default {
     },
     currentPath(val) {
       if (val == "/") {
-        console.log(this.currentPath);
         window.removeEventListener("keyup", this.escEvent);
         window.addEventListener("keyup", this.keyup);
       } else {
-        console.log(val);
         window.removeEventListener("keyup", this.keyup);
         window.addEventListener("keyup", this.escEvent);
       }

@@ -298,7 +298,6 @@ export default {
           data: formData
         })
           .then(res => {
-            console.log(res);
             if (res.status === 201) {
               this.postState = false;
               this.$store.commit(
@@ -341,9 +340,7 @@ export default {
               }
             }
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(err => {});
       } else {
         alert("You should fill out every form!");
       }
@@ -363,7 +360,6 @@ export default {
           newScheduleDates.push(this.scheduleDates[i]);
         }
       }
-      console.log(newScheduleDates);
       this.scheduleDates = newScheduleDates;
     }
   },

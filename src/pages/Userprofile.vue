@@ -174,7 +174,6 @@ export default {
       });
     },
     unfollowUser(nickName, index) {
-      console.log(nickName);
       axios({
         url: "/api/users/unfollowOther/",
         method: "post",
@@ -185,7 +184,6 @@ export default {
           nickname: nickName
         }
       }).then(res => {
-        console.log(res);
         if (res.status == 201) {
           this.followingState[index] = false;
           this.reRender = true;
@@ -243,7 +241,6 @@ export default {
         .then(response => {
           if (response.status === 401) {
             this.loading = true;
-            console.log("response stauts 401!");
           } else {
             this.$store.commit(types.SET_CURRENT_USER, response.data);
             for (let i = 0; i < response.data.following.length; i++) {
@@ -264,7 +261,6 @@ export default {
       })
       .then(res => {
         this.createdZaboes = res.data.data;
-        console.log(this.createdZaboes);
         this.zaboLoading = false;
       });
   }

@@ -29,10 +29,6 @@ export default {
   data() {
     return {};
   },
-  created() {
-    // console.log(this.zaboDetail.posters[0]);
-    // console.log(this.zaboDetail);
-  },
   computed: {
     style() {
       let style;

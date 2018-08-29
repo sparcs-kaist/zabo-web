@@ -19,8 +19,6 @@ export default {
   },
   created() {
     this.posterIndex = this.currentIndex;
-    console.log(this.posters);
-    console.log(this.currentIndex);
   },
   computed: {
     currentPoster() {

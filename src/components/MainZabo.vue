@@ -48,7 +48,6 @@ export default {
   },
   created() {
     axios.get("api/zaboes/random/").then(response => {
-      console.log(response.data);
       const { posters, content, title, location, id } = response.data;
       this.image = posters[0].image;
       this.background = posters[0].image;
@@ -75,8 +74,7 @@ export default {
   width: 100%;
   /* background-colo?: rgba(0, 0, 0, 0.5); */
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../assets/blurred-background-4.jpg") no-repeat center center
-      fixed;
+    url("../assets/blurred-background-4.jpg") no-repeat center center fixed;
   background-size: cover;
   left: 0;
   bottom: 0;
@@ -99,18 +97,20 @@ export default {
     cursor: pointer;
     top: 50%;
     transform: translateY(-50%);
-    @include breakPoint('desktop') {
-      .mobile-image, .participateLink-mobile {
+    @include breakPoint("desktop") {
+      .mobile-image,
+      .participateLink-mobile {
         display: none;
       }
     }
-    @include breakPoint('tablet') {
-      .mobile-image, .participateLink-mobile {
+    @include breakPoint("tablet") {
+      .mobile-image,
+      .participateLink-mobile {
         display: none;
       }
     }
 
-    @include breakPoint('phone') {
+    @include breakPoint("phone") {
       .mobile-image {
         width: 70%;
         // margin-top: 50%;
@@ -147,7 +147,7 @@ export default {
       height: 100vh;
       width: 50%;
     }
-    @include breakPoint('phone') {
+    @include breakPoint("phone") {
       .column {
         display: none;
       }
@@ -189,13 +189,13 @@ export default {
           &:last-child {
             width: 50%;
             align-items: flex-start;
-            @include breakPoint('desktop') {
+            @include breakPoint("desktop") {
               .main-image {
                 min-width: 400px;
                 width: 55%;
               }
             }
-            @include breakPoint('tablet') {
+            @include breakPoint("tablet") {
               .main-image {
                 min-width: 400px;
                 width: 55%;
@@ -203,12 +203,12 @@ export default {
             }
           }
         }
-        @include breakPoint('tablet') {
+        @include breakPoint("tablet") {
           .icon {
             font-size: 30pt;
           }
         }
-        @include breakPoint('desktop') {
+        @include breakPoint("desktop") {
           .icon {
             font-size: 30pt;
           }
@@ -225,7 +225,7 @@ export default {
         .morebutton {
           font-size: 18pt;
         }
-        @include breakPoint('phone') {
+        @include breakPoint("phone") {
           .morebutton {
             font-size: 12pt;
           }

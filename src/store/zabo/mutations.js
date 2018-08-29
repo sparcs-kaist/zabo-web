@@ -8,7 +8,6 @@ const mutations = {
     });
     const localMethod = payload.method;
     let finalZaboes = { ...state.zaboes };
-    console.log(payload.result);
     if (payload.result.length === 0 && finalZaboes[localMethod].length < 1) {
       finalZaboes[localMethod] = [];
       for (let k = 0; k < 4; k++) {

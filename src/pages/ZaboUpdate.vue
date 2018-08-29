@@ -307,7 +307,6 @@ export default {
       this.introduction = content;
       this.zaboUrl = link_url;
       this.deadline = deadline.split(" ")[0] + "T" + deadline.split(" ")[1];
-      console.log(this.deadline);
     });
   },
   methods: {
@@ -441,15 +440,12 @@ export default {
               }
             }
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(err => {});
       } else {
         alert("You should fill out every form!");
       }
     },
     deleteZabo() {
-      console.log(this.zabo_id);
       axios({
         method: "DELETE",
         url: `/api/zaboes/${this.zabo_id}/`,

@@ -142,7 +142,6 @@ export default {
           password: this.password
         })
         .then(response => {
-          console.log(response.status);
           if (response.status == 200) {
             sessionStorage.setItem("token", `ZABO ${response.data.token}`);
             this.$store.dispatch("login", response.data.token);
@@ -181,13 +180,6 @@ export default {
       window.location = baseURL + "/api/login/";
     },
     register() {
-      console.log(
-        this.registerEmail,
-        this.registernickName,
-        this.registerFirstName,
-        this.registerLastName,
-        this.registerPhone
-      );
       this.registerLoading = true;
       axios({
         method: "post",

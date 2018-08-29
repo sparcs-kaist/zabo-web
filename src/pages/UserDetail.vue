@@ -147,7 +147,6 @@ export default {
           nickName,
           email
         } = res.data;
-        console.log(res);
         this.imagesrc = profile_image;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -161,7 +160,6 @@ export default {
       });
       axios.get(`/api/zaboes/?author=${userId}`).then(res => {
         this.zaboes = res.data.data;
-        console.log(this.zaboes, this.zaboes.length);
         this.zaboLoading = false;
       });
     }
