@@ -13,18 +13,16 @@
           <div class="data-slot">{{ nickName }}</div>
         </div>
         <div class="singleInfo">
-          <span class="info-label">전화번호</span>
-          <div class="data-slot">{{ phone }}</div>
+          <span class="info-label">성별</span>
+          <div class="data-slot">{{ computedGender }}</div>
         </div>
       </div>
       <div class="small-col-wrapper">
         <div class="singleInfo">
-          <span class="info-label">성별</span>
-          <div class="data-slot">{{ computedGender }}</div>
-        </div>
-        <div class="singleInfo">
           <span class="info-label">이메일</span>
           <div class="data-slot">{{ email }}</div>
+        </div>
+        <div class="singleInfo">
         </div>
       </div>
     </div>
