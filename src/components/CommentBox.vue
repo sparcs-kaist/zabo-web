@@ -12,7 +12,7 @@
         </span>
         <input-field :small="true" v-if="editing" :content.sync="newComment" :on-click="editComment">
         </input-field>
-        <div class="commentEditHandler">
+        <div v-if="loggedInState" class="commentEditHandler">
           <v-icon class="moreHorizIcon" @click="commentEditHandlerModalState = !commentEditHandlerModalState">more_horiz</v-icon>
           <div class="commentEditHandlerModal" v-show="commentEditHandlerModalState">
             <div @click="deleteComment" class="modalIconWrapper">
@@ -98,11 +98,17 @@ export default {
         headers: {
           Authorization: sessionStorage.getItem("token")
         }
-      }).then(res => {
-        if (res.status == 204) {
-          this.$emit("delete", { id: this.id });
-        }
-      });
+      })
+        .then(res => {
+          if (res.status == 204 || res.status == 404) {
+            this.$emit("delete", { id: this.id });
+          }
+        })
+        .catch(err => {
+          if (err) {
+            this.$emit("delete", { id: this.commentId });
+          }
+        });
     },
     editComment() {
       this.editing = false;

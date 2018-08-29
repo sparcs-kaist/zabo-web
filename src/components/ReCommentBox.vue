@@ -13,7 +13,7 @@
       <input-field :small="true" v-if="editing" :content.sync="newReply" :on-click="onSubmitReply">
       </input-field>
       <span class="recommentContent" v-else>{{ content }}</span>
-      <div class="commentEditHandler">
+      <div v-if="loggedInState" class="commentEditHandler">
         <v-icon class="moreHorizIcon" @click="commentEditHandlerModalState = !commentEditHandlerModalState">more_horiz</v-icon>
         <div class="commentEditHandlerModal" v-show="commentEditHandlerModalState">
           <div @click="deleteReply" class="modalIconWrapper">
@@ -81,16 +81,25 @@ export default {
         headers: {
           Authorization: sessionStorage.getItem("token")
         }
-      }).then(res => {
-        if (res.status == 204) {
-          this.$emit("delete", { id: this.commentId });
-        }
-      });
+      })
+        .then(res => {
+          if (res.status == 204) {
+            this.$emit("delete", { id: this.commentId });
+          }
+        })
+        .catch(err => {
+          if (err) {
+            this.$emit("delete", { id: this.commentId });
+          }
+        });
     }
   },
   computed: {
     shortenedComment() {
       return `${this.content.substring(0, 200)}...`;
+    },
+    loggedInState() {
+      return this.$store.getters.loggedInState;
     }
   }
 };
