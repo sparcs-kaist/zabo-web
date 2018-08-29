@@ -45,7 +45,7 @@ export default {
     } else {
       sessionStorage.setItem("mainZaboSeen", true);
     }
-    if (sessionStorage.getItem("token").split(" ")[0] == "ZABO") {
+    if (sessionStorage.getItem("token") && sessionStorage.getItem("token").split(" ")[0] == "ZABO") {
       this.$store.dispatch("login", sessionStorage.getItem("token").slice(5));
       axios
         .get("api/users/myInfo", {
