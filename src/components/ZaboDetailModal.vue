@@ -259,14 +259,12 @@ export default {
       content,
       title,
       location,
-      like_count,
       author,
       deadline
     } = this.modalZaboData;
     this.posters = posters;
     this.title = title;
     this.location = location;
-    this.likeCount = like_count;
     this.content = content;
     this.authorId = author.id;
     this.author = author;
@@ -284,6 +282,7 @@ export default {
           updated_time,
           comments,
           is_liked,
+          like_count,
           timeslots,
           category,
           payment,
@@ -292,6 +291,7 @@ export default {
         this.updated_time = updated_time;
         this.comments = comments;
         this.isLiked = is_liked;
+        this.likeCount = like_count;
         this.timeslots = timeslots;
         this.category = category;
         this.payment = payment;
