@@ -197,45 +197,6 @@ export default {
       .catch(err => {
         console.log(err);
       });
-    this.$store
-      .dispatch("zaboesGetPageCount", {
-        pageSize: 20,
-        method: "최신순"
-      })
-      .then(res => {
-        const totalPage = res;
-        for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", {
-            pageNum: i,
-            pageSize: 20,
-            method: "최신순"
-          });
-        }
-        return res;
-      })
-      .then(() => {
-        let selectedCategories = [];
-        this.categoryList.map(category => {
-          if (category != "최신순") {
-            selectedCategories.push(category);
-          }
-        });
-        console.log(selectedCategories);
-        selectedCategories.map(category => {
-          this.$store
-            .dispatch("zaboesGetPageCount", { pageSize: 20, method: category })
-            .then(res => {
-              const totalPage = res;
-              for (var i = 1; i <= totalPage; i++) {
-                this.$store.dispatch("zaboesList", {
-                  pageNum: i,
-                  pageSize: 20,
-                  method: category
-                });
-              }
-            });
-        });
-      });
   },
   beforeDestroy() {
     window.removeEventListener("keyup", this.escEvent);
