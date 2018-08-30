@@ -20,3 +20,4 @@ export const START_AJAX = "START_AJAX";
 export const LOGOUT = "LOGOUT";
 export const LOGIN = "LOGIN";
 export const SET_LANG = "SET_LANG";
+export const CATEGORY_ZABOES_RESET = "CATEGORY_ZABOES_RESET";

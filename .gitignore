@@ -9,6 +9,7 @@ yarn-error.log*
 selenium-debug.log
 package-lock.json
 src/axios-auth.js
+src/variables.js
 
 # Editor directories and files
 .idea

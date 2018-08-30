@@ -39,7 +39,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$router);
     if (sessionStorage.getItem("mainZaboSeen")) {
       this.voided = "v-a";
     } else {
@@ -56,7 +55,6 @@ export default {
         .then(response => {
           if (response.status === 401) {
             this.loading = true;
-            console.log("response stauts 401!");
           } else {
             this.$store.commit(types.SET_CURRENT_USER, response.data);
             this.loading = true;

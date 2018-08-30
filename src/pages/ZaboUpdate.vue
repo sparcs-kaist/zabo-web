@@ -54,7 +54,7 @@
           <div class="formWrapper">
             <span class="topic">
               <div class="topicWrapper">
-                {{$t('URL')}}
+                {{$t('URL(리크루팅 링크)')}}
               </div>
               <span :class="zaboUrlExist ? 'font-heavy' : 'font-light'">{{$t('URL 포함하기')}}</span>
               <div>
@@ -163,7 +163,7 @@
   </v-app>
   <div class="postFinished" v-if="postState == 'EDITED'">
     <span class="postFinishedTitle">자보를 성공적으로 업데이트하셨습니다.</span>
-    <a href="http://ssal.sparcs.org:16135/">
+    <a href="https://paper.sparcs.org/">
       <div class="routerLinks">
         {{ $t('페이퍼 만들러 가기') }}
       </div>
@@ -210,11 +210,7 @@ export default {
       selectedcategory: "",
       location: "",
       multipleDays: false,
-      participateMethods: [
-        "자보에서 신청",
-        "현장 접수",
-        "외부 링크를 통한 신청"
-      ],
+      participateMethods: ["현장 접수", "외부 링크를 통한 신청"],
       selectedMethod: "",
       scheduleDates: [],
       paymentRequired: false,
@@ -251,9 +247,7 @@ export default {
         timeslots,
         title
       } = res.data;
-      if (apply == "Z") {
-        this.selectedMethod = "자보에서 신청";
-      } else if (apply == "S") {
+      if (apply == "S") {
         this.selectedMethod = "현장 접수";
       } else if (apply == "E") {
         this.selectedMethod = "외부 링크를 통한 신청";
@@ -313,7 +307,6 @@ export default {
       this.introduction = content;
       this.zaboUrl = link_url;
       this.deadline = deadline.split(" ")[0] + "T" + deadline.split(" ")[1];
-      console.log(this.deadline);
     });
   },
   methods: {
@@ -359,9 +352,7 @@ export default {
         }
 
         let selapp = "";
-        if (this.selectedMethod == "자보에서 신청") {
-          selapp = "Z";
-        } else if (this.selectedMethod == "현장 접수") {
+        if (this.selectedMethod == "현장 접수") {
           selapp = "S";
         } else if (this.selectedMethod == "외부 링크를 통한 신청") {
           selapp = "E";
@@ -409,17 +400,52 @@ export default {
           .then(res => {
             if (res.status === 200) {
               this.postState = "EDITED";
+              this.$store.commit(
+                "CATEGORY_ZABOES_RESET",
+                this.selectedcategory
+              );
+              this.$store
+                .dispatch("zaboesGetPageCount", {
+                  pageSize: 20,
+                  method: this.selectedcategory
+                })
+                .then(res => {
+                  const totalPage = res;
+                  for (var i = 1; i <= totalPage; i++) {
+                    this.$store.dispatch("zaboesList", {
+                      pageNum: i,
+                      pageSize: 20,
+                      method: category
+                    });
+                  }
+                });
+              let newCategories = ["최신순", "마감임박 자보", "인기있는 자보"];
+              for (let i = 0; i < 3; i++) {
+                this.$store.commit("CATEGORY_ZABOES_RESET", newCategories[i]);
+                this.$store
+                  .dispatch("zaboesGetPageCount", {
+                    pageSize: 20,
+                    method: newCategories[i]
+                  })
+                  .then(res => {
+                    const totalPage = res;
+                    for (var i = 1; i <= totalPage; i++) {
+                      this.$store.dispatch("zaboesList", {
+                        pageNum: i,
+                        pageSize: 20,
+                        method: category
+                      });
+                    }
+                  });
+              }
             }
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(err => {});
       } else {
         alert("You should fill out every form!");
       }
     },
     deleteZabo() {
-      console.log(this.zabo_id);
       axios({
         method: "DELETE",
         url: `/api/zaboes/${this.zabo_id}/`,
@@ -511,21 +537,6 @@ export default {
       }
       if (this.introduction == "") {
         return false;
-      }
-      if (this.scheduleDates.length == 0) {
-        return false;
-      } else {
-        for (let s = 0; s < this.scheduleDates.length; s++) {
-          if (this.scheduleDates[s].content == "") {
-            return false;
-          }
-          if (this.scheduleDates[s].end_time == "") {
-            return false;
-          }
-          if (this.scheduleDates[s].start_time == "") {
-            return false;
-          }
-        }
       }
       if (this.zaboUrlExist) {
         if (this.zaboUrl == "") {

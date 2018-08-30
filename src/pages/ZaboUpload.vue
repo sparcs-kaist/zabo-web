@@ -53,7 +53,7 @@
           <div class="formWrapper">
             <span class="topic">
               <div class="topicWrapper">
-                {{$t('URL')}}
+                {{$t('URL(리크루팅 링크)')}}
               </div>
               <span :class="zaboUrlExist ? 'font-heavy' : 'font-light'">{{$t('URL 포함하기')}}</span>
               <div>
@@ -63,17 +63,6 @@
             <v-text-field v-if="zaboUrlExist" v-model="zaboUrl" solo label="입력..." style="width: 100%" clearable>
             </v-text-field>
           </div>
-          <!-- <div class="formWrapper">
-            <span class="topic">
-              <div class="topicWrapper">
-                {{$t('결제 필요 여부')}}
-              </div>
-              <span class="font-light">필요하지 않음</span>
-              <div>
-                <v-switch v-model="paymentRequired" color="green" :value="false" disabled></v-switch>
-              </div>
-            </span>
-          </div> -->
           <div class="formWrapper">
             <span class="topic">
               <div class="topicWrapper">
@@ -170,7 +159,7 @@
   </v-app>
   <div class="postFinished" v-else>
     <span class="postFinishedTitle">자보를 성공적으로 업로드하셨습니다.</span>
-    <a href="http://ssal.sparcs.org:16140/">
+    <a href="https://paper.sparcs.org/">
       <div class="routerLinks">
         {{ $t('페이퍼 생성하러 가기') }}
       </div>
@@ -198,11 +187,7 @@ export default {
       selectedcategory: "",
       location: "",
       multipleDays: false,
-      participateMethods: [
-        "자보에서 신청",
-        "현장 접수",
-        "외부 링크를 통한 신청"
-      ],
+      participateMethods: ["현장 접수", "외부 링크를 통한 신청"],
       selectedMethod: "",
       scheduleDates: [],
       paymentRequired: false,
@@ -266,9 +251,7 @@ export default {
         }
 
         let selapp = "";
-        if (this.selectedMethod == "자보에서 신청") {
-          selapp = "Z";
-        } else if (this.selectedMethod == "현장 접수") {
+        if (this.selectedMethod == "현장 접수") {
           selapp = "S";
         } else if (this.selectedMethod == "외부 링크를 통한 신청") {
           selapp = "E";
@@ -295,10 +278,12 @@ export default {
         formData.append("apply", selapp);
         formData.append("payment", "F");
         formData.append("category", selcat);
-        formData.append(
-          "timeslots",
-          JSON.stringify(this.computedScheduleDates)
-        );
+        if (this.scheduleDates.length != 0) {
+          formData.append(
+            "timeslots",
+            JSON.stringify(this.computedScheduleDates)
+          );
+        }
         if (this.zaboUrlExist) {
           formData.append("link_url", this.zaboUrl);
         }
@@ -315,11 +300,47 @@ export default {
           .then(res => {
             if (res.status === 201) {
               this.postState = false;
+              this.$store.commit(
+                "CATEGORY_ZABOES_RESET",
+                this.selectedcategory
+              );
+              this.$store
+                .dispatch("zaboesGetPageCount", {
+                  pageSize: 20,
+                  method: this.selectedcategory
+                })
+                .then(res => {
+                  const totalPage = res;
+                  for (var i = 1; i <= totalPage; i++) {
+                    this.$store.dispatch("zaboesList", {
+                      pageNum: i,
+                      pageSize: 20,
+                      method: category
+                    });
+                  }
+                });
+              let newCategories = ["최신순", "마감임박 자보", "인기있는 자보"];
+              for (let i = 0; i < 3; i++) {
+                this.$store.commit("CATEGORY_ZABOES_RESET", newCategories[i]);
+                this.$store
+                  .dispatch("zaboesGetPageCount", {
+                    pageSize: 20,
+                    method: newCategories[i]
+                  })
+                  .then(res => {
+                    const totalPage = res;
+                    for (var i = 1; i <= totalPage; i++) {
+                      this.$store.dispatch("zaboesList", {
+                        pageNum: i,
+                        pageSize: 20,
+                        method: category
+                      });
+                    }
+                  });
+              }
             }
           })
-          .catch(err => {
-            console.log(err);
-          });
+          .catch(err => {});
       } else {
         alert("You should fill out every form!");
       }
@@ -339,7 +360,6 @@ export default {
           newScheduleDates.push(this.scheduleDates[i]);
         }
       }
-      console.log(newScheduleDates);
       this.scheduleDates = newScheduleDates;
     }
   },
@@ -413,21 +433,6 @@ export default {
       }
       if (this.introduction == "") {
         return false;
-      }
-      if (this.scheduleDates.length == 0) {
-        return false;
-      } else {
-        for (let s = 0; s < this.scheduleDates.length; s++) {
-          if (this.scheduleDates[s].content == "") {
-            return false;
-          }
-          if (this.scheduleDates[s].end_time == "") {
-            return false;
-          }
-          if (this.scheduleDates[s].start_time == "") {
-            return false;
-          }
-        }
       }
       if (this.zaboUrlExist) {
         if (this.zaboUrl == "") {
@@ -886,7 +891,7 @@ option {
   text-align: center;
   font-size: 25px;
 }
-@include breakPoint('phone') {
+@include breakPoint("phone") {
   .column {
     width: 100%;
     position: relative;
@@ -941,7 +946,7 @@ option {
   }
 }
 
-@include breakPoint('tablet') {
+@include breakPoint("tablet") {
   .column {
     width: 100%;
     position: relative;
@@ -981,11 +986,11 @@ option {
     align-items: center;
   }
   .scheduleContent {
-    flex: 1
+    flex: 1;
   }
 }
 
-@include breakPoint('desktop') {
+@include breakPoint("desktop") {
   .column {
     flex: 2;
     position: relative;
@@ -1027,7 +1032,7 @@ option {
     align-items: center;
   }
   .scheduleContent {
-    flex: 1
+    flex: 1;
   }
 }
 </style>

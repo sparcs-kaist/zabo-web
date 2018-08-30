@@ -59,7 +59,7 @@ export default new Router({
       component: SearchEmpty
     },
     {
-      path: "/login/:email",
+      path: "/login/:token",
       name: "LoginCallback",
       component: LoginCallback
     },

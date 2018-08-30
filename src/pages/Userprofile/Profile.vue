@@ -21,18 +21,16 @@
           <div class="data-slot">{{ nick_name }}</div>
         </div>
         <div class="singleInfo" v-if = "edit === '편집'">
-          <span class="info-label">전화번호</span>
-          <div class="data-slot">{{ phone }}</div>
+          <span class="info-label">성별</span>
+          <div class="data-slot">{{ gender }}</div>
         </div>
       </div>
       <div class="small-col-wrapper">
         <div class="singleInfo" v-if = "edit === '편집'">
-          <span class="info-label">성별</span>
-          <div class="data-slot">{{ gender }}</div>
-        </div>
-        <div class="singleInfo" v-if = "edit === '편집'">
           <span class="info-label">이메일</span>
           <div class="data-slot">{{ email }}</div>
+        </div>
+        <div class="singleInfo" v-if = "edit === '편집'">
         </div>
       </div>
     </div>
@@ -41,9 +39,6 @@
         <v-form v-model = "valid">
           <span class="info-label">닉네임</span>
           <v-text-field v-model = "new_nick_name" style="width: 90%; margin-top: 9px;" solo clearable>
-          </v-text-field>
-          <span class="info-label">전화번호</span></span>
-          <v-text-field v-model = "new_phone" style="width: 90%; margin-top: 9px;" solo clearable>
           </v-text-field>
         </v-form>
       </v-flex>

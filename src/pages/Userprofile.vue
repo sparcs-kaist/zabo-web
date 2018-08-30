@@ -7,7 +7,8 @@
           프로필
         </div>
         <div v-if="!edit">
-          <img :src="imagesrc" class="profile-image">
+          <img src="../assets/default_person.png" v-if="imagesrc == null" class="profile-image">
+          <img :src="imagesrc" v-else class="profile-image">
           <p id="name"> {{ first_name + " " + last_name }} </p>
         </div>
         <div v-else style="margin-bottom: -17px;">
@@ -51,7 +52,8 @@
             <div class="followWrapper">
               <div v-if="followingState != [] && reRender == false" class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
                 <div @click="userDetail(user.id)" class="userInfoWrapper">
-                  <img :src="user.profile_image" class="userImage">
+                  <img :src="user.profile_image" v-if="user.profile_image != null" class="userImage">
+                  <img src="../assets/default_person.png" v-else class="userImage">
                   <span class="userName">{{user.nickName}}</span>
                 </div>
                 <button v-show="!followingState[index]" class="Follow" @click="followUser(user.nickName, index)">
@@ -173,7 +175,6 @@ export default {
       });
     },
     unfollowUser(nickName, index) {
-      console.log(nickName);
       axios({
         url: "/api/users/unfollowOther/",
         method: "post",
@@ -184,7 +185,6 @@ export default {
           nickname: nickName
         }
       }).then(res => {
-        console.log(res);
         if (res.status == 201) {
           this.followingState[index] = false;
           this.reRender = true;
@@ -242,7 +242,6 @@ export default {
         .then(response => {
           if (response.status === 401) {
             this.loading = true;
-            console.log("response stauts 401!");
           } else {
             this.$store.commit(types.SET_CURRENT_USER, response.data);
             for (let i = 0; i < response.data.following.length; i++) {
@@ -263,7 +262,6 @@ export default {
       })
       .then(res => {
         this.createdZaboes = res.data.data;
-        console.log(this.createdZaboes);
         this.zaboLoading = false;
       });
   }
@@ -298,6 +296,7 @@ export default {
       width: 100px;
       border-radius: 100px;
       margin-top: 20px;
+      @include smallBoxShadow();
     }
     #name {
       font-family: Nanumsquare;

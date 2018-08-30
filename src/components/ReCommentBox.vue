@@ -1,7 +1,8 @@
 <template>
   <div class="main">
     <div class="body" :style="{ paddingLeft: `${(this.depth * 30) + 15}px`}">
-      <img :src="author.profile_image" class="pic">
+      <img class="pic" :src="author.profile_image" v-if="author.profile_image != null">
+      <img class="pic" src="../assets/default_person.png" v-else/>
       <span class="name">
         {{ author.nickName }}
       </span>
@@ -9,10 +10,10 @@
         {{ shortenedComment }}
         <span class="more" @click="seeMore = true">더 보기</span>
       </span>
-      <input-field :small="true" v-if="editing" :content.sync="newReply" :on-click="onSubmitReply">
+      <input-field :small="true" v-if="editing" :content.sync="newReply" @on-submit="onSubmitReply">
       </input-field>
-      <span class="recommentContent" v-else>{{ content }}</span>
-      <div class="commentEditHandler">
+      <span class="recommentContent" v-else>{{ recomment }}</span>
+      <div v-if="loggedInState && currentUser.id == author.id" class="commentEditHandler">
         <v-icon class="moreHorizIcon" @click="commentEditHandlerModalState = !commentEditHandlerModalState">more_horiz</v-icon>
         <div class="commentEditHandlerModal" v-show="commentEditHandlerModalState">
           <div @click="deleteReply" class="modalIconWrapper">
@@ -37,38 +38,45 @@ export default {
   components: {
     InputField
   },
-  props: ["author", "commentId", "content", "depth", "replies"],
+  props: ["author", "commentId", "recommentId", "content", "depth", "replies"],
   name: "re-comment-box",
   data() {
     return {
       newReply: "",
+      recomment: "",
       seeMore: false,
       commentEditHandlerModalState: false,
       editing: false
     };
   },
+  created() {
+    this.recomment = this.content;
+  },
   methods: {
     isLong() {
-      return this.content.length > 200;
+      return this.recomment.length > 200;
     },
     onSubmitReply() {
       this.editing = false;
       axios({
         method: "PUT",
-        url: `/api/comments/${this.commentId}/`,
+        url: `/api/recomments/${this.recommentId}/`,
         headers: {
           "Content-Type": "application/json",
           Authorization: sessionStorage.getItem("token")
         },
         data: {
           content: this.newReply,
-          is_private: true,
-          is_deleted: true,
-          is_blocked: true
+          comment: this.commentId
+        }
+      }).then(res => {
+        if (res.status == 200) {
+          this.recomment = this.newReply;
         }
       });
     },
     editModal() {
+      this.newReply = this.recomment;
       this.commentEditHandlerModalState = false;
       this.editing = true;
     },
@@ -76,20 +84,32 @@ export default {
       this.commentEditHandlerModalState = false;
       axios({
         method: "DELETE",
-        url: `/api/recomments/${this.commentId}/`,
+        url: `/api/recomments/${this.recommentId}/`,
         headers: {
           Authorization: sessionStorage.getItem("token")
         }
-      }).then(res => {
-        if (res.status == 204) {
-          this.$emit("delete", { id: this.commentId });
-        }
-      });
+      })
+        .then(res => {
+          if (res.status == 204) {
+            this.$emit("delete", { id: this.recommentId });
+          }
+        })
+        .catch(err => {
+          if (err) {
+            this.$emit("delete", { id: this.recommentId });
+          }
+        });
     }
   },
   computed: {
+    currentUser() {
+      return this.$store.getters.currentUser;
+    },
     shortenedComment() {
-      return `${this.content.substring(0, 200)}...`;
+      return `${this.recomment.substring(0, 200)}...`;
+    },
+    loggedInState() {
+      return this.$store.getters.loggedInState;
     }
   }
 };

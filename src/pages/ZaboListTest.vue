@@ -15,7 +15,8 @@
       <slide v-for="i in zaboesRow" :key="i-1" :index="i-1">
         <div class="posterWrapper" :class="'slide'+i">
           <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" :key="key" v-for="(zabo, key, index) in renderedList[i-1]" class="individualPosterWrapper" :style="`width: ${baseCarouselPosterHeight}px; min-height: ${basePosterWrapperHeight}px;`">
-            <img class="poster" :style="`top: -${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; left: ${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; width: ${basePosterWrapperHeight}px; min-height: ${baseCarouselPosterHeight}px; transform: rotate(90deg); transform-origin: 50% 50%;`" :src="zabo.posters[0].image_thumbnail">
+            <img class="poster" :style="`top: -${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; left: ${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; width: ${basePosterWrapperHeight}px; min-height: ${baseCarouselPosterHeight}px; transform: rotate(90deg); transform-origin: 50% 50%;`" :src="zabo.posters[0].image_thumbnail" v-if="zabo.posters[0].image_thumbnail != null">
+            <img class="poster" :style="`top: -${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; left: ${baseCarouselPosterHeight/2-basePosterWrapperHeight/2}px; width: ${basePosterWrapperHeight}px; min-height: ${baseCarouselPosterHeight}px; transform: rotate(90deg); transform-origin: 50% 50%;`" v-else src="../assets/empty_poster.jpg">
           </div>
         </div>
       </slide>
@@ -103,7 +104,6 @@ export default {
             selectedCategories.push(category);
           }
         });
-        console.log(selectedCategories);
         selectedCategories.map(category => {
           this.$store
             .dispatch("zaboesGetPageCount", { pageSize: 20, method: category })
@@ -446,7 +446,6 @@ export default {
           this.zaboes.slice(i * this.columnNumber, (i + 1) * this.columnNumber)
         );
       }
-      console.log(renderedList, this.zaboesRow);
       return renderedList;
     },
     calculatedCategoryList() {
@@ -500,11 +499,9 @@ export default {
     },
     currentPath(val) {
       if (val == "/") {
-        console.log(this.currentPath);
         window.removeEventListener("keyup", this.escEvent);
         window.addEventListener("keyup", this.keyup);
       } else {
-        console.log(val);
         window.removeEventListener("keyup", this.keyup);
         window.addEventListener("keyup", this.escEvent);
       }

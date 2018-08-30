@@ -45,22 +45,22 @@
           </div>
         </div>
         <div class="bodyWrapper" v-show="toDisplay === 2">
-          <input-field v-show="toDisplay === 2" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+          <input-field v-show="toDisplay === 2 && loggedInState" :content.sync="newComment" @on-submit="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
           </input-field>
           <review-screen :comments="comments" />
         </div>
       </div>
       <div class="column">
-        <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
-          <div class="arrowIconWrapper">
-            <div class="leftIconWrapper">
-              <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
-            </div>
-            <div class="rightIconWrapper">
-              <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
-            </div>
+        <div class="arrowIconWrapper">
+          <div class="leftIconWrapper">
+            <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
           </div>
-          <img :src="currentPoster" class="zaboImage"/>
+          <div class="rightIconWrapper">
+            <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+          </div>
+        </div>
+        <div v-if="posters != []" class="zaboImageWrapper">
+          <img @click="posterModalHandler" :src="currentPoster" class="zaboImage"/>
         </div>
         <v-icon @click="closeModal" class="closeIcon">close</v-icon>
         <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
@@ -235,9 +235,7 @@ export default {
         .then(response => {
           this.comments.push(response.data);
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => {});
       this.newComment = "";
     },
     selectTab(selected) {
@@ -264,7 +262,6 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
           if (res.status != 201) {
             this.likeCount -= 1;
             this.isLiked = false;
@@ -272,8 +269,8 @@ export default {
         })
         .catch(err => {
           alert("You are not logged In!");
-          console.log(err);
           this.likeCount -= 1;
+          this.isLiked = false;
         });
     },
     dislikeZabo() {
@@ -291,7 +288,6 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
           if (res.status != 204) {
             this.isLiked = true;
             this.likeCount += 1;
@@ -299,7 +295,6 @@ export default {
         })
         .catch(err => {
           alert("You are not logged In!");
-          console.log(err);
           this.isLiked = true;
           this.likeCount += 1;
         });
@@ -311,7 +306,6 @@ export default {
     },
     posterModalHandler() {
       this.posterModalState = !this.posterModalState;
-      console.log(this.posterModalState);
     }
   }
 };
@@ -575,34 +569,41 @@ export default {
           display: none;
         }
         .zaboImageWrapper {
-          width: 100%;
-          position: relative;
-          cursor: pointer;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
           .zaboImage {
             width: 100%;
             height: auto;
+            cursor: pointer;
           }
-          .arrowIconWrapper {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+        }
+        .arrowIconWrapper {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          padding: 10px;
+          .leftIconWrapper {
+            flex: 1;
             display: flex;
-            align-items: center;
-            padding: 10px;
-            .leftIconWrapper {
-              flex: 1;
-              display: flex;
-              justify-content: flex-start;
-              z-index: 800;
-            }
-            .rightIconWrapper {
-              flex: 1;
-              display: flex;
-              justify-content: flex-end;
-              z-index: 800;
-            }
+            justify-content: flex-start;
+            z-index: 800;
+          }
+          .rightIconWrapper {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            z-index: 800;
           }
         }
         .editIcon {

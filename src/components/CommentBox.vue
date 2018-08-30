@@ -1,7 +1,8 @@
 <template>
   <div class="main">
     <div class="body">
-      <img class="pic" :src="author.profile_image">
+      <img class="pic" :src="author.profile_image" v-if="author.profile_image != null">
+      <img class="pic" src="../assets/default_person.png" v-else/>
       <div class="contentWrapper">
         <span class="name">
           {{ author.nickName }}
@@ -9,9 +10,9 @@
         <span v-if="!editing" class="commentBoxContent">
           {{ newComment }}
         </span>
-        <input-field :small="true" v-if="editing" :content.sync="newComment" :on-click="editComment">
+        <input-field :small="true" v-if="editing" :content.sync="newComment" @on-submit="editComment">
         </input-field>
-        <div class="commentEditHandler">
+        <div v-if="loggedInState && currentUser.id == author.id" class="commentEditHandler">
           <v-icon class="moreHorizIcon" @click="commentEditHandlerModalState = !commentEditHandlerModalState">more_horiz</v-icon>
           <div class="commentEditHandlerModal" v-show="commentEditHandlerModalState">
             <div @click="deleteComment" class="modalIconWrapper">
@@ -34,9 +35,9 @@
         <v-icon v-show="recommentBoxOpen">arrow_drop_up</v-icon>
       </div>
     </div>
-    <re-comment-box @delete="deleteReply" v-if="recommentBoxOpen" v-for="r in computedReplies" :author="r.author" :commentId="r.id" :content="r.content" :depth="depth + 1" :key="r.id">
+    <re-comment-box @delete="deleteReply" v-if="recommentBoxOpen" v-for="r in computedReplies" :author="r.author" :recommentId="r.id" :commentId="comment_id" :content="r.content" :depth="depth + 1" :key="r.id">
     </re-comment-box>
-    <input-field v-show="recommentInputState" class="input" :content.sync="newReply" :on-click="onSubmitReply" placeholder-text="댓글을 작성하세요...">
+    <input-field v-show="recommentInputState" class="input" :content.sync="newReply" @on-submit="onSubmitComment" placeholder-text="댓글을 작성하세요...">
     </input-field>
   </div>
 </template>
@@ -65,11 +66,16 @@ export default {
       deletedId: []
     };
   },
+  created() {
+    console.log(this.comment_id);
+  },
   methods: {
     isLong() {
       return this.content.length > 200;
     },
-    onSubmitReply() {
+    onSubmitComment() {
+      console.log(this.newReply);
+      console.log("why the fick!");
       axios({
         method: "post",
         url: "/api/recomments/",
@@ -81,13 +87,9 @@ export default {
           "Content-Type": "application/json",
           Authorization: sessionStorage.getItem("token")
         }
-      })
-        .then(response => {
-          this.replies.push(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      }).then(response => {
+        this.replies.push(response.data);
+      });
     },
     deleteComment() {
       this.commentEditHandlerModalState = false;
@@ -97,11 +99,17 @@ export default {
         headers: {
           Authorization: sessionStorage.getItem("token")
         }
-      }).then(res => {
-        if (res.status == 204) {
-          this.$emit("delete", { id: this.id });
-        }
-      });
+      })
+        .then(res => {
+          if (res.status == 204 || res.status == 404) {
+            this.$emit("delete", { id: this.id });
+          }
+        })
+        .catch(err => {
+          if (err) {
+            this.$emit("delete", { id: this.comment_id });
+          }
+        });
     },
     editComment() {
       this.editing = false;
@@ -132,6 +140,9 @@ export default {
     this.newComment = this.content;
   },
   computed: {
+    currentUser() {
+      return this.$store.getters.currentUser;
+    },
     shortenedComment() {
       return `${this.content.substring(0, 200)}...`;
     },

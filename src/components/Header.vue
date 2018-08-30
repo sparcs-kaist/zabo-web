@@ -22,7 +22,7 @@
         </div>
         <template v-if="loggedInState">
           <div @click="modalStateChange" class="right">
-            <img src="assets/logo.png" v-if="imagesrc == undefined" class="profile-image" >
+            <img src="../assets/default_person.png" v-if="imagesrc == null" class="profile-image" >
             <img v-else :src="imagesrc" class="profile-image">
           </div>
           <div v-show="profileModalState" class="profileModalWrapper" >
@@ -170,12 +170,6 @@ export default {
     profileLoading() {
       return this.profileImageLoading;
     }
-  },
-  created() {
-    console.log(this.imagesrc == undefined);
-    setTimeout(() => {
-      console.log(this.imagesrc == undefined);
-    }, 20000);
   }
 };
 </script>
@@ -288,6 +282,7 @@ export default {
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.2s ease;
+  @include smallBoxShadow();
 }
 .profile-image:hover {
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.3);

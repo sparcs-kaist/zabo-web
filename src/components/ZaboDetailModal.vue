@@ -47,22 +47,22 @@
             </div>
           </div>
           <div class="bodyWrapper" v-show="toDisplay === 2">
-            <input-field v-show="toDisplay === 2" :content.sync="newComment" :on-click="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
+            <input-field v-show="toDisplay === 2 && loggedInState" :content.sync="newComment" @on-submit="onSubmitComment" placeholder-text="리뷰를 입력하세요.">
             </input-field>
             <review-screen :comments="comments" />
           </div>
         </div>
         <div class="column">
-          <div @click="posterModalHandler" v-if="posters != []" class="zaboImageWrapper">
-            <img :src="currentPoster" class="zaboImage"/>
-            <div class="arrowIconWrapper">
-              <div class="leftIconWrapper">
-                <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
-              </div>
-              <div class="rightIconWrapper">
-                <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
-              </div>
+          <div class="arrowIconWrapper">
+            <div class="leftIconWrapper">
+              <v-icon v-show="currentPosterNumber != 0" x-large @click.stop="changePosterNumber('left')" color="grey lighten-3">keyboard_arrow_left</v-icon>
             </div>
+            <div class="rightIconWrapper">
+              <v-icon v-show="currentPosterNumber != posters.length-1" x-large @click.stop="changePosterNumber('right')" color="grey lighten-3">keyboard_arrow_right</v-icon>
+            </div>
+          </div>
+          <div v-if="posters != []" class="zaboImageWrapper">
+            <img @click="posterModalHandler" :src="currentPoster" class="zaboImage"/>
           </div>
           <v-icon @click="closeModal" class="closeIcon">close</v-icon>
           <v-icon v-if="myZabo" v-show="loggedInState" @click="editZabo" class="editIcon">edit</v-icon>
@@ -173,9 +173,7 @@ export default {
         .then(response => {
           this.comments.push(response.data);
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => {});
       this.newComment = "";
     },
     selectTab(selected) {
@@ -205,7 +203,6 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
           if (res.status != 201) {
             this.likeCount -= 1;
             this.isLiked = false;
@@ -213,8 +210,8 @@ export default {
         })
         .catch(err => {
           alert("You are not logged In!");
-          console.log(err);
           this.likeCount -= 1;
+          this.isLiked = false;
         });
     },
     dislikeZabo() {
@@ -232,7 +229,6 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
           if (res.status != 204) {
             this.isLiked = true;
             this.likeCount += 1;
@@ -240,66 +236,57 @@ export default {
         })
         .catch(err => {
           alert("You are not logged In!");
-          console.log(err);
           this.isLiked = true;
           this.likeCount += 1;
         });
     },
     posterModalHandler() {
       this.posterModalState = !this.posterModalState;
-      console.log(this.posterModalState);
     }
   },
   mounted() {
     this.zabo_id = this.zaboId;
-    console.log(this.modalZaboData);
     const {
       posters,
       content,
       title,
       location,
-      like_count,
       author,
       deadline
     } = this.modalZaboData;
     this.posters = posters;
     this.title = title;
     this.location = location;
-    this.likeCount = like_count;
     this.content = content;
     this.authorId = author.id;
     this.author = author;
     this.deadline = deadline;
-    console.log(this.authorId);
     axios({
       method: "get",
       url: `api/zaboes/${this.zabodetailId}/`,
       headers: {
         Authorization: sessionStorage.getItem("token")
       }
-    })
-      .then(response => {
-        const {
-          updated_time,
-          comments,
-          is_liked,
-          timeslots,
-          category,
-          payment,
-          link_url
-        } = response.data;
-        this.updated_time = updated_time;
-        this.comments = comments;
-        this.isLiked = is_liked;
-        this.timeslots = timeslots;
-        this.category = category;
-        this.payment = payment;
-        this.link_url = link_url;
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    }).then(response => {
+      const {
+        updated_time,
+        comments,
+        is_liked,
+        like_count,
+        timeslots,
+        category,
+        payment,
+        link_url
+      } = response.data;
+      this.updated_time = updated_time;
+      this.comments = comments;
+      this.isLiked = is_liked;
+      this.likeCount = like_count;
+      this.timeslots = timeslots;
+      this.category = category;
+      this.payment = payment;
+      this.link_url = link_url;
+    });
   }
 };
 </script>
@@ -572,33 +559,41 @@ export default {
           display: none;
         }
         .zaboImageWrapper {
-          width: 100%;
-          cursor: pointer;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
           .zaboImage {
             width: 100%;
             height: auto;
+            cursor: pointer;
           }
-          .arrowIconWrapper {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+        }
+        .arrowIconWrapper {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          padding: 10px;
+          .leftIconWrapper {
+            flex: 1;
             display: flex;
-            align-items: center;
-            padding: 10px;
-            .leftIconWrapper {
-              flex: 1;
-              display: flex;
-              justify-content: flex-start;
-              z-index: 800;
-            }
-            .rightIconWrapper {
-              flex: 1;
-              display: flex;
-              justify-content: flex-end;
-              z-index: 800;
-            }
+            justify-content: flex-start;
+            z-index: 800;
+          }
+          .rightIconWrapper {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            z-index: 800;
           }
         }
         .editIcon {

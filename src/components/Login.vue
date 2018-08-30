@@ -107,6 +107,7 @@
 </template>
 <script>
 import axios from "@/axios-auth";
+import { baseURL } from "@/variables.js";
 
 export default {
   data() {
@@ -141,7 +142,6 @@ export default {
           password: this.password
         })
         .then(response => {
-          console.log(response.status);
           if (response.status == 200) {
             sessionStorage.setItem("token", `ZABO ${response.data.token}`);
             this.$store.dispatch("login", response.data.token);
@@ -177,16 +177,9 @@ export default {
         });
     },
     redirectToBack() {
-      window.location = "http://ssal.sparcs.org:16135/api/login/";
+      window.location = baseURL + "/api/login/";
     },
     register() {
-      console.log(
-        this.registerEmail,
-        this.registernickName,
-        this.registerFirstName,
-        this.registerLastName,
-        this.registerPhone
-      );
       this.registerLoading = true;
       axios({
         method: "post",
@@ -227,7 +220,7 @@ export default {
   right: 0;
   position: fixed;
   background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("../assets/ozan-safak-484829-unsplash.jpg");
+    url("../assets/login.jpg");
   background-size: cover;
   z-index: 300;
 }

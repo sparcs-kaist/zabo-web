@@ -104,7 +104,6 @@ export default {
         url: `/api/zaboes/?search=${this.$route.params.search}`
       })
         .then(response => {
-          console.log(response);
           if (response.status == 200) {
             this.zaboList = response.data.data;
             this.zaboIsLoading = false;
@@ -114,7 +113,6 @@ export default {
           }
         })
         .then(err => {
-          console.log(err);
           this.zaboIsLoading = false;
         });
       axios({
@@ -132,15 +130,12 @@ export default {
                 this.following[i] = this.userList[i].is_following;
               }
             }
-            console.log(this.following);
-            console.log(this.userList);
             this.userIsLoading = false;
           } else if (response.status == 404) {
             this.userIsLoading = false;
           }
         })
         .catch(err => {
-          console.log(err);
           this.userIsLoading = false;
         });
     },
@@ -180,12 +175,8 @@ export default {
                   this.reRender = false;
                 });
               }
-              console.log(this.following);
-              console.log(res);
             })
-            .catch(err => {
-              console.log("this is error start", err, "this is error end!");
-            });
+            .catch(err => {});
         }
       } else {
         alert("로그인을 해주세요!");
@@ -205,7 +196,6 @@ export default {
             }
           })
             .then(res => {
-              console.log(res);
               if (res.status == 201) {
                 this.following[index] = false;
                 this.reRender = true;
@@ -214,9 +204,7 @@ export default {
                 });
               }
             })
-            .catch(err => {
-              console.log("this is error start", err, "this is error end!");
-            });
+            .catch(err => {});
         }
       }
     }

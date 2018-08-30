@@ -40,7 +40,8 @@
             <div class="followWrapper">
                 <div class="userWrapper" @click="userDetail(user.id)" v-for="(user, index) in following" :key="index">
                   <div class="userInfoWrapper">
-                    <img :src="user.profile_image" class="userImage">
+                    <img :src="user.profile_image" v-if="user.profile_image != null" class="userImage">
+                    <img src="../assets/default_person.png" v-else class="userImage">
                     <span class="userName">{{user.nickName}}</span>
                   </div>
                 </div>
@@ -147,7 +148,6 @@ export default {
           nickName,
           email
         } = res.data;
-        console.log(res);
         this.imagesrc = profile_image;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -161,7 +161,6 @@ export default {
       });
       axios.get(`/api/zaboes/?author=${userId}`).then(res => {
         this.zaboes = res.data.data;
-        console.log(this.zaboes, this.zaboes.length);
         this.zaboLoading = false;
       });
     }
