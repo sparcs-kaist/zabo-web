@@ -159,76 +159,43 @@ export default {
       headers: {
         Authorization: sessionStorage.getItem("token")
       }
-    }).then(response => {
-      const {
-        posters,
-        content,
-        title,
-        location,
-        updated_time,
-        comments,
-        is_liked,
-        like_count,
-        timeslots,
-        category,
-        payment,
-        link_url,
-        author,
-        deadline
-      } = response.data;
-      this.posters = posters;
-      this.content = content;
-      this.title = title;
-      this.location = location;
-      this.updated_time = updated_time;
-      this.comments = comments;
-      this.isLiked = is_liked;
-      this.likeCount = like_count;
-      this.timeslots = timeslots;
-      this.category = category;
-      this.payment = payment;
-      this.link_url = link_url;
-      this.authorId = author.id;
-      this.author = author;
-      this.deadline = deadline;
-    });
-    this.$store
-      .dispatch("zaboesGetPageCount", {
-        pageSize: 20,
-        method: "최신순"
+    })
+      .then(response => {
+        const {
+          posters,
+          content,
+          title,
+          location,
+          updated_time,
+          comments,
+          is_liked,
+          like_count,
+          timeslots,
+          category,
+          payment,
+          link_url,
+          author,
+          deadline
+        } = response.data;
+        this.posters = posters;
+        this.content = content;
+        this.title = title;
+        this.location = location;
+        this.updated_time = updated_time;
+        this.comments = comments;
+        this.isLiked = is_liked;
+        this.likeCount = like_count;
+        this.timeslots = timeslots;
+        this.category = category;
+        this.payment = payment;
+        this.link_url = link_url;
+        this.authorId = author.id;
+        this.author = author;
+        this.deadline = deadline;
+        console.log(response);
       })
-      .then(res => {
-        const totalPage = res;
-        for (var i = 1; i <= totalPage; i++) {
-          this.$store.dispatch("zaboesList", {
-            pageNum: i,
-            pageSize: 20,
-            method: "최신순"
-          });
-        }
-        return res;
-      })
-      .then(() => {
-        let selectedCategories = [];
-        this.categoryList.map(category => {
-          if (category != "최신순") {
-            selectedCategories.push(category);
-          }
-        });
-        selectedCategories.map(category => {
-          this.$store
-            .dispatch("zaboesGetPageCount", { pageSize: 20, method: category })
-            .then(res => {
-              const totalPage = res;
-              for (var i = 1; i <= totalPage; i++) {
-                this.$store.dispatch("zaboesList", {
-                  pageNum: i,
-                  pageSize: 20,
-                  method: category
-                });
-              }
-            });
-        });
+      .catch(err => {
+        console.log(err);
       });
   },
   beforeDestroy() {
