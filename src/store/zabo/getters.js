@@ -34,9 +34,6 @@ const getters = {
   getJoinedDate(state) {
     return state.currentUser.joined_date;
   },
-  getPhonenumber(state) {
-    return state.currentUser.phone;
-  },
   getFirstName(state) {
     return state.currentUser.first_name;
   },

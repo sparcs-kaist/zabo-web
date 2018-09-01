@@ -62,14 +62,12 @@ export default {
       new_first_name: "",
       new_last_name: "",
       new_nick_name: "",
-      new_phone: "",
       genders: ["남성", "여성", "기타", "비공개"],
       dropdown_selected_gender: ""
     };
   },
   created() {
     this.new_nick_name = this.nick_name;
-    this.new_phone = this.phone;
     this.dropdown_selected_gender = this.gender;
   },
   computed: {
@@ -81,9 +79,6 @@ export default {
     },
     joined_date() {
       return this.$store.getters.getJoinedDate;
-    },
-    phone() {
-      return this.$store.getters.getPhonenumber;
     },
     nick_name() {
       return this.$store.getters.getNickName;
@@ -120,7 +115,6 @@ export default {
   methods: {
     cancelation() {
       this.new_nick_name = this.nick_name;
-      this.new_phone = this.phone;
       this.dropdown_selected_gender = this.gender;
       this.$emit("cancel");
       this.edit = "편집";
@@ -135,7 +129,6 @@ export default {
             this.first,
             this.last,
             this.new_nick_name,
-            this.new_phone,
             this.selected_gender
           ];
           this.$store.dispatch("setMyInfo", payload);
@@ -146,10 +139,10 @@ export default {
             this.first,
             this.last,
             this.new_nick_name,
-            this.new_phone,
             this.selected_gender,
             this.image
           ];
+          console.log(payload);
           this.$store.dispatch("setMyInfo", payload);
           this.$emit("editmode");
           this.edit = "편집";

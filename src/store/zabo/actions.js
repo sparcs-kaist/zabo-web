@@ -151,19 +151,17 @@ const actions = {
       currentUser: { id }
     } = state;
     let formData = new FormData();
-    if (payload.length == 5) {
+    if (payload.length == 4) {
       formData.append("first_name", payload[0]);
       formData.append("last_name", payload[1]);
       formData.append("nickName", payload[2]);
-      formData.append("phone", payload[3]);
-      formData.append("gender", payload[4]);
-    } else if (payload.length == 6) {
+      formData.append("gender", payload[3]);
+    } else if (payload.length == 5) {
       formData.append("first_name", payload[0]);
       formData.append("last_name", payload[1]);
       formData.append("nickName", payload[2]);
-      formData.append("phone", payload[3]);
-      formData.append("gender", payload[4]);
-      formData.append("profile_image", payload[5]);
+      formData.append("gender", payload[3]);
+      formData.append("profile_image", payload[4]);
     }
     commit("START_AJAX");
     axios(`api/users/${id}/`, {
