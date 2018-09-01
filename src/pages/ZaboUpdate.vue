@@ -385,7 +385,10 @@ export default {
           JSON.stringify(this.computedScheduleDates)
         );
         if (this.zaboUrlExist) {
-          formData.append("link_url", this.zaboUrl);
+          if (this.zaboUrl.split("//")[0] == "http:" || this.zaboUrl.split("//")[0] == "https:")
+            formData.append("link_url", this.zaboUrl);
+          else
+            formData.append("link_url", "http://" + this.zaboUrl);
         }
 
         axios({
