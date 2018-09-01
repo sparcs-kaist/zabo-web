@@ -609,7 +609,7 @@ export default {
       .posterWrapper {
         display: flex;
         flex-direction: column;
-        justify-content: flex-end;
+        justify-content: center;
         align-items: center;
         width: 100%;
         height: 100%;
