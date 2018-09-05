@@ -7,6 +7,9 @@
     <span class="category">{{calculatedCategoryList[2]}}</span>
   </div>
   <div class="currentZaboesWrapper" :style="`padding: 0 ${windowWidth > 700 ? (basePosterWrapperHeight/2)-31: 0}px`">
+    <nav class="horizontalNavButton">
+      <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
+    </nav>
     <carousel-3d v-if="windowWidth > 700" id="fakeCarousel1" :inverseScaling="50"  :display="displayNumber" :space="60" :animationSpeed="200" :perspective="0" :width="carouselPosterHeight" :height="basePosterWrapperHeight" :class="['fakeCarouselWrapper', 'fake-left']">
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
@@ -30,9 +33,6 @@
       <slide v-for="i in 3" :startIndex="1" :key="i-1" :index="i-1">
       </slide>
     </carousel-3d>
-    <nav class="horizontalNavButton">
-      <img @click="categoryleft" src="@/assets/blue_button_left.svg" class="keyboard_arrow_leftright" alt="left_arrow">
-    </nav>
     <nav class="horizontalNavButton">
       <img @click="categoryright" src="@/assets/blue_button_right.svg" class="keyboard_arrow_leftright" alt="right_arrow">
     </nav>
