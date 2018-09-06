@@ -7,8 +7,8 @@ import ZaboListTest from "@/pages/ZaboListTest";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
 import UserDetail from "@/pages/UserDetail.vue";
 import ZaboSearch from "@/pages/ZaboSearch.vue";
-import SearchEmpty from "@/pages/SearchEmpty.vue";
 import LoginCallback from "@/pages/LoginCallback.vue";
+import ZaboList from "@/pages/ZaboList.vue";
 import CodeOfConduct from "@/pages/CodeOfConduct.vue";
 import Credit from "@/pages/Credit.vue";
 import License from "@/pages/License.vue";
@@ -48,15 +48,11 @@ export default new Router({
       path: "/search/:search",
       name: "ZaboSearch",
       component: ZaboSearch,
-      beforeEnter: (to, from, next) => {
-        console.log("Entering User", to.params.search);
-        next();
-      }
     },
     {
-      path: "/search/",
-      name: "SearchEmpty",
-      component: SearchEmpty
+      path: "/list",
+      name: "ZaboList",
+      component: ZaboList,
     },
     {
       path: "/login/:token",

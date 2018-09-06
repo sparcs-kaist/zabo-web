@@ -11,10 +11,15 @@
             {{ $t('자보 올리기') }}
           </div>
         </router-link>
+        <router-link to="/list">
+          <div class="button left">
+            {{ $t('자보 모아보기') }}
+          </div>
+        </router-link>
       </div>
       <div class="column">
         <div class="right">
-          <Search @submitValue="onSearch" :searchValue="searchValue" />
+          <v-icon @click="onSearch" class="searchIcon">search</v-icon>
         </div>
         <div style="position: relative;" v-if="loggedInState">
           <v-icon @click="notificationModalStateChange" class="right">notifications</v-icon>
@@ -48,7 +53,7 @@
         </div>
         <div>
         <div class="mobile-right">
-          <Search @submitValue="onSearch" :searchValue="searchValue" />
+          <v-icon @click="onSearch" class="searchIcon">search</v-icon>
         </div>
         </div>
         <div class="dropdown" @click="dropdownOpen" v-if="!isDropdownOpened">
@@ -86,27 +91,28 @@
         {{ $t('로그아웃')}}
       </div>
     </div>
+    <search-modal @closeSearchModal="searchModalState = false" v-if="searchModalState"/>
   </div>
 </template>
 
 <script>
 import app from "@/main";
-import Search from "@/components/Search";
+import SearchModal from '@/components/SearchModal';
 import NotificationModal from "@/components/NotificationModal";
 
 export default {
   name: "Header",
   components: {
-    Search,
+    SearchModal,
     NotificationModal
   },
   data() {
     return {
       lang: "kr",
-      searchValue: "",
       notificationsModal: false,
       isDropdownOpened: false,
-      profileModalState: false
+      profileModalState: false,
+      searchModalState: true
     };
   },
   props: {
@@ -138,10 +144,6 @@ export default {
         this.lang = "kr";
       }
     },
-    onSearch(searchTerm) {
-      this.$router.push({ name: "ZaboSearch", params: { search: searchTerm } });
-      this.searchTerm = "";
-    },
     dropdownOpen() {
       this.isDropdownOpened = true;
     },
@@ -151,6 +153,9 @@ export default {
     profilePush() {
       this.profileModalState = false;
       this.$router.push({ name: "Zabouserprofile" });
+    },
+    onSearch () {
+      this.searchModalState = true;
     }
   },
   computed: {
