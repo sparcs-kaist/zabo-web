@@ -51,7 +51,7 @@
           <v-tab-item :key="3">
             <div class="followWrapper">
               <div v-if="followingState != [] && reRender == false" class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
-                <div @click="userDetail(user.id)" class="userInfoWrapper">
+                <!-- <div @click="userDetail(user.id)" class="userInfoWrapper">
                   <img :src="user.profile_image" v-if="user.profile_image != null" class="userImage">
                   <img src="../assets/default_person.png" v-else class="userImage">
                   <span class="userName">{{user.nickName}}</span>
@@ -61,7 +61,15 @@
                 </button>
                 <button v-show="followingState[index]" class="Follow" @click="unfollowUser(user.nickName, index)">
                   팔로우 취소
-                </button>
+                </button> -->
+                <user-info
+                  :following="followingState"
+                  @follow-user="followUser(user.nickName, index)"
+                  :index="index"
+                  :showFollow="true"
+                  @unfollow-user="unfollowUser(user.nickName, index)"
+                  :user="user"
+                />
               </div>
               <div class="doesNotExist" v-show="currentUser.following.length == 0">
                 <span>{{$t('유저가 존재하지 않습니다.')}}</span>
@@ -79,6 +87,7 @@
 
 <script>
 import Profile from "./Userprofile/Profile";
+import UserInfo from "@/components/UserInfo";
 import ZaboDetailModal from "@/components/ZaboDetailModal";
 import axios from "@/axios-auth";
 import * as types from "@/store/mutation-types";
@@ -110,6 +119,7 @@ export default {
   },
   components: {
     profile: Profile,
+    UserInfo,
     ZaboDetailModal
   },
   methods: {

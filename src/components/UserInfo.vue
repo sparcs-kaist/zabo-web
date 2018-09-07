@@ -1,16 +1,28 @@
 <template>
   <div>
     <div class="userInfoWrapper">
-      <img :src="this.user.profile_image" v-if="this.user.profile_image != null" class="userImage">
-      <img src="../assets/default_person.png" v-else class="userImage">
+      <img
+        v-if="this.user.profile_image != null"
+        class="userImage"
+        :src="this.user.profile_image"
+      >
+      <img v-else class="userImage" src="../assets/default_person.png">
       <span class="userName">{{user.nickName}}</span>
     </div>
-    <!-- <button v-if="!following[this.index]" class="Follow" @click="followUser(this.user.nickName, this.index)">
+    <button
+      v-if="this.showFollow && !this.following[this.index]"
+      @click="$emit('follow-user')"
+      class="Follow"
+    >
       팔로우
     </button>
-    <button v-if="following[this.index]" class="Follow" @click="unfollowUser(this.user.nickName, this.index)">
+    <button
+      v-if="this.showFollow && this.following[this.index]"      
+      @click="$emit('unfollow-user')"
+      class="Follow"
+    >
       팔로우 취소
-    </button> -->
+    </button>
   </div>
 </template>
 
@@ -18,7 +30,7 @@
 import * as types from "@/store/mutation-types";
 
 export default {
-  props: ['index', 'showFollow', 'user'],
+  props: ['following', 'followUser', 'index', 'showFollow', 'unfollowUser', 'user'],
 };
 </script>
 
