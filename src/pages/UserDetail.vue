@@ -39,7 +39,7 @@
           <v-tab-item :key="3">
             <div class="followWrapper">
                 <div class="userWrapper" @click="userDetail(user.id)" v-for="(user, index) in following" :key="index">
-                  <user-info :index="index" :showFollow="false" :user="user"/>
+                  <user-info :following="following" :index="index" :showFollow="false" :user="user"/>
                 </div>
                 <div class="doesNotExist" v-show="following.length == 0">
                   <span>{{$t('팔로잉 중인 유저가 없습니다.')}}</span>
