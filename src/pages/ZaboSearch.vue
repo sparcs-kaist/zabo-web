@@ -26,16 +26,15 @@
       ></v-progress-circular>
     <div class="ListWrapper" v-else>
       <div v-if="reRender == false" class="userWrapper" :key="index" v-for="(user, index) in userList">
-        <div @click="userDetail(user.id)" class="userInfoWrapper">
-          <img :src="user.profile_image" class="userImage">
-          <span class="userName">{{user.nickName}}</span>
-        </div>
-        <button v-if="!following[index]" class="Follow" @click="followUser(user.nickName, index)">
-          팔로우
-        </button>
-        <button v-if="following[index]" class="Follow" @click="unfollowUser(user.nickName, index)">
-          팔로우 취소
-        </button>
+        <user-info
+          @click-user="userDetail(user.id)"
+          @follow-user="followUser(user.nickName, index)"
+          @unfollow-user="unfollowUser(user.nickName, index)"
+          :following="followingState"
+          :index="index"
+          :showFollow="true"
+          :user="user"
+        />
       </div>
       <div class="doesNotExist" v-show="userList.length == 0">
         <span>{{$t('유저가 존재하지 않습니다.')}}</span>
@@ -49,6 +48,7 @@
 </template>
 <script>
 import axios from "@/axios-auth";
+import UserInfo from "@/components/UserInfo";
 import ZaboDetailModal from "@/components/ZaboDetailModal";
 
 export default {
@@ -70,6 +70,7 @@ export default {
     };
   },
   components: {
+    UserInfo,
     ZaboDetailModal
   },
   computed: {
@@ -261,29 +262,9 @@ export default {
   border-radius: 3px;
   padding: 15px 20px;
   margin-right: 10px;
-}
-.userInfoWrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-.Follow {
-  width: 100%;
-  height: 30px;
-  background-color: #12397d;
-  border-radius: 3px;
-  color: white;
-  margin-top: 1em;
-}
-.userImage {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-}
-.userName {
-  font-size: 1.875em;
-  font-weight: 700;
-  margin-left: 10px;
+  @include breakPoint("phone") {
+    width: 45%;
+  }
 }
 .zaboImage {
   width: 183px;
