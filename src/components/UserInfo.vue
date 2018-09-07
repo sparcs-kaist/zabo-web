@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="userInfoWrapper">
+    <div @click="$emit('click-user')" class="userInfoWrapper">
       <img
         v-if="this.user.profile_image != null"
         class="userImage"
@@ -17,7 +17,7 @@
       팔로우
     </button>
     <button
-      v-if="this.showFollow && this.following[this.index]"      
+      v-if="this.showFollow && this.following[this.index]"
       @click="$emit('unfollow-user')"
       class="Follow"
     >
@@ -30,7 +30,7 @@
 import * as types from "@/store/mutation-types";
 
 export default {
-  props: ['following', 'followUser', 'index', 'showFollow', 'unfollowUser', 'user'],
+  props: ['following', 'index', 'showFollow', 'user'],
 };
 </script>
 
