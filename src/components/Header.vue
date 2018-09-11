@@ -112,7 +112,7 @@ export default {
       notificationsModal: false,
       isDropdownOpened: false,
       profileModalState: false,
-      searchModalState: true
+      searchModalState: false
     };
   },
   props: {

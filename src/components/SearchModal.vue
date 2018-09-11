@@ -1,9 +1,8 @@
 <template lang=''>
 <div id="searchModalWrapper">
   <div id="searchBar">
-    <v-icon @click="closeModal" large class="searchIcon">arrow_back</v-icon>
-    <input v-model="searchValue" type="text" class="searchInput" @keyup.enter="searchZabo"></input>
-    <v-icon @click="clearInput" large class="searchIcon">clear</v-icon>
+    <input v-model="searchValue" type="text" class="searchInput" @keyup.enter="totSearch"></input>
+    <v-icon @click="closeModal" large class="searchIcon">clear</v-icon>
   </div>
   <div class="tabsWrapper">
     <div :class="`tabs ${selectedTab == 1 && 'selectedtab'}`" @click="selectTab(1)">자보</div>
@@ -20,9 +19,10 @@
     <div v-show="selectedTab == 1" class="ListWrapper" v-else>
       <div class="zaboWrapper">
         <div v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList" class="miniViewWrapper">
-          <mini-view :zabo="zabo"></mini-view>
+          <mini-view @userDetail="userDetail" :zabo="zabo"></mini-view>
         </div>
       </div>
+      <button v-if="zaboMore" @click="searchZabo(false)" class="more">더보기</button>
       <div class="doesNotExist" v-show="zaboList.length == 0">
         <span>{{$t('자보가 존재하지 않습니다.')}}</span>
       </div>
@@ -47,6 +47,7 @@
           팔로우 취소
         </button>
       </div>
+      <button v-if="zaboMore" @click="searchUser(false)" class="more">더보기</button>
       <div class="doesNotExist" v-show="userList.length == 0">
         <span>{{$t('유저가 존재하지 않습니다.')}}</span>
       </div>
@@ -68,11 +69,21 @@ export default {
       reRender: false,
       zaboList: [],
       userList: [],
+      zaboNext: null,
+      userNext: null,
       following: {}
     }
   },
   components: {
     MiniView
+  },
+  computed: {
+    zaboMore() {
+      return this.zaboNext != null;
+    },
+    userMore() {
+      return this.userNext != null;
+    }
   },
   methods: {
     selectTab (num) {
@@ -85,63 +96,106 @@ export default {
     closeModal() {
       this.$emit('closeSearchModal');
     },
-    clearInput() {
-      this.searchValue = "";
+    totSearch(){
+      this.searchZabo(true);
+      this.searchUser(true);
     },
-    searchZabo() {
-      this.zaboIsLoading = true;
-      this.userIsLoading = true;
-      this.userList = [];
-      this.following = {};
-      axios({
-        methods: "get",
-        url: `/api/zaboes/?search=${this.searchValue}`
-      })
-        .then(response => {
-          if (response.status == 200) {
-            this.zaboList = response.data.data;
-            this.zaboIsLoading = false;
-            return response.data.data;
-          } else if (response.status == 404) {
-            this.zaboIsLoading = false;
-          }
+    searchZabo(first) {
+      if (first) {
+        this.zaboIsLoading = true;
+        axios({
+          methods: "get",
+          url: `/api/zaboes/?search=${this.searchValue}&page=1`
         })
-        .then(err => {
-          this.zaboIsLoading = false;
-        });
-      axios({
-        methods: "get",
-        url: `/api/users/?search=${this.searchValue}`,
-        headers: {
-          Authorization: sessionStorage.getItem("token")
-        }
-      })
-        .then(response => {
-          if (response.status == 200) {
-            this.userList = response.data.data;
-            if (this.userList.length > 0) {
-              for (let i = 0; i < this.userList.length; i++) {
-                this.following[i] = this.userList[i].is_following;
-              }
+          .then(response => {
+            this.zaboNext = response.data.links.next;
+            if (response.status == 200) {
+              this.zaboList = response.data.data;
+              this.zaboIsLoading = false;
+              return response.data.data;
+            } else if (response.status == 404) {
+              this.zaboIsLoading = false;
             }
-            this.userIsLoading = false;
-          } else if (response.status == 404) {
-            this.userIsLoading = false;
+          })
+          .then(err => {
+            this.zaboIsLoading = false;
+          });
+      } else {
+          axios({
+            methods: "get",
+            url: this.zaboNext
+          })
+            .then(response => {
+              this.zaboNext = response.data.links.next;
+              if (response.status == 200) {
+                this.zaboList.push(response.data.data);
+                this.zaboIsLoading = false;
+                return response.data.data;
+              } else if (response.status == 404) {
+                this.zaboIsLoading = false;
+              }
+            })
+            .then(err => {
+              this.zaboIsLoading = false;
+            });
+      }
+    },
+    searchUser(first) {
+      if (first) {
+        this.userIsLoading = true;
+        this.userList = [];
+        this.following = {};
+        axios({
+          methods: "get",
+          url: `/api/users/?search=${this.searchValue}&page=1`,
+          headers: {
+            Authorization: sessionStorage.getItem("token")
           }
         })
-        .catch(err => {
-          this.userIsLoading = false;
-        });
-    },
-    zaboDetail(id, nickname, zaboData) {
-      if (nickname !== "None") {
-        this.modalState = true;
-        this.modalZaboData = zaboData;
-        window.history.pushState(null, null, [`/zabo/${id}`]);
-        this.modalZaboId = id;
+          .then(response => {
+            this.userNext = response.data.links.next;
+            if (response.status == 200) {
+              this.userList = response.data.data;
+              if (this.userList.length > 0) {
+                for (let i = 0; i < this.userList.length; i++) {
+                  this.following[i] = this.userList[i].is_following;
+                }
+              }
+              this.userIsLoading = false;
+            } else if (response.status == 404) {
+              this.userIsLoading = false;
+            }
+          })
+          .catch(err => {
+            this.userIsLoading = false;
+          });
+      } else {
+          axios({
+            methods: "get",
+            url: this.userNext,
+            headers: {
+              Authorization: sessionStorage.getItem("token")
+            }
+          })
+            .then(response => {
+              this.userNext = response.data.links.next;
+              if (response.status == 200) {
+                this.userList.push(response.data.data);
+                for (let i = 0; i < this.userList.length; i++) {
+                  this.following[i] = this.userList[i].is_following;
+                }
+                this.userIsLoading = false;
+              } else if (response.status == 404) {
+                this.userIsLoading = false;
+              }
+            })
+            .catch(err => {
+              this.userIsLoading = false;
+            });
       }
     },
     userDetail(id) {
+      this.$emit('closeSearchModal');
       this.$router.push({ name: "UserDetail", params: { userId: id } });
     },
     followUser(nickName, index) {
@@ -208,7 +262,6 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1001;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -228,6 +281,7 @@ export default {
       text-align: center;
       font-size: $big-font-size;
       padding-left: 5px;
+      margin-left: 25px;
       &:focus {
         outline: none;
       }
@@ -265,11 +319,12 @@ export default {
     width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
+    @include scrollBarDark(small);
     .ListWrapper {
       width: 100%;
       min-width: 400px;
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-around;
       align-items: flex-start;
       flex-wrap: wrap;
       margin-bottom: 2em;
@@ -300,6 +355,10 @@ export default {
       }
       .userWrapper {
         display: flex;
+        width: 100%;
+        @include breakPoint('desktop') {
+          width: 30%;
+        }
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
@@ -307,7 +366,6 @@ export default {
         border: 1px solid #ececec;
         border-radius: 3px;
         padding: 15px 20px;
-        margin-right: 10px;
         .userInfoWrapper {
           display: flex;
           justify-content: flex-start;

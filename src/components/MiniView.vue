@@ -2,14 +2,14 @@
   <div class="viewWrapper">
     <div class="yesMiniView">
       <div class="miniViewTotalWrapper">
-        <div class="posterWrapper">
+        <div @click="zaboDetail(zabo.id, zabo.author.nickName, zabo)" class="posterWrapper">
           <img class="posterImage" :src="posterImage">
           <div class="posterOverlay">
             <v-icon>mdi-heart</v-icon>{{likeCount}}
           </div>
         </div>
         <div class="explainationWrapper">
-          <div class="author">
+          <div @click="$emit('userDetail', zabo.author.id)" class="author">
             <img class="profileImage" :src="profileImage">
             <span class="authorSpan">{{nickName}}</span>
           </div>
@@ -20,10 +20,14 @@
         </div>
       </div>
     </div>
+    <div v-if="computedModalState" class="zaboModalWrapper">
+      <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
+    </div>
   </div>
 </template>
 <script>
 import axios from "@/axios-auth";
+import ZaboDetailModal from "@/components/ZaboDetailModal";
 import { baseURL, zaboURL } from "@/variables.js";
 
 export default {
@@ -38,9 +42,15 @@ export default {
       nickName: "",
       content: "",
       likeCount: 0,
+      modalState: false,
+      modalZaboId: -1,
+      modalZaboData: {},
     };
   },
   props: ['zabo'],
+  components: {
+    ZaboDetailModal
+  },
   created() {
     const { author, content, created_time, deadline, id, is_finished, like_count, location, posters, time_left, title, updated_time } = this.zabo;
     this.profileImage = author.profile_image;
@@ -52,6 +62,28 @@ export default {
     this.content = content;
     this.likeCount = like_count;
     console.log(this.zabo);
+  },
+  computed: {
+    computedZaboId() {
+      return this.modalZaboId;
+    },
+    computedModalState() {
+      return this.modalState;
+    }
+  },
+  methods: {
+    zaboDetail(id, nickname, zaboData) {
+      if (nickname !== "None") {
+        this.modalZaboData = zaboData;
+        window.history.pushState(null, null, [`/zabo/${id}`]);
+        this.modalZaboId = id;
+        this.modalState = true;
+      }
+    },
+    closeModal() {
+      this.modalState = false;
+      history.back();
+    },
   }
 };
 </script>
@@ -114,6 +146,7 @@ export default {
         display: flex;
         width: 100%;
         align-items: center;
+        cursor: pointer;
         .profileImage {
           width: 25px;
           height: 25px;
@@ -146,5 +179,11 @@ export default {
       }
     }
   }
+}
+.zaboModalWrapper {
+  width: 100%;
+  position: absolute;
+  top: 78px;
+  bottom: 68px;
 }
 </style>
