@@ -18,7 +18,7 @@ const actions = {
   zaboesList({ commit, state }, payload) {
     let method = "";
     if (payload.method == "최신순") {
-      method = "?ordering=created_time";
+      method = "?ordering=-created_time";
     } else if (payload.method == "인기있는 자보") {
       method = "popular/";
       axios({
@@ -91,7 +91,7 @@ const actions = {
   zaboesGetPageCount({ commit }, payload) {
     let method = "";
     if (payload.method == "최신순") {
-      method = "&ordering=created_time";
+      method = "&ordering=-created_time";
     } else if (payload.method == "인기있는 자보") {
       method = "popular/";
       return new Promise(resolve => {
