@@ -56,8 +56,8 @@
 </div>
 </template>
 <script>
-import MiniView from '@/components/MiniView';
-import axios from '@/axios-auth.js';
+import MiniView from "@/components/MiniView";
+import axios from "@/axios-auth.js";
 
 export default {
   data() {
@@ -72,7 +72,7 @@ export default {
       zaboNext: null,
       userNext: null,
       following: {}
-    }
+    };
   },
   components: {
     MiniView
@@ -86,7 +86,7 @@ export default {
     }
   },
   methods: {
-    selectTab (num) {
+    selectTab(num) {
       if (num == 1) {
         this.selectedTab = 1;
       } else {
@@ -94,9 +94,9 @@ export default {
       }
     },
     closeModal() {
-      this.$emit('closeSearchModal');
+      this.$emit("closeSearchModal");
     },
-    totSearch(){
+    totSearch() {
       this.searchZabo(true);
       this.searchUser(true);
     },
@@ -121,23 +121,23 @@ export default {
             this.zaboIsLoading = false;
           });
       } else {
-          axios({
-            methods: "get",
-            url: this.zaboNext
-          })
-            .then(response => {
-              this.zaboNext = response.data.links.next;
-              if (response.status == 200) {
-                this.zaboList.push(response.data.data);
-                this.zaboIsLoading = false;
-                return response.data.data;
-              } else if (response.status == 404) {
-                this.zaboIsLoading = false;
-              }
-            })
-            .then(err => {
+        axios({
+          methods: "get",
+          url: this.zaboNext
+        })
+          .then(response => {
+            this.zaboNext = response.data.links.next;
+            if (response.status == 200) {
+              this.zaboList.push(response.data.data);
               this.zaboIsLoading = false;
-            });
+              return response.data.data;
+            } else if (response.status == 404) {
+              this.zaboIsLoading = false;
+            }
+          })
+          .catch(err => {
+            this.zaboIsLoading = false;
+          });
       }
     },
     searchUser(first) {
@@ -170,32 +170,32 @@ export default {
             this.userIsLoading = false;
           });
       } else {
-          axios({
-            methods: "get",
-            url: this.userNext,
-            headers: {
-              Authorization: sessionStorage.getItem("token")
+        axios({
+          methods: "get",
+          url: this.userNext,
+          headers: {
+            Authorization: sessionStorage.getItem("token")
+          }
+        })
+          .then(response => {
+            this.userNext = response.data.links.next;
+            if (response.status == 200) {
+              this.userList.push(response.data.data);
+              for (let i = 0; i < this.userList.length; i++) {
+                this.following[i] = this.userList[i].is_following;
+              }
+              this.userIsLoading = false;
+            } else if (response.status == 404) {
+              this.userIsLoading = false;
             }
           })
-            .then(response => {
-              this.userNext = response.data.links.next;
-              if (response.status == 200) {
-                this.userList.push(response.data.data);
-                for (let i = 0; i < this.userList.length; i++) {
-                  this.following[i] = this.userList[i].is_following;
-                }
-                this.userIsLoading = false;
-              } else if (response.status == 404) {
-                this.userIsLoading = false;
-              }
-            })
-            .catch(err => {
-              this.userIsLoading = false;
-            });
+          .catch(err => {
+            this.userIsLoading = false;
+          });
       }
     },
     userDetail(id) {
-      this.$emit('closeSearchModal');
+      this.$emit("closeSearchModal");
       this.$router.push({ name: "UserDetail", params: { userId: id } });
     },
     followUser(nickName, index) {
@@ -253,7 +253,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 <style lang='scss' scoped>
 #searchModalWrapper {
@@ -308,7 +308,7 @@ export default {
     .selectedtab {
       border-bottom: 2px solid $theme-color;
     }
-    @include breakPoint('phone') {
+    @include breakPoint("phone") {
       min-height: 40px;
       .tabs {
         font-size: $h1-font-size;
@@ -339,7 +339,7 @@ export default {
         margin-right: 10px;
         .miniViewWrapper {
           width: 100%;
-          @include breakPoint('desktop') {
+          @include breakPoint("desktop") {
             width: 40%;
           }
         }
@@ -356,7 +356,7 @@ export default {
       .userWrapper {
         display: flex;
         width: 100%;
-        @include breakPoint('desktop') {
+        @include breakPoint("desktop") {
           width: 30%;
         }
         flex-direction: column;
@@ -392,5 +392,8 @@ export default {
       }
     }
   }
+}
+.more {
+  @include largeButton(theme);
 }
 </style>

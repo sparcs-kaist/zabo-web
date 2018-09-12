@@ -53,17 +53,7 @@ export default {
       windowWidth: 0,
       windowHeight: 0,
       currentCategoryIndex: 0,
-      categoryList: [
-        "최신순",
-        "인기있는 자보",
-        "마감임박 자보",
-        // "리크루팅",
-        // "공연",
-        // "대회",
-        // "설명회",
-        // "세미나",
-        // "전람회"
-      ],
+      categoryList: ["최신순", "인기있는 자보", "마감임박 자보"],
       defaultImage: "@/assets/logo.png",
       posterWrapperHeight: 0,
       basePosterWrapperHeight: 0,
