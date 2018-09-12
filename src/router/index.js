@@ -3,7 +3,7 @@ import Router from "vue-router";
 import ZaboDetail from "@/pages/ZaboDetail";
 import ZaboUpdate from "@/pages/ZaboUpdate";
 import ZaboUpload from "@/pages/ZaboUpload";
-import ZaboListTest from "@/pages/ZaboListTest";
+import CarouselList from "@/pages/CarouselList";
 import ZaboUserprofile from "@/pages/Userprofile.vue";
 import UserDetail from "@/pages/UserDetail.vue";
 import LoginCallback from "@/pages/LoginCallback.vue";
@@ -46,7 +46,7 @@ export default new Router({
     {
       path: "/list",
       name: "ZaboList",
-      component: ZaboList,
+      component: ZaboList
     },
     {
       path: "/login/:token",
@@ -71,7 +71,7 @@ export default new Router({
     {
       path: "/",
       name: "ZaboListDetailAdded",
-      component: ZaboListTest
+      component: CarouselList
     },
     {
       path: "*",
