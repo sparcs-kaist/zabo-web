@@ -39,11 +39,7 @@
           <v-tab-item :key="3">
             <div class="followWrapper">
                 <div class="userWrapper" @click="userDetail(user.id)" v-for="(user, index) in following" :key="index">
-                  <div class="userInfoWrapper">
-                    <img :src="user.profile_image" v-if="user.profile_image != null" class="userImage">
-                    <img src="../assets/default_person.png" v-else class="userImage">
-                    <span class="userName">{{user.nickName}}</span>
-                  </div>
+                  <user-info :following="following" :index="index" :showFollow="false" :user="user"/>
                 </div>
                 <div class="doesNotExist" v-show="following.length == 0">
                   <span>{{$t('팔로잉 중인 유저가 없습니다.')}}</span>
@@ -62,6 +58,7 @@
 <script>
 import axios from "@/axios-auth";
 import OtherUserProfile from "./Userprofile/OtherUserProfile";
+import UserInfo from "@/components/UserInfo";
 import ZaboDetailModal from "@/components/ZaboDetailModal";
 import * as types from "@/store/mutation-types";
 
@@ -72,6 +69,7 @@ export default {
   },
   components: {
     OtherUserProfile,
+    UserInfo,
     ZaboDetailModal
   },
   data() {
@@ -325,40 +323,8 @@ export default {
           border-radius: 3px;
           padding: 15px 20px;
           margin-bottom: 15px;
-          .userInfoWrapper {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            .userImage {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-            }
-            .userName {
-              font-size: $big-font-size;
-              font-weight: 700;
-              margin-left: 10px;
-            }
-          }
-          .Follow {
-            width: 100%;
-            height: 30px;
-            background-color: #12397d;
-            border-radius: 3px;
-            color: white;
-            margin-top: 1em;
-          }
           @include breakPoint("phone") {
             width: 45%;
-            .userInfoWrapper {
-              .userImage {
-                width: 35px;
-                height: 35px;
-              }
-              .userName {
-                font-size: $normal-font-size;
-              }
-            }
           }
         }
       }

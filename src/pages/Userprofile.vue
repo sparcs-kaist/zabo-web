@@ -51,17 +51,15 @@
           <v-tab-item :key="3">
             <div class="followWrapper">
               <div v-if="followingState != [] && reRender == false" class="userWrapper" v-for="(user, index) in currentUser.following" :key="index">
-                <div @click="userDetail(user.id)" class="userInfoWrapper">
-                  <img :src="user.profile_image" v-if="user.profile_image != null" class="userImage">
-                  <img src="../assets/default_person.png" v-else class="userImage">
-                  <span class="userName">{{user.nickName}}</span>
-                </div>
-                <button v-show="!followingState[index]" class="Follow" @click="followUser(user.nickName, index)">
-                  팔로우
-                </button>
-                <button v-show="followingState[index]" class="Follow" @click="unfollowUser(user.nickName, index)">
-                  팔로우 취소
-                </button>
+                <user-info
+                  @click-user="userDetail(user.id)"
+                  @follow-user="followUser(user.nickName, index)"
+                  @unfollow-user="unfollowUser(user.nickName, index)"
+                  :following="followingState"
+                  :index="index"
+                  :showFollow="true"
+                  :user="user"
+                />
               </div>
               <div class="doesNotExist" v-show="currentUser.following.length == 0">
                 <span>{{$t('유저가 존재하지 않습니다.')}}</span>
@@ -79,6 +77,7 @@
 
 <script>
 import Profile from "./Userprofile/Profile";
+import UserInfo from "@/components/UserInfo";
 import ZaboDetailModal from "@/components/ZaboDetailModal";
 import axios from "@/axios-auth";
 import * as types from "@/store/mutation-types";
@@ -110,6 +109,7 @@ export default {
   },
   components: {
     profile: Profile,
+    UserInfo,
     ZaboDetailModal
   },
   methods: {
@@ -406,40 +406,8 @@ export default {
           border-radius: 3px;
           padding: 15px 20px;
           margin-bottom: 15px;
-          .userInfoWrapper {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            .userImage {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-            }
-            .userName {
-              font-size: $big-font-size;
-              font-weight: 700;
-              margin-left: 10px;
-            }
-          }
-          .Follow {
-            width: 100%;
-            height: 30px;
-            background-color: #12397d;
-            border-radius: 3px;
-            color: white;
-            margin-top: 1em;
-          }
           @include breakPoint("phone") {
             width: 45%;
-            .userInfoWrapper {
-              .userImage {
-                width: 35px;
-                height: 35px;
-              }
-              .userName {
-                font-size: $normal-font-size;
-              }
-            }
           }
         }
       }
