@@ -44,22 +44,36 @@ export default {
       likeCount: 0,
       modalState: false,
       modalZaboId: -1,
-      modalZaboData: {},
+      modalZaboData: {}
     };
   },
-  props: ['zabo'],
+  props: ["zabo"],
   components: {
     ZaboDetailModal
   },
   created() {
-    const { author, content, created_time, deadline, id, is_finished, like_count, location, posters, time_left, title, updated_time } = this.zabo;
+    const {
+      author,
+      content,
+      created_time,
+      deadline,
+      id,
+      is_finished,
+      like_count,
+      location,
+      posters,
+      time_left,
+      title,
+      updated_time
+    } = this.zabo;
     this.profileImage = author.profile_image;
     this.posterImage = posters[0].image_thumbnail;
     this.location = location;
     this.explaination = this.content;
     this.title = title;
     this.nickName = author.nickName;
-    this.content = content;
+    this.content =
+      content.length > 100 ? content.substring(0, 85) + "..." : content;
     this.likeCount = like_count;
     console.log(this.zabo);
   },
@@ -83,7 +97,7 @@ export default {
     closeModal() {
       this.modalState = false;
       history.back();
-    },
+    }
   }
 };
 </script>
@@ -106,7 +120,7 @@ export default {
     .posterWrapper {
       position: relative;
       width: 150px;
-      min-height: 200px;
+      height: 200px;
       cursor: pointer;
       .posterOverlay {
         position: absolute;
@@ -131,8 +145,16 @@ export default {
       }
       .posterImage {
         position: absolute;
-        max-width: 150px;
+        width: 150px;
         height: 200px;
+      }
+      @include breakPoint("phone") {
+        width: 100px;
+        height: 130px;
+        .posterImage {
+          width: 100px;
+          height: 130px;
+        }
       }
     }
     .explainationWrapper {
@@ -141,7 +163,7 @@ export default {
       align-items: flex-start;
       justify-content: flex-start;
       margin-left: 10px;
-      flex: 2;
+      flex: 1;
       .author {
         display: flex;
         width: 100%;
@@ -176,6 +198,44 @@ export default {
       .explainationContent {
         font-size: $normal-font-size;
         margin-top: 8px;
+      }
+      @include breakPoint("phone") {
+        margin-left: 5px;
+        .author {
+          display: flex;
+          width: 100%;
+          align-items: center;
+          cursor: pointer;
+          .profileImage {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+          }
+          .authorSpan {
+            font-size: $small-font-size;
+            font-weight: $big-font-weight;
+            margin-left: 5px;
+          }
+        }
+        .explainationTitle {
+          font-size: $small-font-size;
+          font-weight: $big-font-weight;
+          margin-top: 4px;
+        }
+        .category {
+          font-size: $small-font-size;
+          font-weight: $big-font-weight;
+          margin-top: 4px;
+        }
+        .explainationLocation {
+          font-size: $small-font-size;
+          font-weight: $big-font-weight;
+          margin-top: 4px;
+        }
+        .explainationContent {
+          font-size: $small-font-size;
+          margin-top: 4px;
+        }
       }
     }
   }

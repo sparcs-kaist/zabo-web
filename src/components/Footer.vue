@@ -29,6 +29,9 @@ export default {};
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.9);
   z-index: 400;
+  @include breakPoint("phone") {
+    height: 58px;
+  }
 }
 .column {
   width: 50%;
