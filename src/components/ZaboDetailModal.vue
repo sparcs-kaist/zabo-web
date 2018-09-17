@@ -244,7 +244,7 @@ export default {
       this.posterModalState = !this.posterModalState;
     }
   },
-  mounted() {
+  created() {
     this.zabo_id = this.zaboId;
     const {
       posters,

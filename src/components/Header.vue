@@ -13,7 +13,7 @@
         </router-link>
         <router-link to="/list">
           <div class="button left">
-            {{ $t('자보 모아보기') }}
+            {{ $t('모아보기') }}
           </div>
         </router-link>
       </div>
@@ -79,9 +79,9 @@
           {{ $t('자보 올리기') }}
         </div>
       </router-link>
-      <router-link to="/user/profile">
+      <router-link to="/list">
         <div @click="dropdownClose" class="dropdown-content">
-          {{ $t('프로필 관리') }}
+          {{ $t('모아보기') }}
         </div>
       </router-link>
       <div class="dropdown-content" @click="login" v-if="!loggedInState">
@@ -97,7 +97,7 @@
 
 <script>
 import app from "@/main";
-import SearchModal from '@/components/SearchModal';
+import SearchModal from "@/components/SearchModal";
 import NotificationModal from "@/components/NotificationModal";
 
 export default {
@@ -112,7 +112,7 @@ export default {
       notificationsModal: false,
       isDropdownOpened: false,
       profileModalState: false,
-      searchModalState: true
+      searchModalState: false
     };
   },
   props: {
@@ -154,7 +154,7 @@ export default {
       this.profileModalState = false;
       this.$router.push({ name: "Zabouserprofile" });
     },
-    onSearch () {
+    onSearch() {
       this.searchModalState = true;
     }
   },

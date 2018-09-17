@@ -1,9 +1,8 @@
 <template lang=''>
 <div id="searchModalWrapper">
   <div id="searchBar">
-    <v-icon @click="closeModal" large class="searchIcon">arrow_back</v-icon>
-    <input v-model="searchValue" type="text" class="searchInput" @keyup.enter="searchZabo"></input>
-    <v-icon @click="clearInput" large class="searchIcon">clear</v-icon>
+    <input v-model="searchValue" type="text" class="searchInput" @keyup.enter="totSearch"></input>
+    <v-icon @click="closeModal" large class="searchIcon">clear</v-icon>
   </div>
   <div class="tabsWrapper">
     <div :class="`tabs ${selectedTab == 1 && 'selectedtab'}`" @click="selectTab(1)">자보</div>
@@ -20,9 +19,10 @@
     <div v-show="selectedTab == 1" class="ListWrapper" v-else>
       <div class="zaboWrapper">
         <div v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList" class="miniViewWrapper">
-          <mini-view :zabo="zabo"></mini-view>
+          <mini-view @userDetail="userDetail" :zabo="zabo"></mini-view>
         </div>
       </div>
+      <button v-if="zaboMore" @click="searchZabo(false)" class="more">더보기</button>
       <div class="doesNotExist" v-show="zaboList.length == 0">
         <span>{{$t('자보가 존재하지 않습니다.')}}</span>
       </div>
@@ -47,6 +47,7 @@
           팔로우 취소
         </button>
       </div>
+      <button v-if="zaboMore" @click="searchUser(false)" class="more">더보기</button>
       <div class="doesNotExist" v-show="userList.length == 0">
         <span>{{$t('유저가 존재하지 않습니다.')}}</span>
       </div>
@@ -55,8 +56,8 @@
 </div>
 </template>
 <script>
-import MiniView from '@/components/MiniView';
-import axios from '@/axios-auth.js';
+import MiniView from "@/components/MiniView";
+import axios from "@/axios-auth.js";
 
 export default {
   data() {
@@ -68,14 +69,24 @@ export default {
       reRender: false,
       zaboList: [],
       userList: [],
+      zaboNext: null,
+      userNext: null,
       following: {}
-    }
+    };
   },
   components: {
     MiniView
   },
+  computed: {
+    zaboMore() {
+      return this.zaboNext != null;
+    },
+    userMore() {
+      return this.userNext != null;
+    }
+  },
   methods: {
-    selectTab (num) {
+    selectTab(num) {
       if (num == 1) {
         this.selectedTab = 1;
       } else {
@@ -83,65 +94,108 @@ export default {
       }
     },
     closeModal() {
-      this.$emit('closeSearchModal');
+      this.$emit("closeSearchModal");
     },
-    clearInput() {
-      this.searchValue = "";
+    totSearch() {
+      this.searchZabo(true);
+      this.searchUser(true);
     },
-    searchZabo() {
-      this.zaboIsLoading = true;
-      this.userIsLoading = true;
-      this.userList = [];
-      this.following = {};
-      axios({
-        methods: "get",
-        url: `/api/zaboes/?search=${this.searchValue}`
-      })
-        .then(response => {
-          if (response.status == 200) {
-            this.zaboList = response.data.data;
+    searchZabo(first) {
+      if (first) {
+        this.zaboIsLoading = true;
+        axios({
+          methods: "get",
+          url: `/api/zaboes/?search=${this.searchValue}&page=1`
+        })
+          .then(response => {
+            this.zaboNext = response.data.links.next;
+            if (response.status == 200) {
+              this.zaboList = response.data.data;
+              this.zaboIsLoading = false;
+              return response.data.data;
+            } else if (response.status == 404) {
+              this.zaboIsLoading = false;
+            }
+          })
+          .then(err => {
             this.zaboIsLoading = false;
-            return response.data.data;
-          } else if (response.status == 404) {
+          });
+      } else {
+        axios({
+          methods: "get",
+          url: this.zaboNext
+        })
+          .then(response => {
+            this.zaboNext = response.data.links.next;
+            if (response.status == 200) {
+              this.zaboList.push(response.data.data);
+              this.zaboIsLoading = false;
+              return response.data.data;
+            } else if (response.status == 404) {
+              this.zaboIsLoading = false;
+            }
+          })
+          .catch(err => {
             this.zaboIsLoading = false;
+          });
+      }
+    },
+    searchUser(first) {
+      if (first) {
+        this.userIsLoading = true;
+        this.userList = [];
+        this.following = {};
+        axios({
+          methods: "get",
+          url: `/api/users/?search=${this.searchValue}&page=1`,
+          headers: {
+            Authorization: sessionStorage.getItem("token")
           }
         })
-        .then(err => {
-          this.zaboIsLoading = false;
-        });
-      axios({
-        methods: "get",
-        url: `/api/users/?search=${this.searchValue}`,
-        headers: {
-          Authorization: sessionStorage.getItem("token")
-        }
-      })
-        .then(response => {
-          if (response.status == 200) {
-            this.userList = response.data.data;
-            if (this.userList.length > 0) {
+          .then(response => {
+            this.userNext = response.data.links.next;
+            if (response.status == 200) {
+              this.userList = response.data.data;
+              if (this.userList.length > 0) {
+                for (let i = 0; i < this.userList.length; i++) {
+                  this.following[i] = this.userList[i].is_following;
+                }
+              }
+              this.userIsLoading = false;
+            } else if (response.status == 404) {
+              this.userIsLoading = false;
+            }
+          })
+          .catch(err => {
+            this.userIsLoading = false;
+          });
+      } else {
+        axios({
+          methods: "get",
+          url: this.userNext,
+          headers: {
+            Authorization: sessionStorage.getItem("token")
+          }
+        })
+          .then(response => {
+            this.userNext = response.data.links.next;
+            if (response.status == 200) {
+              this.userList.push(response.data.data);
               for (let i = 0; i < this.userList.length; i++) {
                 this.following[i] = this.userList[i].is_following;
               }
+              this.userIsLoading = false;
+            } else if (response.status == 404) {
+              this.userIsLoading = false;
             }
+          })
+          .catch(err => {
             this.userIsLoading = false;
-          } else if (response.status == 404) {
-            this.userIsLoading = false;
-          }
-        })
-        .catch(err => {
-          this.userIsLoading = false;
-        });
-    },
-    zaboDetail(id, nickname, zaboData) {
-      if (nickname !== "None") {
-        this.modalState = true;
-        this.modalZaboData = zaboData;
-        window.history.pushState(null, null, [`/zabo/${id}`]);
-        this.modalZaboId = id;
+          });
       }
     },
     userDetail(id) {
+      this.$emit("closeSearchModal");
       this.$router.push({ name: "UserDetail", params: { userId: id } });
     },
     followUser(nickName, index) {
@@ -199,7 +253,7 @@ export default {
       }
     }
   }
-}
+};
 </script>
 <style lang='scss' scoped>
 #searchModalWrapper {
@@ -208,7 +262,6 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1001;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -222,19 +275,26 @@ export default {
     align-items: center;
     justify-content: space-between;
     font-size: $normal-font-size;
+    @include breakPoint("phone") {
+      font-size: $small-font-size;
+    }
     .searchInput {
       border: none;
       flex: 1;
       text-align: center;
       font-size: $big-font-size;
+      @include breakPoint("phone") {
+        font-size: $h1-font-size;
+      }
       padding-left: 5px;
+      margin-left: 25px;
       &:focus {
         outline: none;
       }
       @include breakPoint("phone") {
-        height: 30px;
+        height: 25px;
         .searchInput {
-          height: 28px;
+          height: 23px;
         }
       }
     }
@@ -254,10 +314,10 @@ export default {
     .selectedtab {
       border-bottom: 2px solid $theme-color;
     }
-    @include breakPoint('phone') {
-      min-height: 40px;
+    @include breakPoint("phone") {
+      min-height: 30px;
       .tabs {
-        font-size: $h1-font-size;
+        font-size: $normal-font-size;
       }
     }
   }
@@ -265,14 +325,15 @@ export default {
     width: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
+    @include scrollBarDark(small);
     .ListWrapper {
       width: 100%;
-      min-width: 400px;
+      // min-width: 400px;
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-around;
       align-items: flex-start;
       flex-wrap: wrap;
-      margin-bottom: 2em;
+      margin-bottom: 30px;
       padding: 20px;
       .zaboWrapper {
         display: flex;
@@ -280,12 +341,12 @@ export default {
         align-items: flex-start;
         justify-content: space-around;
         flex-wrap: wrap;
-        margin-bottom: 2em;
+        // margin-bottom: 30px;
         margin-right: 10px;
         .miniViewWrapper {
           width: 100%;
-          @include breakPoint('desktop') {
-            width: 40%;
+          @include breakPoint("desktop") {
+            width: 45%;
           }
         }
       }
@@ -294,12 +355,19 @@ export default {
         height: 100px;
         background-color: #ececec;
         font-size: 2em;
+        @include breakPoint("phone") {
+          font-size: $h1-font-size;
+        }
         display: flex;
         justify-content: center;
         align-items: center;
       }
       .userWrapper {
         display: flex;
+        width: 100%;
+        @include breakPoint("desktop") {
+          width: 30%;
+        }
         flex-direction: column;
         align-items: center;
         justify-content: flex-start;
@@ -307,7 +375,6 @@ export default {
         border: 1px solid #ececec;
         border-radius: 3px;
         padding: 15px 20px;
-        margin-right: 10px;
         .userInfoWrapper {
           display: flex;
           justify-content: flex-start;
@@ -319,6 +386,9 @@ export default {
           }
           .userName {
             font-size: 1.875em;
+            @include breakPoint("phone") {
+              font-size: $h1-font-size;
+            }
             font-weight: 700;
             margin-left: 10px;
           }
@@ -334,5 +404,8 @@ export default {
       }
     }
   }
+}
+.more {
+  @include largeButton(theme);
 }
 </style>

@@ -212,7 +212,7 @@ export default {
   }
 };
 </script>
-<style scoped lang=''>
+<style scoped lang='scss'>
 .totalWrapper {
   width: 100%;
   position: absolute;

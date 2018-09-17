@@ -28,6 +28,10 @@ export default {};
   align-items: center;
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.9);
+  z-index: 400;
+  @include breakPoint("phone") {
+    height: 58px;
+  }
 }
 .column {
   width: 50%;
@@ -48,7 +52,7 @@ export default {};
   padding-right: 27px;
 }
 .tapWrapper {
-  @include breakPoint('phone') {
+  @include breakPoint("phone") {
     display: none;
   }
 }

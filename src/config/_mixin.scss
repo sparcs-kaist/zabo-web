@@ -108,6 +108,31 @@ $iphone6plus-width: 550px;
     background-color: $theme-color;
   }
 }
+@mixin smallButton($color) {
+  color: white;
+  padding: 8px 10px 6px 10px;
+  font-size: $h2-font-size;
+  @include breakPoint("phone") {
+    font-size: $small-font-size;
+  }
+  transition: all 0.2s ease-in-out;
+  border-radius: 3px;
+  &:hover {
+    @include smallBoxShadow();
+  }
+  @if $color == blue {
+    background-color: $blue-color;
+  }
+  @if $color == green {
+    background-color: $green-color;
+  }
+  @if $color == red {
+    background-color: $red-color;
+  }
+  @if $color == theme {
+    background-color: $theme-color;
+  }
+}
 @mixin scrollBarDark($size) {
   &::-webkit-scrollbar {
     @if $size == big {

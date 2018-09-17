@@ -53,17 +53,7 @@ export default {
       windowWidth: 0,
       windowHeight: 0,
       currentCategoryIndex: 0,
-      categoryList: [
-        "최신순",
-        "인기있는 자보",
-        "마감임박 자보",
-        "리크루팅",
-        "공연",
-        "대회",
-        "설명회",
-        "세미나",
-        "전람회"
-      ],
+      categoryList: ["최신순", "인기있는 자보", "마감임박 자보"],
       defaultImage: "@/assets/logo.png",
       posterWrapperHeight: 0,
       basePosterWrapperHeight: 0,
@@ -157,7 +147,7 @@ export default {
     },
     categoryleft() {
       if (this.currentCategoryIndex === 0) {
-        this.currentCategoryIndex = 8;
+        this.currentCategoryIndex = 2;
       } else {
         this.currentCategoryIndex -= 1;
       }
@@ -198,7 +188,7 @@ export default {
       this.getWindowWidth();
     },
     categoryright() {
-      if (this.currentCategoryIndex === 8) {
+      if (this.currentCategoryIndex === 2) {
         this.currentCategoryIndex = 0;
       } else {
         this.currentCategoryIndex += 1;
@@ -249,7 +239,7 @@ export default {
     },
     closeModal() {
       this.currentPath = "/";
-      window.history.pushState(null, null, [`/`]);
+      history.back();
     },
     mouseUp() {
       if (
@@ -451,14 +441,14 @@ export default {
     calculatedCategoryList() {
       let calculatedCategories = [];
       if (this.currentCategoryIndex === 0) {
-        calculatedCategories.push(this.categoryList[8]);
+        calculatedCategories.push(this.categoryList[2]);
       } else {
         calculatedCategories.push(
           this.categoryList[this.currentCategoryIndex - 1]
         );
       }
       calculatedCategories.push(this.categoryList[this.currentCategoryIndex]);
-      if (this.currentCategoryIndex === 8) {
+      if (this.currentCategoryIndex === 2) {
         calculatedCategories.push(this.categoryList[0]);
       } else {
         calculatedCategories.push(
