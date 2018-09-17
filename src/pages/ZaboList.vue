@@ -205,7 +205,7 @@ export default {
   }
   .ListWrapper {
     width: 100%;
-    min-width: 400px;
+    // min-width: 400px;
     display: flex;
     // justify-content: flex-s;
     align-items: flex-start;
@@ -215,7 +215,7 @@ export default {
       width: 100%;
       display: flex;
       height: 100%;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       margin-bottom: 2em;
@@ -228,7 +228,7 @@ export default {
       width: 90%;
       .zaboWrapper {
         .miniViewWrapper {
-          width: 40%;
+          width: 45%;
         }
       }
     }

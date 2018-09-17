@@ -275,20 +275,26 @@ export default {
     align-items: center;
     justify-content: space-between;
     font-size: $normal-font-size;
+    @include breakPoint("phone") {
+      font-size: $small-font-size;
+    }
     .searchInput {
       border: none;
       flex: 1;
       text-align: center;
       font-size: $big-font-size;
+      @include breakPoint("phone") {
+        font-size: $h1-font-size;
+      }
       padding-left: 5px;
       margin-left: 25px;
       &:focus {
         outline: none;
       }
       @include breakPoint("phone") {
-        height: 30px;
+        height: 25px;
         .searchInput {
-          height: 28px;
+          height: 23px;
         }
       }
     }
@@ -309,9 +315,9 @@ export default {
       border-bottom: 2px solid $theme-color;
     }
     @include breakPoint("phone") {
-      min-height: 40px;
+      min-height: 30px;
       .tabs {
-        font-size: $h1-font-size;
+        font-size: $normal-font-size;
       }
     }
   }
@@ -322,12 +328,12 @@ export default {
     @include scrollBarDark(small);
     .ListWrapper {
       width: 100%;
-      min-width: 400px;
+      // min-width: 400px;
       display: flex;
       justify-content: space-around;
       align-items: flex-start;
       flex-wrap: wrap;
-      margin-bottom: 2em;
+      margin-bottom: 30px;
       padding: 20px;
       .zaboWrapper {
         display: flex;
@@ -335,12 +341,12 @@ export default {
         align-items: flex-start;
         justify-content: space-around;
         flex-wrap: wrap;
-        margin-bottom: 2em;
+        // margin-bottom: 30px;
         margin-right: 10px;
         .miniViewWrapper {
           width: 100%;
           @include breakPoint("desktop") {
-            width: 40%;
+            width: 45%;
           }
         }
       }
@@ -349,6 +355,9 @@ export default {
         height: 100px;
         background-color: #ececec;
         font-size: 2em;
+        @include breakPoint("phone") {
+          font-size: $h1-font-size;
+        }
         display: flex;
         justify-content: center;
         align-items: center;
@@ -377,6 +386,9 @@ export default {
           }
           .userName {
             font-size: 1.875em;
+            @include breakPoint("phone") {
+              font-size: $h1-font-size;
+            }
             font-weight: 700;
             margin-left: 10px;
           }
