@@ -189,6 +189,7 @@ export default {
         background-color: white;
         padding: 0.125em 0.25em;
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
+        z-index: 300;
         &::after {
           content: "";
           position: absolute;
