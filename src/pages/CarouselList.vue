@@ -66,9 +66,9 @@ export default {
   },
   mounted() {
     this.getWindowWidth();
-    if (sessionStorage.getItem("currentCategoryIndex")) {
+    if (localStorage.getItem("currentCategoryIndex")) {
       this.currentCategoryIndex = Number(
-        sessionStorage.getItem("currentCategoryIndex")
+        localStorage.getItem("currentCategoryIndex")
       );
     }
     this.$store
@@ -117,7 +117,7 @@ export default {
   beforeDestroy() {
     window.removeEventListener("resize", this.getWindowWidth);
     window.removeEventListener("keyup", this.keyup);
-    sessionStorage.setItem(
+    localStorage.setItem(
       "currentCategoryIndex",
       Number(this.currentCategoryIndex)
     );

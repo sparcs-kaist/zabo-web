@@ -39,20 +39,20 @@ export default {
     };
   },
   created() {
-    if (sessionStorage.getItem("mainZaboSeen")) {
+    if (localStorage.getItem("mainZaboSeen")) {
       this.voided = "v-a";
     } else {
-      sessionStorage.setItem("mainZaboSeen", true);
+      localStorage.setItem("mainZaboSeen", true);
     }
     if (
-      sessionStorage.getItem("token") &&
-      sessionStorage.getItem("token").split(" ")[0] == "ZABO"
+      localStorage.getItem("token") &&
+      localStorage.getItem("token").split(" ")[0] == "ZABO"
     ) {
-      this.$store.dispatch("login", sessionStorage.getItem("token").slice(5));
+      this.$store.dispatch("login", localStorage.getItem("token").slice(5));
       axios
         .get("api/users/myInfo", {
           headers: {
-            Authorization: sessionStorage.getItem("token")
+            Authorization: localStorage.getItem("token")
           }
         })
         .then(response => {

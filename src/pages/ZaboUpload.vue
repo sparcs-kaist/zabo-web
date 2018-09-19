@@ -297,7 +297,7 @@ export default {
           url: "api/zaboes/",
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: sessionStorage.getItem("token")
+            Authorization: localStorage.getItem("token")
           },
           data: formData
         })
