@@ -85,7 +85,7 @@ export default {
         },
         headers: {
           "Content-Type": "application/json",
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         }
       }).then(response => {
         this.replies.push(response.data);
@@ -97,7 +97,7 @@ export default {
         method: "DELETE",
         url: `/api/comments/${this.id}/`,
         headers: {
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         }
       })
         .then(res => {
@@ -118,7 +118,7 @@ export default {
         url: `/api/comments/${this.id}/`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         },
         data: {
           content: this.newComment,

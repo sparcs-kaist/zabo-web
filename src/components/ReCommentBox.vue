@@ -63,7 +63,7 @@ export default {
         url: `/api/recomments/${this.recommentId}/`,
         headers: {
           "Content-Type": "application/json",
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         },
         data: {
           content: this.newReply,
@@ -86,7 +86,7 @@ export default {
         method: "DELETE",
         url: `/api/recomments/${this.recommentId}/`,
         headers: {
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         }
       })
         .then(res => {

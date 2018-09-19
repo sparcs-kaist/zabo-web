@@ -168,14 +168,14 @@ const actions = {
       method: "PATCH",
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: sessionStorage.getItem("token")
+        Authorization: localStorage.getItem("token")
       },
       data: formData
     }).then(function(response) {
       axios("api/users/myInfo", {
         method: "GET",
         headers: {
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         }
       })
         .then(function(response) {
@@ -190,7 +190,7 @@ const actions = {
     axios
       .get("api/notifications/", {
         headers: {
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         }
       })
       .then(res => {

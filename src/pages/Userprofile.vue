@@ -157,7 +157,7 @@ export default {
         url: "/api/users/followOther/",
         method: "post",
         headers: {
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         },
         data: {
           nickname: nickName
@@ -179,7 +179,7 @@ export default {
         url: "/api/users/unfollowOther/",
         method: "post",
         headers: {
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         },
         data: {
           nickname: nickName
@@ -232,11 +232,11 @@ export default {
     }
   },
   created() {
-    if (sessionStorage.getItem("token").split(" ")[0] == "ZABO") {
+    if (localStorage.getItem("token").split(" ")[0] == "ZABO") {
       axios
         .get("/api/users/myInfo", {
           headers: {
-            Authorization: sessionStorage.getItem("token")
+            Authorization: localStorage.getItem("token")
           }
         })
         .then(response => {
@@ -257,7 +257,7 @@ export default {
     axios
       .get("/api/zaboes/created/", {
         headers: {
-          Authorization: sessionStorage.getItem("token")
+          Authorization: localStorage.getItem("token")
         }
       })
       .then(res => {
