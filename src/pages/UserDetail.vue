@@ -7,7 +7,8 @@
           프로필
         </div>
         <div>
-          <img :src="imagesrc" class="profile-image">
+          <img src="../assets/default_person.png" v-if="imagesrc == null" class="profile-image">
+          <img :src="imagesrc" v-else class="profile-image">
           <p id="name"> {{ first_name + " " + last_name }} </p>
         </div>
         <v-tabs fixed-tabs v-model="tab" class="tabsTitleWrapper">
