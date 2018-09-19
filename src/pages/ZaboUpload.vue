@@ -203,7 +203,6 @@ export default {
       scheduleAdding: false,
       zaboPosterBool: false,
       zaboUrl: "",
-      zaboUrlExist: false,
       postState: true,
       deadline: ""
     };
@@ -285,10 +284,12 @@ export default {
           );
         }
         if (this.zaboUrlExist) {
-          if (this.zaboUrl.split("//")[0] == "http:" || this.zaboUrl.split("//")[0] == "https:")
+          if (
+            this.zaboUrl.split("//")[0] == "http:" ||
+            this.zaboUrl.split("//")[0] == "https:"
+          )
             formData.append("link_url", this.zaboUrl);
-          else
-            formData.append("link_url", "http://" + this.zaboUrl);
+          else formData.append("link_url", "http://" + this.zaboUrl);
         }
 
         axios({
@@ -369,6 +370,9 @@ export default {
   computed: {
     loggedIn() {
       return this.$store.getters.loggedInState;
+    },
+    zaboUrlExist() {
+      return this.selectedMethod == "외부 링크를 통한 신청";
     },
     today() {
       var day = new Date();
