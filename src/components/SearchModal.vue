@@ -47,7 +47,7 @@
           팔로우 취소
         </button>
       </div>
-      <button v-if="userMore" @click="searchUser(false)" class="more">더보기</button>
+      <button v-if="zaboMore" @click="searchUser(false)" class="more">더보기</button>
       <div class="doesNotExist" v-show="userList.length == 0">
         <span>{{$t('유저가 존재하지 않습니다.')}}</span>
       </div>
