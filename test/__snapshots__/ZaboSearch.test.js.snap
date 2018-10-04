@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ZaboSearch.test.js has the expected html structure 1`] = `
+<div>
+  <div
+    class="totalWrapper"
+  >
+    <div
+      class="tabsWrapper"
+    >
+      <div
+        class="selectedTab tab"
+      >
+        <span
+          class="tabSpan"
+        >
+          자보 검색결과
+        </span>
+      </div>
+       
+      <div
+        class="tab"
+      >
+        <span
+          class="tabSpan"
+        >
+          페이퍼 검색결과
+        </span>
+      </div>
+    </div>
+     
+    <v-progress-circular
+      class="ListWrapper"
+      color="primary"
+      indeterminate=""
+    />
+     
+    <v-progress-circular
+      class="ListWrapper"
+      color="primary"
+      indeterminate=""
+      style="display: none;"
+    />
+  </div>
+   
+  <!---->
+</div>
+`;
