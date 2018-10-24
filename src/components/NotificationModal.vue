@@ -2,30 +2,7 @@
   <div>
     <div class="notificationWrapper" v-if="notificationsModal">
       <div class="singleNotiWrapper" v-if="notifications.length > 0" v-for="(noti, index) in notifications" :key="index">
-        <div class="notiInfoWrapper" v-if="noti.type == 'SomeoneFollowing'">
-          <img :src="baseURL+noti.from_profile" v-if="noti.from_profile != null" class="notiProfileImage">
-          <img src="../assets/default_person.png" v-else class="notiProfileImage">
-          <span class="notiContent">
-            <span class="notiFrom">{{noti.from}}</span>님이 팔로우를 시작했습니다.</span>
-        </div>
-        <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'CommentReaction'">
-          <img :src="baseURL+noti.from_profile" v-if="noti.from_profile != null" class="notiProfileImage">
-          <img src="../assets/default_person.png" v-else class="notiProfileImage">
-          <span class="notiContent">
-            <span class="notiFrom">{{noti.from}}</span>님이 답글을 달았습니다. {{noti.content}}</span>
-        </div>
-        <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'ZaboReaction'">
-          <img :src="baseURL+noti.from_profile" v-if="noti.from_profile != null" class="notiProfileImage">
-          <img src="../assets/default_person.png" v-else class="notiProfileImage">
-          <span class="notiContent">
-            <span class="notiFrom">{{noti.from}}</span>님이 자보에 댓글을 남겼습니다. {{noti.content}}</span>
-        </div>
-        <div @click="goToZabo(noti.url)" class="notiInfoWrapper" v-if="noti.type == 'ZaboFollowing'">
-          <img :src="baseURL+noti.from_profile" v-if="noti.from_profile != null" class="notiProfileImage">
-          <img src="../assets/default_person.png" v-else class="notiProfileImage">
-          <span class="notiContent">
-            <span class="notiFrom">{{noti.from}}</span>님이 새로운 자보를 올렸습니다. {{noti.content}}</span>
-        </div>
+        <NotiRow :noti="noti"/>
       </div>
       <div v-else class="emptyNotification">
         <span>알림이 없습니다.</span>
@@ -37,6 +14,7 @@
 </template>
 <script>
 import { baseURL } from "@/variables.js";
+import NotiRow from "./NotiRow";
 
 export default {
   props: ["notifications", "notificationsModal"],
@@ -49,6 +27,9 @@ export default {
     goToZabo(id) {
       this.$router.push({ name: "ZaboDetail", params: { zabo_id: id } });
     }
+  },
+  components: {
+    NotiRow
   }
 };
 </script>
@@ -87,33 +68,6 @@ export default {
 }
 .notificationWrapper::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0.1);
-}
-.notiContent {
-  margin-left: 0.5em;
-  font-size: 1em;
-  z-index: 1000;
-  z-index: inherit;
-}
-
-.notiProfileImage {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  z-index: 900;
-  z-index: inherit;
-}
-.notiFrom {
-  font-weight: 700;
-  z-index: 900;
-  z-index: inherit;
-}
-.notiInfoWrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  z-index: 900;
-  cursor: pointer;
-  z-index: inherit;
 }
 .singleNotiWrapper {
   width: 100%;

@@ -92,7 +92,7 @@ const mutations = {
     } = state;
     state.loggedInState = false;
     state.currentUser = {};
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
     window.location = baseURL + `/api/logout/?email=${email}`;
   }
 };

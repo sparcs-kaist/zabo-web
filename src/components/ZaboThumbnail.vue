@@ -42,8 +42,7 @@ export default {
     zaboThumbnailDetailShow() {
       document.getElementsByClassName("thumbnailDetail")[
         this.number
-      ].style.display =
-        "block";
+      ].style.display = "block";
     }
   }
 };

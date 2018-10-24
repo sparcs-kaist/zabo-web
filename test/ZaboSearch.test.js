@@ -51,7 +51,7 @@ describe("ZaboSearch.test.js", () => {
       methods: "get",
       url: `/api/users/?search=${cmp.vm.searchValue}`,
       headers: {
-        Authorization: sessionStorage.getItem("token")
+        Authorization: localStorage.getItem("token")
       }
     }).then(response => response.data.data);
     // zaboList 테스트
