@@ -20,9 +20,7 @@ export default {
   },
   methods: {
     reviewSubmit() {
-      console.log("why!!");
       this.$emit("update:content", this.input);
-      console.log(this.input);
       this.input = "";
       this.$emit("on-submit");
     }

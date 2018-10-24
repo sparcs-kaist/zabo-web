@@ -192,7 +192,6 @@ export default {
         this.authorId = author.id;
         this.author = author;
         this.deadline = deadline;
-        console.log(response);
       })
       .catch(err => {
         console.log(err);
