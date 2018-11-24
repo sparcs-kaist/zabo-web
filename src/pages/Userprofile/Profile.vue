@@ -142,7 +142,6 @@ export default {
             this.selected_gender,
             this.image
           ];
-          console.log(payload);
           this.$store.dispatch("setMyInfo", payload);
           this.$emit("editmode");
           this.edit = "편집";

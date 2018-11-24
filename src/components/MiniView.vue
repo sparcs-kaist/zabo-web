@@ -75,7 +75,6 @@ export default {
     this.content =
       content.length > 100 ? content.substring(0, 85) + "..." : content;
     this.likeCount = like_count;
-    console.log(this.zabo);
   },
   computed: {
     computedZaboId() {

@@ -66,16 +66,11 @@ export default {
       deletedId: []
     };
   },
-  created() {
-    console.log(this.comment_id);
-  },
   methods: {
     isLong() {
       return this.content.length > 200;
     },
     onSubmitComment() {
-      console.log(this.newReply);
-      console.log("why the fick!");
       axios({
         method: "post",
         url: "/api/recomments/",

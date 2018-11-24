@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ZaboThumbnail.test.js has the expected html structure 1`] = `
+<div
+  class="zaboThumbnail row0"
+>
+  <div
+    class="thumbnail"
+    style="background-image: url(undefined);"
+  >
+    <p>
+      
+      This is content
+    
+    </p>
+  </div>
+   
+  <div
+    class="thumbnailDetail"
+  />
+</div>
+`;

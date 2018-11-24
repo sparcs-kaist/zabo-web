@@ -101,12 +101,12 @@ export default {
     selectTab(num) {
       this.selectedTab = num;
     },
-    searchZaboes() {
+    async searchZaboes() {
       this.zaboIsLoading = true;
       this.userIsLoading = true;
       this.userList = [];
       this.following = {};
-      axios({
+      await axios({
         methods: "get",
         url: `/api/zaboes/?search=${this.searchValue}`
       })
@@ -122,7 +122,7 @@ export default {
         .then(err => {
           this.zaboIsLoading = false;
         });
-      axios({
+      await axios({
         methods: "get",
         url: `/api/users/?search=${this.searchValue}`,
         headers: {
@@ -281,7 +281,8 @@ export default {
         transition: all 0.3s ease;
       }
       .zaboImage:hover {
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.16), 0px 4px 10px rgba(0, 0, 0, 0.24);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.16),
+          0px 4px 10px rgba(0, 0, 0, 0.24);
       }
       .zaboTitle {
         font-size: 1.25em;
