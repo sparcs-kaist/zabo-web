@@ -21,24 +21,24 @@
         ></v-select>
       </div>
     </div>
-    <div class="ListWrapper" v-if="!zaboIsLoading">
+    <div class="ListWrapper">
       <div class="zaboWrapper">
-        <div v-if="!zaboIsLoading && zaboList.length > 0" :key="zabo.id" v-for="zabo in zaboList" class="miniViewWrapper">
+        <div v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList" class="miniViewWrapper">
           <mini-view @userDetail="userDetail" :zabo="zabo"></mini-view>
         </div>
-        <button v-if="nextURL != null && !zaboIsLoading" @click="fetchData()" class="more">더보기</button>
+        <!-- <button v-if="nextURL != null && !zaboIsLoading" @click="fetchData()" class="more">더보기</button> -->
       </div>
-      <div class="doesNotExist" v-show="zaboList.length == 0">
+      <div class="doesNotExist" v-show="!zaboIsLoading && zaboList.length == 0">
         <span>{{$t('자보가 존재하지 않습니다.')}}</span>
       </div>
     </div>
-  </div>
-  <v-progress-circular
+    <v-progress-circular
       v-if="zaboIsLoading"
       indeterminate
       color="primary"
       class="ListWrapper"
-    ></v-progress-circular>
+    />
+  </div>
   <div v-if="computedModalState" class="zaboModalWrapper">
     <zabo-detail-modal :modalZaboData="modalZaboData" @closeModal="closeModal" :zaboId="this.computedZaboId" v-if="computedModalState"></zabo-detail-modal>
   </div>
@@ -50,9 +50,13 @@ import ZaboDetailModal from "@/components/ZaboDetailModal";
 import MiniView from "@/components/MiniView";
 
 const PAGES_PER_LOAD = 10;
+const RELOAD_HEIGHT = 0;
 
 export default {
   created() {
+    window.addEventListener('scroll', () => {
+      this.isReachedBottom = this.isBottomVisible();
+    });
     this.searchZaboes(true);
   },
   data() {
@@ -65,6 +69,7 @@ export default {
       modalZaboData: {},
       nextURL: false,
       reRender: false,
+      isReachedBottom: false,
       selectedCategory: "리크루팅",
       selectedOrder: "생성 날짜",
       categoryList: ["리크루팅", "공연", "대회", "설명회", "세미나", "전람회"],
@@ -89,10 +94,16 @@ export default {
     },
     selectedOrder() {
       this.searchZaboes(true);
+    },
+    isReachedBottom(isReachedBottom) {
+      if (!this.zaboIsLoading && isReachedBottom) {
+        this.fetchData();
+      }
     }
   },
   methods: {
     fetchData() {
+      this.zaboIsLoading = true;
       axios({
           methods: "get",
           url: this.nextURL
@@ -101,7 +112,6 @@ export default {
             this.nextURL = response.data.links.next;
             if (response.status == 200) {
               this.zaboList = this.zaboList.concat(response.data.data);
-              console.log(this.zaboList);
               this.zaboIsLoading = false;
             } else if (response.status == 404) {
               this.zaboIsLoading = false;
@@ -159,6 +169,11 @@ export default {
     },
     userDetail(id) {
       this.$router.push({ name: "UserDetail", params: { userId: id } });
+    },
+    isBottomVisible() {
+      const { clientHeight, scrollHeight } = document.documentElement;
+      const { scrollY } = window;
+      return clientHeight + scrollY >= scrollHeight - RELOAD_HEIGHT;
     }
   }
 };
@@ -174,6 +189,7 @@ export default {
   align-items: center;
   justify-content: flex-start;
   padding: 80px 20px;
+  padding-bottom: 200px;
   min-height: 100vh;
   .filterWrapper {
     width: 100%;
