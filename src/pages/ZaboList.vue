@@ -23,16 +23,16 @@
     </div>
     <div class="ListWrapper" v-if="!zaboIsLoading">
       <div class="zaboWrapper">
-        <div v-if="zabo.posters.length > 0" :key="zabo.id" v-for="zabo in zaboList" class="miniViewWrapper">
+        <div v-if="!zaboIsLoading && zaboList.length > 0" :key="zabo.id" v-for="zabo in zaboList" class="miniViewWrapper">
           <mini-view @userDetail="userDetail" :zabo="zabo"></mini-view>
         </div>
+        <button v-if="nextURL != null && !zaboIsLoading" @click="fetchData()" class="more">더보기</button>
       </div>
       <div class="doesNotExist" v-show="zaboList.length == 0">
         <span>{{$t('자보가 존재하지 않습니다.')}}</span>
       </div>
     </div>
   </div>
-  <button v-if="nextURL != null && !zaboIsLoading" @click="searchZabo(false)" class="more">더보기</button>
   <v-progress-circular
       v-if="zaboIsLoading"
       indeterminate
@@ -48,6 +48,8 @@
 import axios from "@/axios-auth";
 import ZaboDetailModal from "@/components/ZaboDetailModal";
 import MiniView from "@/components/MiniView";
+
+const PAGES_PER_LOAD = 10;
 
 export default {
   created() {
@@ -90,9 +92,30 @@ export default {
     }
   },
   methods: {
+    fetchData() {
+      axios({
+          methods: "get",
+          url: this.nextURL
+        })
+          .then(response => {
+            this.nextURL = response.data.links.next;
+            if (response.status == 200) {
+              this.zaboList = this.zaboList.concat(response.data.data);
+              console.log(this.zaboList);
+              this.zaboIsLoading = false;
+            } else if (response.status == 404) {
+              this.zaboIsLoading = false;
+            }
+          })
+          .catch(err => {
+            this.zaboIsLoading = false;
+          });
+    },
     searchZaboes(first) {
       if (first) {
         this.zaboIsLoading = true;
+        this.zaboList = [];
+
         let method = null;
         let order = null;
 
@@ -118,42 +141,9 @@ export default {
           order = "title";
         }
 
-        axios({
-          methods: "get",
-          url: `/api/zaboes/?category=${method}&ordering=${order}`
-        })
-          .then(response => {
-            if (response.status == 200) {
-              this.zaboList = response.data.data;
-              this.nextURL = response.data.links.next;
-              this.zaboIsLoading = false;
-              return response.data.data;
-            } else if (response.status == 404) {
-              this.zaboIsLoading = false;
-            }
-          })
-          .then(err => {
-            this.zaboIsLoading = false;
-          });
-      } else {
-        this.zaboIsLoading = true;
-        axios({
-          methods: "get",
-          url: this.nextURL
-        })
-          .then(response => {
-            this.nextURL = response.data.links.next;
-            if (response.status == 200) {
-              this.zaboList.push(response.data.data);
-              this.zaboIsLoading = false;
-            } else if (response.status == 404) {
-              this.zaboIsLoading = false;
-            }
-          })
-          .catch(err => {
-            this.zaboIsLoading = false;
-          });
+        this.nextURL = `/api/zaboes/?category=${method}&ordering=${order}&page_size=${PAGES_PER_LOAD}`;
       }
+      this.fetchData();
     },
     closeModal() {
       this.modalState = false;
@@ -245,5 +235,6 @@ export default {
 }
 .more {
   @include largeButton(theme);
+  margin-top: 2em;
 }
 </style>
