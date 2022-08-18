@@ -1,5 +1,9 @@
 # zabo-web
 
+**If you are looking for Zabo project's active repositories, please check the links below.**
+- [zabo-front-reactjs](https://github.com/sparcs-kaist/zabo-front-reactjs)
+- [zabo-server-nodejs](https://github.com/sparcs-kaist/zabo-server-nodejs)
+
 for commit
 
 > A Vue.js project
